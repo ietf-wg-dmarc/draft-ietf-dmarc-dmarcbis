@@ -47,11 +47,11 @@ fullname = "John Levine"
 This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol.
 
-DMARC is a scalable mechanism by which a mail-originating organization
-can express domain-level policies and preferences for message validation,
-disposition, and reporting. Mail-receiving organizations can in turn use
-these expressions of policies and preferences to inform their mail handling
-decisions should they choose to do so.
+DMARC permits the owner of an author's domain name to enable validation 
+of the domain's use, to indicate the implication of failed validation, 
+and to request reports about use of the domain name. Mail receiving 
+organizations can use this information when evaluating disposition 
+choices for incoming mail.
 
 This document obsoletes RFC 7489.
 
@@ -64,13 +64,12 @@ The source for this draft is maintained in GitHub at:
 https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis
 
 The Sender Policy Framework ([@!RFC7208]) and DomainKeys Identified
-Mail ([@!RFC6376]) protocols provide domain-level authentication, and
-DMARC builds on these protocols. DMARC is designed to give ADminstrative
-Management Domains (ADMDs) that originate email the ability to publish
-in a DNS TXT record their email authentication policies, specify preferred
-handling for mail that fails authentication checks, and request reports
-about mail purportedly originated by the ADMD, as determined by the
-RFC5322.From header in the message.
+Mail ([@!RFC6376]) protocols provide domain-level authentication which
+is not directly associated with the RFC5322.From domain, and DMARC builds
+on those protocols. Using DMARC, Domain Owners that originate email can
+publish a DNS TXT record with their email authentication policies, preferred 
+handling for mail that fails authentication checks, and request reports about 
+use of the domain name.
 
 As with SPF and DKIM, DMARC authentication checks result in verdicts of
 "pass" or "fail". A DMARC pass verdict requires not only that SPF or DKIM
@@ -80,21 +79,23 @@ the DMARC protocol, two domains are said to be "in alignment" if they have
 the same Organizational Domain (a.k.a., relaxed alignment) or they are
 identical (a.k.a., strict alignment).
 
-A DMARC pass verdict asserts only that the RFC5322.From domain has been
+A DMARC pass result indicates only that the RFC5322.From domain has been
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
-that performs DMARC validation checks on inbound mail can choose to use the results
-and the preferences expressed by the originating domain for message disposition
-to inform its mail handling decision for that message. For messages that pass
-DMARC validation checks, the mail-receiving organization can be confident in
-applying handling based on its known history for similarly authenticated
-messages, whereas messages that fail such checks cannot be reliably associated
-with a domain with a history of sending DMARC-validated messages.
+that performs a DMARC validation check on inbound mail can choose to use the result
+and the published assessment by the originating domain for message disposition
+to inform its mail handling decision for that message.  For a mail-receiving 
+organization supporting DMARC, a message that passes validation is part of a 
+message stream that is reliably associated with the domain owner. Therefore 
+reputation assessment of that stream by the mail-receiving organization does 
+not need to be encumbered by  accounting for unauthorized use of the domain. 
+A message that fails this validation cannot reliably be associated with the 
+aligned domain and its reputation.
 
 DMARC also describes a reporting framework in which mail-receiving domains
 can generate regular reports containing data about messages seen that claim
-to be from domains that publish DMARC policies, and send those reports to the
-ADMD as requested by its DMARC policy record.
+to be from domains that publish DMARC policies, and send those reports to 
+one or more addresses as requested by the Domain Owner's DMARC policy record.
 
 Experience with DMARC has revealed some issues of interoperability
 with email in general that require due consideration before
