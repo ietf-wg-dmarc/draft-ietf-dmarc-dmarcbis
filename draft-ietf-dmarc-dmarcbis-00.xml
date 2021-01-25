@@ -1,0 +1,2353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
+<rfc version="3" ipr="trust200902" docName="draft-ietf-dmarc-dmarcbis-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" obsoletes="7489" consensus="true">
+
+<front>
+<title abbrev="DMARCbis">Domain-based Message Authentication, Reporting, and Conformance (DMARC)</title><seriesInfo value="draft-ietf-dmarc-dmarcbis-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<author initials="E." surname="Gustafsson (ed)" fullname="Emil Gustafsson"><organization>Google</organization><address><postal><street></street>
+</postal><email>emgu@google.com</email>
+</address></author>
+<author initials="T." surname="Herr (ed)" fullname="Todd M. Herr"><organization>Valimail</organization><address><postal><street></street>
+</postal><email>todd.herr@valimail.com</email>
+</address></author>
+<author initials="J." surname="Levine (ed)" fullname="John Levine"><organization>Standcore LLC</organization><address><postal><street></street>
+</postal><email>standards@standore.com</email>
+</address></author>
+<date/>
+<area>Application</area>
+<workgroup>DMARC</workgroup>
+
+<abstract>
+<t>This document describes the Domain-based Message Authentication,
+Reporting, and Conformance (DMARC) protocol.</t>
+<t>DMARC permits the owner of an author's domain name to enable validation
+of the domain's use, to indicate the implication of failed validation,
+and to request reports about use of the domain name. Mail receiving
+organizations can use this information when evaluating disposition
+choices for incoming mail.</t>
+<t>This document obsoletes RFC 7489.</t>
+</abstract>
+
+</front>
+
+<middle>
+
+<section anchor="introduction"><name>Introduction</name>
+<t>RFC EDITOR: PLEASE REMOVE THE FOLLOWING PARAGRAPH BEFORE PUBLISHING:
+The source for this draft is maintained in GitHub at:
+<eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis</eref></t>
+<t>The Sender Policy Framework (<xref target="RFC7208"></xref>) and DomainKeys Identified
+Mail (<xref target="RFC6376"></xref>) protocols provide domain-level authentication which
+is not directly associated with the RFC5322.From domain, and DMARC builds
+on those protocols. Using DMARC, Domain Owners that originate email can
+publish a DNS TXT record with their email authentication policies, preferred
+handling for mail that fails authentication checks, and request reports about
+use of the domain name.</t>
+<t>As with SPF and DKIM, DMARC authentication checks result in verdicts of
+&quot;pass&quot; or &quot;fail&quot;. A DMARC pass verdict requires not only that SPF or DKIM
+pass for the message in question, but also that the domain validated by the
+SPF or DKIM check is aligned with the domain in the RFC5322.From header. In
+the DMARC protocol, two domains are said to be &quot;in alignment&quot; if they have
+the same Organizational Domain (a.k.a., relaxed alignment) or they are
+identical (a.k.a., strict alignment).</t>
+<t>A DMARC pass result indicates only that the RFC5322.From domain has been
+authenticated in that message; there is no explicit or implied value assertion
+attributed to a message that receives such a verdict. A mail-receiving organization
+that performs a DMARC validation check on inbound mail can choose to use the result
+and the published assessment by the originating domain for message disposition
+to inform its mail handling decision for that message.  For a mail-receiving
+organization supporting DMARC, a message that passes validation is part of a
+message stream that is reliably associated with the domain owner. Therefore
+reputation assessment of that stream by the mail-receiving organization does
+not need to be encumbered by  accounting for unauthorized use of the domain.
+A message that fails this validation cannot reliably be associated with the
+aligned domain and its reputation.</t>
+<t>DMARC also describes a reporting framework in which mail-receiving domains
+can generate regular reports containing data about messages seen that claim
+to be from domains that publish DMARC policies, and send those reports to
+one or more addresses as requested by the Domain Owner's DMARC policy record.</t>
+<t>Experience with DMARC has revealed some issues of interoperability
+with email in general that require due consideration before
+deployment, particularly with configurations that can cause mail to
+be rejected.  These are discussed in <xref target="other-topics"></xref>.</t>
+</section>
+
+<section anchor="requirements"><name>Requirements</name>
+<t>Specification of DMARC is guided by the following high-level goals,
+security dependencies, detailed requirements, and items that are
+documented as out of scope.</t>
+
+<section anchor="high-level-goals"><name>High-Level Goals</name>
+<t>DMARC has the following high-level goals:</t>
+
+<ul>
+<li><t>Allow Domain Owners to assert the preferred handling of
+authentication failures, for messages purporting to have
+authorship within the domain.</t>
+</li>
+<li><t>Allow Domain Owners to verify their authentication deployment.</t>
+</li>
+<li><t>Minimize implementation complexity for both senders and receivers,
+as well as the impact on handling and delivery of legitimate
+messages.</t>
+</li>
+<li><t>Reduce the amount of successfully delivered spoofed email.</t>
+</li>
+<li><t>Work at Internet scale.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="out-of-scope"><name>Out of Scope</name>
+<t>Several topics and issues are specifically out of scope for the
+initial version of this work.  These include the following:</t>
+
+<ul>
+<li><t>different treatment of messages that are not authenticated versus
+those that fail authentication;</t>
+</li>
+<li><t>evaluation of anything other than RFC5322.From;</t>
+</li>
+<li><t>multiple reporting formats;</t>
+</li>
+<li><t>publishing policy other than via the DNS;</t>
+</li>
+<li><t>reporting or otherwise evaluating other than the last-hop IP
+address;</t>
+</li>
+<li><t>attacks in the RFC5322.From field, also known as &quot;display name&quot;
+attacks;</t>
+</li>
+<li><t>authentication of entities other than domains, since DMARC is
+built upon SPF and DKIM, which authenticate domains; and</t>
+</li>
+<li><t>content analysis.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="scalability"><name>Scalability</name>
+<t>Scalability is a major issue for systems that need to operate in a
+system as widely deployed as current SMTP email.  For this reason,
+DMARC seeks to avoid the need for third parties or pre-sending
+agreements between senders and receivers.  This preserves the
+positive aspects of the current email infrastructure.</t>
+<t>Although DMARC does not introduce third-party senders (namely
+external agents authorized to send on behalf of an operator) to the
+email-handling flow, it also does not preclude them.  Such third
+parties are free to provide services in conjunction with DMARC.</t>
+</section>
+
+<section anchor="anti-phishing"><name>Anti-Phishing</name>
+<t>DMARC is designed to prevent bad actors from sending mail that claims
+to come from legitimate senders, particularly senders of
+transactional email (official mail that is about business
+transactions).  One of the primary uses of this kind of spoofed mail
+is phishing (enticing users to provide information by pretending to
+be the legitimate service requesting the information).  Thus, DMARC
+is significantly informed by ongoing efforts to enact large-scale,
+Internet-wide anti-phishing measures.</t>
+<t>Although DMARC can only be used to combat specific forms of exact-
+domain spoofing directly, the DMARC mechanism has been found to be
+useful in the creation of reliable and defensible message streams.</t>
+<t>DMARC does not attempt to solve all problems with spoofed or
+otherwise fraudulent email.  In particular, it does not address the
+use of visually similar domain names (&quot;cousin domains&quot;) or abuse of
+the RFC5322.From human-readable &lt;display-name&gt;.</t>
+</section>
+</section>
+
+<section anchor="terminology"><name>Terminology and Definitions</name>
+<t>This section defines terms used in the rest of the document.</t>
+<t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;,
+&quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot; in this
+document are to be interpreted as described in BCP 14 <xref target="RFC2119"></xref> <xref target="RFC8174"></xref>
+when, and only when, they appear in all capitals, as shown here.</t>
+<t>Readers are encouraged to be familiar with the contents of
+<xref target="RFC5598"></xref>.  In particular, that document defines various roles in
+the messaging infrastructure that can appear the same or separate in
+various contexts.  For example, a Domain Owner could, via the
+messaging security mechanisms on which DMARC is based, delegate the
+ability to send mail as the Domain Owner to a third party with
+another role.  This document does not address the distinctions among
+such roles; the reader is encouraged to become familiar with that
+material before continuing.</t>
+<t>The following terms are also used:</t>
+
+<dl>
+<dt>Authenticated Identifiers:</dt>
+<dd>Domain-level identifiers that are
+validated using authentication technologies are referred to as
+&quot;Authenticated Identifiers&quot;.  See <xref target="authenicated-mechanisms"></xref> for details about
+the supported mechanisms.</dd>
+<dt>Author Domain:</dt>
+<dd>The domain name of the apparent author, as extracted
+from the RFC5322.From field.</dd>
+<dt>Domain Owner:</dt>
+<dd>An entity or organization that owns a DNS domain.  The
+term &quot;owns&quot; here indicates that the entity or organization being
+referenced holds the registration of that DNS domain.  Domain
+Owners range from complex, globally distributed organizations, to
+service providers working on behalf of non-technical clients, to
+individuals responsible for maintaining personal domains.  This
+specification uses this term as analogous to an Administrative
+Management Domain as defined in <xref target="RFC5598"></xref>.  It can also refer
+to delegates, such as Report Receivers, when those are outside of
+their immediate management domain.</dd>
+<dt>Identifier Alignment:</dt>
+<dd>When the domain in the RFC5322.From address
+matches a domain validated by SPF or DKIM (or both), it has
+Identifier Alignment.</dd>
+<dt>Mail Receiver:</dt>
+<dd>The entity or organization that receives and
+processes email.  Mail Receivers operate one or more Internet-
+facing Mail Transport Agents (MTAs).</dd>
+<dt>Organizational Domain:</dt>
+<dd>The domain that was registered with a domain
+name registrar.  In the absence of more accurate methods,
+heuristics are used to determine this, since it is not always the
+case that the registered domain name is simply a top-level DNS
+domain plus one component (e.g., &quot;example.com&quot;, where &quot;com&quot; is a
+top-level domain).  The Organizational Domain is determined by
+applying the algorithm found in <xref target="organizational-domain"></xref>.</dd>
+<dt>Report Receiver:</dt>
+<dd>An operator that receives reports from another
+operator implementing the reporting mechanism described in this
+document.  Such an operator might be receiving reports about its
+own messages, or reports about messages related to another
+operator.  This term applies collectively to the system components
+that receive and process these reports and the organizations that
+operate them.</dd>
+</dl>
+
+<section anchor="identifier-alignment"><name>Identifier Alignment</name>
+<t>Email authentication technologies authenticate various (and
+disparate) aspects of an individual message.  For example, <xref target="RFC6376"></xref>
+authenticates the domain that affixed a signature to the message,
+while <xref target="RFC7208"></xref> can authenticate either the domain that appears in the
+RFC5321.MailFrom (MAIL FROM) portion of <xref target="RFC5322"></xref> or the RFC5321.EHLO/
+HELO domain, or both.  These may be different domains, and they are
+typically not visible to the end user.</t>
+<t>DMARC authenticates use of the RFC5322.From domain by requiring that
+it match (be aligned with) an Authenticated Identifier.  The
+RFC5322.From domain was selected as the central identity of the DMARC
+mechanism because it is a required message header field and therefore
+guaranteed to be present in compliant messages, and most Mail User
+Agents (MUAs) represent the RFC5322.From field as the originator of
+the message and render some or all of this header field's content to
+end users.</t>
+<t>Thus, this field is the one used by end users to identify the source
+of the message and therefore is a prime target for abuse.  Many
+high-profile email sources, such as email service providers, require
+that the sending agent have authenticated before email can be
+generated.  Thus, for these mailboxes, the mechanism described in
+this document provides recipient end users with strong evidence that
+the message was indeed originated by the agent they associate with
+that mailbox, if the end user knows that these various protections
+have been provided.</t>
+<t>Domain names in this context are to be compared in a case-insensitive
+manner, per <xref target="RFC4343"></xref>.</t>
+<t>It is important to note that Identifier Alignment cannot occur with a
+message that is not valid per <xref target="RFC5322"></xref>, particularly one with a
+malformed, absent, or repeated RFC5322.From field, since in that case
+there is no reliable way to determine a DMARC policy that applies to
+the message.  Accordingly, DMARC operation is predicated on the input
+being a valid RFC5322 message object, and handling of such
+non-compliant cases is outside of the scope of this specification.
+Further discussion of this can be found in <xref target="extract-author-domain"></xref>.</t>
+<t>Each of the underlying authentication technologies that DMARC takes
+as input yields authenticated domains as their outputs when they
+succeed.  From the perspective of DMARC, each can be operated in a
+&quot;strict&quot; mode or a &quot;relaxed&quot; mode.  A Domain Owner would normally
+select strict mode if it wanted Mail Receivers to apply DMARC
+processing only to messages bearing an RFC5322.From domain exactly
+matching the domains those mechanisms will verify.  Relaxed mode can
+be used when the operator also wishes to affect message flows bearing
+subdomains of the verified domains.</t>
+
+<section anchor="dkim-identifiers"><name>DKIM-Authenticated Identifiers</name>
+<t>DMARC permits Identifier Alignment, based on the result of a DKIM
+authentication, to be strict or relaxed.  (Note that these are not
+related to DKIM's &quot;simple&quot; and &quot;relaxed&quot; canonicalization modes.)</t>
+<t>In relaxed mode, the Organizational Domains of both the <xref target="RFC6376"></xref>-
+authenticated signing domain (taken from the value of the &quot;d=&quot; tag in
+the signature) and that of the RFC5322.From domain must be equal if
+the identifiers are to be considered aligned.  In strict mode, only
+an exact match between both of the Fully Qualified Domain Names
+(FQDNs) is considered to produce Identifier Alignment.</t>
+<t>To illustrate, in relaxed mode, if a validated DKIM signature
+successfully verifies with a &quot;d=&quot; domain of &quot;example.com&quot;, and the
+RFC5322.From address is &quot;alerts@news.example.com&quot;, the DKIM &quot;d=&quot;
+domain and the RFC5322.From domain are considered to be &quot;in
+alignment&quot;.  In strict mode, this test would fail, since the &quot;d=&quot;
+domain does not exactly match the FQDN of the address.</t>
+<t>However, a DKIM signature bearing a value of &quot;d=com&quot; would never
+allow an &quot;in alignment&quot; result, as &quot;com&quot; should appear on all public
+suffix lists (see <xref target="public-suffix-lists"></xref>) and therefore cannot be an
+Organizational Domain.</t>
+<t>Identifier Alignment is required because a message can bear a valid
+signature from any domain, including domains used by a mailing list
+or even a bad actor.  Therefore, merely bearing a valid signature is
+not enough to infer authenticity of the Author Domain.</t>
+<t>Note that a single email can contain multiple DKIM signatures, and it
+is considered to be a DMARC &quot;pass&quot; if any DKIM signature is aligned
+and verifies.</t>
+</section>
+
+<section anchor="spf-identifiers"><name>SPF-Authenticated Identifiers</name>
+<t>DMARC permits Identifier Alignment, based on the result of an SPF
+authentication, to be strict or relaxed.</t>
+<t>In relaxed mode, the <xref target="RFC3986"></xref>-authenticated domain and RFC5322.From
+domain must have the same Organizational Domain.  In strict mode,
+only an exact DNS domain match is considered to produce Identifier
+Alignment.</t>
+<t>Note that the RFC5321.HELO identity is not typically used in the
+context of DMARC (except when required to &quot;fake&quot; an otherwise null
+reverse-path), even though a &quot;pure SPF&quot; implementation according to
+<xref target="RFC7208"></xref> would check that identifier.</t>
+<t>For example, if a message passes an SPF check with an
+RFC5321.MailFrom domain of &quot;cbg.bounces.example.com&quot;, and the address
+portion of the RFC5322.From field contains &quot;payments@example.com&quot;,
+the Authenticated RFC5321.MailFrom domain identifier and the
+RFC5322.From domain are considered to be &quot;in alignment&quot; in relaxed
+mode, but not in strict mode.</t>
+</section>
+
+<section anchor="alignment-and-extension-technologies"><name>Alignment and Extension Technologies</name>
+<t>If in the future DMARC is extended to include the use of other
+authentication mechanisms, the extensions will need to allow for
+domain identifier extraction so that alignment with the RFC5322.From
+domain can be verified.</t>
+</section>
+</section>
+
+<section anchor="organizational-domain"><name>Organizational Domain</name>
+<t>The Organizational Domain is determined using the following
+algorithm:</t>
+
+<ol>
+<li><t>Acquire a &quot;public suffix&quot; list, i.e., a list of DNS domain names
+reserved for registrations.  Some country Top-Level Domains
+(TLDs) make specific registration requirements, e.g., the United
+Kingdom places company registrations under &quot;.co.uk&quot;; other TLDs
+such as &quot;.com&quot; appear in the IANA registry of top-level DNS
+domains.  A public suffix list is the union of all of these.
+<xref target="public-suffix-lists"></xref> contains some discussion about obtaining a public
+suffix list.</t>
+</li>
+<li><t>Break the subject DNS domain name into a set of &quot;n&quot; ordered
+labels.  Number these labels from right to left; e.g., for
+&quot;example.com&quot;, &quot;com&quot; would be label 1 and &quot;example&quot; would be
+label 2.</t>
+</li>
+<li><t>Search the public suffix list for the name that matches the
+largest number of labels found in the subject DNS domain.  Let
+that number be &quot;x&quot;.</t>
+</li>
+<li><t>Construct a new DNS domain name using the name that matched from
+the public suffix list and prefixing to it the &quot;x+1&quot;th label from
+the subject domain.  This new name is the Organizational Domain.</t>
+</li>
+</ol>
+<t>Thus, since &quot;com&quot; is an IANA-registered TLD, a subject domain of
+&quot;a.b.c.d.example.com&quot; would have an Organizational Domain of
+&quot;example.com&quot;.</t>
+<t>The process of determining a suffix is currently a heuristic one.  No
+list is guaranteed to be accurate or current.</t>
+<t>In addition to Mediators, mail that is sent by authorized,
+independent third parties might not be sent with Identifier
+Alignment, also preventing a &quot;pass&quot; result.</t>
+<t>Issues specific to the use of policy mechanisms alongside DKIM are
+further discussed in <xref target="RFC6377"></xref>, particularly Section 5.2.</t>
+</section>
+</section>
+
+<section anchor="overview"><name>Overview</name>
+<t>This section provides a general overview of the design and operation
+of the DMARC environment.</t>
+
+<section anchor="authenicated-mechanisms"><name>Authentication Mechanisms</name>
+<t>The following mechanisms for determining Authenticated Identifiers
+are supported in this version of DMARC:</t>
+
+<ul>
+<li><t><xref target="RFC6376"></xref>, which provides a domain-level identifier in the content of
+the &quot;d=&quot; tag of a validated DKIM-Signature header field.</t>
+</li>
+<li><t><xref target="RFC3986"></xref>, which can authenticate both the domain found in an <xref target="RFC5322"></xref>
+HELO/EHLO command (the HELO identity) and the domain found in an
+SMTP MAIL command (the MAIL FROM identity).  DMARC uses the result
+of SPF authentication of the MAIL FROM identity.  Section 2.4 of
+<xref target="RFC7208"></xref> describes MAIL FROM processing for cases in which the MAIL
+command has a null path.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="key-concepts"><name>Key Concepts</name>
+<t>DMARC policies are published by the Domain Owner, and retrieved by
+the Mail Receiver during the SMTP session, via the DNS.</t>
+<t>DMARC's filtering function is based on whether the RFC5322.From field
+domain is aligned with (matches) an authenticated domain name from
+SPF or DKIM.  When a DMARC policy is published for the domain name
+found in the RFC5322.From field, and that domain name is not
+validated through SPF or DKIM, the disposition of that message can be
+affected by that DMARC policy when delivered to a participating
+receiver.</t>
+<t>It is important to note that the authentication mechanisms employed
+by DMARC authenticate only a DNS domain and do not authenticate the
+local-part of any email address identifier found in a message, nor do
+they validate the legitimacy of message content.</t>
+<t>DMARC's feedback component involves the collection of information
+about received messages claiming to be from the Organizational Domain
+for periodic aggregate reports to the Domain Owner.  The parameters
+and format for such reports are discussed in later sections of this
+document.</t>
+<t>A DMARC-enabled Mail Receiver might also generate per-message reports
+that contain information related to individual messages that fail SPF
+and/or DKIM.  Per-message failure reports are a useful source of
+information when debugging deployments (if messages can be determined
+to be legitimate even though failing authentication) or in analyzing
+attacks.  The capability for such services is enabled by DMARC but
+defined in other referenced material such as <xref target="RFC6591"></xref>.</t>
+<t>A message satisfies the DMARC checks if at least one of the supported
+authentication mechanisms:</t>
+
+<ol>
+<li><t>produces a &quot;pass&quot; result, and</t>
+</li>
+<li><t>produces that result based on an identifier that is in alignment,
+as defined in <xref target="terminology"></xref>.</t>
+</li>
+</ol>
+</section>
+
+<section anchor="flow-diagram"><name>Flow Diagram</name>
+
+<sourcecode type="ascii-art"> +---------------+
+ | Author Domain |&lt; . . . . . . . . . . . . . . . . . . . . . . .
+ +---------------+                        .           .         .
+     |                                    .           .         .
+     V                                    V           V         .
+ +-----------+     +--------+       +----------+ +----------+   .
+ |   MSA     |&lt;***&gt;|  DKIM  |       |   DKIM   | |    SPF   |   .
+ |  Service  |     | Signer |       | Verifier | | Verifier |   .
+ +-----------+     +--------+       +----------+ +----------+   .
+     |                                    ^            ^        .
+     |                                    **************        .
+     V                                                 *        .
+  +------+        (~~~~~~~~~~~~)      +------+         *        .
+  | sMTA |-------&gt;( other MTAs )-----&gt;| rMTA |         *        .
+  +------+        (~~~~~~~~~~~~)      +------+         *        .
+                                         |             * ........
+                                         |             * .
+                                         V             * .
+                                  +-----------+        V V
+                    +---------+   |    MDA    |     +----------+
+                    |  User   |&lt;--| Filtering |&lt;***&gt;|  DMARC   |
+                    | Mailbox |   |  Engine   |     | Verifier |
+                    +---------+   +-----------+     +----------+
+
+
+  MSA = Mail Submission Agent
+  MDA = Mail Delivery Agent
+</sourcecode>
+<t>The above diagram shows a simple flow of messages through a DMARC-
+aware system.  Solid lines denote the actual message flow, dotted
+lines involve DNS queries used to retrieve message policy related to
+the supported message authentication schemes, and asterisk lines
+indicate data exchange between message-handling modules and message
+authentication modules.  &quot;sMTA&quot; is the sending MTA, and &quot;rMTA&quot; is the
+receiving MTA.</t>
+<t>In essence, the steps are as follows:</t>
+
+<ol>
+<li><t>Domain Owner constructs an SPF policy and publishes it in its
+ DNS database as per <xref target="RFC7208"></xref>.  Domain Owner also configures its
+ system for DKIM signing as described in <xref target="RFC6376"></xref>.  Finally, Domain
+ Owner publishes via the DNS a DMARC message-handling policy.</t>
+</li>
+<li><t>Author generates a message and hands the message to Domain
+ Owner's designated mail submission service.</t>
+</li>
+<li><t>Submission service passes relevant details to the DKIM signing
+ module in order to generate a DKIM signature to be applied to
+ the message.</t>
+</li>
+<li><t>Submission service relays the now-signed message to its
+ designated transport service for routing to its intended
+ recipient(s).</t>
+</li>
+<li><t>Message may pass through other relays but eventually arrives at
+ a recipient's transport service.</t>
+</li>
+<li><t>Recipient delivery service conducts SPF and DKIM authentication
+ checks by passing the necessary data to their respective
+ modules, each of which requires queries to the Author Domain's
+ DNS data (when identifiers are aligned; see below).</t>
+</li>
+<li><t>The results of these are passed to the DMARC module along with
+ the Author's domain.  The DMARC module attempts to retrieve a
+ policy from the DNS for that domain.  If none is found, the
+ DMARC module determines the Organizational Domain and repeats
+ the attempt to retrieve a policy from the DNS.  (This is
+ described in further detail in <xref target="policy-discovery"></xref>.)</t>
+</li>
+<li><t>If a policy is found, it is combined with the Author's domain
+ and the SPF and DKIM results to produce a DMARC policy result (a
+ &quot;pass&quot; or &quot;fail&quot;) and can optionally cause one of two kinds of
+ reports to be generated (not shown).</t>
+</li>
+<li><t>Recipient transport service either delivers the message to the
+ recipient inbox or takes other local policy action based on the
+ DMARC result (not shown).</t>
+</li>
+<li><t>When requested, Recipient transport service collects data from
+ the message delivery session to be used in providing feedback
+ (see <xref target="dmarc-feedback"></xref>).</t>
+</li>
+</ol>
+</section>
+</section>
+
+<section anchor="use-of-rfc5322-from"><name>Use of RFC5322.From</name>
+<t>One of the most obvious points of security scrutiny for DMARC is the
+choice to focus on an identifier, namely the RFC5322.From address,
+which is part of a body of data that has been trivially forged
+throughout the history of email.</t>
+<t>Several points suggest that it is the most correct and safest thing
+to do in this context:</t>
+
+<ul>
+<li><t>Of all the identifiers that are part of the message itself, this
+is the only one guaranteed to be present.</t>
+</li>
+<li><t>It seems the best choice of an identifier on which to focus, as
+most MUAs display some or all of the contents of that field in a
+manner strongly suggesting those data as reflective of the true
+originator of the message.</t>
+</li>
+</ul>
+<t>The absence of a single, properly formed RFC5322.From field renders
+the message invalid.  Handling of such a message is outside of the
+scope of this specification.</t>
+<t>Since the sorts of mail typically protected by DMARC participants
+tend to only have single Authors, DMARC participants generally
+operate under a slightly restricted profile of RFC5322 with respect
+to the expected syntax of this field.  See <xref target="mail-receiver-actions"></xref> for details.</t>
+</section>
+
+<section anchor="policy"><name>Policy</name>
+<t>DMARC policies are published by Domain Owners and applied by Mail
+Receivers.</t>
+<t>A Domain Owner advertises DMARC participation of one or more of its
+domains by adding a DNS TXT record (described in <xref target="dmarc-policy-record"></xref>) to
+those domains.  In doing so, Domain Owners make specific requests of
+Mail Receivers regarding the disposition of messages purporting to be
+from one of the Domain Owner's domains and the provision of feedback
+about those messages.</t>
+<t>A Domain Owner may choose not to participate in DMARC evaluation by
+Mail Receivers.  In this case, the Domain Owner simply declines to
+advertise participation in those schemes.  For example, if the
+results of path authorization checks ought not be considered as part
+of the overall DMARC result for a given Author Domain, then the
+Domain Owner does not publish an SPF policy record that can produce
+an SPF pass result.</t>
+<t>A Mail Receiver implementing the DMARC mechanism SHOULD make a
+best-effort attempt to adhere to the Domain Owner's published DMARC
+policy when a message fails the DMARC test.  Since email streams can
+be complicated (due to forwarding, existing RFC5322.From
+domain-spoofing services, etc.), Mail Receivers MAY deviate from a
+Domain Owner's published policy during message processing and SHOULD
+make available the fact of and reason for the deviation to the Domain
+Owner via feedback reporting, specifically using the &quot;PolicyOverride&quot;
+feature of the aggregate report (see the DMARC reporting documents).</t>
+
+<section anchor="dmarc-policy-record"><name>DMARC Policy Record</name>
+<t>Domain Owner DMARC preferences are stored as DNS TXT records in
+subdomains named &quot;_dmarc&quot;.  For example, the Domain Owner of
+&quot;example.com&quot; would post DMARC preferences in a TXT record at
+&quot;_dmarc.example.com&quot;.  Similarly, a Mail Receiver wishing to query
+for DMARC preferences regarding mail with an RFC5322.From domain of
+&quot;example.com&quot; would issue a TXT query to the DNS for the subdomain of
+&quot;_dmarc.example.com&quot;.  The DNS-located DMARC preference data will
+hereafter be called the &quot;DMARC record&quot;.</t>
+<t>DMARC's use of the Domain Name Service is driven by DMARC's use of
+domain names and the nature of the query it performs.  The query
+requirement matches with the DNS, for obtaining simple parametric
+information.  It uses an established method of storing the
+information, associated with the target domain name, namely an
+isolated TXT record that is restricted to the DMARC context.  Use of
+the DNS as the query service has the benefit of reusing an extremely
+well-established operations, administration, and management
+infrastructure, rather than creating a new one.</t>
+<t>Per <xref target="RFC1035"></xref>, a TXT record can comprise several &quot;character-string&quot;
+objects.  Where this is the case, the module performing DMARC
+evaluation MUST concatenate these strings by joining together the
+objects in order and parsing the result as a single string.</t>
+</section>
+
+<section anchor="dmarc-uris"><name>DMARC URIs</name>
+<t><xref target="RFC3986"></xref> defines a generic syntax for identifying a resource.  The DMARC
+mechanism uses this as the format by which a Domain Owner specifies
+the destination for the two report types that are supported.</t>
+<t>The place such URIs are specified (see <xref target="general-record-format"></xref>) allows a list of
+these to be provided.  A report is normally sent to each listed URI
+in the order provided by the Domain Owner.  Receivers MAY impose a
+limit on the number of URIs to which they will send reports but MUST
+support the ability to send to at least two.  The list of URIs is
+separated by commas (ASCII 0x2C).</t>
+<t>Each URI can have associated with it a maximum report size that may
+be sent to it.  This is accomplished by appending an exclamation
+point (ASCII 0x21), followed by a maximum-size indication, before a
+separating comma or terminating semicolon.</t>
+<t>Thus, a DMARC URI is a URI within which any commas or exclamation
+points are percent-encoded per <xref target="RFC3986"></xref>, followed by an OPTIONAL
+exclamation point and a maximum-size specification, and, if there are
+additional reporting URIs in the list, a comma and the next URI.</t>
+<t>For example, the URI &quot;mailto:reports@example.com!50m&quot; would request
+that a report be sent via email to &quot;reports@example.com&quot; so long as
+the report payload does not exceed 50 megabytes.</t>
+<t>A formal definition is provided in <xref target="formal-definition"></xref>.</t>
+</section>
+
+<section anchor="general-record-format"><name>General Record Format</name>
+<t>DMARC records follow the extensible &quot;tag-value&quot; syntax for DNS-based
+key records defined in DKIM <xref target="RFC6376"></xref>.</t>
+<t><xref target="iana-considerations"></xref> creates a registry for known DMARC tags and registers the
+initial set defined in this document.  Only tags defined in this
+document or in later extensions, and thus added to that registry, are
+to be processed; unknown tags MUST be ignored.</t>
+<t>The following tags are introduced as the initial valid DMARC tags:</t>
+
+<dl>
+<dt>adkim:</dt>
+<dd><t>(plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
+strict or relaxed DKIM Identifier Alignment mode is required by
+the Domain Owner.  See <xref target="dkim-identifiers"></xref> for details.  Valid values
+are as follows:</t>
+<t>r: relaxed mode</t>
+<t>s: strict mode</t>
+</dd>
+<dt>aspf:</dt>
+<dd><t>(plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
+strict or relaxed SPF Identifier Alignment mode is required by the
+Domain Owner.  See <xref target="spf-identifiers"></xref> for details.  Valid values are as
+follows:</t>
+
+<dl>
+<dt>r:</dt>
+<dd>relaxed mode</dd>
+<dt>s:</dt>
+<dd>strict mode</dd>
+</dl></dd>
+<dt>fo:</dt>
+<dd><t>Failure reporting options (plain-text; OPTIONAL; default is &quot;0&quot;)
+Provides requested options for generation of failure reports.
+Report generators MAY choose to adhere to the requested options.
+This tag's content MUST be ignored if a &quot;ruf&quot; tag (below) is not
+also specified.  The value of this tag is a colon-separated list
+of characters that indicate failure reporting options as follows:</t>
+
+<dl>
+<dt>0:</dt>
+<dd>Generate a DMARC failure report if all underlying
+authentication mechanisms fail to produce an aligned &quot;pass&quot;
+result.</dd>
+<dt>1:</dt>
+<dd>Generate a DMARC failure report if any underlying
+authentication mechanism produced something other than an
+aligned &quot;pass&quot; result.</dd>
+<dt>d:</dt>
+<dd>Generate a DKIM failure report if the message had a signature
+that failed evaluation, regardless of its alignment.  DKIM-
+specific reporting is described in <xref target="RFC6651"></xref>.</dd>
+<dt>s:</dt>
+<dd>Generate an SPF failure report if the message failed SPF
+evaluation, regardless of its alignment.  SPF-specific
+reporting is described in <xref target="RFC6652"></xref>.</dd>
+</dl></dd>
+<dt>p:</dt>
+<dd><t>Requested Mail Receiver policy (plain-text; REQUIRED for policy
+records).  Indicates the policy to be enacted by the Receiver at
+the request of the Domain Owner.  Policy applies to the domain
+queried and to subdomains, unless subdomain policy is explicitly
+described using the &quot;sp&quot; tag.  This tag is mandatory for policy
+records only, but not for third-party reporting records (as discussed
+in the document(s) that discuss DMARC reporting in more detail). Possible
+values are as follows:</t>
+
+<dl>
+<dt>none:</dt>
+<dd>The Domain Owner requests no specific action be taken
+regarding delivery of messages.</dd>
+<dt>quarantine:</dt>
+<dd>The Domain Owner wishes to have email that fails the
+DMARC mechanism check be treated by Mail Receivers as
+suspicious.  Depending on the capabilities of the Mail
+Receiver, this can mean &quot;place into spam folder&quot;, &quot;scrutinize
+with additional intensity&quot;, and/or &quot;flag as suspicious&quot;.</dd>
+<dt>reject:</dt>
+<dd>The Domain Owner wishes for Mail Receivers to reject
+email that fails the DMARC mechanism check.  Rejection SHOULD
+occur during the SMTP transaction.  See <xref target="rejecting-messages"></xref> for some
+discussion of SMTP rejection methods and their implications.</dd>
+</dl></dd>
+<dt>pct:</dt>
+<dd><t>(plain-text integer between 0 and 100, inclusive; OPTIONAL;
+default is 100).  Percentage of messages from the Domain Owner's
+mail stream to which the DMARC policy is to be applied.  However,
+this MUST NOT be applied to the DMARC-generated reports, all of
+which must be sent and received unhindered.  The purpose of the
+&quot;pct&quot; tag is to allow Domain Owners to enact a slow rollout
+enforcement of the DMARC mechanism.  The prospect of &quot;all or
+nothing&quot; is recognized as preventing many organizations from
+experimenting with strong authentication-based mechanisms.  See
+<xref target="message-sampling"></xref> for details.  Note that random selection based on
+this percentage, such as the following pseudocode, is adequate:</t>
+<t>if (random mod 100) &lt; pct then
+  selected = true
+else
+  selected = false</t>
+</dd>
+<dt>rf:</dt>
+<dd><t>Format to be used for message-specific failure reports (colon-
+separated plain-text list of values; OPTIONAL; default is &quot;afrf&quot;).
+The value of this tag is a list of one or more report formats as
+requested by the Domain Owner to be used when a message fails both
+<xref target="RFC3986"></xref> and <xref target="RFC6376"></xref> tests to report details of the individual
+failure.  The values MUST be present in the registry of reporting
+formats defined in <xref target="iana-considerations"></xref>; a Mail Receiver observing a
+different value SHOULD ignore it or MAY ignore the entire DMARC
+record.  For this version, only &quot;afrf&quot; (the auth-failure report
+type defined in <xref target="RFC6591"></xref>) is presently supported.  See the DMARC reporting documents
+for details.  For interoperability, the Authentication Failure
+Reporting Format (AFRF) MUST be supported.</t>
+</dd>
+<dt>ri:</dt>
+<dd><t>Interval requested between aggregate reports (plain-text 32-bit
+unsigned integer; OPTIONAL; default is 86400).  Indicates a
+request to Receivers to generate aggregate reports separated by no
+more than the requested number of seconds.  DMARC implementations
+MUST be able to provide daily reports and SHOULD be able to
+provide hourly reports when requested.  However, anything other
+than a daily report is understood to be accommodated on a best-
+effort basis.</t>
+</dd>
+<dt>rua:</dt>
+<dd><t>Addresses to which aggregate feedback is to be sent (comma-
+separated plain-text list of DMARC URIs; OPTIONAL).  A comma or
+exclamation point that is part of such a DMARC URI MUST be encoded
+per Section 2.1 of <xref target="RFC3986"></xref> so as to distinguish it from the list
+delimiter or an OPTIONAL size limit.  The DMARC reporting documents discuss
+considerations that apply when the domain name of a URI differs
+from that of the domain advertising the policy.  See <xref target="external-report-addresses"></xref>
+for additional considerations.  Any valid URI can be specified.  A
+Mail Receiver MUST implement support for a &quot;mailto:&quot; URI, i.e.,
+the ability to send a DMARC report via electronic mail.  If not
+provided, Mail Receivers MUST NOT generate aggregate feedback
+reports.  URIs not supported by Mail Receivers MUST be ignored.
+The aggregate feedback report format is described in the DMARC reporting documents.</t>
+</dd>
+<dt>ruf:</dt>
+<dd><t>Addresses to which message-specific failure information is to
+be reported (comma-separated plain-text list of DMARC URIs;
+OPTIONAL).  If present, the Domain Owner is requesting Mail
+Receivers to send detailed failure reports about messages that
+fail the DMARC evaluation in specific ways (see the &quot;fo&quot; tag
+above).  The format of the message to be generated MUST follow the
+format specified for the &quot;rf&quot; tag.  The DMARC reporting documents discuss
+considerations that apply when the domain name of a URI differs
+from that of the domain advertising the policy.  A Mail Receiver
+MUST implement support for a &quot;mailto:&quot; URI, i.e., the ability to
+send a DMARC report via electronic mail.  If not provided, Mail
+Receivers MUST NOT generate failure reports.  See <xref target="external-report-addresses"></xref> for
+additional considerations.</t>
+</dd>
+<dt>sp:</dt>
+<dd><t>Requested Mail Receiver policy for all subdomains (plain-text;
+OPTIONAL).  Indicates the policy to be enacted by the Receiver at
+the request of the Domain Owner.  It applies only to subdomains of
+the domain queried and not to the domain itself.  Its syntax is
+identical to that of the &quot;p&quot; tag defined above.  If absent, the
+policy specified by the &quot;p&quot; tag MUST be applied for subdomains.
+Note that &quot;sp&quot; will be ignored for DMARC records published on
+subdomains of Organizational Domains due to the effect of the
+DMARC policy discovery mechanism described in <xref target="policy-discovery"></xref>.</t>
+</dd>
+<dt>v:</dt>
+<dd><t>Version (plain-text; REQUIRED).  Identifies the record retrieved
+as a DMARC record.  It MUST have the value of &quot;DMARC1&quot;.  The value
+of this tag MUST match precisely; if it does not or it is absent,
+the entire retrieved record MUST be ignored.  It MUST be the first
+tag in the list.</t>
+</dd>
+</dl>
+<t>A DMARC policy record MUST comply with the formal specification found
+in <xref target="formal-definition"></xref> in that the &quot;v&quot; tag MUST be present and MUST
+appear first.  Unknown tags MUST be ignored.  Syntax errors
+in the remainder of the record SHOULD be discarded in favor of
+default values (if any) or ignored outright.</t>
+<t>Note that given the rules of the previous paragraph, addition of a
+new tag into the registered list of tags does not itself require a
+new version of DMARC to be generated (with a corresponding change to
+the &quot;v&quot; tag's value), but a change to any existing tags does require
+a new version of DMARC.</t>
+</section>
+
+<section anchor="formal-definition"><name>Formal Definition</name>
+<t>The formal definition of the DMARC format, using <xref target="RFC5234"></xref>, is as
+follows:</t>
+<t>[FIXTHIS: Reference to [RFC3986] in code block]</t>
+
+<artwork>  dmarc-uri       = URI [ &quot;!&quot; 1*DIGIT [ &quot;k&quot; / &quot;m&quot; / &quot;g&quot; / &quot;t&quot; ] ]
+                    ; &quot;URI&quot; is imported from [RFC3986]; commas (ASCII
+                    ; 0x2C) and exclamation points (ASCII 0x21)
+                    ; MUST be encoded; the numeric portion MUST fit
+                    ; within an unsigned 64-bit integer
+
+  dmarc-record    = dmarc-version dmarc-sep
+                    [dmarc-request]
+                    [dmarc-sep dmarc-srequest]
+                    [dmarc-sep dmarc-auri]
+                    [dmarc-sep dmarc-furi]
+                    [dmarc-sep dmarc-adkim]
+                    [dmarc-sep dmarc-aspf]
+                    [dmarc-sep dmarc-ainterval]
+                    [dmarc-sep dmarc-fo]
+                    [dmarc-sep dmarc-rfmt]
+                    [dmarc-sep dmarc-percent]
+                    [dmarc-sep]
+                    ; components other than dmarc-version and
+                    ; dmarc-request may appear in any order
+
+  dmarc-version   = &quot;v&quot; *WSP &quot;=&quot; *WSP %x44 %x4d %x41 %x52 %x43 %x31
+
+  dmarc-sep       = *WSP %x3b *WSP
+
+  dmarc-request   = &quot;p&quot; *WSP &quot;=&quot; *WSP
+                    ( &quot;none&quot; / &quot;quarantine&quot; / &quot;reject&quot; )
+
+  dmarc-srequest  = &quot;sp&quot; *WSP &quot;=&quot; *WSP
+                    ( &quot;none&quot; / &quot;quarantine&quot; / &quot;reject&quot; )
+
+  dmarc-auri      = &quot;rua&quot; *WSP &quot;=&quot; *WSP
+                    dmarc-uri *(*WSP &quot;,&quot; *WSP dmarc-uri)
+
+  dmarc-furi      = &quot;ruf&quot; *WSP &quot;=&quot; *WSP
+                    dmarc-uri *(*WSP &quot;,&quot; *WSP dmarc-uri)
+
+  dmarc-adkim     = &quot;adkim&quot; *WSP &quot;=&quot; *WSP
+                    ( &quot;r&quot; / &quot;s&quot; )
+
+  dmarc-aspf      = &quot;aspf&quot; *WSP &quot;=&quot; *WSP
+                    ( &quot;r&quot; / &quot;s&quot; )
+
+  dmarc-ainterval = &quot;ri&quot; *WSP &quot;=&quot; *WSP 1*DIGIT
+
+  dmarc-fo        = &quot;fo&quot; *WSP &quot;=&quot; *WSP
+                    ( &quot;0&quot; / &quot;1&quot; / &quot;d&quot; / &quot;s&quot; )
+                    *(*WSP &quot;:&quot; *WSP ( &quot;0&quot; / &quot;1&quot; / &quot;d&quot; / &quot;s&quot; ))
+
+  dmarc-rfmt      = &quot;rf&quot;  *WSP &quot;=&quot; *WSP Keyword *(*WSP &quot;:&quot; Keyword)
+                    ; registered reporting formats only
+
+  dmarc-percent   = &quot;pct&quot; *WSP &quot;=&quot; *WSP
+                    1*3DIGIT
+</artwork>
+<t>&quot;Keyword&quot; is imported from Section 4.1.2 of <xref target="RFC5321"></xref>.</t>
+<t>A size limitation in a dmarc-uri, if provided, is interpreted as a
+count of units followed by an OPTIONAL unit size (&quot;k&quot; for kilobytes,
+&quot;m&quot; for megabytes, &quot;g&quot; for gigabytes, &quot;t&quot; for terabytes).  Without a
+unit, the number is presumed to be a basic byte count.  Note that the
+units are considered to be powers of two; a kilobyte is 2^10, a
+megabyte is 2^20, etc.</t>
+</section>
+
+<section anchor="domain-owner-actions"><name>Domain Owner Actions</name>
+<t>To implement the DMARC mechanism, the only action required of a
+Domain Owner is the creation of the DMARC policy record in the DNS.
+However, in order to make meaningful use of DMARC, a Domain Owner
+must at minimum either establish an address to receive reports, or
+deploy authentication technologies and ensure Identifier Alignment.
+Most Domain Owners will want to do both.</t>
+<t>DMARC reports will be of significant size, and the addresses that
+receive them are publicly visible, so we encourage Domain Owners to
+set up dedicated email addresses to receive and process reports, and
+to deploy abuse countermeasures on those email addresses as
+appropriate.</t>
+<t>Authentication technologies are discussed in <xref target="RFC6376"></xref> (see also
+<xref target="RFC5585"></xref> and <xref target="RFC5863"></xref>) and <xref target="RFC7208"></xref>.</t>
+</section>
+
+<section anchor="mail-receiver-actions"><name>Mail Receiver Actions</name>
+<t>This section describes receiver actions in the DMARC environment.</t>
+
+<section anchor="extract-author-domain"><name>Extract Author Domain</name>
+<t>The domain in the RFC5322.From field is extracted as the domain to be
+evaluated by DMARC.  If the domain is encoded with UTF-8, the domain
+name must be converted to an A-label, as described in Section 2.3 of
+<xref target="RFC5890"></xref>, for further processing.</t>
+<t>In order to be processed by DMARC, a message typically needs to
+contain exactly one RFC5322.From domain (a single From: field with a
+single domain in it).  Not all messages meet this requirement, and
+handling of them is outside of the scope of this document.  Typical
+exceptions, and the way they have been historically handled by DMARC
+participants, are as follows:</t>
+
+<ul>
+<li><t>Messages with multiple RFC5322.From fields are typically rejected,
+since that form is forbidden under RFC 5322 <xref target="RFC5322"></xref>;</t>
+</li>
+<li><t>Messages bearing a single RFC5322.From field containing multiple
+addresses (and, thus, multiple domain names to be evaluated) are
+typically rejected because the sorts of mail normally protected by
+DMARC do not use this format;</t>
+</li>
+<li><t>Messages that have no RFC5322.From field at all are typically
+rejected, since that form is forbidden under RFC 5322 <xref target="RFC5322"></xref>;</t>
+</li>
+<li><t>Messages with an RFC5322.From field that contains no meaningful
+domains, such as RFC 5322 <xref target="RFC5322"></xref>'s &quot;group&quot; syntax, are typically
+ignored.</t>
+</li>
+</ul>
+<t>The case of a syntactically valid multi-valued RFC5322.From field
+presents a particular challenge.  The process in this case is to
+apply the DMARC check using each of those domains found in the
+RFC5322.From field as the Author Domain and apply the most strict
+policy selected among the checks that fail.</t>
+</section>
+
+<section anchor="determine-handling-policy"><name>Determine Handling Policy</name>
+<t>To arrive at a policy for an individual message, Mail Receivers MUST
+perform the following actions or their semantic equivalents.
+Steps 2-4 MAY be done in parallel, whereas steps 5 and 6 require
+input from previous steps.</t>
+<t>The steps are as follows:</t>
+
+<ol>
+<li><t>Extract the RFC5322.From domain from the message (as above).</t>
+</li>
+<li><t>Query the DNS for a DMARC policy record.  Continue if one is
+found, or terminate DMARC evaluation otherwise.  See
+<xref target="policy-discovery"></xref> for details.</t>
+</li>
+<li><t>Perform DKIM signature verification checks.  A single email could
+contain multiple DKIM signatures.  The results of this step are
+passed to the remainder of the algorithm and MUST include the
+value of the &quot;d=&quot; tag from each checked DKIM signature.</t>
+</li>
+<li><t>Perform SPF validation checks.  The results of this step are
+passed to the remainder of the algorithm and MUST include the
+domain name used to complete the SPF check.</t>
+</li>
+<li><t>Conduct Identifier Alignment checks.  With authentication checks
+and policy discovery performed, the Mail Receiver checks to see
+if Authenticated Identifiers fall into alignment as described in
+<xref target="terminology"></xref>.  If one or more of the Authenticated Identifiers align
+with the RFC5322.From domain, the message is considered to pass
+the DMARC mechanism check.  All other conditions (authentication
+failures, identifier mismatches) are considered to be DMARC
+mechanism check failures.</t>
+</li>
+<li><t>Apply policy.  Emails that fail the DMARC mechanism check are
+disposed of in accordance with the discovered DMARC policy of the
+Domain Owner.  See <xref target="general-record-format"></xref> for details.</t>
+</li>
+</ol>
+<t>Heuristics applied in the absence of use by a Domain Owner of either
+SPF or DKIM (e.g., <xref target="Best-Guess-SPF"></xref>) SHOULD NOT be used, as it may be
+the case that the Domain Owner wishes a Message Receiver not to
+consider the results of that underlying authentication protocol at
+all.</t>
+<t>DMARC evaluation can only yield a &quot;pass&quot; result after one of the
+underlying authentication mechanisms passes for an aligned
+identifier.  If neither passes and one or both of them fail due to a
+temporary error, the Receiver evaluating the message is unable to
+conclude that the DMARC mechanism had a permanent failure; they
+therefore cannot apply the advertised DMARC policy.  When otherwise
+appropriate, Receivers MAY send feedback reports regarding temporary
+errors.</t>
+<t>Handling of messages for which SPF and/or DKIM evaluation encounter a
+permanent DNS error is left to the discretion of the Mail Receiver.</t>
+</section>
+
+<section anchor="policy-discovery"><name>Policy Discovery</name>
+<t>As stated above, the DMARC mechanism uses DNS TXT records to
+advertise policy.  Policy discovery is accomplished via a method
+similar to the method used for SPF records.  This method, and the
+important differences between DMARC and SPF mechanisms, are discussed
+below.</t>
+<t>To balance the conflicting requirements of supporting wildcarding,
+allowing subdomain policy overrides, and limiting DNS query load, the
+following DNS lookup scheme is employed:</t>
+
+<ol>
+<li><t>Mail Receivers MUST query the DNS for a DMARC TXT record at the
+DNS domain matching the one found in the RFC5322.From domain in
+the message.  A possibly empty set of records is returned.</t>
+</li>
+<li><t>Records that do not start with a &quot;v=&quot; tag that identifies the
+current version of DMARC are discarded.</t>
+</li>
+<li><t>If the set is now empty, the Mail Receiver MUST query the DNS for
+a DMARC TXT record at the DNS domain matching the Organizational
+Domain in place of the RFC5322.From domain in the message (if
+different).  This record can contain policy to be asserted for
+subdomains of the Organizational Domain.  A possibly empty set of
+records is returned.</t>
+</li>
+<li><t>Records that do not start with a &quot;v=&quot; tag that identifies the
+current version of DMARC are discarded.</t>
+</li>
+<li><t>If the remaining set contains multiple records or no records,
+policy discovery terminates and DMARC processing is not applied
+to this message.</t>
+</li>
+<li><t>If a retrieved policy record does not contain a valid &quot;p&quot; tag, or
+contains an &quot;sp&quot; tag that is not valid, then:</t>
+
+<ol>
+<li><t>if a &quot;rua&quot; tag is present and contains at least one
+syntactically valid reporting URI, the Mail Receiver SHOULD
+act as if a record containing a valid &quot;v&quot; tag and &quot;p=none&quot;
+was retrieved, and continue processing;</t>
+</li>
+<li><t>otherwise, the Mail Receiver applies no DMARC processing to
+this message.</t>
+</li>
+</ol></li>
+</ol>
+<t>If the set produced by the mechanism above contains no DMARC policy
+record (i.e., any indication that there is no such record as opposed
+to a transient DNS error), Mail Receivers SHOULD NOT apply the DMARC
+mechanism to the message.</t>
+<t>Handling of DNS errors when querying for the DMARC policy record is
+left to the discretion of the Mail Receiver.  For example, to ensure
+minimal disruption of mail flow, transient errors could result in
+delivery of the message (&quot;fail open&quot;), or they could result in the
+message being temporarily rejected (i.e., an SMTP 4yx reply), which
+invites the sending MTA to try again after the condition has possibly
+cleared, allowing a definite DMARC conclusion to be reached (&quot;fail
+closed&quot;).</t>
+</section>
+
+<section anchor="message-sampling"><name>Message Sampling</name>
+<t>If the &quot;pct&quot; tag is present in the policy record, the Mail Receiver
+MUST NOT enact the requested policy (&quot;p&quot; tag or &quot;sp&quot; tag&quot;) on more
+than the stated percent of the totality of affected messages.
+However, regardless of whether or not the &quot;pct&quot; tag is present, the
+Mail Receiver MUST include all relevant message data in any reports
+produced.</t>
+<t>If email is subject to the DMARC policy of &quot;quarantine&quot;, the Mail
+Receiver SHOULD quarantine the message.  If the email is not subject
+to the &quot;quarantine&quot; policy (due to the &quot;pct&quot; tag), the Mail Receiver
+SHOULD apply local message classification as normal.</t>
+<t>If email is subject to the DMARC policy of &quot;reject&quot;, the Mail
+Receiver SHOULD reject the message (see <xref target="rejecting-messages"></xref>).  If the email
+is not subject to the &quot;reject&quot; policy (due to the &quot;pct&quot; tag), the
+Mail Receiver SHOULD treat the email as though the &quot;quarantine&quot;
+policy applies.  This behavior allows Domain Owners to experiment
+with progressively stronger policies without relaxing existing
+policy.</t>
+<t>Mail Receivers implement &quot;pct&quot; via statistical mechanisms that
+achieve a close approximation to the requested percentage and provide
+a representative sample across a reporting period.</t>
+</section>
+
+<section anchor="store-results-of-dmarc-processing"><name>Store Results of DMARC Processing</name>
+<t>The results of Mail Receiver-based DMARC processing should be stored
+for eventual presentation back to the Domain Owner in the form of
+aggregate feedback reports.  <xref target="general-record-format"></xref> and the DMARC reporting docuents discuss aggregate
+feedback.</t>
+</section>
+</section>
+
+<section anchor="policy-enforcement-considerations"><name>Policy Enforcement Considerations</name>
+<t>Mail Receivers MAY choose to reject or quarantine email even if email
+passes the DMARC mechanism check.  The DMARC mechanism does not
+inform Mail Receivers whether an email stream is &quot;good&quot;.  Mail
+Receivers are encouraged to maintain anti-abuse technologies to
+combat the possibility of DMARC-enabled criminal campaigns.</t>
+<t>Mail Receivers MAY choose to accept email that fails the DMARC
+mechanism check even if the Domain Owner has published a &quot;reject&quot;
+policy.  Mail Receivers need to make a best effort not to increase
+the likelihood of accepting abusive mail if they choose not to comply
+with a Domain Owner's reject, against policy.  At a minimum, addition
+of the Authentication-Results header field (see <xref target="RFC8601"></xref>) is
+RECOMMENDED when delivery of failing mail is done.  When this is
+done, the DNS domain name thus recorded MUST be encoded as an
+A-label.</t>
+<t>Mail Receivers are only obligated to report reject or quarantine
+policy actions in aggregate feedback reports that are due to DMARC
+policy.  They are not required to report reject or quarantine actions
+that are the result of local policy.  If local policy information is
+exposed, abusers can gain insight into the effectiveness and delivery
+rates of spam campaigns.</t>
+<t>Final disposition of a message is always a matter of local policy.
+An operator that wishes to favor DMARC policy over SPF policy, for
+example, will disregard the SPF policy, since enacting an
+SPF-determined rejection prevents evaluation of DKIM; DKIM might
+otherwise pass, satisfying the DMARC evaluation.  There is a
+trade-off to doing so, namely acceptance and processing of the entire
+message body in exchange for the enhanced protection DMARC provides.</t>
+<t>DMARC-compliant Mail Receivers typically disregard any mail-handling
+directive discovered as part of an authentication mechanism (e.g.,
+Author Domain Signing Practices (ADSP), SPF) where a DMARC record is
+also discovered that specifies a policy other than &quot;none&quot;.  Deviating
+from this practice introduces inconsistency among DMARC operators in
+terms of handling of the message.  However, such deviation is not
+proscribed.</t>
+<t>To enable Domain Owners to receive DMARC feedback without impacting
+existing mail processing, discovered policies of &quot;p=none&quot; SHOULD NOT
+modify existing mail disposition processing.</t>
+<t>Mail Receivers SHOULD also implement reporting instructions of DMARC,
+even in the absence of a request for DKIM reporting <xref target="RFC6651"></xref> or
+SPF reporting <xref target="RFC6652"></xref>.  Furthermore, the presence of such requests
+SHOULD NOT affect DMARC reporting.</t>
+</section>
+</section>
+
+<section anchor="dmarc-feedback"><name>DMARC Feedback</name>
+<t>Providing Domain Owners with visibility into how Mail Receivers
+implement and enforce the DMARC mechanism in the form of feedback is
+critical to establishing and maintaining accurate authentication
+deployments.  When Domain Owners can see what effect their policies
+and practices are having, they are better willing and able to use
+quarantine and reject policies.</t>
+<t>The details of this feedback are described in a separate document.</t>
+</section>
+
+<section anchor="minimum-implementations"><name>Minimum Implementations</name>
+<t>A minimum implementation of DMARC has the following characteristics:</t>
+
+<ul>
+<li><t>Is able to send and/or receive reports at least daily;</t>
+</li>
+<li><t>Is able to send and/or receive reports using &quot;mailto&quot; URIs;</t>
+</li>
+<li><t>Other than in exceptional circumstances such as resource
+exhaustion, can generate or accept a report up to ten megabytes in
+size;</t>
+</li>
+<li><t>If acting as a Mail Receiver, fully implements the provisions of
+<xref target="mail-receiver-actions"></xref>.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="other-topics"><name>Other Topics</name>
+<t>This section discusses some topics regarding choices made in the
+development of DMARC, largely to commit the history to record.</t>
+
+<section anchor="issues-specific-to-spf"><name>Issues Specific to SPF</name>
+<t>Though DMARC does not inherently change the semantics of an SPF
+policy record, historically lax enforcement of such policies has led
+many to publish extremely broad records containing many large network
+ranges.  Domain Owners are strongly encouraged to carefully review
+their SPF records to understand which networks are authorized to send
+on behalf of the Domain Owner before publishing a DMARC record.</t>
+<t>Some receiver architectures might implement SPF in advance of any
+DMARC operations.  This means that a &quot;-&quot; prefix on a sender's SPF
+mechanism, such as &quot;-all&quot;, could cause that rejection to go into
+effect early in handling, causing message rejection before any DMARC
+processing takes place.  Operators choosing to use &quot;-all&quot; should be
+aware of this.</t>
+</section>
+
+<section anchor="dns-load-and-caching"><name>DNS Load and Caching</name>
+<t>DMARC policies are communicated using the DNS and therefore inherit a
+number of considerations related to DNS caching.  The inherent
+conflict between freshness and the impact of caching on the reduction
+of DNS-lookup overhead should be considered from the Mail Receiver's
+point of view.  Should Domain Owners publish a DNS record with a very
+short TTL, Mail Receivers can be provoked through the injection of
+large volumes of messages to overwhelm the Domain Owner's DNS.
+Although this is not a concern specific to DMARC, the implications of
+a very short TTL should be considered when publishing DMARC policies.</t>
+<t>Conversely, long TTLs will cause records to be cached for long
+periods of time.  This can cause a critical change to DMARC
+parameters advertised by a Domain Owner to go unnoticed for the
+length of the TTL (while waiting for DNS caches to expire).  Avoiding
+this problem can mean shorter TTLs, with the potential problems
+described above.  A balance should be sought to maintain
+responsiveness of DMARC preference changes while preserving the
+benefits of DNS caching.</t>
+</section>
+
+<section anchor="rejecting-messages"><name>Rejecting Messages</name>
+<t>This proposal calls for rejection of a message during the SMTP
+session under certain circumstances.  This is preferable to
+generation of a Delivery Status Notification (<xref target="RFC3464"></xref>), since
+fraudulent messages caught and rejected using DMARC would then result
+in annoying generation of such failure reports that go back to the
+RFC5321.MailFrom address.</t>
+<t>This synchronous rejection is typically done in one of two ways:</t>
+
+<ul>
+<li><t>Full rejection, wherein the SMTP server issues a 5xy reply code as
+an indication to the SMTP client that the transaction failed; the
+SMTP client is then responsible for generating notification that
+delivery failed (see Section 4.2.5 of <xref target="RFC5321"></xref>).</t>
+</li>
+<li><t>A &quot;silent discard&quot;, wherein the SMTP server returns a 2xy reply
+code implying to the client that delivery (or, at least, relay)
+was successfully completed, but then simply discarding the message
+with no further action.</t>
+</li>
+</ul>
+<t>Each of these has a cost.  For instance, a silent discard can help to
+prevent backscatter, but it also effectively means that the SMTP
+server has to be programmed to give a false result, which can
+confound external debugging efforts.</t>
+<t>Similarly, the text portion of the SMTP reply may be important to
+consider.  For example, when rejecting a message, revealing the
+reason for the rejection might give an attacker enough information to
+bypass those efforts on a later attempt, though it might also assist
+a legitimate client to determine the source of some local issue that
+caused the rejection.</t>
+<t>In the latter case, when doing an SMTP rejection, providing a clear
+hint can be useful in resolving issues.  A receiver might indicate in
+plain text the reason for the rejection by using the word &quot;DMARC&quot;
+somewhere in the reply text.  Many systems are able to scan the SMTP
+reply text to determine the nature of the rejection.  Thus, providing
+a machine-detectable reason for rejection allows the problems causing
+rejections to be properly addressed by automated systems.  For
+example:</t>
+
+<artwork>550 5.7.1 Email rejected per DMARC policy for example.com
+</artwork>
+<t>If a Mail Receiver elects to defer delivery due to inability to
+retrieve or apply DMARC policy, this is best done with a 4xy SMTP
+reply code.</t>
+</section>
+
+<section anchor="identifier-alignment-considerations"><name>Identifier Alignment Considerations</name>
+<t>The DMARC mechanism allows both DKIM and SPF-authenticated
+identifiers to authenticate email on behalf of a Domain Owner and,
+possibly, on behalf of different subdomains.  If malicious or unaware
+users can gain control of the SPF record or DKIM selector records for
+a subdomain, the subdomain can be used to generate DMARC-passing
+email on behalf of the Organizational Domain.</t>
+<t>For example, an attacker who controls the SPF record for
+&quot;evil.example.com&quot; can send mail with an RFC5322.From field
+containing &quot;foo@example.com&quot; that can pass both authentication and
+the DMARC check against &quot;example.com&quot;.</t>
+<t>The Organizational Domain administrator should be careful not to
+delegate control of subdomains if this is an issue, and to consider
+using the &quot;strict&quot; Identifier Alignment option if appropriate.</t>
+</section>
+
+<section anchor="interoperability-issues"><name>Interoperability Issues</name>
+<t>DMARC limits which end-to-end scenarios can achieve a &quot;pass&quot; result.</t>
+<t>Because DMARC relies on <xref target="RFC7208"></xref> and/or <xref target="RFC6376"></xref> to achieve a &quot;pass&quot;,
+their limitations also apply.</t>
+<t>Additional DMARC constraints occur when a message is processed by
+some Mediators, such as mailing lists.  Transiting a Mediator often
+causes either the authentication to fail or Identifier Alignment to
+be lost.  These transformations may conform to standards but will
+still prevent a DMARC &quot;pass&quot;.</t>
+<t>In addition to Mediators, mail that is sent by authorized,
+independent third parties might not be sent with Identifier
+Alignment, also preventing a &quot;pass&quot; result.</t>
+<t>Issues specific to the use of policy mechanisms alongside DKIM are
+further discussed in <xref target="RFC6377"></xref>, particularly Section 5.2.</t>
+</section>
+</section>
+
+<section anchor="iana-considerations"><name>IANA Considerations</name>
+<t>This section describes actions completed by IANA.</t>
+
+<section anchor="authentication-results-method-registry-update"><name>Authentication-Results Method Registry Update</name>
+<t>IANA has added the following to the &quot;Email Authentication Methods&quot;
+registry:</t>
+<t>Method:  dmarc</t>
+<t>Defined:  RFC 7489</t>
+<t>ptype:  header</t>
+<t>Property:  from</t>
+<t>Value:  the domain portion of the RFC5322.From field</t>
+<t>Status:  active</t>
+<t>Version:  1</t>
+</section>
+
+<section anchor="authentication-results-result-registry-update"><name>Authentication-Results Result Registry Update</name>
+<t>IANA has added the following in the &quot;Email Authentication Result
+Names&quot; registry:</t>
+<t>Code:  none</t>
+<t>Existing/New Code:  existing</t>
+<t>Defined:  <xref target="RFC8601"></xref></t>
+<t>Auth Method:  dmarc (added)</t>
+
+<dl>
+<dt>Meaning:</dt>
+<dd>No DMARC policy record was published for the aligned
+identifier, or no aligned identifier could be extracted.</dd>
+</dl>
+<t>Status:  active</t>
+<t>Code:  pass</t>
+<t>Existing/New Code:  existing</t>
+<t>Defined:  <xref target="RFC8601"></xref></t>
+<t>Auth Method:  dmarc (added)</t>
+
+<dl>
+<dt>Meaning:</dt>
+<dd>A DMARC policy record was published for the aligned
+identifier, and at least one of the authentication mechanisms passed.</dd>
+</dl>
+<t>Status:  active</t>
+<t>Code:  fail</t>
+<t>Existing/New Code:  existing</t>
+<t>Defined:  <xref target="RFC8601"></xref></t>
+<t>Auth Method:  dmarc (added)</t>
+
+<dl>
+<dt>Meaning:</dt>
+<dd>A DMARC policy record was published for the aligned
+identifier, and none of the authentication mechanisms passed.</dd>
+</dl>
+<t>Status:  active</t>
+<t>Code:  temperror</t>
+<t>Existing/New Code:  existing</t>
+<t>Defined:  <xref target="RFC8601"></xref></t>
+<t>Auth Method:  dmarc (added)</t>
+
+<dl>
+<dt>Meaning:</dt>
+<dd>A temporary error occurred during DMARC evaluation.  A
+later attempt might produce a final result.</dd>
+</dl>
+<t>Status:  active</t>
+<t>Code:  permerror</t>
+<t>Existing/New Code:  existing</t>
+<t>Defined:  <xref target="RFC8601"></xref></t>
+<t>Auth Method:  dmarc (added)</t>
+
+<dl>
+<dt>Meaning:</dt>
+<dd>A permanent error occurred during DMARC evaluation, such as
+encountering a syntactically incorrect DMARC record.  A later
+attempt is unlikely to produce a final result.</dd>
+</dl>
+<t>Status:  active</t>
+</section>
+
+<section anchor="feedback-report-header-fields-registry-update"><name>Feedback Report Header Fields Registry Update</name>
+<t>The following has been added to the &quot;Feedback Report Header Fields&quot;
+registry:</t>
+<t>Field Name:  Identity-Alignment</t>
+
+<dl>
+<dt>Description:</dt>
+<dd>indicates whether the message about which a report is
+being generated had any identifiers in alignment as defined in
+RFC 7489</dd>
+</dl>
+<t>Multiple Appearances:  No</t>
+<t>Related &quot;Feedback-Type&quot;:  auth-failure</t>
+<t>Reference:  RFC 7489</t>
+<t>Status:  current</t>
+</section>
+
+<section anchor="dmarc-tag-registry"><name>DMARC Tag Registry</name>
+<t>A new registry tree called &quot;Domain-based Message Authentication,
+Reporting, and Conformance (DMARC) Parameters&quot; has been created.
+Within it, a new sub-registry called the &quot;DMARC Tag Registry&quot; has
+been created.</t>
+<t>Names of DMARC tags must be registered with IANA in this new
+sub-registry.  New entries are assigned only for values that have
+been documented in a manner that satisfies the terms of Specification
+Required, per <xref target="RFC8126"></xref>.  Each registration must include
+the tag name; the specification that defines it; a brief description;
+and its status, which must be one of &quot;current&quot;, &quot;experimental&quot;, or
+&quot;historic&quot;.  The Designated Expert needs to confirm that the provided
+specification adequately describes the new tag and clearly presents
+how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.</t>
+<t>To avoid version compatibility issues, tags added to the DMARC
+specification are to avoid changing the semantics of existing records
+when processed by implementations conforming to prior specifications.</t>
+<t>The initial set of entries in this registry is as follows:</t>
+<table align="left"><name>&quot;DMARC Tag Registry&quot;
+</name>
+<thead>
+<tr>
+<th align="left">Tag Name</th>
+<th align="left">Reference</th>
+<th align="left">Status</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">adkim</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">DKIM alignment mode</td>
+</tr>
+
+<tr>
+<td align="left">aspf</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">SPF alignment mode</td>
+</tr>
+
+<tr>
+<td align="left">fo</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Failure reporting options</td>
+</tr>
+
+<tr>
+<td align="left">p</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Requested handling policy</td>
+</tr>
+
+<tr>
+<td align="left">pct</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Sampling rate</td>
+</tr>
+
+<tr>
+<td align="left">rf</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Failure reporting format(s)</td>
+</tr>
+
+<tr>
+<td align="left">ri</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Aggregate Reporting interval</td>
+</tr>
+
+<tr>
+<td align="left">rua</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Reporting URI(s) for aggregate data</td>
+</tr>
+
+<tr>
+<td align="left">ruf</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Reporting URI(s) for failure data</td>
+</tr>
+
+<tr>
+<td align="left">sp</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Requested handling policy for subdomains</td>
+</tr>
+
+<tr>
+<td align="left">v</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Specification version</td>
+</tr>
+</tbody>
+</table></section>
+
+<section anchor="dmarc-report-format-registry"><name>DMARC Report Format Registry</name>
+<t>Also within &quot;Domain-based Message Authentication, Reporting, and
+Conformance (DMARC) Parameters&quot;, a new sub-registry called &quot;DMARC
+Report Format Registry&quot; has been created.</t>
+<t>Names of DMARC failure reporting formats must be registered with IANA
+in this registry.  New entries are assigned only for values that
+satisfy the definition of Specification Required, per
+<xref target="RFC8126"></xref>.  In addition to a reference to a permanent
+specification, each registration must include the format name; a
+brief description; and its status, which must be one of &quot;current&quot;,
+&quot;experimental&quot;, or &quot;historic&quot;.  The Designated Expert needs to
+confirm that the provided specification adequately describes the
+report format and clearly presents how it would be used within the
+DMARC context by Domain Owners and Mail Receivers.</t>
+<t>The initial entry in this registry is as follows:</t>
+<table align="left"><name>&quot;DMARC Report Format Registry&quot;
+</name>
+<thead>
+<tr>
+<th>Format Name</th>
+<th>Reference</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>afrf</td>
+<td>RFC 7489</td>
+<td>current</td>
+<td>Authentication Failure Reporting Format (see <xref target="RFC6591"></xref>)</td>
+</tr>
+</tbody>
+</table></section>
+
+<section anchor="underscored-and-globally-scoped-dns-node-names-registry"><name>Underscored and Globally Scoped DNS Node Names Registry</name>
+<t>Per [!@RFC8552], please add the following entry to the &quot;Underscored
+and Globally Scoped DNS Node Names&quot; registry:</t>
+<table align="left"><name>&quot;Underscored and Globally Scoped DNS Node Names&quot; registry
+</name>
+<thead>
+<tr>
+<th>RR Type</th>
+<th>_NODE NAME</th>
+<th>Reference</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>TXT</td>
+<td>_dmarc</td>
+<td>RFC 7489</td>
+</tr>
+</tbody>
+</table></section>
+</section>
+
+<section anchor="security-considerations"><name>Security Considerations</name>
+<t>This section discusses security issues and possible remediations
+(where available) for DMARC.</t>
+
+<section anchor="authentication-methods"><name>Authentication Methods</name>
+<t>Security considerations from the authentication methods used by DMARC
+are incorporated here by reference.</t>
+</section>
+
+<section anchor="attacks-on-reporting-uris"><name>Attacks on Reporting URIs</name>
+<t>URIs published in DNS TXT records are well-understood possible
+targets for attack.  Specifications such as <xref target="RFC1035"></xref> and <xref target="RFC2142"></xref> either
+expose or cause the exposure of email addresses that could be flooded
+by an attacker, for example; MX, NS, and other records found in the
+DNS advertise potential attack destinations; common DNS names such as
+&quot;www&quot; plainly identify the locations at which particular services can
+be found, providing destinations for targeted denial-of-service or
+penetration attacks.</t>
+<t>Thus, Domain Owners will need to harden these addresses against
+various attacks, including but not limited to:</t>
+
+<ul>
+<li><t>high-volume denial-of-service attacks;</t>
+</li>
+<li><t>deliberate construction of malformed reports intended to identify
+or exploit parsing or processing vulnerabilities;</t>
+</li>
+<li><t>deliberate construction of reports containing false claims for the
+Submitter or Reported-Domain fields, including the possibility of
+false data from compromised but known Mail Receivers.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="dns-security"><name>DNS Security</name>
+<t>The DMARC mechanism and its underlying technologies (SPF, DKIM)
+depend on the security of the DNS.  To reduce the risk of subversion
+of the DMARC mechanism due to DNS-based exploits, serious
+consideration should be given to the deployment of DNSSEC in parallel
+with the deployment of DMARC by both Domain Owners and Mail
+Receivers.</t>
+<t>Publication of data using DNSSEC is relevant to Domain Owners and
+third-party Report Receivers.  DNSSEC-aware resolution is relevant to
+Mail Receivers and Report Receivers.</t>
+</section>
+
+<section anchor="display-name-attacks"><name>Display Name Attacks</name>
+<t>A common attack in messaging abuse is the presentation of false
+information in the display-name portion of the RFC5322.From field.
+For example, it is possible for the email address in that field to be
+an arbitrary address or domain name, while containing a well-known
+name (a person, brand, role, etc.) in the display name, intending to
+fool the end user into believing that the name is used legitimately.
+The attack is predicated on the notion that most common MUAs will
+show the display name and not the email address when both are
+available.</t>
+<t>Generally, display name attacks are out of scope for DMARC, as
+further exploration of possible defenses against these attacks needs
+to be undertaken.</t>
+<t>There are a few possible mechanisms that attempt mitigation of these
+attacks, such as the following:</t>
+
+<ul>
+<li><t>If the display name is found to include an email address (as
+specified in <xref target="RFC5322"></xref>), execute the DMARC mechanism on the domain
+name found there rather than the domain name discovered
+originally.  However, this addresses only a very specific attack
+space, and spoofers can easily circumvent it by simply not using
+an email address in the display name.  There are also known cases
+of legitimate uses of an email address in the display name with a
+domain different from the one in the address portion, e.g.,</t>
+<t>From: &quot;user@example.org via Bug Tracker&quot; <eref target="mailto:support@example.com">support@example.com</eref></t>
+</li>
+<li><t>In the MUA, only show the display name if the DMARC mechanism
+succeeds.  This too is easily defeated, as an attacker could
+arrange to pass the DMARC tests while fraudulently using another
+domain name in the display name.</t>
+</li>
+<li><t>In the MUA, only show the display name if the DMARC mechanism
+passes and the email address thus validated matches one found in
+the receiving user's list of known addresses.</t>
+</li>
+</ul>
+</section>
+
+<section anchor="external-report-addresses"><name>External Reporting Addresses</name>
+<t>To avoid abuse by bad actors, reporting addresses generally have to
+be inside the domains about which reports are requested.  In order to
+accommodate special cases such as a need to get reports about domains
+that cannot actually receive mail, The DMARC reporting documents describe a DNS-based
+mechanism for verifying approved external reporting.</t>
+<t>The obvious consideration here is an increased DNS load against
+domains that are claimed as external recipients.  Negative caching
+will mitigate this problem, but only to a limited extent, mostly
+dependent on the default TTL in the domain's SOA record.</t>
+<t>Where possible, external reporting is best achieved by having the
+report be directed to domains that can receive mail and simply having
+it automatically forwarded to the desired external destination.</t>
+<t>Note that the addresses shown in the &quot;ruf&quot; tag receive more
+information that might be considered private data, since it is
+possible for actual email content to appear in the failure reports.
+The URIs identified there are thus more attractive targets for
+intrusion attempts than those found in the &quot;rua&quot; tag.  Moreover,
+attacking the DNS of the subject domain to cause failure data to be
+routed fraudulently to an attacker's systems may be an attractive
+prospect.  Deployment of <xref target="RFC4033"></xref> is advisable if this is a concern.</t>
+<t>The verification mechanism presented in the DMARC reporting docuemnts is currently not
+mandatory (&quot;MUST&quot;) but strongly recommended (&quot;SHOULD&quot;).  It is
+possible that it would be elevated to a &quot;MUST&quot; by later security
+review.</t>
+</section>
+
+<section anchor="secure-protocols"><name>Secure Protocols</name>
+<t>This document encourages use of secure transport mechanisms to
+prevent loss of private data to third parties that may be able to
+monitor such transmissions.  Unencrypted mechanisms should be
+avoided.</t>
+<t>In particular, a message that was originally encrypted or otherwise
+secured might appear in a report that is not sent securely, which
+could reveal private information.</t>
+</section>
+</section>
+
+</middle>
+
+<back>
+<references><name>Normative References</name>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4343.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5321.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5322.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5890.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6376.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6591.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6651.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6652.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7208.xml"/>
+</references>
+<references><name>Informative References</name>
+<reference anchor="Best-Guess-SPF" target="http://www.openspf.org/FAQ/Best_guess_record">
+  <front>
+    <title>Sender Policy Framework: Best guess record (FAQ entry)</title>
+    <author fullname="S. Kitterman" initials="S." surname="Kitterman"></author>
+    <date year="2010" month="May"></date>
+  </front>
+</reference>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2142.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3464.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5585.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5617.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5863.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6377.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
+</references>
+
+<section anchor="technology-considerations"><name>Technology Considerations</name>
+<t>This section documents some design decisions that were made in the
+development of DMARC.  Specifically, addressed here are some
+suggestions that were considered but not included in the design.
+This text is included to explain why they were considered and not
+included in this version.</t>
+
+<section anchor="s-mime"><name>S/MIME</name>
+<t>S/MIME, or Secure Multipurpose Internet Mail Extensions, is a
+standard for encryption and signing of MIME data in a message.  This
+was suggested and considered as a third security protocol for
+authenticating the source of a message.</t>
+<t>DMARC is focused on authentication at the domain level (i.e., the
+Domain Owner taking responsibility for the message), while S/MIME is
+really intended for user-to-user authentication and encryption.  This
+alone appears to make it a bad fit for DMARC's goals.</t>
+<t>S/MIME also suffers from the heavyweight problem of Public Key
+Infrastructure, which means that distribution of keys used to verify
+signatures needs to be incorporated.  In many instances, this alone
+is a showstopper.  There have been consistent promises that PKI
+usability and deployment will improve, but these have yet to
+materialize.  DMARC can revisit this choice after those barriers are
+addressed.</t>
+<t>S/MIME has extensive deployment in specific market segments
+(government, for example) but does not enjoy similar widespread
+deployment over the general Internet, and this shows no signs of
+changing.  DKIM and SPF both are deployed widely over the general
+Internet, and their adoption rates continue to be positive.</t>
+<t>Finally, experiments have shown that including S/MIME support in the
+initial version of DMARC would neither cause nor enable a substantial
+increase in the accuracy of the overall mechanism.</t>
+</section>
+
+<section anchor="method-exclusion"><name>Method Exclusion</name>
+<t>It was suggested that DMARC include a mechanism by which a Domain
+Owner could tell Message Receivers not to attempt validation by one
+of the supported methods (e.g., &quot;check DKIM, but not SPF&quot;).</t>
+<t>Specifically, consider a Domain Owner that has deployed one of the
+technologies, and that technology fails for some messages, but such
+failures don't cause enforcement action.  Deploying DMARC would cause
+enforcement action for policies other than &quot;none&quot;, which would appear
+to exclude participation by that Domain Owner.</t>
+<t>The DMARC development team evaluated the idea of policy exception
+mechanisms on several occasions and invariably concluded that there
+was not a strong enough use case to include them.  The specific
+target audience for DMARC does not appear to have concerns about the
+failure modes of one or the other being a barrier to DMARC's
+adoption.</t>
+<t>In the scenario described above, the Domain Owner has a few options:</t>
+
+<ol>
+<li><t>Tighten up its infrastructure to minimize the failure modes of
+the single deployed technology.</t>
+</li>
+<li><t>Deploy the other supported authentication mechanism, to offset
+the failure modes of the first.</t>
+</li>
+<li><t>Deploy DMARC in a reporting-only mode.</t>
+</li>
+</ol>
+</section>
+
+<section anchor="sender-header-field"><name>Sender Header Field</name>
+<t>It has been suggested in several message authentication efforts that
+the Sender header field be checked for an identifier of interest, as
+the standards indicate this as the proper way to indicate a
+re-mailing of content such as through a mailing list.  Most recently,
+it was a protocol-level option for DomainKeys, but on evolution to
+DKIM, this property was removed.</t>
+<t>The DMARC development team considered this and decided not to include
+support for doing so, for the following reasons:</t>
+
+<ol>
+<li><t>The main user protection approach is to be concerned with what
+the user sees when a message is rendered.  There is no consistent
+behavior among MUAs regarding what to do with the content of the
+Sender field, if present.  Accordingly, supporting checking of
+the Sender identifier would mean applying policy to an identifier
+the end user might never actually see, which can create a vector
+for attack against end users by simply forging a Sender field
+containing some identifier that DMARC will like.</t>
+</li>
+<li><t>Although it is certainly true that this is what the Sender field
+is for, its use in this way is also unreliable, making it a poor
+candidate for inclusion in the DMARC evaluation algorithm.</t>
+</li>
+<li><t>Allowing multiple ways to discover policy introduces unacceptable
+ambiguity into the DMARC evaluation algorithm in terms of which
+policy is to be applied and when.</t>
+</li>
+</ol>
+</section>
+
+<section anchor="domain-existence-test"><name>Domain Existence Test</name>
+<t>A common practice among MTA operators, and indeed one documented in
+<xref target="RFC5617"></xref>, is a test to determine domain existence prior to any more
+expensive processing.  This is typically done by querying the DNS for
+MX, A, or AAAA resource records for the name being evaluated and
+assuming that the domain is nonexistent if it could be determined
+that no such records were published for that domain name.</t>
+<t>The original pre-standardization version of this protocol included a
+mandatory check of this nature.  It was ultimately removed, as the
+method's error rate was too high without substantial manual tuning
+and heuristic work.  There are indeed use cases this work needs to
+address where such a method would return a negative result about a
+domain for which reporting is desired, such as a registered domain
+name that never sends legitimate mail and thus has none of these
+records present in the DNS.</t>
+</section>
+
+<section anchor="issues-with-adsp-in-operation"><name>Issues with ADSP in Operation</name>
+<t>DMARC has been characterized as a &quot;super-ADSP&quot; of sorts.</t>
+<t>Contributors to DMARC have compiled a list of issues associated with
+ADSP, gained from operational experience, that have influenced the
+direction of DMARC:</t>
+
+<ol>
+<li><t>ADSP has no support for subdomains, i.e., the ADSP record for
+example.com does not explicitly or implicitly apply to
+subdomain.example.com.  If wildcarding is not applied, then
+spammers can trivially bypass ADSP by sending from a subdomain
+with no ADSP record.</t>
+</li>
+<li><t>Nonexistent subdomains are explicitly out of scope in ADSP.
+There is nothing in ADSP that states receivers should simply
+reject mail from NXDOMAINs regardless of ADSP policy (which of
+course allows spammers to trivially bypass ADSP by sending email
+from nonexistent subdomains).</t>
+</li>
+<li><t>ADSP has no operational advice on when to look up the ADSP
+record.</t>
+</li>
+<li><t>ADSP has no support for using SPF as an auxiliary mechanism to
+DKIM.</t>
+</li>
+<li><t>ADSP has no support for a slow rollout, i.e., no way to configure
+a percentage of email on which the receiver should apply the
+policy.  This is important for large-volume senders.</t>
+</li>
+<li><t>ADSP has no explicit support for an intermediate phase where the
+receiver quarantines (e.g., sends to the recipient's &quot;spam&quot;
+folder) rather than rejects the email.</t>
+</li>
+<li><t>The binding between the &quot;From&quot; header domain and DKIM is too
+tight for ADSP; they must match exactly.</t>
+</li>
+</ol>
+</section>
+
+<section anchor="organizational-domain-discovery-issues"><name>Organizational Domain Discovery Issues</name>
+<t>Although protocols like ADSP are useful for &quot;protecting&quot; a specific
+domain name, they are not helpful at protecting subdomains.  If one
+wished to protect &quot;example.com&quot; by requiring via ADSP that all mail
+bearing an RFC5322.From domain of &quot;example.com&quot; be signed, this would
+&quot;protect&quot; that domain; however, one could then craft an email whose
+RFC5322.From domain is &quot;security.example.com&quot;, and ADSP would not
+provide any protection.  One could use a DNS wildcard, but this can
+undesirably interfere with other DNS activity; one could add ADSP
+records as fraudulent domains are discovered, but this solution does
+not scale and is a purely reactive measure against abuse.</t>
+<t>The DNS does not provide a method by which the &quot;domain of record&quot;, or
+the domain that was actually registered with a domain registrar, can
+be determined given an arbitrary domain name.  Suggestions have been
+made that attempt to glean such information from SOA or NS resource
+records, but these too are not fully reliable, as the partitioning of
+the DNS is not always done at administrative boundaries.</t>
+<t>When seeking domain-specific policy based on an arbitrary domain
+name, one could &quot;climb the tree&quot;, dropping labels off the left end of
+the name until the root is reached or a policy is discovered, but
+then one could craft a name that has a large number of nonsense
+labels; this would cause a Mail Receiver to attempt a large number of
+queries in search of a policy record.  Sending many such messages
+constitutes an amplified denial-of-service attack.</t>
+<t>The Organizational Domain mechanism is a necessary component to the
+goals of DMARC.  The method described in <xref target="organizational-domain"></xref> is far from
+perfect but serves this purpose reasonably well without adding undue
+burden or semantics to the DNS.  If a method is created to do so that
+is more reliable and secure than the use of a public suffix list,
+DMARC should be amended to use that method as soon as it is generally
+available.</t>
+
+<section anchor="public-suffix-lists"><name>Public Suffix Lists</name>
+<t>A public suffix list for the purposes of determining the
+Organizational Domain can be obtained from various sources.  The most
+common one is maintained by the Mozilla Foundation and made public at
+<eref target="http://publicsuffix.org">http://publicsuffix.org</eref>.  License terms governing the use of that
+list are available at that URI.</t>
+<t>Note that if operators use a variety of public suffix lists,
+interoperability will be difficult or impossible to guarantee.</t>
+</section>
+</section>
+</section>
+
+<section anchor="examples"><name>Examples</name>
+<t>This section illustrates both the Domain Owner side and the Mail
+Receiver side of a DMARC exchange.</t>
+
+<section anchor="identifier-alignment-examples"><name>Identifier Alignment Examples</name>
+<t>The following examples illustrate the DMARC mechanism's use of
+Identifier Alignment.  For brevity's sake, only message headers are
+shown, as message bodies are not considered when conducting DMARC
+checks.</t>
+
+<section anchor="spf"><name>SPF</name>
+<t>The following SPF examples assume that SPF produces a passing result.</t>
+<t>Example 1: SPF in alignment:</t>
+
+<artwork>     MAIL FROM: &lt;sender@example.com&gt;
+
+     From: sender@example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the RFC5321.MailFrom parameter and the RFC5322.From
+field have identical DNS domains.  Thus, the identifiers are in
+alignment.</t>
+<t>Example 2: SPF in alignment (parent):</t>
+
+<artwork>     MAIL FROM: &lt;sender@child.example.com&gt;
+
+     From: sender@example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the RFC5322.From parameter includes a DNS domain that
+is a parent of the RFC5321.MailFrom domain.  Thus, the identifiers
+are in alignment if relaxed SPF mode is requested by the Domain
+Owner, and not in alignment if strict SPF mode is requested.</t>
+<t>Example 3: SPF not in alignment:</t>
+
+<artwork>     MAIL FROM: &lt;sender@example.net&gt;
+
+     From: sender@child.example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the RFC5321.MailFrom parameter includes a DNS domain
+that is neither the same as nor a parent of the RFC5322.From domain.
+Thus, the identifiers are not in alignment.</t>
+</section>
+
+<section anchor="dkim"><name>DKIM</name>
+<t>The examples below assume that the DKIM signatures pass verification.
+Alignment cannot exist with a DKIM signature that does not verify.</t>
+<t>Example 1: DKIM in alignment:</t>
+
+<artwork>     DKIM-Signature: v=1; ...; d=example.com; ...
+     From: sender@example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the DKIM &quot;d=&quot; parameter and the RFC5322.From field have
+identical DNS domains.  Thus, the identifiers are in alignment.</t>
+<t>Example 2: DKIM in alignment (parent):</t>
+
+<artwork>     DKIM-Signature: v=1; ...; d=example.com; ...
+     From: sender@child.example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the DKIM signature's &quot;d=&quot; parameter includes a DNS
+domain that is a parent of the RFC5322.From domain.  Thus, the
+identifiers are in alignment for relaxed mode, but not for strict
+mode.</t>
+<t>Example 3: DKIM not in alignment:</t>
+
+<artwork>     DKIM-Signature: v=1; ...; d=sample.net; ...
+     From: sender@child.example.com
+     Date: Fri, Feb 15 2002 16:54:30 -0800
+     To: receiver@example.org
+     Subject: here's a sample
+</artwork>
+<t>In this case, the DKIM signature's &quot;d=&quot; parameter includes a DNS
+domain that is neither the same as nor a parent of the RFC5322.From
+domain.  Thus, the identifiers are not in alignment.</t>
+</section>
+</section>
+
+<section anchor="domain-owner-example"><name>Domain Owner Example</name>
+<t>A Domain Owner that wants to use DMARC should have already deployed
+and tested SPF and DKIM.  The next step is to publish a DNS record
+that advertises a DMARC policy for the Domain Owner's Organizational
+Domain.</t>
+
+<section anchor="entire-domain-monitoring-only"><name>Entire Domain, Monitoring Only</name>
+<t>The owner of the domain &quot;example.com&quot; has deployed SPF and DKIM on
+its messaging infrastructure.  The owner wishes to begin using DMARC
+with a policy that will solicit aggregate feedback from receivers
+without affecting how the messages are processed, in order to:</t>
+
+<ul>
+<li><t>Confirm that its legitimate messages are authenticating correctly</t>
+</li>
+<li><t>Verify that all authorized message sources have implemented
+authentication measures</t>
+</li>
+<li><t>Determine how many messages from other sources would be affected
+by a blocking policy</t>
+</li>
+</ul>
+<t>The Domain Owner accomplishes this by constructing a policy record
+indicating that:</t>
+
+<ul>
+<li><t>The version of DMARC being used is &quot;DMARC1&quot; (&quot;v=DMARC1;&quot;)</t>
+</li>
+<li><t>Receivers should not alter how they treat these messages because
+of this DMARC policy record (&quot;p=none&quot;)</t>
+</li>
+<li><t>Aggregate feedback reports should be sent via email to the address
+&quot;dmarc-feedback@example.com&quot;
+(&quot;rua=mailto:dmarc-feedback@example.com&quot;)</t>
+</li>
+<li><t>All messages from this Organizational Domain are subject to this
+policy (no &quot;pct&quot; tag present, so the default of 100% applies)</t>
+</li>
+</ul>
+<t>The DMARC policy record might look like this when retrieved using a
+common command-line tool:</t>
+
+<artwork>  % dig +short TXT _dmarc.example.com.
+  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com&quot;
+</artwork>
+<t>To publish such a record, the DNS administrator for the Domain Owner
+creates an entry like the following in the appropriate zone file
+(following the conventional zone file format):</t>
+
+<artwork>  ; DMARC record for the domain example.com
+
+  _dmarc  IN TXT ( &quot;v=DMARC1; p=none; &quot;
+                   &quot;rua=mailto:dmarc-feedback@example.com&quot; )
+</artwork>
+</section>
+
+<section anchor="entire-domain-monitoring-only-per-message-reports"><name>Entire Domain, Monitoring Only, Per-Message Reports</name>
+<t>The Domain Owner from the previous example has used the aggregate
+reporting to discover some messaging systems that had not yet
+implemented DKIM correctly, but they are still seeing periodic
+authentication failures.  In order to diagnose these intermittent
+problems, they wish to request per-message failure reports when
+authentication failures occur.</t>
+<t>Not all Receivers will honor such a request, but the Domain Owner
+feels that any reports it does receive will be helpful enough to
+justify publishing this record.  The default per-message report
+format (<xref target="RFC6591"></xref>) meets the Domain Owner's needs in this scenario.</t>
+<t>The Domain Owner accomplishes this by adding the following to its
+policy record from <xref target="domain-owner-example"></xref>:</t>
+
+<ul>
+<li>Per-message failure reports should be sent via email to the
+address &quot;auth-reports@example.com&quot;
+(&quot;ruf=mailto:auth-reports@example.com&quot;)</li>
+</ul>
+<t>The DMARC policy record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):</t>
+
+<artwork>  % dig +short TXT _dmarc.example.com.
+  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com;
+   ruf=mailto:auth-reports@example.com&quot;
+</artwork>
+<t>To publish such a record, the DNS administrator for the Domain Owner
+might create an entry like the following in the appropriate zone file
+(following the conventional zone file format):</t>
+
+<artwork>  ; DMARC record for the domain example.com
+
+  _dmarc  IN TXT ( &quot;v=DMARC1; p=none; &quot;
+                    &quot;rua=mailto:dmarc-feedback@example.com; &quot;
+                    &quot;ruf=mailto:auth-reports@example.com&quot; )
+</artwork>
+</section>
+
+<section anchor="per-message-failure-reports-directed-to-third-party"><name>Per-Message Failure Reports Directed to Third Party</name>
+<t>The Domain Owner from the previous example is maintaining the same
+policy but now wishes to have a third party receive and process the
+per-message failure reports.  Again, not all Receivers will honor
+this request, but those that do may implement additional checks to
+validate that the third party wishes to receive the failure reports
+for this domain.</t>
+<t>The Domain Owner needs to alter its policy record from <xref target="entire-domain-monitoring-only-per-message-reports"></xref>
+as follows:</t>
+
+<ul>
+<li>Per-message failure reports should be sent via email to the
+address &quot;auth-reports@thirdparty.example.net&quot;
+(&quot;ruf=mailto:auth-reports@thirdparty.example.net&quot;)</li>
+</ul>
+<t>The DMARC policy record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):</t>
+
+<artwork>  % dig +short TXT _dmarc.example.com.
+  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com;
+   ruf=mailto:auth-reports@thirdparty.example.net&quot;
+</artwork>
+<t>To publish such a record, the DNS administrator for the Domain Owner
+might create an entry like the following in the appropriate zone file
+(following the conventional zone file format):</t>
+
+<artwork>  ; DMARC record for the domain example.com
+
+  _dmarc IN TXT ( &quot;v=DMARC1; p=none; &quot;
+                  &quot;rua=mailto:dmarc-feedback@example.com; &quot;
+                  &quot;ruf=mailto:auth-reports@thirdparty.example.net&quot; )
+</artwork>
+<t>Because the address used in the &quot;ruf&quot; tag is outside the
+Organizational Domain in which this record is published, conforming
+Receivers will implement additional checks as described in
+the DMARC reporting documents.  In order to pass these additional
+checks, the third party will need to publish an additional DNS record
+as follows:</t>
+
+<ul>
+<li>Given the DMARC record published by the Domain Owner at
+&quot;_dmarc.example.com&quot;, the DNS administrator for the third party
+will need to publish a TXT resource record at
+&quot;example.com._report._dmarc.thirdparty.example.net&quot; with the value
+&quot;v=DMARC1;&quot;.</li>
+</ul>
+<t>The resulting DNS record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):</t>
+
+<artwork>  % dig +short TXT example.com._report._dmarc.thirdparty.example.net
+  &quot;v=DMARC1;&quot;
+</artwork>
+<t>To publish such a record, the DNS administrator for example.net might
+create an entry like the following in the appropriate zone file
+(following the conventional zone file format):</t>
+
+<artwork>  ; zone file for thirdparty.example.net
+  ; Accept DMARC failure reports on behalf of example.com
+
+  example.com._report._dmarc   IN   TXT    &quot;v=DMARC1;&quot;
+</artwork>
+<t>Intermediaries and other third parties should refer to the DMARC reporting documents
+for the full details of this mechanism.</t>
+</section>
+
+<section anchor="subdomain-sampling-and-multiple-aggregate-report-uris"><name>Subdomain, Sampling, and Multiple Aggregate Report URIs</name>
+<t>The Domain Owner has implemented SPF and DKIM in a subdomain used for
+pre-production testing of messaging services.  It now wishes to
+request that participating receivers act to reject messages from this
+subdomain that fail to authenticate.</t>
+<t>As a first step, it will ask that a portion (1/4 in this example) of
+failing messages be quarantined, enabling examination of messages
+sent to mailboxes hosted by participating receivers.  Aggregate
+feedback reports will be sent to a mailbox within the Organizational
+Domain, and to a mailbox at a third party selected and authorized to
+receive same by the Domain Owner.  Aggregate reports sent to the
+third party are limited to a maximum size of ten megabytes.</t>
+<t>The Domain Owner will accomplish this by constructing a policy record
+indicating that:</t>
+
+<ul>
+<li><t>The version of DMARC being used is &quot;DMARC1&quot; (&quot;v=DMARC1;&quot;)</t>
+</li>
+<li><t>It is applied only to this subdomain (record is published at
+&quot;_dmarc.test.example.com&quot; and not &quot;_dmarc.example.com&quot;)</t>
+</li>
+<li><t>Receivers should quarantine messages from this Organizational
+Domain that fail to authenticate (&quot;p=quarantine&quot;)</t>
+</li>
+<li><t>Aggregate feedback reports should be sent via email to the
+addresses &quot;dmarc-feedback@example.com&quot; and
+&quot;example-tld-test@thirdparty.example.net&quot;, with the latter
+subjected to a maximum size limit (&quot;rua=mailto:dmarc-feedback@
+example.com,mailto:tld-test@thirdparty.example.net!10m&quot;)</t>
+</li>
+<li><t>25% of messages from this Organizational Domain are subject to
+action based on this policy (&quot;pct=25&quot;)</t>
+</li>
+</ul>
+<t>The DMARC policy record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):</t>
+
+<artwork>  % dig +short TXT _dmarc.test.example.com
+  &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
+   mailto:tld-test@thirdparty.example.net!10m; pct=25&quot;
+</artwork>
+<t>To publish such a record, the DNS administrator for the Domain Owner
+might create an entry like the following in the appropriate zone
+file:</t>
+
+<artwork>  ; DMARC record for the domain example.com
+
+  _dmarc IN  TXT  ( &quot;v=DMARC1; p=quarantine; &quot;
+                    &quot;rua=mailto:dmarc-feedback@example.com,&quot;
+                    &quot;mailto:tld-test@thirdparty.example.net!10m; &quot;
+                    &quot;pct=25&quot; )
+</artwork>
+</section>
+</section>
+
+<section anchor="mail-receiver-example"><name>Mail Receiver Example</name>
+<t>A Mail Receiver that wants to use DMARC should already be checking
+SPF and DKIM, and possess the ability to collect relevant information
+from various email-processing stages to provide feedback to Domain
+Owners (possibly via Report Receivers).</t>
+</section>
+
+<section anchor="processing-of-smtp-time"><name>Processing of SMTP Time</name>
+<t>An optimal DMARC-enabled Mail Receiver performs authentication and
+Identifier Alignment checking during the <xref target="RFC5322"></xref> conversation.</t>
+<t>Prior to returning a final reply to the DATA command, the Mail
+Receiver's MTA has performed:</t>
+
+<ol>
+<li><t>An SPF check to determine an SPF-authenticated Identifier.</t>
+</li>
+<li><t>DKIM checks that yield one or more DKIM-authenticated
+Identifiers.</t>
+</li>
+<li><t>A DMARC policy lookup.</t>
+</li>
+</ol>
+<t>The presence of an Author Domain DMARC record indicates that the Mail
+Receiver should continue with DMARC-specific processing before
+returning a reply to the DATA command.</t>
+<t>Given a DMARC record and the set of Authenticated Identifiers, the
+Mail Receiver checks to see if the Authenticated Identifiers align
+with the Author Domain (taking into consideration any strict versus
+relaxed options found in the DMARC record).</t>
+<t>For example, the following sample data is considered to be from a
+piece of email originating from the Domain Owner of &quot;example.com&quot;:</t>
+
+<artwork>  Author Domain: example.com
+  SPF-authenticated Identifier: mail.example.com
+  DKIM-authenticated Identifier: example.com
+  DMARC record:
+    &quot;v=DMARC1; p=reject; aspf=r;
+     rua=mailto:dmarc-feedback@example.com&quot;
+</artwork>
+<t>In the above sample, both the SPF-authenticated Identifier and the
+DKIM-authenticated Identifier align with the Author Domain.  The Mail
+Receiver considers the above email to pass the DMARC check, avoiding
+the &quot;reject&quot; policy that is to be applied to email that fails to pass
+the DMARC check.</t>
+<t>If no Authenticated Identifiers align with the Author Domain, then
+the Mail Receiver applies the DMARC-record-specified policy.
+However, before this action is taken, the Mail Receiver can consult
+external information to override the Domain Owner's policy.  For
+example, if the Mail Receiver knows that this particular email came
+from a known and trusted forwarder (that happens to break both SPF
+and DKIM), then the Mail Receiver may choose to ignore the Domain
+Owner's policy.</t>
+<t>The Mail Receiver is now ready to reply to the DATA command.  If the
+DMARC check yields that the message is to be rejected, then the Mail
+Receiver replies with a 5xy code to inform the sender of failure.  If
+the DMARC check cannot be resolved due to transient network errors,
+then the Mail Receiver replies with a 4xy code to inform the sender
+as to the need to reattempt delivery later.  If the DMARC check
+yields a passing message, then the Mail Receiver continues on with
+email processing, perhaps using the result of the DMARC check as an
+input to additional processing modules such as a domain reputation
+query.</t>
+<t>Before exiting DMARC-specific processing, the Mail Receiver checks to
+see if the Author Domain DMARC record requests AFRF-based reporting.
+If so, then the Mail Receiver can emit an AFRF to the reporting
+address supplied in the DMARC record.</t>
+<t>At the exit of DMARC-specific processing, the Mail Receiver captures
+(through logging or direct insertion into a data store) the result of
+DMARC processing.  Captured information is used to build feedback for
+Domain Owner consumption.  This is not necessary if the Domain Owner
+has not requested aggregate reports, i.e., no &quot;rua&quot; tag was found in
+the policy record.</t>
+</section>
+
+<section anchor="utilization-of-aggregate-feedback-example"><name>Utilization of Aggregate Feedback: Example</name>
+<t>Aggregate feedback is consumed by Domain Owners to verify a Domain
+Owner's understanding of how the Domain Owner's domain is being
+processed by the Mail Receiver.  Aggregate reporting data on emails
+that pass all DMARC-supporting authentication checks is used by
+Domain Owners to verify that authentication practices remain
+accurate.  For example, if a third party is sending on behalf of a
+Domain Owner, the Domain Owner can use aggregate report data to
+verify ongoing authentication practices of the third party.</t>
+<t>Data on email that only partially passes underlying authentication
+checks provides visibility into problems that need to be addressed by
+the Domain Owner.  For example, if either SPF or DKIM fails to pass,
+the Domain Owner is provided with enough information to either
+directly correct the problem or understand where authentication-
+breaking changes are being introduced in the email transmission path.
+If authentication-breaking changes due to email transmission path
+cannot be directly corrected, then the Domain Owner at least
+maintains an understanding of the effect of DMARC-based policies upon
+the Domain Owner's email.</t>
+<t>Data on email that fails all underlying authentication checks
+provides baseline visibility on how the Domain Owner's domain is
+being received at the Mail Receiver.  Based on this visibility, the
+Domain Owner can begin deployment of authentication technologies
+across uncovered email sources.  Additionally, the Domain Owner may
+come to an understanding of how its domain is being misused.</t>
+</section>
+
+<section anchor="mailto-transport-example"><name>mailto Transport Example</name>
+<t>A DMARC record can contain a &quot;mailto&quot; reporting address, such as:</t>
+
+<artwork>mailto:dmarc-feedback@example.com
+</artwork>
+<t>A sample aggregate report from the Mail Receiver at
+mail.receiver.example follows:</t>
+
+<artwork>  DKIM-Signature: v=1; ...; d=mail.receiver.example; ...
+  From: dmarc-reporting@mail.receiver.example
+  Date: Fri, Feb 15 2002 16:54:30 -0800
+  To: dmarc-feedback@example.com
+  Subject: Report Domain: example.com
+      Submitter: mail.receiver.example
+      Report-ID: &lt;2002.02.15.1&gt;
+  MIME-Version: 1.0
+  Content-Type: multipart/alternative;
+      boundary=&quot;----=_NextPart_000_024E_01CC9B0A.AFE54C00&quot;
+  Content-Language: en-us
+
+  This is a multipart message in MIME format.
+
+  ------=_NextPart_000_024E_01CC9B0A.AFE54C00
+  Content-Type: text/plain; charset=&quot;us-ascii&quot;
+  Content-Transfer-Encoding: 7bit
+
+  This is an aggregate report from mail.receiver.example.
+
+  ------=_NextPart_000_024E_01CC9B0A.AFE54C00
+  Content-Type: application/gzip
+  Content-Transfer-Encoding: base64
+  Content-Disposition: attachment;
+      filename=&quot;mail.receiver.example!example.com!
+                1013662812!1013749130.gz&quot;
+
+  &lt;gzipped content of report&gt;
+
+  ------=_NextPart_000_024E_01CC9B0A.AFE54C00--
+</artwork>
+<t>Not shown in the above example is that the Mail Receiver's feedback
+should be authenticated using SPF.  Also, the value of the &quot;filename&quot;
+MIME parameter is wrapped for printing in this specification but
+would normally appear as one continuous string.</t>
+</section>
+</section>
+
+<section anchor="acknowledgements" numbered="false"><name>Acknowledgements</name>
+<t>DMARC and the draft version of this document submitted to the
+Independent Submission Editor were the result of lengthy efforts by
+an informal industry consortium: DMARC.org (see <eref target="http://dmarc.org">http://dmarc.org</eref>).
+Participating companies included Agari, American Greetings, AOL, Bank
+of America, Cloudmark, Comcast, Facebook, Fidelity Investments,
+Google, JPMorgan Chase &amp; Company, LinkedIn, Microsoft, Netease,
+PayPal, ReturnPath, The Trusted Domain Project, and Yahoo!.  Although
+the contributors and supporters are too numerous to mention, notable
+individual contributions were made by J. Trent Adams, Michael Adkins,
+Monica Chew, Dave Crocker, Tim Draegen, Steve Jones, Franck Martin,
+Brett McDowell, and Paul Midgen.  The contributors would also like to
+recognize the invaluable input and guidance that was provided early
+on by J.D. Falk.</t>
+<t>Additional contributions within the IETF context were made by Kurt
+Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
+J. Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine,
+S. Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J. Turnbull.</t>
+</section>
+
+</back>
+
+</rfc>
