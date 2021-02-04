@@ -350,17 +350,20 @@ domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.
 
-Note that the RFC5321.HELO identity is not typically used in the
-context of DMARC (except when required to "fake" an otherwise null
-reverse-path), even though a "pure SPF" implementation according to
-[@!RFC7208] would check that identifier.
-
 For example, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
 portion of the RFC5322.From field contains "payments@example.com",
 the Authenticated RFC5321.MailFrom domain identifier and the
 RFC5322.From domain are considered to be "in alignment" in relaxed
-mode, but not in strict mode.
+mode, but not in strict mode. In order for the two identifiers to
+be considered "in alignment" in strict mode, the domain parts would
+have to be identical.
+
+The reader should note that SPF alignment checks in DMARC rely solely 
+on the RFC5321.MailFrom domain. This differs from section 2.3 of [@!RFC7208], 
+which recommends that SPF checks be done on not only the "MAIL FROM" 
+but also on a separate check of the "HELO" identity.
+
 
 ###  Alignment and Extension Technologies {#alignment-and-extension-technologies}
 
