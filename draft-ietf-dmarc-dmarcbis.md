@@ -345,7 +345,7 @@ and verifies.
 DMARC permits Identifier Alignment, based on the result of an SPF
 authentication, to be strict or relaxed.
 
-In relaxed mode, the [@!RFC3986]-authenticated domain and RFC5322.From
+In relaxed mode, the [@!RFC7208]-authenticated domain and RFC5322.From
 domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.
@@ -426,7 +426,7 @@ are supported in this version of DMARC:
 *  [@!RFC6376], which provides a domain-level identifier in the content of
    the "d=" tag of a validated DKIM-Signature header field.
 
-*  [@!RFC3986], which can authenticate both the domain found in an [@!RFC5322]
+*  [@!RFC7208], which can authenticate both the domain found in an [@!RFC5322]
    HELO/EHLO command (the HELO identity) and the domain found in an
    SMTP MAIL command (the MAIL FROM identity).  DMARC uses the result
    of SPF authentication of the MAIL FROM identity.  Section 2.4 of
@@ -783,7 +783,7 @@ rf:
 separated plain-text list of values; OPTIONAL; default is "afrf").
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
-[@!RFC3986] and [@!RFC6376] tests to report details of the individual
+[@!RFC7208] and [@!RFC6376] tests to report details of the individual
 failure.  The values MUST be present in the registry of reporting
 formats defined in (#iana-considerations); a Mail Receiver observing a
 different value SHOULD ignore it or MAY ignore the entire DMARC

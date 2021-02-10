@@ -1109,11 +1109,11 @@ dd.break {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DMARCbis</td>
-<td class="right">January 2021</td>
+<td class="right">February 2021</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Gustafsson (ed), et al.</td>
-<td class="center">Expires 29 July 2021</td>
+<td class="center">Expires 14 August 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1129,12 +1129,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-01-25" class="published">25 January 2021</time>
+<time datetime="2021-02-10" class="published">10 February 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-07-29">29 July 2021</time></dd>
+<dd class="expires"><time datetime="2021-08-14">14 August 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1183,7 +1183,7 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 July 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 August 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1802,7 +1802,7 @@ and verifies.<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-3.1.2-1">DMARC permits Identifier Alignment, based on the result of an SPF
 authentication, to be strict or relaxed.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">In relaxed mode, the <span>[<a href="#RFC3986" class="xref">RFC3986</a>]</span>-authenticated domain and RFC5322.From
+<p id="section-3.1.2-2">In relaxed mode, the <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>-authenticated domain and RFC5322.From
 domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
@@ -1902,7 +1902,7 @@ are supported in this version of DMARC:<a href="#section-4.1-1" class="pilcrow">
 the "d=" tag of a validated DKIM-Signature header field.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-4.1-2.2">
-            <p id="section-4.1-2.2.1"><span>[<a href="#RFC3986" class="xref">RFC3986</a>]</span>, which can authenticate both the domain found in an <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>
+            <p id="section-4.1-2.2.1"><span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>, which can authenticate both the domain found in an <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>
 HELO/EHLO command (the HELO identity) and the domain found in an
 SMTP MAIL command (the MAIL FROM identity).  DMARC uses the result
 of SPF authentication of the MAIL FROM identity.  Section 2.4 of
@@ -2311,7 +2311,7 @@ else
 separated plain-text list of values; OPTIONAL; default is "afrf").
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
-<span>[<a href="#RFC3986" class="xref">RFC3986</a>]</span> and <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span> tests to report details of the individual
+<span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span> and <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span> tests to report details of the individual
 failure.  The values MUST be present in the registry of reporting
 formats defined in <a href="#iana-considerations" class="xref">Section 10</a>; a Mail Receiver observing a
 different value SHOULD ignore it or MAY ignore the entire DMARC
