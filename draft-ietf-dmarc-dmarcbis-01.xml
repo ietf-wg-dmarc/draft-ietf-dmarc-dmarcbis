@@ -297,7 +297,7 @@ and verifies.</t>
 <section anchor="spf-identifiers"><name>SPF-Authenticated Identifiers</name>
 <t>DMARC permits Identifier Alignment, based on the result of an SPF
 authentication, to be strict or relaxed.</t>
-<t>In relaxed mode, the <xref target="RFC3986"></xref>-authenticated domain and RFC5322.From
+<t>In relaxed mode, the <xref target="RFC7208"></xref>-authenticated domain and RFC5322.From
 domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.</t>
@@ -376,7 +376,7 @@ are supported in this version of DMARC:</t>
 <li><t><xref target="RFC6376"></xref>, which provides a domain-level identifier in the content of
 the &quot;d=&quot; tag of a validated DKIM-Signature header field.</t>
 </li>
-<li><t><xref target="RFC3986"></xref>, which can authenticate both the domain found in an <xref target="RFC5322"></xref>
+<li><t><xref target="RFC7208"></xref>, which can authenticate both the domain found in an <xref target="RFC5322"></xref>
 HELO/EHLO command (the HELO identity) and the domain found in an
 SMTP MAIL command (the MAIL FROM identity).  DMARC uses the result
 of SPF authentication of the MAIL FROM identity.  Section 2.4 of
@@ -717,7 +717,7 @@ else
 separated plain-text list of values; OPTIONAL; default is &quot;afrf&quot;).
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
-<xref target="RFC3986"></xref> and <xref target="RFC6376"></xref> tests to report details of the individual
+<xref target="RFC7208"></xref> and <xref target="RFC6376"></xref> tests to report details of the individual
 failure.  The values MUST be present in the registry of reporting
 formats defined in <xref target="iana-considerations"></xref>; a Mail Receiver observing a
 different value SHOULD ignore it or MAY ignore the entire DMARC
