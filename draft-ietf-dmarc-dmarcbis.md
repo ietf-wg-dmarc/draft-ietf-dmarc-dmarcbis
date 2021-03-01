@@ -2382,6 +2382,11 @@ would normally appear as one continuous string.
 * Several references to RFC3986 changed to RFC7208
 * Diffs are here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/4/files
 
+## March 1, 2021
+
+### Design Team Work Begins
+* Added change log section to document
+
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 

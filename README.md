@@ -173,7 +173,9 @@ Internet-Draft                  DMARCbis                      March 2021
 
      C.3.  February 10, 2021 . . . . . . . . . . . . . . . . . . . .  55
        C.3.1.  Issue 84 - Remove Erroneous References to RFC3986 . .  55
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  55
+     C.4.  March 1, 2021 . . . . . . . . . . . . . . . . . . . . . .  55
+       C.4.1.  Design Team Work Begins . . . . . . . . . . . . . . .  55
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  56
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  56
 
 1.  Introduction
@@ -214,8 +216,6 @@ Internet-Draft                  DMARCbis                      March 2021
    encumbered by accounting for unauthorized use of the domain.  A
    message that fails this validation cannot reliably be associated with
    the aligned domain and its reputation.
-
-
 
 
 
@@ -3063,6 +3063,26 @@ C.3.1.  Issue 84 - Remove Erroneous References to RFC3986
       dmarc-dmarcbis/pull/4/files (https://github.com/ietf-wg-dmarc/
       draft-ietf-dmarc-dmarcbis/pull/4/files)
 
+C.4.  March 1, 2021
+
+C.4.1.  Design Team Work Begins
+
+   *  Added change log section to document
+
+
+
+
+
+
+
+
+
+
+Gustafsson (ed), et al. Expires 2 September 2021               [Page 55]
+
+Internet-Draft                  DMARCbis                      March 2021
+
+
 Acknowledgements
 
    DMARC and the draft version of this document submitted to the
@@ -3075,14 +3095,6 @@ Acknowledgements
    Project, and Yahoo!.  Although the contributors and supporters are
    too numerous to mention, notable individual contributions were made
    by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
-
-
-
-Gustafsson (ed), et al. Expires 2 September 2021               [Page 55]
-
-Internet-Draft                  DMARCbis                      March 2021
-
-
    Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
    The contributors would also like to recognize the invaluable input
    and guidance that was provided early on by J.D.  Falk.
@@ -3110,18 +3122,6 @@ Authors' Addresses
    Standcore LLC
 
    Email: standards@standore.com
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
