@@ -2361,6 +2361,27 @@ should be authenticated using SPF.  Also, the value of the "filename"
 MIME parameter is wrapped for printing in this specification but
 would normally appear as one continuous string.
 
+# Change Log
+
+## January 5, 2021 
+
+### Issue 80 - DMARCbis SHould Have Clear and Concise Defintion of DMARC
+* Updated text for Abstract and Introduction sections.
+* Diffs are recorded here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/1/files
+
+## February 4, 2021 
+
+### Issue 1 - SPF RFC 4408 vs 7208
+* Some rearranging of text in the "SPF-Authenticated Identifiers" section
+* Clarification of the term "in alignment" in that same section
+* Diffs are here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/3/files
+
+## February 10, 2021
+
+### Issue 84 - Remove Erroneous References to RFC3986
+* Several references to RFC3986 changed to RFC7208
+* Diffs are here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/4/files
+
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 

@@ -2330,6 +2330,43 @@ would normally appear as one continuous string.</t>
 </section>
 </section>
 
+<section anchor="change-log"><name>Change Log</name>
+
+<section anchor="january-5-2021"><name>January 5, 2021</name>
+
+<section anchor="issue-80-dmarcbis-should-have-clear-and-concise-defintion-of-dmarc"><name>Issue 80 - DMARCbis SHould Have Clear and Concise Defintion of DMARC</name>
+
+<ul>
+<li>Updated text for Abstract and Introduction sections.</li>
+<li>Diffs are recorded here - <eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/1/files">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/1/files</eref></li>
+</ul>
+</section>
+</section>
+
+<section anchor="february-4-2021"><name>February 4, 2021</name>
+
+<section anchor="issue-1-spf-rfc-4408-vs-7208"><name>Issue 1 - SPF RFC 4408 vs 7208</name>
+
+<ul>
+<li>Some rearranging of text in the &quot;SPF-Authenticated Identifiers&quot; section</li>
+<li>Clarification of the term &quot;in alignment&quot; in that same section</li>
+<li>Diffs are here - <eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/3/files">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/3/files</eref></li>
+</ul>
+</section>
+</section>
+
+<section anchor="february-10-2021"><name>February 10, 2021</name>
+
+<section anchor="issue-84-remove-erroneous-references-to-rfc3986"><name>Issue 84 - Remove Erroneous References to RFC3986</name>
+
+<ul>
+<li>Several references to RFC3986 changed to RFC7208</li>
+<li>Diffs are here - <eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/4/files">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/4/files</eref></li>
+</ul>
+</section>
+</section>
+</section>
+
 <section anchor="acknowledgements" numbered="false"><name>Acknowledgements</name>
 <t>DMARC and the draft version of this document submitted to the
 Independent Submission Editor were the result of lengthy efforts by
