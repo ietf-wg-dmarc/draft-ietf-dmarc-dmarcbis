@@ -17,14 +17,6 @@ stream = "IETF"
 status = "standard"
 
 [[author]]
-initials = "E."
-surname = "Gustafsson (ed)"
-organization = "Google"
-fullname = "Emil Gustafsson"
-  [author.address]
-   email = "emgu@google.com"
-
-[[author]]
 initials = "T."
 surname = "Herr (ed)"
 organization = "Valimail"
@@ -1009,12 +1001,16 @@ The steps are as follows:
 
 3.  Perform DKIM signature verification checks.  A single email could
     contain multiple DKIM signatures.  The results of this step are
-    passed to the remainder of the algorithm and MUST include the
-    value of the "d=" tag from each checked DKIM signature.
+    passed to the remainder of the algorithm, MUST include "pass" or
+    "fail", and if "fail", SHOULD include information about the reasons
+    for failure. The results MUST further include the value of the "d=" 
+    and "s=" tags from each checked DKIM signature.
 
 4.  Perform SPF validation checks.  The results of this step are
-    passed to the remainder of the algorithm and MUST include the
-    domain name used to complete the SPF check.
+    passed to the remainder of the algorithm, MUST include "pass" or 
+    "fail", and if "fail", SHOULD include information about the reasons 
+    for failure. The results MUST further include the domain name used 
+    to complete the SPF check.
 
 5.  Conduct Identifier Alignment checks.  With authentication checks
     and policy discovery performed, the Mail Receiver checks to see
@@ -2386,6 +2382,17 @@ would normally appear as one continuous string.
 
 ### Design Team Work Begins
 * Added change log section to document
+
+## March 8, 2021
+
+### Removed E. Gustafsson as editor
+
+### Issue 3 - Two tiny nits
+* Changes to wording in section 6.6.2, Determine Handling Policy, steps
+  3 and 4. 
+* New text documented here - https://trac.ietf.org/trac/dmarc/ticket/3#comment:6
+* No change to section 6.6.3, Policy Discovery; ticket seems to pre-date
+  current text, which appears to have answered the concern raised.
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
