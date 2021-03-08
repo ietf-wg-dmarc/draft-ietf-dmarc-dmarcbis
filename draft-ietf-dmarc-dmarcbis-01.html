@@ -1504,6 +1504,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.5.2.2">
                     <p id="section-toc.1-1.16.2.5.2.2.1"><a href="#section-c.5.2" class="xref">C.5.2</a>.  <a href="#name-issue-3-two-tiny-nits" class="xref">Issue 3 - Two tiny nits</a><a href="#section-toc.1-1.16.2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.5.2.3">
+                    <p id="section-toc.1-1.16.2.5.2.3.1"><a href="#section-c.5.3" class="xref">C.5.3</a>.  <a href="#name-issue-4-definition-of-fo-pa" class="xref">Issue 4 - Definition of "fo" parameter</a><a href="#section-toc.1-1.16.2.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -2265,8 +2268,9 @@ follows:<a href="#section-6.3-4.4.1" class="pilcrow">¶</a></p>
 Provides requested options for generation of failure reports.
 Report generators MAY choose to adhere to the requested options.
 This tag's content MUST be ignored if a "ruf" tag (below) is not
-also specified.  The value of this tag is a colon-separated list
-of characters that indicate failure reporting options as follows:<a href="#section-6.3-4.6.1" class="pilcrow">¶</a></p>
+also specified.  Failure reporting options are shown below. The value
+of this tag is either "0", "1", or a colon-separated list of the
+alphabetic characters shown in the list.<a href="#section-6.3-4.6.1" class="pilcrow">¶</a></p>
 <dl class="dlParallel" id="section-6.3-4.6.2">
               <dt id="section-6.3-4.6.2.1">0:</dt>
 <dd id="section-6.3-4.6.2.2">Generate a DMARC failure report if all underlying
@@ -4430,7 +4434,11 @@ would normally appear as one continuous string.<a href="#section-b.6-5" class="p
 <section id="section-c.5.1">
           <h3 id="name-removed-e-gustafsson-as-edi">
 <a href="#section-c.5.1" class="section-number selfRef">C.5.1. </a><a href="#name-removed-e-gustafsson-as-edi" class="section-name selfRef">Removed E. Gustafsson as editor</a>
-        </h3>
+          </h3>
+<ul>
+<li id="section-c.5.1-1.1">He withdrew as editor after a job change.<a href="#section-c.5.1-1.1" class="pilcrow">¶</a>
+</li>
+</ul>
 </section>
 </div>
 <div id="issue-3-two-tiny-nits">
@@ -4446,6 +4454,20 @@ would normally appear as one continuous string.<a href="#section-b.6-5" class="p
 </li>
 <li id="section-c.5.2-1.3">No change to section 6.6.3, Policy Discovery; ticket seems to pre-date
 current text, which appears to have answered the concern raised.<a href="#section-c.5.2-1.3" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-4-definition-of-fo-parameter">
+<section id="section-c.5.3">
+          <h3 id="name-issue-4-definition-of-fo-pa">
+<a href="#section-c.5.3" class="section-number selfRef">C.5.3. </a><a href="#name-issue-4-definition-of-fo-pa" class="section-name selfRef">Issue 4 - Definition of "fo" parameter</a>
+          </h3>
+<ul>
+<li id="section-c.5.3-1.1">Changes to wording in section 6.3, to bring clarity to use of colon-separated
+list as possible value to "fo"<a href="#section-c.5.3-1.1" class="pilcrow">¶</a>
+</li>
+<li id="section-c.5.3-1.2">New text documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/4#comment:4">https://trac.ietf.org/trac/dmarc/ticket/4#comment:4</a><a href="#section-c.5.3-1.2" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
