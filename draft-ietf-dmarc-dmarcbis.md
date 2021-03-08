@@ -702,8 +702,10 @@ fo:
 Provides requested options for generation of failure reports.
 Report generators MAY choose to adhere to the requested options.
 This tag's content MUST be ignored if a "ruf" tag (below) is not
-also specified.  The value of this tag is a colon-separated list
-of characters that indicate failure reporting options as follows:
+also specified.  Failure reporting options are shown below. The value
+of this tag is either "0", "1", or a colon-separated list of the 
+alphabetic characters shown in the list.
+
 
     0:
     :   Generate a DMARC failure report if all underlying
@@ -2386,6 +2388,7 @@ would normally appear as one continuous string.
 ## March 8, 2021
 
 ### Removed E. Gustafsson as editor
+* He withdrew as editor after a job change.
 
 ### Issue 3 - Two tiny nits
 * Changes to wording in section 6.6.2, Determine Handling Policy, steps
@@ -2393,6 +2396,11 @@ would normally appear as one continuous string.
 * New text documented here - https://trac.ietf.org/trac/dmarc/ticket/3#comment:6
 * No change to section 6.6.3, Policy Discovery; ticket seems to pre-date
   current text, which appears to have answered the concern raised.
+
+### Issue 4 - Definition of "fo" parameter
+* Changes to wording in section 6.3, to bring clarity to use of colon-separated
+  list as possible value to "fo"
+* New text documented here - https://trac.ietf.org/trac/dmarc/ticket/4#comment:4
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}

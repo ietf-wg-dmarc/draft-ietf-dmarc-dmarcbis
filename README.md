@@ -175,6 +175,7 @@ Internet-Draft                  DMARCbis                      March 2021
      C.5.  March 8, 2021 . . . . . . . . . . . . . . . . . . . . . .  56
        C.5.1.  Removed E.  Gustafsson as editor  . . . . . . . . . .  56
        C.5.2.  Issue 3 - Two tiny nits . . . . . . . . . . . . . . .  56
+       C.5.3.  Issue 4 - Definition of "fo" parameter  . . . . . . .  57
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  57
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  57
 
@@ -216,7 +217,6 @@ Internet-Draft                  DMARCbis                      March 2021
    encumbered by accounting for unauthorized use of the domain.  A
    message that fails this validation cannot reliably be associated with
    the aligned domain and its reputation.
-
 
 
 
@@ -944,9 +944,9 @@ Internet-Draft                  DMARCbis                      March 2021
       Provides requested options for generation of failure reports.
       Report generators MAY choose to adhere to the requested options.
       This tag's content MUST be ignored if a "ruf" tag (below) is not
-      also specified.  The value of this tag is a colon-separated list
-      of characters that indicate failure reporting options as follows:
-
+      also specified.  Failure reporting options are shown below.  The
+      value of this tag is either "0", "1", or a colon-separated list of
+      the alphabetic characters shown in the list.
 
 
 
@@ -3116,6 +3116,8 @@ C.5.  March 8, 2021
 
 C.5.1.  Removed E.  Gustafsson as editor
 
+   *  He withdrew as editor after a job change.
+
 C.5.2.  Issue 3 - Two tiny nits
 
    *  Changes to wording in section 6.6.2, Determine Handling Policy,
@@ -3132,12 +3134,19 @@ C.5.2.  Issue 3 - Two tiny nits
 
 
 
-
-
 Herr (ed) & Levine (ed) Expires 9 September 2021               [Page 56]
 
 Internet-Draft                  DMARCbis                      March 2021
 
+
+C.5.3.  Issue 4 - Definition of "fo" parameter
+
+   *  Changes to wording in section 6.3, to bring clarity to use of
+      colon-separated list as possible value to "fo"
+
+   *  New text documented here - https://trac.ietf.org/trac/dmarc/
+      ticket/4#comment:4 (https://trac.ietf.org/trac/dmarc/
+      ticket/4#comment:4)
 
 Acknowledgements
 
@@ -3172,15 +3181,6 @@ Authors' Addresses
    Standcore LLC
 
    Email: standards@standore.com
-
-
-
-
-
-
-
-
-
 
 
 
