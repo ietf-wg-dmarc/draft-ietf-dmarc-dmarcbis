@@ -4,9 +4,6 @@
 
 <front>
 <title abbrev="DMARCbis">Domain-based Message Authentication, Reporting, and Conformance (DMARC)</title><seriesInfo value="draft-ietf-dmarc-dmarcbis-01" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
-<author initials="E." surname="Gustafsson (ed)" fullname="Emil Gustafsson"><organization>Google</organization><address><postal><street></street>
-</postal><email>emgu@google.com</email>
-</address></author>
 <author initials="T." surname="Herr (ed)" fullname="Todd M. Herr"><organization>Valimail</organization><address><postal><street></street>
 </postal><email>todd.herr@valimail.com</email>
 </address></author>
@@ -937,12 +934,16 @@ found, or terminate DMARC evaluation otherwise.  See
 </li>
 <li><t>Perform DKIM signature verification checks.  A single email could
 contain multiple DKIM signatures.  The results of this step are
-passed to the remainder of the algorithm and MUST include the
-value of the &quot;d=&quot; tag from each checked DKIM signature.</t>
+passed to the remainder of the algorithm, MUST include &quot;pass&quot; or
+&quot;fail&quot;, and if &quot;fail&quot;, SHOULD include information about the reasons
+for failure. The results MUST further include the value of the &quot;d=&quot;
+and &quot;s=&quot; tags from each checked DKIM signature.</t>
 </li>
 <li><t>Perform SPF validation checks.  The results of this step are
-passed to the remainder of the algorithm and MUST include the
-domain name used to complete the SPF check.</t>
+passed to the remainder of the algorithm, MUST include &quot;pass&quot; or
+&quot;fail&quot;, and if &quot;fail&quot;, SHOULD include information about the reasons
+for failure. The results MUST further include the domain name used
+to complete the SPF check.</t>
 </li>
 <li><t>Conduct Identifier Alignment checks.  With authentication checks
 and policy discovery performed, the Mail Receiver checks to see
@@ -2372,6 +2373,23 @@ would normally appear as one continuous string.</t>
 
 <ul>
 <li>Added change log section to document</li>
+</ul>
+</section>
+</section>
+
+<section anchor="march-8-2021"><name>March 8, 2021</name>
+
+<section anchor="removed-e-gustafsson-as-editor"><name>Removed E. Gustafsson as editor</name>
+</section>
+
+<section anchor="issue-3-two-tiny-nits"><name>Issue 3 - Two tiny nits</name>
+
+<ul>
+<li>Changes to wording in section 6.6.2, Determine Handling Policy, steps
+3 and 4.</li>
+<li>New text documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/3#comment:6">https://trac.ietf.org/trac/dmarc/ticket/3#comment:6</eref></li>
+<li>No change to section 6.6.3, Policy Discovery; ticket seems to pre-date
+current text, which appears to have answered the concern raised.</li>
 </ul>
 </section>
 </section>
