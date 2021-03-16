@@ -1515,6 +1515,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.6.2.1">
                     <p id="section-toc.1-1.16.2.6.2.1.1"><a href="#section-c.6.1" class="xref">C.6.1</a>.  <a href="#name-issue-7-abnf-for-dmarc-reco" class="xref">Issue 7 - ABNF for dmarc-record is slightly wrong</a><a href="#section-toc.1-1.16.2.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.6.2.2">
+                    <p id="section-toc.1-1.16.2.6.2.2.1"><a href="#section-c.6.2" class="xref">C.6.2</a>.  <a href="#name-issue-26-abnf-for-pct-allow" class="xref">Issue 26 - ABNF for pct allows "999"</a><a href="#section-toc.1-1.16.2.6.2.2.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -2519,7 +2522,8 @@ follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
                     ; registered reporting formats only
 
   dmarc-percent   = "pct" *WSP "=" *WSP
-                    1*3DIGIT
+                    ( DIGIT / %x31-39 DIGIT / "100")
+                    ; 0-100
 </pre><a href="#section-6.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.4-4">"Keyword" is imported from Section 4.1.2 of <span>[<a href="#RFC5321" class="xref">RFC5321</a>]</span>.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
@@ -4494,6 +4498,19 @@ list as possible value to "fo"<a href="#section-c.5.3-1.1" class="pilcrow">¶</a
           </h3>
 <ul>
 <li id="section-c.6.1-1.1">New text documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/7">https://trac.ietf.org/trac/dmarc/ticket/7</a><a href="#section-c.6.1-1.1" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-26-abnf-for-pct-allows-999">
+<section id="section-c.6.2">
+          <h3 id="name-issue-26-abnf-for-pct-allow">
+<a href="#section-c.6.2" class="section-number selfRef">C.6.2. </a><a href="#name-issue-26-abnf-for-pct-allow" class="section-name selfRef">Issue 26 - ABNF for pct allows "999"</a>
+          </h3>
+<ul>
+<li id="section-c.6.2-1.1">Updated ABNF for dmarc-percent<a href="#section-c.6.2-1.1" class="pilcrow">¶</a>
+</li>
+<li id="section-c.6.2-1.2">New text documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/26#comment:6">https://trac.ietf.org/trac/dmarc/ticket/26#comment:6</a><a href="#section-c.6.2-1.2" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
