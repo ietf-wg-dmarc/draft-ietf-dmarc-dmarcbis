@@ -870,18 +870,18 @@ follows:
                     ; MUST be encoded; the numeric portion MUST fit
                     ; within an unsigned 64-bit integer
 
-  dmarc-record    = dmarc-version dmarc-sep
-                    [dmarc-request]
-                    [dmarc-sep dmarc-srequest]
-                    [dmarc-sep dmarc-auri]
-                    [dmarc-sep dmarc-furi]
-                    [dmarc-sep dmarc-adkim]
-                    [dmarc-sep dmarc-aspf]
-                    [dmarc-sep dmarc-ainterval]
-                    [dmarc-sep dmarc-fo]
-                    [dmarc-sep dmarc-rfmt]
-                    [dmarc-sep dmarc-percent]
-                    [dmarc-sep]
+  dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
+
+  dmarc-tag       = dmarc-request /
+                    dmarc-srequest /
+                    dmarc-auri /
+                    dmarc-furi /
+                    dmarc-adkim /
+                    dmarc-aspf /
+                    dmarc-ainterval /
+                    dmarc-fo /
+                    dmarc-rfmt /
+                    dmarc-percent
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -2401,6 +2401,11 @@ would normally appear as one continuous string.
 * Changes to wording in section 6.3, to bring clarity to use of colon-separated
   list as possible value to "fo"
 * New text documented here - https://trac.ietf.org/trac/dmarc/ticket/4#comment:4
+
+## March 16, 2021
+
+### Issue 7 - ABNF for dmarc-record is slightly wrong
+* New text documented here - https://trac.ietf.org/trac/dmarc/ticket/7
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
