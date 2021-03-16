@@ -806,18 +806,18 @@ follows:</t>
                     ; MUST be encoded; the numeric portion MUST fit
                     ; within an unsigned 64-bit integer
 
-  dmarc-record    = dmarc-version dmarc-sep
-                    [dmarc-request]
-                    [dmarc-sep dmarc-srequest]
-                    [dmarc-sep dmarc-auri]
-                    [dmarc-sep dmarc-furi]
-                    [dmarc-sep dmarc-adkim]
-                    [dmarc-sep dmarc-aspf]
-                    [dmarc-sep dmarc-ainterval]
-                    [dmarc-sep dmarc-fo]
-                    [dmarc-sep dmarc-rfmt]
-                    [dmarc-sep dmarc-percent]
-                    [dmarc-sep]
+  dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
+
+  dmarc-tag       = dmarc-request /
+                    dmarc-srequest /
+                    dmarc-auri /
+                    dmarc-furi /
+                    dmarc-adkim /
+                    dmarc-aspf /
+                    dmarc-ainterval /
+                    dmarc-fo /
+                    dmarc-rfmt /
+                    dmarc-percent
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -2404,6 +2404,16 @@ current text, which appears to have answered the concern raised.</li>
 <li>Changes to wording in section 6.3, to bring clarity to use of colon-separated
 list as possible value to &quot;fo&quot;</li>
 <li>New text documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/4#comment:4">https://trac.ietf.org/trac/dmarc/ticket/4#comment:4</eref></li>
+</ul>
+</section>
+</section>
+
+<section anchor="march-16-2021"><name>March 16, 2021</name>
+
+<section anchor="issue-7-abnf-for-dmarc-record-is-slightly-wrong"><name>Issue 7 - ABNF for dmarc-record is slightly wrong</name>
+
+<ul>
+<li>New text documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/7">https://trac.ietf.org/trac/dmarc/ticket/7</eref></li>
 </ul>
 </section>
 </section>
