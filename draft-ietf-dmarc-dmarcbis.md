@@ -917,7 +917,8 @@ follows:
                     ; registered reporting formats only
 
   dmarc-percent   = "pct" *WSP "=" *WSP
-                    1*3DIGIT
+                    ( DIGIT / %x31-39 DIGIT / "100")
+                    ; 0-100
 ~~~
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
@@ -2406,6 +2407,10 @@ would normally appear as one continuous string.
 
 ### Issue 7 - ABNF for dmarc-record is slightly wrong
 * New text documented here - https://trac.ietf.org/trac/dmarc/ticket/7
+
+### Issue 26 - ABNF for pct allows "999"
+* Updated ABNF for dmarc-percent
+* New text documented here - https://trac.ietf.org/trac/dmarc/ticket/26#comment:6
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}

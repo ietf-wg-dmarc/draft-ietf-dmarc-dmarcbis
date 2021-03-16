@@ -853,7 +853,8 @@ follows:</t>
                     ; registered reporting formats only
 
   dmarc-percent   = &quot;pct&quot; *WSP &quot;=&quot; *WSP
-                    1*3DIGIT
+                    ( DIGIT / %x31-39 DIGIT / &quot;100&quot;)
+                    ; 0-100
 </artwork>
 <t>&quot;Keyword&quot; is imported from Section 4.1.2 of <xref target="RFC5321"></xref>.</t>
 <t>A size limitation in a dmarc-uri, if provided, is interpreted as a
@@ -2414,6 +2415,14 @@ list as possible value to &quot;fo&quot;</li>
 
 <ul>
 <li>New text documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/7">https://trac.ietf.org/trac/dmarc/ticket/7</eref></li>
+</ul>
+</section>
+
+<section anchor="issue-26-abnf-for-pct-allows-999"><name>Issue 26 - ABNF for pct allows &quot;999&quot;</name>
+
+<ul>
+<li>Updated ABNF for dmarc-percent</li>
+<li>New text documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/26#comment:6">https://trac.ietf.org/trac/dmarc/ticket/26#comment:6</eref></li>
 </ul>
 </section>
 </section>
