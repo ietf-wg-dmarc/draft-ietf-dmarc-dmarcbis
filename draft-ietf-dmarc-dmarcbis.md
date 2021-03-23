@@ -2412,6 +2412,12 @@ would normally appear as one continuous string.
 * Updated ABNF for dmarc-percent
 * New text documented here - https://trac.ietf.org/trac/dmarc/ticket/26#comment:6
 
+## March 23, 2021
+
+### Issue 75 - Using wording alternatives to 'disposition', 'dispose', and the like
+* Changed disposition/dispose to "handling"
+* Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/75#comment:3
+
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 

@@ -69,7 +69,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   5
      2.1.  High-Level Goals  . . . . . . . . . . . . . . . . . . . .   5
-     2.2.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   6
+     2.2.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   5
      2.3.  Scalability . . . . . . . . . . . . . . . . . . . . . . .   6
      2.4.  Anti-Phishing . . . . . . . . . . . . . . . . . . . . . .   6
    3.  Terminology and Definitions . . . . . . . . . . . . . . . . .   7
@@ -178,7 +178,10 @@ Internet-Draft                  DMARCbis                      March 2021
      C.6.  March 16, 2021  . . . . . . . . . . . . . . . . . . . . .  57
        C.6.1.  Issue 7 - ABNF for dmarc-record is slightly wrong . .  57
        C.6.2.  Issue 26 - ABNF for pct allows "999"  . . . . . . . .  57
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  57
+     C.7.  March 23, 2021  . . . . . . . . . . . . . . . . . . . . .  57
+       C.7.1.  Issue 75 - Using wording alternatives to 'disposition',
+               'dispose', and the like . . . . . . . . . . . . . . .  57
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  58
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  58
 
 1.  Introduction
@@ -205,27 +208,6 @@ Internet-Draft                  DMARCbis                      March 2021
    (a.k.a., relaxed alignment) or they are identical (a.k.a., strict
    alignment).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 4]
-
-Internet-Draft                  DMARCbis                      March 2021
-
-
    A DMARC pass result indicates only that the RFC5322.From domain has
    been authenticated in that message; there is no explicit or implied
    value assertion attributed to a message that receives such a verdict.
@@ -236,6 +218,14 @@ Internet-Draft                  DMARCbis                      March 2021
    organization supporting DMARC, a message that passes validation is
    part of a message stream that is reliably associated with the domain
    owner.  Therefore reputation assessment of that stream by the mail-
+
+
+
+Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 4]
+
+Internet-Draft                  DMARCbis                      March 2021
+
+
    receiving organization does not need to be encumbered by accounting
    for unauthorized use of the domain.  A message that fails this
    validation cannot reliably be associated with the aligned domain and
@@ -274,14 +264,6 @@ Internet-Draft                  DMARCbis                      March 2021
 
    *  Reduce the amount of successfully delivered spoofed email.
 
-
-
-
-Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 5]
-
-Internet-Draft                  DMARCbis                      March 2021
-
-
    *  Work at Internet scale.
 
 2.2.  Out of Scope
@@ -291,6 +273,14 @@ Internet-Draft                  DMARCbis                      March 2021
 
    *  different treatment of messages that are not authenticated versus
       those that fail authentication;
+
+
+
+
+Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 5]
+
+Internet-Draft                  DMARCbis                      March 2021
+
 
    *  evaluation of anything other than RFC5322.From;
 
@@ -330,6 +320,16 @@ Internet-Draft                  DMARCbis                      March 2021
    transactions).  One of the primary uses of this kind of spoofed mail
    is phishing (enticing users to provide information by pretending to
    be the legitimate service requesting the information).  Thus, DMARC
+   is significantly informed by ongoing efforts to enact large-scale,
+   Internet-wide anti-phishing measures.
+
+   Although DMARC can only be used to combat specific forms of exact-
+   domain spoofing directly, the DMARC mechanism has been found to be
+   useful in the creation of reliable and defensible message streams.
+
+
+
+
 
 
 
@@ -337,13 +337,6 @@ Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 6]
 
 Internet-Draft                  DMARCbis                      March 2021
 
-
-   is significantly informed by ongoing efforts to enact large-scale,
-   Internet-wide anti-phishing measures.
-
-   Although DMARC can only be used to combat specific forms of exact-
-   domain spoofing directly, the DMARC mechanism has been found to be
-   useful in the creation of reliable and defensible message streams.
 
    DMARC does not attempt to solve all problems with spoofed or
    otherwise fraudulent email.  In particular, it does not address the
@@ -386,6 +379,13 @@ Internet-Draft                  DMARCbis                      March 2021
       Owners range from complex, globally distributed organizations, to
       service providers working on behalf of non-technical clients, to
       individuals responsible for maintaining personal domains.  This
+      specification uses this term as analogous to an Administrative
+      Management Domain as defined in [RFC5598].  It can also refer to
+      delegates, such as Report Receivers, when those are outside of
+      their immediate management domain.
+
+
+
 
 
 
@@ -393,11 +393,6 @@ Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 7]
 
 Internet-Draft                  DMARCbis                      March 2021
 
-
-      specification uses this term as analogous to an Administrative
-      Management Domain as defined in [RFC5598].  It can also refer to
-      delegates, such as Report Receivers, when those are outside of
-      their immediate management domain.
 
    Identifier Alignment:  When the domain in the RFC5322.From address
       matches a domain validated by SPF or DKIM (or both), it has
@@ -442,6 +437,11 @@ Internet-Draft                  DMARCbis                      March 2021
    the message and render some or all of this header field's content to
    end users.
 
+   Thus, this field is the one used by end users to identify the source
+   of the message and therefore is a prime target for abuse.  Many high-
+   profile email sources, such as email service providers, require that
+   the sending agent have authenticated before email can be generated.
+   Thus, for these mailboxes, the mechanism described in this document
 
 
 
@@ -450,11 +450,6 @@ Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 8]
 Internet-Draft                  DMARCbis                      March 2021
 
 
-   Thus, this field is the one used by end users to identify the source
-   of the message and therefore is a prime target for abuse.  Many high-
-   profile email sources, such as email service providers, require that
-   the sending agent have authenticated before email can be generated.
-   Thus, for these mailboxes, the mechanism described in this document
    provides recipient end users with strong evidence that the message
    was indeed originated by the agent they associate with that mailbox,
    if the end user knows that these various protections have been
@@ -498,6 +493,11 @@ Internet-Draft                  DMARCbis                      March 2021
    To illustrate, in relaxed mode, if a validated DKIM signature
    successfully verifies with a "d=" domain of "example.com", and the
    RFC5322.From address is "alerts@news.example.com", the DKIM "d="
+   domain and the RFC5322.From domain are considered to be "in
+   alignment".  In strict mode, this test would fail, since the "d="
+   domain does not exactly match the FQDN of the address.
+
+
 
 
 
@@ -505,10 +505,6 @@ Herr (ed) & Levine (ed) Expires 24 September 2021               [Page 9]
 
 Internet-Draft                  DMARCbis                      March 2021
 
-
-   domain and the RFC5322.From domain are considered to be "in
-   alignment".  In strict mode, this test would fail, since the "d="
-   domain does not exactly match the FQDN of the address.
 
    However, a DKIM signature bearing a value of "d=com" would never
    allow an "in alignment" result, as "com" should appear on all public
@@ -554,6 +550,10 @@ Internet-Draft                  DMARCbis                      March 2021
    authentication mechanisms, the extensions will need to allow for
    domain identifier extraction so that alignment with the RFC5322.From
    domain can be verified.
+
+
+
+
 
 
 
@@ -3175,6 +3175,25 @@ C.6.2.  Issue 26 - ABNF for pct allows "999"
       ticket/26#comment:6 (https://trac.ietf.org/trac/dmarc/
       ticket/26#comment:6)
 
+C.7.  March 23, 2021
+
+C.7.1.  Issue 75 - Using wording alternatives to 'disposition',
+        'dispose', and the like
+
+   *  Changed disposition/dispose to "handling"
+
+   *  Diffs documented here - https://trac.ietf.org/trac/dmarc/
+      ticket/75#comment:3 (https://trac.ietf.org/trac/dmarc/
+      ticket/75#comment:3)
+
+
+
+
+Herr (ed) & Levine (ed) Expires 24 September 2021              [Page 57]
+
+Internet-Draft                  DMARCbis                      March 2021
+
+
 Acknowledgements
 
    DMARC and the draft version of this document submitted to the
@@ -3186,14 +3205,6 @@ Acknowledgements
    LinkedIn, Microsoft, Netease, PayPal, ReturnPath, The Trusted Domain
    Project, and Yahoo!.  Although the contributors and supporters are
    too numerous to mention, notable individual contributions were made
-
-
-
-Herr (ed) & Levine (ed) Expires 24 September 2021              [Page 57]
-
-Internet-Draft                  DMARCbis                      March 2021
-
-
    by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
    Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
    The contributors would also like to recognize the invaluable input
@@ -3216,17 +3227,6 @@ Authors' Addresses
    Standcore LLC
 
    Email: standards@standore.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 

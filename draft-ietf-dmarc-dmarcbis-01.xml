@@ -2426,6 +2426,17 @@ list as possible value to &quot;fo&quot;</li>
 </ul>
 </section>
 </section>
+
+<section anchor="march-23-2021"><name>March 23, 2021</name>
+
+<section anchor="issue-75-using-wording-alternatives-to-disposition-dispose-and-the-like"><name>Issue 75 - Using wording alternatives to 'disposition', 'dispose', and the like</name>
+
+<ul>
+<li>Changed disposition/dispose to &quot;handling&quot;</li>
+<li>Diffs documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/75#comment:3">https://trac.ietf.org/trac/dmarc/ticket/75#comment:3</eref></li>
+</ul>
+</section>
+</section>
 </section>
 
 <section anchor="acknowledgements" numbered="false"><name>Acknowledgements</name>
