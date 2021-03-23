@@ -728,14 +728,15 @@ alphabetic characters shown in the list.
        reporting is described in [@!RFC6652].
 
 p:
-:   Requested Mail Receiver policy (plain-text; REQUIRED for policy
+:   Requested Mail Receiver policy (plain-text; RECOMMENDED for policy
 records).  Indicates the policy to be enacted by the Receiver at
 the request of the Domain Owner.  Policy applies to the domain
 queried and to subdomains, unless subdomain policy is explicitly
-described using the "sp" tag.  This tag is mandatory for policy
-records only, but not for third-party reporting records (as discussed
-in the document(s) that discuss DMARC reporting in more detail). Possible
-values are as follows:
+described using the "sp" tag.  This tag is applicable for policy
+records only, and has no meaning for third-party reporting records 
+(as discussed in the document(s) that discuss DMARC reporting in more 
+detail). If the tag is not present in a policy record, it is assumed to
+be "p=none" as per (#policy-discovery). Possible values are as follows:
 
     none:
     :   The Domain Owner requests no specific action be taken
@@ -753,6 +754,7 @@ values are as follows:
         email that fails the DMARC mechanism check.  Rejection SHOULD
         occur during the SMTP transaction.  See (#rejecting-messages) for some
         discussion of SMTP rejection methods and their implications.
+
 
 pct:
 :   (plain-text integer between 0 and 100, inclusive; OPTIONAL;
@@ -2417,6 +2419,10 @@ would normally appear as one continuous string.
 ### Issue 75 - Using wording alternatives to 'disposition', 'dispose', and the like
 * Changed disposition/dispose to "handling"
 * Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/75#comment:3
+
+### Issue 72 - Remove absolute requirement for p= tag in DMARC record
+* Changed from REQUIRED to RECOMMENDED, noted default with forward reference to discussion
+* Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/72#comment:3
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
