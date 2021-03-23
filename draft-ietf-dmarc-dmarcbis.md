@@ -42,7 +42,7 @@ Reporting, and Conformance (DMARC) protocol.
 DMARC permits the owner of an author's domain name to enable validation 
 of the domain's use, to indicate the implication of failed validation, 
 and to request reports about use of the domain name. Mail receiving 
-organizations can use this information when evaluating disposition 
+organizations can use this information when evaluating handling 
 choices for incoming mail.
 
 This document obsoletes RFC 7489.
@@ -75,7 +75,7 @@ A DMARC pass result indicates only that the RFC5322.From domain has been
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
 that performs a DMARC validation check on inbound mail can choose to use the result
-and the published assessment by the originating domain for message disposition
+and the published assessment by the originating domain for message handling
 to inform its mail handling decision for that message.  For a mail-receiving 
 organization supporting DMARC, a message that passes validation is part of a 
 message stream that is reliably associated with the domain owner. Therefore 
@@ -434,7 +434,7 @@ DMARC's filtering function is based on whether the RFC5322.From field
 domain is aligned with (matches) an authenticated domain name from
 SPF or DKIM.  When a DMARC policy is published for the domain name
 found in the RFC5322.From field, and that domain name is not
-validated through SPF or DKIM, the disposition of that message can be
+validated through SPF or DKIM, the handling of that message can be
 affected by that DMARC policy when delivered to a participating
 receiver.
 
@@ -586,7 +586,7 @@ Receivers.
 A Domain Owner advertises DMARC participation of one or more of its
 domains by adding a DNS TXT record (described in (#dmarc-policy-record)) to
 those domains.  In doing so, Domain Owners make specific requests of
-Mail Receivers regarding the disposition of messages purporting to be
+Mail Receivers regarding the handling of messages purporting to be
 from one of the Domain Owner's domains and the provision of feedback
 about those messages.
 
@@ -1025,7 +1025,7 @@ The steps are as follows:
     mechanism check failures.
 
 6.  Apply policy.  Emails that fail the DMARC mechanism check are
-    disposed of in accordance with the discovered DMARC policy of the
+    handled in accordance with the discovered DMARC policy of the
     Domain Owner.  See (#general-record-format) for details.
 
 Heuristics applied in the absence of use by a Domain Owner of either
@@ -1162,7 +1162,7 @@ that are the result of local policy.  If local policy information is
 exposed, abusers can gain insight into the effectiveness and delivery
 rates of spam campaigns.
 
-Final disposition of a message is always a matter of local policy.
+Final handling of a message is always a matter of local policy.
 An operator that wishes to favor DMARC policy over SPF policy, for
 example, will disregard the SPF policy, since enacting an
 SPF-determined rejection prevents evaluation of DKIM; DKIM might
@@ -1180,7 +1180,7 @@ proscribed.
 
 To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" SHOULD NOT
-modify existing mail disposition processing.
+modify existing mail handling processes.
 
 Mail Receivers SHOULD also implement reporting instructions of DMARC,
 even in the absence of a request for DKIM reporting [@!RFC6651] or
