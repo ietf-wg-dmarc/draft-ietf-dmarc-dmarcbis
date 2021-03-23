@@ -13,7 +13,7 @@ Reporting, and Conformance (DMARC) protocol.
        DMARC permits the owner of an author's domain name to enable validation
 of the domain's use, to indicate the implication of failed validation,
 and to request reports about use of the domain name. Mail receiving
-organizations can use this information when evaluating disposition
+organizations can use this information when evaluating handling
 choices for incoming mail. 
        This document obsoletes RFC 7489. 
     " name="description">
@@ -1112,7 +1112,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 17 September 2021</td>
+<td class="center">Expires 24 September 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1128,12 +1128,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-03-16" class="published">16 March 2021</time>
+<time datetime="2021-03-23" class="published">23 March 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-09-17">17 September 2021</time></dd>
+<dd class="expires"><time datetime="2021-09-24">24 September 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1155,7 +1155,7 @@ Reporting, and Conformance (DMARC) protocol.<a href="#section-abstract-1" class=
 <p id="section-abstract-2">DMARC permits the owner of an author's domain name to enable validation
 of the domain's use, to indicate the implication of failed validation,
 and to request reports about use of the domain name. Mail receiving
-organizations can use this information when evaluating disposition
+organizations can use this information when evaluating handling
 choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document obsoletes RFC 7489.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
@@ -1178,7 +1178,7 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 17 September 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 September 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1520,6 +1520,14 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 </li>
 </ul>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.7">
+                <p id="section-toc.1-1.16.2.7.1"><a href="#section-c.7" class="xref">C.7</a>.  <a href="#name-march-23-2021" class="xref">March 23, 2021</a><a href="#section-toc.1-1.16.2.7.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.7.2.1">
+                    <p id="section-toc.1-1.16.2.7.2.1.1"><a href="#section-c.7.1" class="xref">C.7.1</a>.  <a href="#name-issue-75-using-wording-alte" class="xref">Issue 75 - Using wording alternatives to 'disposition', 'dispose', and the like</a><a href="#section-toc.1-1.16.2.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17">
@@ -1558,7 +1566,7 @@ identical (a.k.a., strict alignment).<a href="#section-1-3" class="pilcrow">¶</
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
 that performs a DMARC validation check on inbound mail can choose to use the result
-and the published assessment by the originating domain for message disposition
+and the published assessment by the originating domain for message handling
 to inform its mail handling decision for that message.  For a mail-receiving
 organization supporting DMARC, a message that passes validation is part of a
 message stream that is reliably associated with the domain owner. Therefore
@@ -1980,7 +1988,7 @@ the Mail Receiver during the SMTP session, via the DNS.<a href="#section-4.2-1" 
 domain is aligned with (matches) an authenticated domain name from
 SPF or DKIM.  When a DMARC policy is published for the domain name
 found in the RFC5322.From field, and that domain name is not
-validated through SPF or DKIM, the disposition of that message can be
+validated through SPF or DKIM, the handling of that message can be
 affected by that DMARC policy when delivered to a participating
 receiver.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">It is important to note that the authentication mechanisms employed
@@ -2157,7 +2165,7 @@ Receivers.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">A Domain Owner advertises DMARC participation of one or more of its
 domains by adding a DNS TXT record (described in <a href="#dmarc-policy-record" class="xref">Section 6.1</a>) to
 those domains.  In doing so, Domain Owners make specific requests of
-Mail Receivers regarding the disposition of messages purporting to be
+Mail Receivers regarding the handling of messages purporting to be
 from one of the Domain Owner's domains and the provision of feedback
 about those messages.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <p id="section-6-3">A Domain Owner may choose not to participate in DMARC evaluation by
@@ -2650,7 +2658,7 @@ mechanism check failures.<a href="#section-6.6.2-3.5.1" class="pilcrow">¶</a></
 </li>
 <li id="section-6.6.2-3.6">
               <p id="section-6.6.2-3.6.1">Apply policy.  Emails that fail the DMARC mechanism check are
-disposed of in accordance with the discovered DMARC policy of the
+handled in accordance with the discovered DMARC policy of the
 Domain Owner.  See <a href="#general-record-format" class="xref">Section 6.3</a> for details.<a href="#section-6.6.2-3.6.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
@@ -2807,7 +2815,7 @@ policy.  They are not required to report reject or quarantine actions
 that are the result of local policy.  If local policy information is
 exposed, abusers can gain insight into the effectiveness and delivery
 rates of spam campaigns.<a href="#section-6.7-3" class="pilcrow">¶</a></p>
-<p id="section-6.7-4">Final disposition of a message is always a matter of local policy.
+<p id="section-6.7-4">Final handling of a message is always a matter of local policy.
 An operator that wishes to favor DMARC policy over SPF policy, for
 example, will disregard the SPF policy, since enacting an
 SPF-determined rejection prevents evaluation of DKIM; DKIM might
@@ -2823,7 +2831,7 @@ terms of handling of the message.  However, such deviation is not
 proscribed.<a href="#section-6.7-5" class="pilcrow">¶</a></p>
 <p id="section-6.7-6">To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" SHOULD NOT
-modify existing mail disposition processing.<a href="#section-6.7-6" class="pilcrow">¶</a></p>
+modify existing mail handling processes.<a href="#section-6.7-6" class="pilcrow">¶</a></p>
 <p id="section-6.7-7">Mail Receivers SHOULD also implement reporting instructions of DMARC,
 even in the absence of a request for DKIM reporting <span>[<a href="#RFC6651" class="xref">RFC6651</a>]</span> or
 SPF reporting <span>[<a href="#RFC6652" class="xref">RFC6652</a>]</span>.  Furthermore, the presence of such requests
@@ -4511,6 +4519,26 @@ list as possible value to "fo"<a href="#section-c.5.3-1.1" class="pilcrow">¶</a
 <li id="section-c.6.2-1.1">Updated ABNF for dmarc-percent<a href="#section-c.6.2-1.1" class="pilcrow">¶</a>
 </li>
 <li id="section-c.6.2-1.2">New text documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/26#comment:6">https://trac.ietf.org/trac/dmarc/ticket/26#comment:6</a><a href="#section-c.6.2-1.2" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+</section>
+</div>
+<div id="march-23-2021">
+<section id="section-c.7">
+        <h2 id="name-march-23-2021">
+<a href="#section-c.7" class="section-number selfRef">C.7. </a><a href="#name-march-23-2021" class="section-name selfRef">March 23, 2021</a>
+        </h2>
+<div id="issue-75-using-wording-alternatives-to-disposition-dispose-and-the-like">
+<section id="section-c.7.1">
+          <h3 id="name-issue-75-using-wording-alte">
+<a href="#section-c.7.1" class="section-number selfRef">C.7.1. </a><a href="#name-issue-75-using-wording-alte" class="section-name selfRef">Issue 75 - Using wording alternatives to 'disposition', 'dispose', and the like</a>
+          </h3>
+<ul>
+<li id="section-c.7.1-1.1">Changed disposition/dispose to "handling"<a href="#section-c.7.1-1.1" class="pilcrow">¶</a>
+</li>
+<li id="section-c.7.1-1.2">Diffs documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/75#comment:3">https://trac.ietf.org/trac/dmarc/ticket/75#comment:3</a><a href="#section-c.7.1-1.2" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
