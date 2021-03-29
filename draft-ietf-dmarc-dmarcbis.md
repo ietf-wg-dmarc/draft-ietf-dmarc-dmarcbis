@@ -640,12 +640,10 @@ objects in order and parsing the result as a single string.
 mechanism uses this as the format by which a Domain Owner specifies
 the destination for the two report types that are supported.
 
-The place such URIs are specified (see (#general-record-format)) allows a list of
-these to be provided.  A report is normally sent to each listed URI
-in the order provided by the Domain Owner.  Receivers MAY impose a
-limit on the number of URIs to which they will send reports but MUST
-support the ability to send to at least two.  The list of URIs is
-separated by commas (ASCII 0x2C).
+The place such URIs are specified (see (#general-record-format)) allows
+a list of these to be provided.  The list of URIs is separated by commas
+(ASCII 0x2c).  A report is normally sent to each listed URI in the order
+provided by the Domain Owner.  
 
 Each URI can have associated with it a maximum report size that may
 be sent to it.  This is accomplished by appending an exclamation
@@ -2423,6 +2421,12 @@ would normally appear as one continuous string.
 ### Issue 72 - Remove absolute requirement for p= tag in DMARC record
 * Changed from REQUIRED to RECOMMENDED, noted default with forward reference to discussion
 * Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/72#comment:3
+
+## March 29, 2021
+
+### Issue 54 - Remove or expand limits on number of recipients per report
+* Removed limit
+* Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/54#comment:5
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
