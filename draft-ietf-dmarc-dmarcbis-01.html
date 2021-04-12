@@ -1261,6 +1261,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-flow-diagram" class="xref">Flow Diagram</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-what-does-it-mean-to-have-i" class="xref">What Does It Mean To Have Implemented DMARC?</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5">
@@ -1544,6 +1547,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.9.2.1">
                     <p id="section-toc.1-1.16.2.9.2.1.1"><a href="#section-c.9.1" class="xref">C.9.1</a>.  <a href="#name-issue-50-remove-ri-tag" class="xref">Issue 50 - Remove ri= tag</a><a href="#section-toc.1-1.16.2.9.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.9.2.2">
+                    <p id="section-toc.1-1.16.2.9.2.2.1"><a href="#section-c.9.2" class="xref">C.9.2</a>.  <a href="#name-issue-66-define-what-it-mea" class="xref">Issue 66 - Define what it means to have implemented DMARC</a><a href="#section-toc.1-1.16.2.9.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -2138,6 +2144,53 @@ receiving MTA.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
  (see <a href="#dmarc-feedback" class="xref">Section 7</a>).<a href="#section-4.3-4.10.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
+</section>
+</div>
+<div id="what-does-it-mean-to-have-implemented-dmarc">
+<section id="section-4.4">
+        <h3 id="name-what-does-it-mean-to-have-i">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-what-does-it-mean-to-have-i" class="section-name selfRef">What Does It Mean To Have Implemented DMARC?</a>
+        </h3>
+<p id="section-4.4-1">Domain owners, intermediaries, and mail receivers can all claim to
+implement DMARC, but what that means will depend on their role in the
+transmission of mail. To remove any ambiguity from the claims, this
+document specifies the following minimum criteria that must be met for
+each agent to rightly claim to be "implementing DMARC".<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">Domain Owner: To implement DMARC, a domain owner MUST configure its domain
+to request that unauthenticated mail be rejected or at least treated with
+suspicion.  This means that it MUST  publish a policy record that:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.4-3.1">Has a p tag with a value of 'quarantine' or 'reject'<a href="#section-4.4-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-3.2">Has a rua tag with at least one valid URI<a href="#section-4.4-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-3.3">If applicable, has an sp tag with a value of 'quarantine' or 'reject'<a href="#section-4.4-3.3" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.4-4">While 'none' is a syntactically valid value for both the p and sp tags,
+the practical value of either the p tag or sp tag being 'none' means that
+the domain owner is still gathering information about mail flows for the
+domain or sub-domains, and is not yet ready to commit to requesting that
+unauthenticated mail receive different handling than authenticated mail.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">Intermediary: To implement DMARC, an intermediary MUST do the following
+before passing the message to the next hop or rejecting it as appropriate:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.4-6.1">Perform DMARC validation checks on inbound mail<a href="#section-4.4-6.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-6.2">Perform validation on any ARC header sets present in the message when it arrives<a href="#section-4.4-6.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-6.3">Record the results of its authentication checks in a signed and sealed ARC header set<a href="#section-4.4-6.3" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.4-7">Mail Receiver: To implement DMARC, a mail receiver MUST do the following:<a href="#section-4.4-7" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.4-8.1">Perform DMARC validation checks on inbound mail<a href="#section-4.4-8.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-8.2">Perform validation checks on any ARC header sets present in the message when it arrives<a href="#section-4.4-8.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-8.3">Send aggregate reports to domain owners at least every 24 hours when a minimum of 100 messages with that domain in the visible From header have been seen during the reporting period<a href="#section-4.4-8.3" class="pilcrow">¶</a>
+</li>
+</ul>
 </section>
 </div>
 </section>
@@ -4615,6 +4668,17 @@ list as possible value to "fo"<a href="#section-c.5.3-1.1" class="pilcrow">¶</a
 <li id="section-c.9.1-1.1">Updated text to recommend against its usage, a la the ptr mechanism in RFC 7208<a href="#section-c.9.1-1.1" class="pilcrow">¶</a>
 </li>
 <li id="section-c.9.1-1.2">Diffs documented here - <a href="https://trac.ietf.org/trac/dmarc/ticket/50#comment:5">https://trac.ietf.org/trac/dmarc/ticket/50#comment:5</a><a href="#section-c.9.1-1.2" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-66-define-what-it-means-to-have-implemented-dmarc">
+<section id="section-c.9.2">
+          <h3 id="name-issue-66-define-what-it-mea">
+<a href="#section-c.9.2" class="section-number selfRef">C.9.2. </a><a href="#name-issue-66-define-what-it-mea" class="section-name selfRef">Issue 66 - Define what it means to have implemented DMARC</a>
+          </h3>
+<ul>
+<li id="section-c.9.2-1.1">Added text proposed in <a href="https://trac.ietf.org/trac/dmarc/ticket/66#comment:3">https://trac.ietf.org/trac/dmarc/ticket/66#comment:3</a> to Overview<a href="#section-c.9.2-1.1" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
