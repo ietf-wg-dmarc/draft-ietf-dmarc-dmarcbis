@@ -507,43 +507,6 @@ receiving MTA.</t>
 </li>
 </ol>
 </section>
-
-<section anchor="what-does-it-mean-to-have-implemented-dmarc"><name>What Does It Mean To Have Implemented DMARC?</name>
-<t>Domain owners, intermediaries, and mail receivers can all claim to
-implement DMARC, but what that means will depend on their role in the
-transmission of mail. To remove any ambiguity from the claims, this
-document specifies the following minimum criteria that must be met for
-each agent to rightly claim to be &quot;implementing DMARC&quot;.</t>
-<t>Domain Owner: To implement DMARC, a domain owner MUST configure its domain
-to request that unauthenticated mail be rejected or at least treated with
-suspicion.  This means that it MUST  publish a policy record that:</t>
-
-<ul>
-<li>Has a p tag with a value of 'quarantine' or 'reject'</li>
-<li>Has a rua tag with at least one valid URI</li>
-<li>If applicable, has an sp tag with a value of 'quarantine' or 'reject'</li>
-</ul>
-<t>While 'none' is a syntactically valid value for both the p and sp tags,
-the practical value of either the p tag or sp tag being 'none' means that
-the domain owner is still gathering information about mail flows for the
-domain or sub-domains, and is not yet ready to commit to requesting that
-unauthenticated mail receive different handling than authenticated mail.</t>
-<t>Intermediary: To implement DMARC, an intermediary MUST do the following
-before passing the message to the next hop or rejecting it as appropriate:</t>
-
-<ul>
-<li>Perform DMARC validation checks on inbound mail</li>
-<li>Perform validation on any ARC header sets present in the message when it arrives</li>
-<li>Record the results of its authentication checks in a signed and sealed ARC header set</li>
-</ul>
-<t>Mail Receiver: To implement DMARC, a mail receiver MUST do the following:</t>
-
-<ul>
-<li>Perform DMARC validation checks on inbound mail</li>
-<li>Perform validation checks on any ARC header sets present in the message when it arrives</li>
-<li>Send aggregate reports to domain owners at least every 24 hours when a minimum of 100 messages with that domain in the visible From: header have been seen during the reporting period</li>
-</ul>
-</section>
 </section>
 
 <section anchor="use-of-rfc5322-from"><name>Use of visible From: header</name>
@@ -1166,21 +1129,65 @@ quarantine and reject policies.</t>
 </section>
 
 <section anchor="minimum-implementations"><name>Minimum Implementations</name>
-<t>A minimum implementation of DMARC has the following characteristics:</t>
+<t>Existing text:</t>
 
-<ul>
-<li><t>Is able to send and/or receive reports at least daily;</t>
-</li>
-<li><t>Is able to send and/or receive reports using &quot;mailto&quot; URIs;</t>
-</li>
-<li><t>Other than in exceptional circumstances such as resource
-exhaustion, can generate or accept a report up to ten megabytes in
-size;</t>
-</li>
-<li><t>If acting as a Mail Receiver, fully implements the provisions of
-<xref target="mail-receiver-actions"></xref>.</t>
-</li>
-</ul>
+<artwork>
+A minimum implementation of DMARC has the following characteristics:
+
+*  Is able to send and/or receive reports at least daily;
+
+*  Is able to send and/or receive reports using &quot;mailto&quot; URIs;
+
+*  Other than in exceptional circumstances such as resource
+   exhaustion, can generate or accept a report up to ten megabytes in
+   size;
+
+*  If acting as a Mail Receiver, fully implements the provisions of
+   (#mail-receiver-actions).
+
+</artwork>
+<t>Suggested replacement text for above section:</t>
+
+<artwork>
+Domain owners, intermediaries, and mail receivers can all claim to
+implement DMARC, but what that means will depend on their role in the
+transmission of mail. To remove any ambiguity from the claims, this
+document specifies the following minimum criteria that must be met for
+each agent to rightly claim to be &quot;implementing DMARC&quot;.
+
+Domain Owner: To implement DMARC, a domain owner MUST configure its domain
+to request that unauthenticated mail be rejected or at least treated with
+suspicion.  This means that it MUST  publish a policy record that:
+
+* Has a p tag with a value of 'quarantine' or 'reject'
+* Has a rua tag with at least one valid URI
+* If applicable, has an sp tag with a value of 'quarantine' or 'reject'
+
+While 'none' is a syntactically valid value for both the p and sp tags,
+the practical value of either the p tag or sp tag being 'none' means that
+the domain owner is still gathering information about mail flows for the
+domain or sub-domains, and is not yet ready to commit to requesting that
+unauthenticated mail receive different handling than authenticated mail.
+
+Intermediary: To implement DMARC, an intermediary MUST do the following
+before passing the message to the next hop or rejecting it as appropriate:
+
+* Perform DMARC validation checks on inbound mail
+* Perform validation on any ARC header sets present in the message when
+  it arrives
+* Record the results of its authentication checks in a signed and sealed
+  ARC header set 
+
+Mail Receiver: To implement DMARC, a mail receiver MUST do the following:
+
+* Perform DMARC validation checks on inbound mail
+* Perform validation checks on any ARC header sets present in the message
+  when it arrives
+* Send aggregate reports to domain owners at least every 24 hours when a
+  minimum of 100 messages with that domain in the visible From: header
+  have been seen during the reporting period
+
+</artwork>
 </section>
 
 <section anchor="other-topics"><name>Other Topics</name>
@@ -2511,7 +2518,8 @@ list as possible value to &quot;fo&quot;</li>
 <section anchor="issue-66-define-what-it-means-to-have-implemented-dmarc"><name>Issue 66 - Define what it means to have implemented DMARC</name>
 
 <ul>
-<li>Added text proposed in <eref target="https://trac.ietf.org/trac/dmarc/ticket/66#comment:3">https://trac.ietf.org/trac/dmarc/ticket/66#comment:3</eref> to Overview</li>
+<li>Proposed new text (taken straight from <eref target="https://trac.ietf.org/trac/dmarc/ticket/66">https://trac.ietf.org/trac/dmarc/ticket/66</eref>
+as replacement for current text in &quot;Minimum Implemenatations&quot;</li>
 </ul>
 </section>
 
