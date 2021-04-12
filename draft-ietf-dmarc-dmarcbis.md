@@ -57,7 +57,7 @@ https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis
 
 The Sender Policy Framework ([@!RFC7208]) and DomainKeys Identified
 Mail ([@!RFC6376]) protocols provide domain-level authentication which
-is not directly associated with the domain in the visible From: header, 
+is not directly associated with the RFC5322.From domain, 
 and DMARC builds on those protocols. Using DMARC, Domain Owners that originate 
 email can publish a DNS TXT record with their email authentication policies, 
 preferred handling for mail that fails authentication checks, and request 
@@ -66,12 +66,12 @@ reports about email use of the domain name.
 As with SPF and DKIM, DMARC authentication checks result in verdicts of
 "pass" or "fail". A DMARC pass verdict requires not only that SPF or DKIM
 pass for the message in question, but also that the domain validated by the
-SPF or DKIM check is aligned with the domain in the visible From: header. In
+SPF or DKIM check is aligned with the RFC5322.From domain. In
 the DMARC protocol, two domains are said to be "in alignment" if they have
 the same Organizational Domain (a.k.a., relaxed alignment) or they are
 identical (a.k.a., strict alignment).
 
-A DMARC pass result indicates only that the domain in the visible From: header has been
+A DMARC pass result indicates only that the RFC5322.From domain has been
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
 that performs a DMARC validation check on inbound mail can choose to use the result
@@ -126,7 +126,7 @@ initial version of this work.  These include the following:
 *  different treatment of messages that are not authenticated versus
    those that fail authentication;
 
-*  evaluation of anything other than visible From: header;
+*  evaluation of anything other than RFC5322.From header field;
 
 *  multiple reporting formats;
 
@@ -174,7 +174,7 @@ useful in the creation of reliable and defensible message streams.
 DMARC does not attempt to solve all problems with spoofed or
 otherwise fraudulent email.  In particular, it does not address the
 use of visually similar domain names ("cousin domains") or abuse of
-the visible From: header human-readable <display-name>.
+the RFC5322.From human-readable <display-name>.
 
 #  Terminology and Definitions {#terminology}
 
@@ -257,12 +257,12 @@ RFC5321.MailFrom (MAIL FROM) portion of [@!RFC5322] or the RFC5321.EHLO/
 HELO domain, or both.  These may be different domains, and they are
 typically not visible to the end user.
 
-DMARC authenticates use of the visible From: header domain by requiring that
+DMARC authenticates use of the RFC5322.From domain by requiring that
 it match (be aligned with) an Authenticated Identifier.  The
-visible From: header domain was selected as the central identity of the DMARC
+RFC5322.From domain was selected as the central identity of the DMARC
 mechanism because it is a required message header field and therefore
 guaranteed to be present in compliant messages, and most Mail User
-Agents (MUAs) represent the visible From: header field as the originator of
+Agents (MUAs) represent the RFC5322.From header field as the originator of
 the message and render some or all of this header field's content to
 end users.
 
@@ -281,7 +281,7 @@ manner, per [@!RFC4343].
 
 It is important to note that Identifier Alignment cannot occur with a
 message that is not valid per [@!RFC5322], particularly one with a
-malformed, absent, or repeated visible From: header field, since in that case
+malformed, absent, or repeated RFC5322.From header field, since in that case
 there is no reliable way to determine a DMARC policy that applies to
 the message.  Accordingly, DMARC operation is predicated on the input
 being a valid RFC5322 message object, and handling of such
@@ -293,7 +293,7 @@ as input yields authenticated domains as their outputs when they
 succeed.  From the perspective of DMARC, each can be operated in a
 "strict" mode or a "relaxed" mode.  A Domain Owner would normally
 select strict mode if it wanted Mail Receivers to apply DMARC
-processing only to messages bearing an visible From: header domain exactly
+processing only to messages bearing an RFC5322.From domain exactly
 matching the domains those mechanisms will verify.  Relaxed mode can
 be used when the operator also wishes to affect message flows bearing
 subdomains of the verified domains.
@@ -306,15 +306,15 @@ related to DKIM's "simple" and "relaxed" canonicalization modes.)
 
 In relaxed mode, the Organizational Domains of both the [@!RFC6376]-
 authenticated signing domain (taken from the value of the "d=" tag in
-the signature) and that of the visible From: header domain must be equal if
+the signature) and that of the RFC5322.From domain must be equal if
 the identifiers are to be considered aligned.  In strict mode, only
 an exact match between both of the Fully Qualified Domain Names
 (FQDNs) is considered to produce Identifier Alignment.
 
 To illustrate, in relaxed mode, if a validated DKIM signature
 successfully verifies with a "d=" domain of "example.com", and the
-visible From: header address is "alerts@news.example.com", the DKIM "d="
-domain and the visible From: header domain are considered to be "in
+RFC5322.From address is "alerts@news.example.com", the DKIM "d="
+domain and the RFC5322.From domain are considered to be "in
 alignment".  In strict mode, this test would fail, since the "d="
 domain does not exactly match the FQDN of the address.
 
@@ -337,16 +337,16 @@ and verifies.
 DMARC permits Identifier Alignment, based on the result of an SPF
 authentication, to be strict or relaxed.
 
-In relaxed mode, the [@!RFC7208]-authenticated domain and visible From: header
+In relaxed mode, the [@!RFC7208]-authenticated domain and RFC5322.From
 domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.
 
 For example, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
-portion of the visible From: header field contains "payments@example.com",
+portion of the RFC5322.From header field contains "payments@example.com",
 the Authenticated RFC5321.MailFrom domain identifier and the
-visible From: header domain are considered to be "in alignment" in relaxed
+RFC5322.From domain are considered to be "in alignment" in relaxed
 mode, but not in strict mode. In order for the two identifiers to
 be considered "in alignment" in strict mode, the domain parts would
 have to be identical.
@@ -361,7 +361,7 @@ but also on a separate check of the "HELO" identity.
 
 If in the future DMARC is extended to include the use of other
 authentication mechanisms, the extensions will need to allow for
-domain identifier extraction so that alignment with the visible From: header
+domain identifier extraction so that alignment with the RFC5322.From
 domain can be verified.
 
 ##  Organizational Domain {#organizational-domain}
@@ -430,10 +430,10 @@ are supported in this version of DMARC:
 DMARC policies are published by the Domain Owner, and retrieved by
 the Mail Receiver during the SMTP session, via the DNS.
 
-DMARC's filtering function is based on whether the visible From: header field
+DMARC's filtering function is based on whether the RFC5322.From 
 domain is aligned with (matches) an authenticated domain name from
 SPF or DKIM.  When a DMARC policy is published for the domain name
-found in the visible From: header field, and that domain name is not
+found in the RFC5322.From header field, and that domain name is not
 validated through SPF or DKIM, the handling of that message can be
 affected by that DMARC policy when delivered to a participating
 receiver.
@@ -551,10 +551,10 @@ In essence, the steps are as follows:
      the message delivery session to be used in providing feedback
      (see (#dmarc-feedback)).
 
-#   Use of visible From: header {#use-of-rfc5322-from}
+#   Use of RFC5322.From {#use-of-rfc5322-from}
 
 One of the most obvious points of security scrutiny for DMARC is the
-choice to focus on an identifier, namely the visible From: header address,
+choice to focus on an identifier, namely the RFC5322.From address,
 which is part of a body of data that has been trivially forged
 throughout the history of email.
 
@@ -569,7 +569,7 @@ to do in this context:
    manner strongly suggesting those data as reflective of the true
    originator of the message.
 
-The absence of a single, properly formed visible From: header field renders
+The absence of a single, properly formed RFC5322.From header field renders
 the message invalid.  Handling of such a message is outside of the
 scope of this specification.
 
@@ -601,7 +601,7 @@ an SPF pass result.
 A Mail Receiver implementing the DMARC mechanism SHOULD make a
 best-effort attempt to adhere to the Domain Owner's published DMARC
 policy when a message fails the DMARC test.  Since email streams can
-be complicated (due to forwarding, existing visible From: header
+be complicated (due to forwarding, existing RFC5322.From
 domain-spoofing services, etc.), Mail Receivers MAY deviate from a
 Domain Owner's published policy during message processing and SHOULD
 make available the fact of and reason for the deviation to the Domain
@@ -614,7 +614,7 @@ Domain Owner DMARC preferences are stored as DNS TXT records in
 subdomains named "\_dmarc".  For example, the Domain Owner of
 "example.com" would post DMARC preferences in a TXT record at
 "\_dmarc.example.com".  Similarly, a Mail Receiver wishing to query
-for DMARC preferences regarding mail with an visible From: header domain of
+for DMARC preferences regarding mail with an RFC5322.From domain of
 "example.com" would issue a TXT query to the DNS for the subdomain of
 "\_dmarc.example.com".  The DNS-located DMARC preference data will
 hereafter be called the "DMARC record".
@@ -960,37 +960,37 @@ This section describes receiver actions in the DMARC environment.
 
 ###  Extract Author Domain {#extract-author-domain}
 
-The domain in the visible From: header field is extracted as the domain to be
+The domain in the RFC5322.From header field is extracted as the domain to be
 evaluated by DMARC.  If the domain is encoded with UTF-8, the domain
 name must be converted to an A-label, as described in Section 2.3 of
 [@!RFC5890], for further processing.
 
 In order to be processed by DMARC, a message typically needs to
-contain exactly one visible From: header domain (a single From: field with a
+contain exactly one RFC5322.From domain (a single From: field with a
 single domain in it).  Not all messages meet this requirement, and
 handling of them is outside of the scope of this document.  Typical
 exceptions, and the way they have been historically handled by DMARC
 participants, are as follows:
 
-*  Messages with multiple visible From: header fields are typically rejected,
+*  Messages with multiple RFC5322.From header fields are typically rejected,
    since that form is forbidden under RFC 5322 [@!RFC5322];
 
-*  Messages bearing a single visible From: header field containing multiple
+*  Messages bearing a single RFC5322.From header field containing multiple
    addresses (and, thus, multiple domain names to be evaluated) are
    typically rejected because the sorts of mail normally protected by
    DMARC do not use this format;
 
-*  Messages that have no visible From: header field at all are typically
+*  Messages that have no RFC5322.From header field at all are typically
    rejected, since that form is forbidden under RFC 5322 [@!RFC5322];
 
-*  Messages with an visible From: header field that contains no meaningful
+*  Messages with an RFC5322.From header field that contains no meaningful
    domains, such as RFC 5322 [@!RFC5322]'s "group" syntax, are typically
    ignored.
 
-The case of a syntactically valid multi-valued visible From: header field
+The case of a syntactically valid multi-valued RFC5322.From header field
 presents a particular challenge.  The process in this case is to
 apply the DMARC check using each of those domains found in the
-visible From: header field as the Author Domain and apply the most strict
+RFC5322.From header field as the Author Domain and apply the most strict
 policy selected among the checks that fail.
 
 ###  Determine Handling Policy {#determine-handling-policy}
@@ -1002,7 +1002,7 @@ input from previous steps.
 
 The steps are as follows:
 
-1.  Extract the visible From: header domain from the message (as above).
+1.  Extract the RFC5322.From domain from the message (as above).
 
 2.  Query the DNS for a DMARC policy record.  Continue if one is
     found, or terminate DMARC evaluation otherwise.  See
@@ -1025,7 +1025,7 @@ The steps are as follows:
     and policy discovery performed, the Mail Receiver checks to see
     if Authenticated Identifiers fall into alignment as described in
     (#terminology).  If one or more of the Authenticated Identifiers align
-    with the visible From: header domain, the message is considered to pass
+    with the RFC5322.From domain, the message is considered to pass
     the DMARC mechanism check.  All other conditions (authentication
     failures, identifier mismatches) are considered to be DMARC
     mechanism check failures.
@@ -1065,7 +1065,7 @@ allowing subdomain policy overrides, and limiting DNS query load, the
 following DNS lookup scheme is employed:
 
 1.  Mail Receivers MUST query the DNS for a DMARC TXT record at the
-    DNS domain matching the one found in the visible From: header domain in
+    DNS domain matching the one found in the RFC5322.From domain in
     the message.  A possibly empty set of records is returned.
 
 2.  Records that do not start with a "v=" tag that identifies the
@@ -1073,7 +1073,7 @@ following DNS lookup scheme is employed:
 
 3.  If the set is now empty, the Mail Receiver MUST query the DNS for
     a DMARC TXT record at the DNS domain matching the Organizational
-    Domain in place of the visible From: header domain in the message (if
+    Domain in place of the RFC5322.From domain in the message (if
     different).  This record can contain policy to be asserted for
     subdomains of the Organizational Domain.  A possibly empty set of
     records is returned.
@@ -1262,7 +1262,7 @@ Mail Receiver: To implement DMARC, a mail receiver MUST do the following:
 * Perform validation checks on any ARC header sets present in the message
   when it arrives
 * Send aggregate reports to domain owners at least every 24 hours when a
-  minimum of 100 messages with that domain in the visible From: header
+  minimum of 100 messages with that domain in the RFC5322.From header field
   have been seen during the reporting period
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1367,7 +1367,7 @@ a subdomain, the subdomain can be used to generate DMARC-passing
 email on behalf of the Organizational Domain.
 
 For example, an attacker who controls the SPF record for
-"evil.example.com" can send mail with an visible From: header field
+"evil.example.com" can send mail with an RFC5322.From header field
 containing "foo@example.com" that can pass both authentication and
 the DMARC check against "example.com".
 
@@ -1412,7 +1412,7 @@ ptype:  header
 
 Property:  from
 
-Value:  the domain portion of the visible From: header field
+Value:  the domain portion of the RFC5322.From header field
 
 Status:  active
 
@@ -1639,7 +1639,7 @@ Mail Receivers and Report Receivers.
 ##  Display Name Attacks {#display-name-attacks}
 
 A common attack in messaging abuse is the presentation of false
-information in the display-name portion of the visible From: header field.
+information in the display-name portion of the RFC5322.From header field.
 For example, it is possible for the email address in that field to be
 an arbitrary address or domain name, while containing a well-known
 name (a person, brand, role, etc.) in the display name, intending to
@@ -1875,9 +1875,9 @@ direction of DMARC:
 Although protocols like ADSP are useful for "protecting" a specific
 domain name, they are not helpful at protecting subdomains.  If one
 wished to protect "example.com" by requiring via ADSP that all mail
-bearing an visible From: header domain of "example.com" be signed, this would
+bearing an RFC5322.From domain of "example.com" be signed, this would
 "protect" that domain; however, one could then craft an email whose
-visible From: header domain is "security.example.com", and ADSP would not
+RFC5322.From domain is "security.example.com", and ADSP would not
 provide any protection.  One could use a DNS wildcard, but this can
 undesirably interfere with other DNS activity; one could add ADSP
 records as fraudulent domains are discovered, but this solution does
@@ -1944,7 +1944,7 @@ Example 1: SPF in alignment:
      Subject: here's a sample
 ~~~
 
-In this case, the RFC5321.MailFrom parameter and the visible From: header
+In this case, the RFC5321.MailFrom parameter and the RFC5322.From header
 field have identical DNS domains.  Thus, the identifiers are in
 alignment.
 
@@ -1959,7 +1959,7 @@ Example 2: SPF in alignment (parent):
      Subject: here's a sample
 ~~~
 
-In this case, the visible From: header parameter includes a DNS domain that
+In this case, the RFC5322.From header parameter includes a DNS domain that
 is a parent of the RFC5321.MailFrom domain.  Thus, the identifiers
 are in alignment if relaxed SPF mode is requested by the Domain
 Owner, and not in alignment if strict SPF mode is requested.
@@ -1976,7 +1976,7 @@ Example 3: SPF not in alignment:
 ~~~
 
 In this case, the RFC5321.MailFrom parameter includes a DNS domain
-that is neither the same as nor a parent of the visible From: header domain.
+that is neither the same as nor a parent of the RFC5322.From domain.
 Thus, the identifiers are not in alignment.
 
 ###  DKIM {#dkim}
@@ -1994,7 +1994,7 @@ Example 1: DKIM in alignment:
      Subject: here's a sample
 ~~~
 
-In this case, the DKIM "d=" parameter and the visible From: header field have
+In this case, the DKIM "d=" parameter and the RFC5322.From header field have
 identical DNS domains.  Thus, the identifiers are in alignment.
 
 Example 2: DKIM in alignment (parent):
@@ -2008,7 +2008,7 @@ Example 2: DKIM in alignment (parent):
 ~~~
 
 In this case, the DKIM signature's "d=" parameter includes a DNS
-domain that is a parent of the visible From: header domain.  Thus, the
+domain that is a parent of the RFC5322.From domain.  Thus, the
 identifiers are in alignment for relaxed mode, but not for strict
 mode.
 
@@ -2023,7 +2023,7 @@ Example 3: DKIM not in alignment:
 ~~~
 
 In this case, the DKIM signature's "d=" parameter includes a DNS
-domain that is neither the same as nor a parent of the visible From: header
+domain that is neither the same as nor a parent of the RFC5322.From
 domain.  Thus, the identifiers are not in alignment.
 
 ##  Domain Owner Example {#domain-owner-example}
@@ -2494,7 +2494,6 @@ would normally appear as one continuous string.
 ### Issue 96 - Tweaks to Abstract and Introduction
 * Changed phrase in Abstract to "an email author's domain name"
 * Changed phrase in Introduction to "reports about email use of the domain name"
-* Changed references to "RFC5322.From" to "visible From: header" throughout document
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
