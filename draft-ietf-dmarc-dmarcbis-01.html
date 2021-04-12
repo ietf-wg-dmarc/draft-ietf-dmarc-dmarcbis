@@ -10,7 +10,7 @@
 <meta content="
        This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol. 
-       DMARC permits the owner of an author's domain name to enable validation
+       DMARC permits the owner of an email author's domain name to enable validation
 of the domain's use, to indicate the implication of failed validation,
 and to request reports about use of the domain name. Mail receiving
 organizations can use this information when evaluating handling
@@ -1152,7 +1152,7 @@ dd.break {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">DMARC permits the owner of an author's domain name to enable validation
+<p id="section-abstract-2">DMARC permits the owner of an email author's domain name to enable validation
 of the domain's use, to indicate the implication of failed validation,
 and to request reports about use of the domain name. Mail receiving
 organizations can use this information when evaluating handling
@@ -1267,7 +1267,7 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-use-of-rfc5322from" class="xref">Use of RFC5322.From</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-use-of-visible-from-header" class="xref">Use of visible From: header</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-policy" class="xref">Policy</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
@@ -1551,6 +1551,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.9.2.2">
                     <p id="section-toc.1-1.16.2.9.2.2.1"><a href="#section-c.9.2" class="xref">C.9.2</a>.  <a href="#name-issue-66-define-what-it-mea" class="xref">Issue 66 - Define what it means to have implemented DMARC</a><a href="#section-toc.1-1.16.2.9.2.2.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.9.2.3">
+                    <p id="section-toc.1-1.16.2.9.2.3.1"><a href="#section-c.9.3" class="xref">C.9.3</a>.  <a href="#name-issue-96-tweaks-to-abstract" class="xref">Issue 96 - Tweaks to Abstract and Introduction</a><a href="#section-toc.1-1.16.2.9.2.3.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1575,19 +1578,19 @@ The source for this draft is maintained in GitHub at:
 <a href="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis</a><a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The Sender Policy Framework (<span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>) and DomainKeys Identified
 Mail (<span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span>) protocols provide domain-level authentication which
-is not directly associated with the RFC5322.From domain, and DMARC builds
-on those protocols. Using DMARC, Domain Owners that originate email can
-publish a DNS TXT record with their email authentication policies, preferred
-handling for mail that fails authentication checks, and request reports about
-use of the domain name.<a href="#section-1-2" class="pilcrow">¶</a></p>
+is not directly associated with the domain in the visible From: header,
+and DMARC builds on those protocols. Using DMARC, Domain Owners that originate
+email can publish a DNS TXT record with their email authentication policies,
+preferred handling for mail that fails authentication checks, and request
+reports about email use of the domain name.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">As with SPF and DKIM, DMARC authentication checks result in verdicts of
 "pass" or "fail". A DMARC pass verdict requires not only that SPF or DKIM
 pass for the message in question, but also that the domain validated by the
-SPF or DKIM check is aligned with the domain in the RFC5322.From header. In
+SPF or DKIM check is aligned with the domain in the visible From: header. In
 the DMARC protocol, two domains are said to be "in alignment" if they have
 the same Organizational Domain (a.k.a., relaxed alignment) or they are
 identical (a.k.a., strict alignment).<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">A DMARC pass result indicates only that the RFC5322.From domain has been
+<p id="section-1-4">A DMARC pass result indicates only that the domain in the visible From: header has been
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
 that performs a DMARC validation check on inbound mail can choose to use the result
@@ -1659,7 +1662,7 @@ initial version of this work.  These include the following:<a href="#section-2.2
 those that fail authentication;<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.2-2.2">
-            <p id="section-2.2-2.2.1">evaluation of anything other than RFC5322.From;<a href="#section-2.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-2.2.1">evaluation of anything other than visible From: header;<a href="#section-2.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.2-2.3">
             <p id="section-2.2-2.3.1">multiple reporting formats;<a href="#section-2.2-2.3.1" class="pilcrow">¶</a></p>
@@ -1672,7 +1675,7 @@ those that fail authentication;<a href="#section-2.2-2.1.1" class="pilcrow">¶</
 address;<a href="#section-2.2-2.5.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.2-2.6">
-            <p id="section-2.2-2.6.1">attacks in the RFC5322.From field, also known as "display name"
+            <p id="section-2.2-2.6.1">attacks in the From: header field, also known as "display name"
 attacks;<a href="#section-2.2-2.6.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.2-2.7">
@@ -1720,7 +1723,7 @@ useful in the creation of reliable and defensible message streams.<a href="#sect
 <p id="section-2.4-3">DMARC does not attempt to solve all problems with spoofed or
 otherwise fraudulent email.  In particular, it does not address the
 use of visually similar domain names ("cousin domains") or abuse of
-the RFC5322.From human-readable &lt;display-name&gt;.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+the visible From: header human-readable &lt;display-name&gt;.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1755,7 +1758,7 @@ the supported mechanisms.<a href="#section-3-5.2" class="pilcrow">¶</a>
 <dd class="break"></dd>
 <dt id="section-3-5.3">Author Domain:</dt>
 <dd id="section-3-5.4">The domain name of the apparent author, as extracted
-from the RFC5322.From field.<a href="#section-3-5.4" class="pilcrow">¶</a>
+from the From: header field.<a href="#section-3-5.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 <dt id="section-3-5.5">Domain Owner:</dt>
@@ -1772,7 +1775,7 @@ their immediate management domain.<a href="#section-3-5.6" class="pilcrow">¶</a
 </dd>
 <dd class="break"></dd>
 <dt id="section-3-5.7">Identifier Alignment:</dt>
-<dd id="section-3-5.8">When the domain in the RFC5322.From address
+<dd id="section-3-5.8">When the domain in the address in the From: header field
 matches a domain validated by SPF or DKIM (or both), it has
 Identifier Alignment.<a href="#section-3-5.8" class="pilcrow">¶</a>
 </dd>
@@ -1816,12 +1819,12 @@ while <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span> can authenticat
 RFC5321.MailFrom (MAIL FROM) portion of <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span> or the RFC5321.EHLO/
 HELO domain, or both.  These may be different domains, and they are
 typically not visible to the end user.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">DMARC authenticates use of the RFC5322.From domain by requiring that
+<p id="section-3.1-2">DMARC authenticates use of the visible From: header domain by requiring that
 it match (be aligned with) an Authenticated Identifier.  The
-RFC5322.From domain was selected as the central identity of the DMARC
+visible From: header domain was selected as the central identity of the DMARC
 mechanism because it is a required message header field and therefore
 guaranteed to be present in compliant messages, and most Mail User
-Agents (MUAs) represent the RFC5322.From field as the originator of
+Agents (MUAs) represent the visible From: header field as the originator of
 the message and render some or all of this header field's content to
 end users.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">Thus, this field is the one used by end users to identify the source
@@ -1837,7 +1840,7 @@ have been provided.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 manner, per <span>[<a href="#RFC4343" class="xref">RFC4343</a>]</span>.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">It is important to note that Identifier Alignment cannot occur with a
 message that is not valid per <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>, particularly one with a
-malformed, absent, or repeated RFC5322.From field, since in that case
+malformed, absent, or repeated visible From: header field, since in that case
 there is no reliable way to determine a DMARC policy that applies to
 the message.  Accordingly, DMARC operation is predicated on the input
 being a valid RFC5322 message object, and handling of such
@@ -1848,7 +1851,7 @@ as input yields authenticated domains as their outputs when they
 succeed.  From the perspective of DMARC, each can be operated in a
 "strict" mode or a "relaxed" mode.  A Domain Owner would normally
 select strict mode if it wanted Mail Receivers to apply DMARC
-processing only to messages bearing an RFC5322.From domain exactly
+processing only to messages bearing an visible From: header domain exactly
 matching the domains those mechanisms will verify.  Relaxed mode can
 be used when the operator also wishes to affect message flows bearing
 subdomains of the verified domains.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
@@ -1862,14 +1865,14 @@ authentication, to be strict or relaxed.  (Note that these are not
 related to DKIM's "simple" and "relaxed" canonicalization modes.)<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-2">In relaxed mode, the Organizational Domains of both the <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span>-
 authenticated signing domain (taken from the value of the "d=" tag in
-the signature) and that of the RFC5322.From domain must be equal if
+the signature) and that of the visible From: header domain must be equal if
 the identifiers are to be considered aligned.  In strict mode, only
 an exact match between both of the Fully Qualified Domain Names
 (FQDNs) is considered to produce Identifier Alignment.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-3">To illustrate, in relaxed mode, if a validated DKIM signature
 successfully verifies with a "d=" domain of "example.com", and the
-RFC5322.From address is "alerts@news.example.com", the DKIM "d="
-domain and the RFC5322.From domain are considered to be "in
+visible From: header address is "alerts@news.example.com", the DKIM "d="
+domain and the visible From: header domain are considered to be "in
 alignment".  In strict mode, this test would fail, since the "d="
 domain does not exactly match the FQDN of the address.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-4">However, a DKIM signature bearing a value of "d=com" would never
@@ -1892,15 +1895,15 @@ and verifies.<a href="#section-3.1.1-6" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-3.1.2-1">DMARC permits Identifier Alignment, based on the result of an SPF
 authentication, to be strict or relaxed.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">In relaxed mode, the <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>-authenticated domain and RFC5322.From
+<p id="section-3.1.2-2">In relaxed mode, the <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>-authenticated domain and visible From: header
 domain must have the same Organizational Domain.  In strict mode,
 only an exact DNS domain match is considered to produce Identifier
 Alignment.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-3">For example, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
-portion of the RFC5322.From field contains "payments@example.com",
+portion of the visible From: header field contains "payments@example.com",
 the Authenticated RFC5321.MailFrom domain identifier and the
-RFC5322.From domain are considered to be "in alignment" in relaxed
+visible From: header domain are considered to be "in alignment" in relaxed
 mode, but not in strict mode. In order for the two identifiers to
 be considered "in alignment" in strict mode, the domain parts would
 have to be identical.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
@@ -1917,7 +1920,7 @@ but also on a separate check of the "HELO" identity.<a href="#section-3.1.2-4" c
           </h4>
 <p id="section-3.1.3-1">If in the future DMARC is extended to include the use of other
 authentication mechanisms, the extensions will need to allow for
-domain identifier extraction so that alignment with the RFC5322.From
+domain identifier extraction so that alignment with the visible From: header
 domain can be verified.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2009,10 +2012,10 @@ command has a null path.<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-4.2-1">DMARC policies are published by the Domain Owner, and retrieved by
 the Mail Receiver during the SMTP session, via the DNS.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">DMARC's filtering function is based on whether the RFC5322.From field
+<p id="section-4.2-2">DMARC's filtering function is based on whether the visible From: header field
 domain is aligned with (matches) an authenticated domain name from
 SPF or DKIM.  When a DMARC policy is published for the domain name
-found in the RFC5322.From field, and that domain name is not
+found in the visible From: header field, and that domain name is not
 validated through SPF or DKIM, the handling of that message can be
 affected by that DMARC policy when delivered to a participating
 receiver.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
@@ -2188,7 +2191,7 @@ before passing the message to the next hop or rejecting it as appropriate:<a hre
 </li>
 <li id="section-4.4-8.2">Perform validation checks on any ARC header sets present in the message when it arrives<a href="#section-4.4-8.2" class="pilcrow">¶</a>
 </li>
-<li id="section-4.4-8.3">Send aggregate reports to domain owners at least every 24 hours when a minimum of 100 messages with that domain in the visible From header have been seen during the reporting period<a href="#section-4.4-8.3" class="pilcrow">¶</a>
+<li id="section-4.4-8.3">Send aggregate reports to domain owners at least every 24 hours when a minimum of 100 messages with that domain in the visible From: header have been seen during the reporting period<a href="#section-4.4-8.3" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
@@ -2197,11 +2200,11 @@ before passing the message to the next hop or rejecting it as appropriate:<a hre
 </div>
 <div id="use-of-rfc5322-from">
 <section id="section-5">
-      <h2 id="name-use-of-rfc5322from">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-use-of-rfc5322from" class="section-name selfRef">Use of RFC5322.From</a>
+      <h2 id="name-use-of-visible-from-header">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-use-of-visible-from-header" class="section-name selfRef">Use of visible From: header</a>
       </h2>
 <p id="section-5-1">One of the most obvious points of security scrutiny for DMARC is the
-choice to focus on an identifier, namely the RFC5322.From address,
+choice to focus on an identifier, namely the visible From: header address,
 which is part of a body of data that has been trivially forged
 throughout the history of email.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Several points suggest that it is the most correct and safest thing
@@ -2218,7 +2221,7 @@ manner strongly suggesting those data as reflective of the true
 originator of the message.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
-<p id="section-5-4">The absence of a single, properly formed RFC5322.From field renders
+<p id="section-5-4">The absence of a single, properly formed visible From: header field renders
 the message invalid.  Handling of such a message is outside of the
 scope of this specification.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">Since the sorts of mail typically protected by DMARC participants
@@ -2250,7 +2253,7 @@ an SPF pass result.<a href="#section-6-3" class="pilcrow">¶</a></p>
 <p id="section-6-4">A Mail Receiver implementing the DMARC mechanism SHOULD make a
 best-effort attempt to adhere to the Domain Owner's published DMARC
 policy when a message fails the DMARC test.  Since email streams can
-be complicated (due to forwarding, existing RFC5322.From
+be complicated (due to forwarding, existing visible From: header
 domain-spoofing services, etc.), Mail Receivers MAY deviate from a
 Domain Owner's published policy during message processing and SHOULD
 make available the fact of and reason for the deviation to the Domain
@@ -2265,7 +2268,7 @@ feature of the aggregate report (see the DMARC reporting documents).<a href="#se
 subdomains named "_dmarc".  For example, the Domain Owner of
 "example.com" would post DMARC preferences in a TXT record at
 "_dmarc.example.com".  Similarly, a Mail Receiver wishing to query
-for DMARC preferences regarding mail with an RFC5322.From domain of
+for DMARC preferences regarding mail with an visible From: header domain of
 "example.com" would issue a TXT query to the DNS for the subdomain of
 "_dmarc.example.com".  The DNS-located DMARC preference data will
 hereafter be called the "DMARC record".<a href="#section-6.1-1" class="pilcrow">¶</a></p>
@@ -2650,41 +2653,41 @@ appropriate.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
           <h4 id="name-extract-author-domain">
 <a href="#section-6.6.1" class="section-number selfRef">6.6.1. </a><a href="#name-extract-author-domain" class="section-name selfRef">Extract Author Domain</a>
           </h4>
-<p id="section-6.6.1-1">The domain in the RFC5322.From field is extracted as the domain to be
+<p id="section-6.6.1-1">The domain in the visible From: header field is extracted as the domain to be
 evaluated by DMARC.  If the domain is encoded with UTF-8, the domain
 name must be converted to an A-label, as described in Section 2.3 of
 <span>[<a href="#RFC5890" class="xref">RFC5890</a>]</span>, for further processing.<a href="#section-6.6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.6.1-2">In order to be processed by DMARC, a message typically needs to
-contain exactly one RFC5322.From domain (a single From: field with a
+contain exactly one visible From: header domain (a single From: field with a
 single domain in it).  Not all messages meet this requirement, and
 handling of them is outside of the scope of this document.  Typical
 exceptions, and the way they have been historically handled by DMARC
 participants, are as follows:<a href="#section-6.6.1-2" class="pilcrow">¶</a></p>
 <ul>
 <li id="section-6.6.1-3.1">
-              <p id="section-6.6.1-3.1.1">Messages with multiple RFC5322.From fields are typically rejected,
+              <p id="section-6.6.1-3.1.1">Messages with multiple visible From: header fields are typically rejected,
 since that form is forbidden under RFC 5322 <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>;<a href="#section-6.6.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-6.6.1-3.2">
-              <p id="section-6.6.1-3.2.1">Messages bearing a single RFC5322.From field containing multiple
+              <p id="section-6.6.1-3.2.1">Messages bearing a single visible From: header field containing multiple
 addresses (and, thus, multiple domain names to be evaluated) are
 typically rejected because the sorts of mail normally protected by
 DMARC do not use this format;<a href="#section-6.6.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-6.6.1-3.3">
-              <p id="section-6.6.1-3.3.1">Messages that have no RFC5322.From field at all are typically
+              <p id="section-6.6.1-3.3.1">Messages that have no visible From: header field at all are typically
 rejected, since that form is forbidden under RFC 5322 <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>;<a href="#section-6.6.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-6.6.1-3.4">
-              <p id="section-6.6.1-3.4.1">Messages with an RFC5322.From field that contains no meaningful
+              <p id="section-6.6.1-3.4.1">Messages with an visible From: header field that contains no meaningful
 domains, such as RFC 5322 <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>'s "group" syntax, are typically
 ignored.<a href="#section-6.6.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
-<p id="section-6.6.1-4">The case of a syntactically valid multi-valued RFC5322.From field
+<p id="section-6.6.1-4">The case of a syntactically valid multi-valued visible From: header field
 presents a particular challenge.  The process in this case is to
 apply the DMARC check using each of those domains found in the
-RFC5322.From field as the Author Domain and apply the most strict
+visible From: header field as the Author Domain and apply the most strict
 policy selected among the checks that fail.<a href="#section-6.6.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2700,7 +2703,7 @@ input from previous steps.<a href="#section-6.6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.6.2-2">The steps are as follows:<a href="#section-6.6.2-2" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-6.6.2-3">
             <li id="section-6.6.2-3.1">
-              <p id="section-6.6.2-3.1.1">Extract the RFC5322.From domain from the message (as above).<a href="#section-6.6.2-3.1.1" class="pilcrow">¶</a></p>
+              <p id="section-6.6.2-3.1.1">Extract the visible From: header domain from the message (as above).<a href="#section-6.6.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-6.6.2-3.2">
               <p id="section-6.6.2-3.2.1">Query the DNS for a DMARC policy record.  Continue if one is
@@ -2727,7 +2730,7 @@ to complete the SPF check.<a href="#section-6.6.2-3.4.1" class="pilcrow">¶</a><
 and policy discovery performed, the Mail Receiver checks to see
 if Authenticated Identifiers fall into alignment as described in
 <a href="#terminology" class="xref">Section 3</a>.  If one or more of the Authenticated Identifiers align
-with the RFC5322.From domain, the message is considered to pass
+with the visible From: header domain, the message is considered to pass
 the DMARC mechanism check.  All other conditions (authentication
 failures, identifier mismatches) are considered to be DMARC
 mechanism check failures.<a href="#section-6.6.2-3.5.1" class="pilcrow">¶</a></p>
@@ -2771,7 +2774,7 @@ following DNS lookup scheme is employed:<a href="#section-6.6.3-2" class="pilcro
 <ol start="1" type="1" class="normal type-1" id="section-6.6.3-3">
             <li id="section-6.6.3-3.1">
               <p id="section-6.6.3-3.1.1">Mail Receivers MUST query the DNS for a DMARC TXT record at the
-DNS domain matching the one found in the RFC5322.From domain in
+DNS domain matching the one found in the visible From: header domain in
 the message.  A possibly empty set of records is returned.<a href="#section-6.6.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-6.6.3-3.2">
@@ -2781,7 +2784,7 @@ current version of DMARC are discarded.<a href="#section-6.6.3-3.2.1" class="pil
 <li id="section-6.6.3-3.3">
               <p id="section-6.6.3-3.3.1">If the set is now empty, the Mail Receiver MUST query the DNS for
 a DMARC TXT record at the DNS domain matching the Organizational
-Domain in place of the RFC5322.From domain in the message (if
+Domain in place of the visible From: header domain in the message (if
 different).  This record can contain policy to be asserted for
 subdomains of the Organizational Domain.  A possibly empty set of
 records is returned.<a href="#section-6.6.3-3.3.1" class="pilcrow">¶</a></p>
@@ -3070,7 +3073,7 @@ users can gain control of the SPF record or DKIM selector records for
 a subdomain, the subdomain can be used to generate DMARC-passing
 email on behalf of the Organizational Domain.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
 <p id="section-9.4-2">For example, an attacker who controls the SPF record for
-"evil.example.com" can send mail with an RFC5322.From field
+"evil.example.com" can send mail with an visible From: header field
 containing "foo@example.com" that can pass both authentication and
 the DMARC check against "example.com".<a href="#section-9.4-2" class="pilcrow">¶</a></p>
 <p id="section-9.4-3">The Organizational Domain administrator should be careful not to
@@ -3117,7 +3120,7 @@ registry:<a href="#section-10.1-1" class="pilcrow">¶</a></p>
 <p id="section-10.1-3">Defined:  RFC 7489<a href="#section-10.1-3" class="pilcrow">¶</a></p>
 <p id="section-10.1-4">ptype:  header<a href="#section-10.1-4" class="pilcrow">¶</a></p>
 <p id="section-10.1-5">Property:  from<a href="#section-10.1-5" class="pilcrow">¶</a></p>
-<p id="section-10.1-6">Value:  the domain portion of the RFC5322.From field<a href="#section-10.1-6" class="pilcrow">¶</a></p>
+<p id="section-10.1-6">Value:  the domain portion of the visible From: header field<a href="#section-10.1-6" class="pilcrow">¶</a></p>
 <p id="section-10.1-7">Status:  active<a href="#section-10.1-7" class="pilcrow">¶</a></p>
 <p id="section-10.1-8">Version:  1<a href="#section-10.1-8" class="pilcrow">¶</a></p>
 </section>
@@ -3464,7 +3467,7 @@ Mail Receivers and Report Receivers.<a href="#section-11.3-2" class="pilcrow">¶
 <a href="#section-11.4" class="section-number selfRef">11.4. </a><a href="#name-display-name-attacks" class="section-name selfRef">Display Name Attacks</a>
         </h3>
 <p id="section-11.4-1">A common attack in messaging abuse is the presentation of false
-information in the display-name portion of the RFC5322.From field.
+information in the display-name portion of the visible From: header field.
 For example, it is possible for the email address in that field to be
 an arbitrary address or domain name, while containing a well-known
 name (a person, brand, role, etc.) in the display name, intending to
@@ -3854,9 +3857,9 @@ tight for ADSP; they must match exactly.<a href="#section-a.5-3.7.1" class="pilc
 <p id="section-a.6-1">Although protocols like ADSP are useful for "protecting" a specific
 domain name, they are not helpful at protecting subdomains.  If one
 wished to protect "example.com" by requiring via ADSP that all mail
-bearing an RFC5322.From domain of "example.com" be signed, this would
+bearing an visible From: header domain of "example.com" be signed, this would
 "protect" that domain; however, one could then craft an email whose
-RFC5322.From domain is "security.example.com", and ADSP would not
+visible From: header domain is "security.example.com", and ADSP would not
 provide any protection.  One could use a DNS wildcard, but this can
 undesirably interfere with other DNS activity; one could add ADSP
 records as fraudulent domains are discovered, but this solution does
@@ -3931,7 +3934,7 @@ checks.<a href="#section-b.1-1" class="pilcrow">¶</a></p>
      Subject: here's a sample
 </pre><a href="#section-b.1.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-b.1.1-4">In this case, the RFC5321.MailFrom parameter and the RFC5322.From
+<p id="section-b.1.1-4">In this case, the RFC5321.MailFrom parameter and the visible From: header
 field have identical DNS domains.  Thus, the identifiers are in
 alignment.<a href="#section-b.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-b.1.1-5">Example 2: SPF in alignment (parent):<a href="#section-b.1.1-5" class="pilcrow">¶</a></p>
@@ -3944,7 +3947,7 @@ alignment.<a href="#section-b.1.1-4" class="pilcrow">¶</a></p>
      Subject: here's a sample
 </pre><a href="#section-b.1.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-b.1.1-7">In this case, the RFC5322.From parameter includes a DNS domain that
+<p id="section-b.1.1-7">In this case, the visible From: header parameter includes a DNS domain that
 is a parent of the RFC5321.MailFrom domain.  Thus, the identifiers
 are in alignment if relaxed SPF mode is requested by the Domain
 Owner, and not in alignment if strict SPF mode is requested.<a href="#section-b.1.1-7" class="pilcrow">¶</a></p>
@@ -3959,7 +3962,7 @@ Owner, and not in alignment if strict SPF mode is requested.<a href="#section-b.
 </pre><a href="#section-b.1.1-9" class="pilcrow">¶</a>
 </div>
 <p id="section-b.1.1-10">In this case, the RFC5321.MailFrom parameter includes a DNS domain
-that is neither the same as nor a parent of the RFC5322.From domain.
+that is neither the same as nor a parent of the visible From: header domain.
 Thus, the identifiers are not in alignment.<a href="#section-b.1.1-10" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3979,7 +3982,7 @@ Alignment cannot exist with a DKIM signature that does not verify.<a href="#sect
      Subject: here's a sample
 </pre><a href="#section-b.1.2-3" class="pilcrow">¶</a>
 </div>
-<p id="section-b.1.2-4">In this case, the DKIM "d=" parameter and the RFC5322.From field have
+<p id="section-b.1.2-4">In this case, the DKIM "d=" parameter and the visible From: header field have
 identical DNS domains.  Thus, the identifiers are in alignment.<a href="#section-b.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-b.1.2-5">Example 2: DKIM in alignment (parent):<a href="#section-b.1.2-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1.2-6">
@@ -3991,7 +3994,7 @@ identical DNS domains.  Thus, the identifiers are in alignment.<a href="#section
 </pre><a href="#section-b.1.2-6" class="pilcrow">¶</a>
 </div>
 <p id="section-b.1.2-7">In this case, the DKIM signature's "d=" parameter includes a DNS
-domain that is a parent of the RFC5322.From domain.  Thus, the
+domain that is a parent of the visible From: header domain.  Thus, the
 identifiers are in alignment for relaxed mode, but not for strict
 mode.<a href="#section-b.1.2-7" class="pilcrow">¶</a></p>
 <p id="section-b.1.2-8">Example 3: DKIM not in alignment:<a href="#section-b.1.2-8" class="pilcrow">¶</a></p>
@@ -4004,7 +4007,7 @@ mode.<a href="#section-b.1.2-7" class="pilcrow">¶</a></p>
 </pre><a href="#section-b.1.2-9" class="pilcrow">¶</a>
 </div>
 <p id="section-b.1.2-10">In this case, the DKIM signature's "d=" parameter includes a DNS
-domain that is neither the same as nor a parent of the RFC5322.From
+domain that is neither the same as nor a parent of the visible From: header
 domain.  Thus, the identifiers are not in alignment.<a href="#section-b.1.2-10" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -4679,6 +4682,21 @@ list as possible value to "fo"<a href="#section-c.5.3-1.1" class="pilcrow">¶</a
           </h3>
 <ul>
 <li id="section-c.9.2-1.1">Added text proposed in <a href="https://trac.ietf.org/trac/dmarc/ticket/66#comment:3">https://trac.ietf.org/trac/dmarc/ticket/66#comment:3</a> to Overview<a href="#section-c.9.2-1.1" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-96-tweaks-to-abstract-and-introduction">
+<section id="section-c.9.3">
+          <h3 id="name-issue-96-tweaks-to-abstract">
+<a href="#section-c.9.3" class="section-number selfRef">C.9.3. </a><a href="#name-issue-96-tweaks-to-abstract" class="section-name selfRef">Issue 96 - Tweaks to Abstract and Introduction</a>
+          </h3>
+<ul>
+<li id="section-c.9.3-1.1">Changed phrase in Abstract to "an email author's domain name"<a href="#section-c.9.3-1.1" class="pilcrow">¶</a>
+</li>
+<li id="section-c.9.3-1.2">Changed phrase in Introduction to "reports about email use of the domain name"<a href="#section-c.9.3-1.2" class="pilcrow">¶</a>
+</li>
+<li id="section-c.9.3-1.3">Changed references to "RFC5322.From" to "visible From: header" throughout document<a href="#section-c.9.3-1.3" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>
