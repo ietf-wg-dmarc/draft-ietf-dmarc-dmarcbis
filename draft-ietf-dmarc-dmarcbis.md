@@ -551,41 +551,6 @@ In essence, the steps are as follows:
      the message delivery session to be used in providing feedback
      (see (#dmarc-feedback)).
 
-## What Does It Mean To Have Implemented DMARC?
-
-Domain owners, intermediaries, and mail receivers can all claim to
-implement DMARC, but what that means will depend on their role in the
-transmission of mail. To remove any ambiguity from the claims, this
-document specifies the following minimum criteria that must be met for
-each agent to rightly claim to be "implementing DMARC".
-
-Domain Owner: To implement DMARC, a domain owner MUST configure its domain
-to request that unauthenticated mail be rejected or at least treated with
-suspicion.  This means that it MUST  publish a policy record that:
-
-* Has a p tag with a value of 'quarantine' or 'reject'
-* Has a rua tag with at least one valid URI
-* If applicable, has an sp tag with a value of 'quarantine' or 'reject'
-
-While 'none' is a syntactically valid value for both the p and sp tags,
-the practical value of either the p tag or sp tag being 'none' means that
-the domain owner is still gathering information about mail flows for the
-domain or sub-domains, and is not yet ready to commit to requesting that
-unauthenticated mail receive different handling than authenticated mail.
-
-Intermediary: To implement DMARC, an intermediary MUST do the following
-before passing the message to the next hop or rejecting it as appropriate:
-
-* Perform DMARC validation checks on inbound mail
-* Perform validation on any ARC header sets present in the message when it arrives
-* Record the results of its authentication checks in a signed and sealed ARC header set 
-
-Mail Receiver: To implement DMARC, a mail receiver MUST do the following:
-
-* Perform DMARC validation checks on inbound mail
-* Perform validation checks on any ARC header sets present in the message when it arrives
-* Send aggregate reports to domain owners at least every 24 hours when a minimum of 100 messages with that domain in the visible From: header have been seen during the reporting period
-
 #   Use of visible From: header {#use-of-rfc5322-from}
 
 One of the most obvious points of security scrutiny for DMARC is the
@@ -1241,6 +1206,9 @@ The details of this feedback are described in a separate document.
 
 #  Minimum Implementations
 
+Existing text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 A minimum implementation of DMARC has the following characteristics:
 
 *  Is able to send and/or receive reports at least daily;
@@ -1253,6 +1221,51 @@ A minimum implementation of DMARC has the following characteristics:
 
 *  If acting as a Mail Receiver, fully implements the provisions of
    (#mail-receiver-actions).
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Suggested replacement text for above section:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Domain owners, intermediaries, and mail receivers can all claim to
+implement DMARC, but what that means will depend on their role in the
+transmission of mail. To remove any ambiguity from the claims, this
+document specifies the following minimum criteria that must be met for
+each agent to rightly claim to be "implementing DMARC".
+
+Domain Owner: To implement DMARC, a domain owner MUST configure its domain
+to request that unauthenticated mail be rejected or at least treated with
+suspicion.  This means that it MUST  publish a policy record that:
+
+* Has a p tag with a value of 'quarantine' or 'reject'
+* Has a rua tag with at least one valid URI
+* If applicable, has an sp tag with a value of 'quarantine' or 'reject'
+
+While 'none' is a syntactically valid value for both the p and sp tags,
+the practical value of either the p tag or sp tag being 'none' means that
+the domain owner is still gathering information about mail flows for the
+domain or sub-domains, and is not yet ready to commit to requesting that
+unauthenticated mail receive different handling than authenticated mail.
+
+Intermediary: To implement DMARC, an intermediary MUST do the following
+before passing the message to the next hop or rejecting it as appropriate:
+
+* Perform DMARC validation checks on inbound mail
+* Perform validation on any ARC header sets present in the message when
+  it arrives
+* Record the results of its authentication checks in a signed and sealed
+  ARC header set 
+
+Mail Receiver: To implement DMARC, a mail receiver MUST do the following:
+
+* Perform DMARC validation checks on inbound mail
+* Perform validation checks on any ARC header sets present in the message
+  when it arrives
+* Send aggregate reports to domain owners at least every 24 hours when a
+  minimum of 100 messages with that domain in the visible From: header
+  have been seen during the reporting period
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #   Other Topics {#other-topics}
 
@@ -2475,7 +2488,8 @@ would normally appear as one continuous string.
 * Diffs documented here - https://trac.ietf.org/trac/dmarc/ticket/50#comment:5
 
 ### Issue 66 - Define what it means to have implemented DMARC
-* Added text proposed in https://trac.ietf.org/trac/dmarc/ticket/66#comment:3 to Overview
+* Proposed new text (taken straight from https://trac.ietf.org/trac/dmarc/ticket/66
+  as replacement for current text in "Minimum Implemenatations"
 
 ### Issue 96 - Tweaks to Abstract and Introduction
 * Changed phrase in Abstract to "an email author's domain name"
