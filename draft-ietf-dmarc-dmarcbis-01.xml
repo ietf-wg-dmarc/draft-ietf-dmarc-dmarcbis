@@ -2507,6 +2507,13 @@ list as possible value to &quot;fo&quot;</li>
 <li>Diffs documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/50#comment:5">https://trac.ietf.org/trac/dmarc/ticket/50#comment:5</eref></li>
 </ul>
 </section>
+
+<section anchor="issue-66-define-what-it-means-to-have-implemented-dmarc"><name>Issue 66 - Define what it means to have implemented DMARC</name>
+
+<ul>
+<li>Added text proposed in <eref target="https://trac.ietf.org/trac/dmarc/ticket/66#comment:3">https://trac.ietf.org/trac/dmarc/ticket/66#comment:3</eref> to Overview</li>
+</ul>
+</section>
 </section>
 </section>
 

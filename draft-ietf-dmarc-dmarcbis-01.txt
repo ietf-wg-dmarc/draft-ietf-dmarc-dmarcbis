@@ -189,6 +189,8 @@ Internet-Draft                  DMARCbis                      April 2021
                recipients per report . . . . . . . . . . . . . . . .  59
      C.9.  April 12, 2021  . . . . . . . . . . . . . . . . . . . . .  59
        C.9.1.  Issue 50 - Remove ri= tag . . . . . . . . . . . . . .  59
+       C.9.2.  Issue 66 - Define what it means to have implemented
+               DMARC . . . . . . . . . . . . . . . . . . . . . . . .  59
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  59
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  60
 
@@ -215,8 +217,6 @@ Internet-Draft                  DMARCbis                      April 2021
    be "in alignment" if they have the same Organizational Domain
    (a.k.a., relaxed alignment) or they are identical (a.k.a., strict
    alignment).
-
-
 
 
 
@@ -3282,6 +3282,12 @@ C.9.1.  Issue 50 - Remove ri= tag
       ticket/50#comment:5 (https://trac.ietf.org/trac/dmarc/
       ticket/50#comment:5)
 
+C.9.2.  Issue 66 - Define what it means to have implemented DMARC
+
+   *  Added text proposed in https://trac.ietf.org/trac/dmarc/
+      ticket/66#comment:3 (https://trac.ietf.org/trac/dmarc/
+      ticket/66#comment:3) to Overview
+
 Acknowledgements
 
    DMARC and the draft version of this document submitted to the
@@ -3292,12 +3298,6 @@ Acknowledgements
    Facebook, Fidelity Investments, Google, JPMorgan Chase & Company,
    LinkedIn, Microsoft, Netease, PayPal, ReturnPath, The Trusted Domain
    Project, and Yahoo!.  Although the contributors and supporters are
-   too numerous to mention, notable individual contributions were made
-   by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
-   Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
-   The contributors would also like to recognize the invaluable input
-   and guidance that was provided early on by J.D.  Falk.
-
 
 
 
@@ -3305,6 +3305,12 @@ Herr (ed) & Levine (ed)  Expires 14 October 2021               [Page 59]
 
 Internet-Draft                  DMARCbis                      April 2021
 
+
+   too numerous to mention, notable individual contributions were made
+   by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
+   Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
+   The contributors would also like to recognize the invaluable input
+   and guidance that was provided early on by J.D.  Falk.
 
    Additional contributions within the IETF context were made by Kurt
    Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
@@ -3323,12 +3329,6 @@ Authors' Addresses
    Standcore LLC
 
    Email: standards@standore.com
-
-
-
-
-
-
 
 
 
