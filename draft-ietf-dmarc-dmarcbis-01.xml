@@ -590,12 +590,10 @@ objects in order and parsing the result as a single string.</t>
 <t><xref target="RFC3986"></xref> defines a generic syntax for identifying a resource.  The DMARC
 mechanism uses this as the format by which a Domain Owner specifies
 the destination for the two report types that are supported.</t>
-<t>The place such URIs are specified (see <xref target="general-record-format"></xref>) allows a list of
-these to be provided.  A report is normally sent to each listed URI
-in the order provided by the Domain Owner.  Receivers MAY impose a
-limit on the number of URIs to which they will send reports but MUST
-support the ability to send to at least two.  The list of URIs is
-separated by commas (ASCII 0x2C).</t>
+<t>The place such URIs are specified (see <xref target="general-record-format"></xref>) allows
+a list of these to be provided.  The list of URIs is separated by commas
+(ASCII 0x2c).  A report is normally sent to each listed URI in the order
+provided by the Domain Owner.</t>
 <t>Each URI can have associated with it a maximum report size that may
 be sent to it.  This is accomplished by appending an exclamation
 point (ASCII 0x21), followed by a maximum-size indication, before a
@@ -725,15 +723,20 @@ type defined in <xref target="RFC6591"></xref>) is presently supported.  See the
 for details.  For interoperability, the Authentication Failure
 Reporting Format (AFRF) MUST be supported.</t>
 </dd>
-<dt>ri:</dt>
+<dt>ri (do not use):</dt>
 <dd><t>Interval requested between aggregate reports (plain-text 32-bit
-unsigned integer; OPTIONAL; default is 86400).  Indicates a
-request to Receivers to generate aggregate reports separated by no
-more than the requested number of seconds.  DMARC implementations
+unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
+be used in a DMARC record. See the note at the end for more information.
+Indicates a request to Receivers to generate aggregate reports separated
+by no more than the requested number of seconds.  DMARC implementations
 MUST be able to provide daily reports and SHOULD be able to
 provide hourly reports when requested.  However, anything other
 than a daily report is understood to be accommodated on a best-
 effort basis.</t>
+<t>Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
+that fewer than 2% were publishing an ri tag with a non-default value, with
+most of those set to a value of 3600. There was no evidence that any of these
+requests for something more frequent than once daily were being honored.</t>
 </dd>
 <dt>rua:</dt>
 <dd><t>Addresses to which aggregate feedback is to be sent (comma-
@@ -2443,6 +2446,28 @@ list as possible value to &quot;fo&quot;</li>
 <ul>
 <li>Changed from REQUIRED to RECOMMENDED, noted default with forward reference to discussion</li>
 <li>Diffs documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/72#comment:3">https://trac.ietf.org/trac/dmarc/ticket/72#comment:3</eref></li>
+</ul>
+</section>
+</section>
+
+<section anchor="march-29-2021"><name>March 29, 2021</name>
+
+<section anchor="issue-54-remove-or-expand-limits-on-number-of-recipients-per-report"><name>Issue 54 - Remove or expand limits on number of recipients per report</name>
+
+<ul>
+<li>Removed limit</li>
+<li>Diffs documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/54#comment:5">https://trac.ietf.org/trac/dmarc/ticket/54#comment:5</eref></li>
+</ul>
+</section>
+</section>
+
+<section anchor="april-12-2021"><name>April 12, 2021</name>
+
+<section anchor="issue-50-remove-ri-tag"><name>Issue 50 - Remove ri= tag</name>
+
+<ul>
+<li>Updated text to recommend against its usage, a la the ptr mechanism in RFC 7208</li>
+<li>Diffs documented here - <eref target="https://trac.ietf.org/trac/dmarc/ticket/50#comment:5">https://trac.ietf.org/trac/dmarc/ticket/50#comment:5</eref></li>
 </ul>
 </section>
 </section>
