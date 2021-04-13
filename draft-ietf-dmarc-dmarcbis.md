@@ -833,6 +833,8 @@ be "p=none" as per (#policy-discovery). Possible values are as follows:
         discussion of SMTP rejection methods and their implications.
 
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 pct:
 :   (plain-text integer between 0 and 100, inclusive; OPTIONAL;
 default is 100).  Percentage of messages from the Domain Owner's
@@ -843,13 +845,14 @@ which must be sent and received unhindered.  The purpose of the
 enforcement of the DMARC mechanism.  The prospect of "all or
 nothing" is recognized as preventing many organizations from
 experimenting with strong authentication-based mechanisms.  See
-(#message-sampling) for details.  Note that random selection based on
-this percentage, such as the following pseudocode, is adequate:
+(#message-sampling) for details.  Note that random selection based
+on this percentage, such as the following pseudocode, is adequate:
 
     if (random mod 100) < pct then
       selected = true
     else
       selected = false
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 rf:
 :   Format to be used for message-specific failure reports (colon-
@@ -982,12 +985,23 @@ follows:
                     dmarc-srequest /
                     dmarc-auri /
                     dmarc-furi /
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-adkim /
                     dmarc-aspf /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-ainterval /
                     dmarc-fo /
+Issue 47, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-rfmt /
                     dmarc-percent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 47, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    dmarc-rfmt 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -1007,11 +1021,14 @@ follows:
   dmarc-furi      = "ruf" *WSP "=" *WSP
                     dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-adkim     = "adkim" *WSP "=" *WSP
                     ( "r" / "s" )
 
   dmarc-aspf      = "aspf" *WSP "=" *WSP
                     ( "r" / "s" )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   dmarc-ainterval = "ri" *WSP "=" *WSP 1*DIGIT
 
@@ -1022,9 +1039,12 @@ follows:
   dmarc-rfmt      = "rf"  *WSP "=" *WSP Keyword *(*WSP ":" Keyword)
                     ; registered reporting formats only
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-percent   = "pct" *WSP "=" *WSP
                     ( DIGIT / %x31-39 DIGIT / "100")
                     ; 0-100
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
@@ -1213,6 +1233,8 @@ invites the sending MTA to try again after the condition has possibly
 cleared, allowing a definite DMARC conclusion to be reached ("fail
 closed").
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ###  Message Sampling {#message-sampling}
 
 If the "pct" tag is present in the policy record, the Mail Receiver
@@ -1228,16 +1250,17 @@ to the "quarantine" policy (due to the "pct" tag), the Mail Receiver
 SHOULD apply local message classification as normal.
 
 If email is subject to the DMARC policy of "reject", the Mail
-Receiver SHOULD reject the message (see (#rejecting-messages)).  If the email
-is not subject to the "reject" policy (due to the "pct" tag), the
-Mail Receiver SHOULD treat the email as though the "quarantine"
-policy applies.  This behavior allows Domain Owners to experiment
-with progressively stronger policies without relaxing existing
-policy.
+Receiver SHOULD reject the message (see (#rejecting-messages)).  
+f the email is not subject to the "reject" policy (due to the "pct"
+tag), the Mail Receiver SHOULD treat the email as though the
+"quarantine" policy applies.  This behavior allows Domain Owners to
+experiment with progressively stronger policies without relaxing
+existing policy.
 
 Mail Receivers implement "pct" via statistical mechanisms that
 achieve a close approximation to the requested percentage and provide
 a representative sample across a reporting period.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ###  Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
@@ -1662,7 +1685,10 @@ The initial set of entries in this registry is as follows:
 | aspf     | RFC 7489  | current | SPF alignment mode                       |
 | fo       | RFC 7489  | current | Failure reporting options                |
 | p        | RFC 7489  | current | Requested handling policy                |
-| pct      | RFC 7489  | current | Sampling rate                            |
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| pct      | RFC 7489  | current | Sampling rate |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 | rf       | RFC 7489  | current | Failure reporting format(s)              |
 | ri       | RFC 7489  | current | Aggregate Reporting interval             |
 | rua      | RFC 7489  | current | Reporting URI(s) for aggregate data      |
@@ -2197,8 +2223,11 @@ indicating that:
    "dmarc-feedback@example.com"
    ("rua=mailto:dmarc-feedback@example.com")
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *  All messages from this Organizational Domain are subject to this
    policy (no "pct" tag present, so the default of 100% applies)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The DMARC policy record might look like this when retrieved using a
 common command-line tool:
@@ -2393,23 +2422,35 @@ Issue 53, Proposed replacement text:
      mailto:tld-test@thirdparty.example.net")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *  25% of messages from this Organizational Domain are subject to
    action based on this policy ("pct=25")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The DMARC policy record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
 line but is wrapped here for publication):
 
+Issue 47, Original text:
 ~~~
   % dig +short TXT _dmarc.test.example.com
   "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
    mailto:tld-test@thirdparty.example.net!10m; pct=25"
 ~~~
 
+Issue 47, Proposed replacement text:
+~~~
+  % dig +short TXT _dmarc.test.example.com
+  "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
+   mailto:tld-test@thirdparty.example.net"
+~~~
+
 To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
 file:
 
+Issue 47, Original text:
 ~~~
   ; DMARC record for the domain example.com
 
@@ -2417,6 +2458,15 @@ file:
                     "rua=mailto:dmarc-feedback@example.com,"
                     "mailto:tld-test@thirdparty.example.net!10m; "
                     "pct=25" )
+~~~
+
+Issue 47, Proposed replacement text:
+~~~
+  ; DMARC record for the domain example.com
+
+  _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
+                    "rua=mailto:dmarc-feedback@example.com,"
+                    "mailto:tld-test@thirdparty.example.net" )
 ~~~
 
 ##  Mail Receiver Example {#mail-receiver-example}
@@ -2677,6 +2727,11 @@ would normally appear as one continuous string.
 * Proposed text to remove all references to strict alignment
 * Data demonstrating lack of use of feature entered into ticket -
   https://trac.ietf.org/trac/dmarc/ticket/52#comment:2
+
+### Issue 47 - Remove pct= tag
+* Proposed text to remove all references to pct and message sampling
+* Data demonstrating lack of use of feature entered into ticket - 
+  https://trac.ietf.org/trac/dmarc/ticket/47#comment:4
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}

@@ -1297,10 +1297,7 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
                     <p id="section-toc.1-1.6.2.6.2.3.1"><a href="#section-6.6.3" class="xref">6.6.3</a>.  <a href="#name-policy-discovery" class="xref">Policy Discovery</a><a href="#section-toc.1-1.6.2.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.4">
-                    <p id="section-toc.1-1.6.2.6.2.4.1"><a href="#section-6.6.4" class="xref">6.6.4</a>.  <a href="#name-message-sampling" class="xref">Message Sampling</a><a href="#section-toc.1-1.6.2.6.2.4.1" class="pilcrow">¶</a></p>
-</li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.5">
-                    <p id="section-toc.1-1.6.2.6.2.5.1"><a href="#section-6.6.5" class="xref">6.6.5</a>.  <a href="#name-store-results-of-dmarc-proc" class="xref">Store Results of DMARC Processing</a><a href="#section-toc.1-1.6.2.6.2.5.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.6.2.6.2.4.1"><a href="#section-6.6.4" class="xref">6.6.4</a>.  <a href="#name-store-results-of-dmarc-proc" class="xref">Store Results of DMARC Processing</a><a href="#section-toc.1-1.6.2.6.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -1561,6 +1558,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.10.2.2">
                     <p id="section-toc.1-1.16.2.10.2.2.1"><a href="#section-c.10.2" class="xref">C.10.2</a>.  <a href="#name-issue-52-remove-strict-alig" class="xref">Issue 52 - Remove strict alignment (and adkim and aspf tags)</a><a href="#section-toc.1-1.16.2.10.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.10.2.3">
+                    <p id="section-toc.1-1.16.2.10.2.3.1"><a href="#section-c.10.3" class="xref">C.10.3</a>.  <a href="#name-issue-47-remove-pct-tag" class="xref">Issue 47 - Remove pct= tag</a><a href="#section-toc.1-1.16.2.10.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -2474,9 +2474,11 @@ discussion of SMTP rejection methods and their implications.<a href="#section-6.
 </dl>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-6.5">pct:</dt>
-<dd id="section-6.3-6.6">
-            <p id="section-6.3-6.6.1">(plain-text integer between 0 and 100, inclusive; OPTIONAL;
+</dl>
+<p id="section-6.3-7">Issue 47, Original text to be deleted:<a href="#section-6.3-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-8">
+<pre>pct:
+:   (plain-text integer between 0 and 100, inclusive; OPTIONAL;
 default is 100).  Percentage of messages from the Domain Owner's
 mail stream to which the DMARC policy is to be applied.  However,
 this MUST NOT be applied to the DMARC-generated reports, all of
@@ -2485,17 +2487,18 @@ which must be sent and received unhindered.  The purpose of the
 enforcement of the DMARC mechanism.  The prospect of "all or
 nothing" is recognized as preventing many organizations from
 experimenting with strong authentication-based mechanisms.  See
-<a href="#message-sampling" class="xref">Section 6.6.4</a> for details.  Note that random selection based on
-this percentage, such as the following pseudocode, is adequate:<a href="#section-6.3-6.6.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.6.2">if (random mod 100) &lt; pct then
-  selected = true
-else
-  selected = false<a href="#section-6.3-6.6.2" class="pilcrow">¶</a></p>
-</dd>
-<dd class="break"></dd>
-<dt id="section-6.3-6.7">rf:</dt>
-<dd id="section-6.3-6.8">
-            <p id="section-6.3-6.8.1">Format to be used for message-specific failure reports (colon-
+(#message-sampling) for details.  Note that random selection based
+on this percentage, such as the following pseudocode, is adequate:
+
+    if (random mod 100) &lt; pct then
+      selected = true
+    else
+      selected = false
+</pre><a href="#section-6.3-8" class="pilcrow">¶</a>
+</div>
+<dl class="dlParallel" id="section-6.3-9">
+          <dt id="section-6.3-9.1">rf:</dt>
+<dd id="section-6.3-9.2">Format to be used for message-specific failure reports (colon-
 separated plain-text list of values; OPTIONAL; default is "afrf").
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
@@ -2506,12 +2509,12 @@ different value SHOULD ignore it or MAY ignore the entire DMARC
 record.  For this version, only "afrf" (the auth-failure report
 type defined in <span>[<a href="#RFC6591" class="xref">RFC6591</a>]</span>) is presently supported.  See the DMARC reporting documents
 for details.  For interoperability, the Authentication Failure
-Reporting Format (AFRF) MUST be supported.<a href="#section-6.3-6.8.1" class="pilcrow">¶</a></p>
+Reporting Format (AFRF) MUST be supported.<a href="#section-6.3-9.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-6.9">ri (do not use):</dt>
-<dd id="section-6.3-6.10">
-            <p id="section-6.3-6.10.1">Interval requested between aggregate reports (plain-text 32-bit
+<dt id="section-6.3-9.3">ri (do not use):</dt>
+<dd id="section-6.3-9.4">
+            <p id="section-6.3-9.4.1">Interval requested between aggregate reports (plain-text 32-bit
 unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
 be used in a DMARC record. See the note at the end for more information.
 Indicates a request to Receivers to generate aggregate reports separated
@@ -2519,16 +2522,16 @@ by no more than the requested number of seconds.  DMARC implementations
 MUST be able to provide daily reports and SHOULD be able to
 provide hourly reports when requested.  However, anything other
 than a daily report is understood to be accommodated on a best-
-effort basis.<a href="#section-6.3-6.10.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-6.10.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
+effort basis.<a href="#section-6.3-9.4.1" class="pilcrow">¶</a></p>
+<p id="section-6.3-9.4.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
 that fewer than 2% were publishing an ri tag with a non-default value, with
 most of those set to a value of 3600. There was no evidence that any of these
-requests for something more frequent than once daily were being honored.<a href="#section-6.3-6.10.2" class="pilcrow">¶</a></p>
+requests for something more frequent than once daily were being honored.<a href="#section-6.3-9.4.2" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-7">Issue 53, Original text:<a href="#section-6.3-7" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6.3-8">
+<p id="section-6.3-10">Issue 53, Original text:<a href="#section-6.3-10" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-11">
 <pre>rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  A comma or
@@ -2544,10 +2547,10 @@ electronic mail.  If not provided, Mail Receivers MUST NOT generate
 aggregate feedback reports.  URIs not supported by Mail Receivers
 MUST be ignored.  The aggregate feedback report format is described
 in the DMARC reporting documents.
-</pre><a href="#section-6.3-8" class="pilcrow">¶</a>
+</pre><a href="#section-6.3-11" class="pilcrow">¶</a>
 </div>
-<p id="section-6.3-9">Issue 53, Proposed replacement text:<a href="#section-6.3-9" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6.3-10">
+<p id="section-6.3-12">Issue 53, Proposed replacement text:<a href="#section-6.3-12" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-13">
 <pre>rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  The DMARC
@@ -2560,11 +2563,11 @@ send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate aggregate feedback reports.  URIs
 not supported by Mail Receivers MUST be ignored.  The aggregate
 feedback report format is described in the DMARC reporting documents.
-</pre><a href="#section-6.3-10" class="pilcrow">¶</a>
+</pre><a href="#section-6.3-13" class="pilcrow">¶</a>
 </div>
-<dl class="dlParallel" id="section-6.3-11">
-          <dt id="section-6.3-11.1">ruf:</dt>
-<dd id="section-6.3-11.2">Addresses to which message-specific failure information is to
+<dl class="dlParallel" id="section-6.3-14">
+          <dt id="section-6.3-14.1">ruf:</dt>
+<dd id="section-6.3-14.2">Addresses to which message-specific failure information is to
 be reported (comma-separated plain-text list of DMARC URIs;
 OPTIONAL).  If present, the Domain Owner is requesting Mail
 Receivers to send detailed failure reports about messages that
@@ -2576,11 +2579,11 @@ from that of the domain advertising the policy.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate failure reports.  See <a href="#external-report-addresses" class="xref">Section 11.5</a> for
-additional considerations.<a href="#section-6.3-11.2" class="pilcrow">¶</a>
+additional considerations.<a href="#section-6.3-14.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-11.3">sp:</dt>
-<dd id="section-6.3-11.4">Requested Mail Receiver policy for all subdomains (plain-text;
+<dt id="section-6.3-14.3">sp:</dt>
+<dd id="section-6.3-14.4">Requested Mail Receiver policy for all subdomains (plain-text;
 OPTIONAL).  Indicates the policy to be enacted by the Receiver at
 the request of the Domain Owner.  It applies only to subdomains of
 the domain queried and not to the domain itself.  Its syntax is
@@ -2588,28 +2591,28 @@ identical to that of the "p" tag defined above.  If absent, the
 policy specified by the "p" tag MUST be applied for subdomains.
 Note that "sp" will be ignored for DMARC records published on
 subdomains of Organizational Domains due to the effect of the
-DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.6.3</a>.<a href="#section-6.3-11.4" class="pilcrow">¶</a>
+DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.6.3</a>.<a href="#section-6.3-14.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-11.5">v:</dt>
-<dd id="section-6.3-11.6">Version (plain-text; REQUIRED).  Identifies the record retrieved
+<dt id="section-6.3-14.5">v:</dt>
+<dd id="section-6.3-14.6">Version (plain-text; REQUIRED).  Identifies the record retrieved
 as a DMARC record.  It MUST have the value of "DMARC1".  The value
 of this tag MUST match precisely; if it does not or it is absent,
 the entire retrieved record MUST be ignored.  It MUST be the first
-tag in the list.<a href="#section-6.3-11.6" class="pilcrow">¶</a>
+tag in the list.<a href="#section-6.3-14.6" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-12">A DMARC policy record MUST comply with the formal specification found
+<p id="section-6.3-15">A DMARC policy record MUST comply with the formal specification found
 in <a href="#formal-definition" class="xref">Section 6.4</a> in that the "v" tag MUST be present and MUST
 appear first.  Unknown tags MUST be ignored.  Syntax errors
 in the remainder of the record SHOULD be discarded in favor of
-default values (if any) or ignored outright.<a href="#section-6.3-12" class="pilcrow">¶</a></p>
-<p id="section-6.3-13">Note that given the rules of the previous paragraph, addition of a
+default values (if any) or ignored outright.<a href="#section-6.3-15" class="pilcrow">¶</a></p>
+<p id="section-6.3-16">Note that given the rules of the previous paragraph, addition of a
 new tag into the registered list of tags does not itself require a
 new version of DMARC to be generated (with a corresponding change to
 the "v" tag's value), but a change to any existing tags does require
-a new version of DMARC.<a href="#section-6.3-13" class="pilcrow">¶</a></p>
+a new version of DMARC.<a href="#section-6.3-16" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-definition">
@@ -2633,12 +2636,23 @@ follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
                     dmarc-srequest /
                     dmarc-auri /
                     dmarc-furi /
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-adkim /
                     dmarc-aspf /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-ainterval /
                     dmarc-fo /
+Issue 47, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-rfmt /
                     dmarc-percent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 47, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    dmarc-rfmt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -2658,11 +2672,14 @@ follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
   dmarc-furi      = "ruf" *WSP "=" *WSP
                     dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-adkim     = "adkim" *WSP "=" *WSP
                     ( "r" / "s" )
 
   dmarc-aspf      = "aspf" *WSP "=" *WSP
                     ( "r" / "s" )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   dmarc-ainterval = "ri" *WSP "=" *WSP 1*DIGIT
 
@@ -2673,9 +2690,12 @@ follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
   dmarc-rfmt      = "rf"  *WSP "=" *WSP Keyword *(*WSP ":" Keyword)
                     ; registered reporting formats only
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-percent   = "pct" *WSP "=" *WSP
                     ( DIGIT / %x31-39 DIGIT / "100")
                     ; 0-100
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 </pre><a href="#section-6.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.4-4">"Keyword" is imported from Section 4.1.2 of <span>[<a href="#RFC5321" class="xref">RFC5321</a>]</span>.<a href="#section-6.4-4" class="pilcrow">¶</a></p>
@@ -2896,44 +2916,46 @@ message being temporarily rejected (i.e., an SMTP 4yx reply), which
 invites the sending MTA to try again after the condition has possibly
 cleared, allowing a definite DMARC conclusion to be reached ("fail
 closed").<a href="#section-6.6.3-5" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="message-sampling">
-<section id="section-6.6.4">
-          <h4 id="name-message-sampling">
-<a href="#section-6.6.4" class="section-number selfRef">6.6.4. </a><a href="#name-message-sampling" class="section-name selfRef">Message Sampling</a>
-          </h4>
-<p id="section-6.6.4-1">If the "pct" tag is present in the policy record, the Mail Receiver
+<p id="section-6.6.3-6">Issue 47, Original text to be deleted:<a href="#section-6.6.3-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.6.3-7">
+<pre>###  Message Sampling {#message-sampling}
+
+If the "pct" tag is present in the policy record, the Mail Receiver
 MUST NOT enact the requested policy ("p" tag or "sp" tag") on more
 than the stated percent of the totality of affected messages.
 However, regardless of whether or not the "pct" tag is present, the
 Mail Receiver MUST include all relevant message data in any reports
-produced.<a href="#section-6.6.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.4-2">If email is subject to the DMARC policy of "quarantine", the Mail
+produced.
+
+If email is subject to the DMARC policy of "quarantine", the Mail
 Receiver SHOULD quarantine the message.  If the email is not subject
 to the "quarantine" policy (due to the "pct" tag), the Mail Receiver
-SHOULD apply local message classification as normal.<a href="#section-6.6.4-2" class="pilcrow">¶</a></p>
-<p id="section-6.6.4-3">If email is subject to the DMARC policy of "reject", the Mail
-Receiver SHOULD reject the message (see <a href="#rejecting-messages" class="xref">Section 9.3</a>).  If the email
-is not subject to the "reject" policy (due to the "pct" tag), the
-Mail Receiver SHOULD treat the email as though the "quarantine"
-policy applies.  This behavior allows Domain Owners to experiment
-with progressively stronger policies without relaxing existing
-policy.<a href="#section-6.6.4-3" class="pilcrow">¶</a></p>
-<p id="section-6.6.4-4">Mail Receivers implement "pct" via statistical mechanisms that
+SHOULD apply local message classification as normal.
+
+If email is subject to the DMARC policy of "reject", the Mail
+Receiver SHOULD reject the message (see (#rejecting-messages)).
+f the email is not subject to the "reject" policy (due to the "pct"
+tag), the Mail Receiver SHOULD treat the email as though the
+"quarantine" policy applies.  This behavior allows Domain Owners to
+experiment with progressively stronger policies without relaxing
+existing policy.
+
+Mail Receivers implement "pct" via statistical mechanisms that
 achieve a close approximation to the requested percentage and provide
-a representative sample across a reporting period.<a href="#section-6.6.4-4" class="pilcrow">¶</a></p>
+a representative sample across a reporting period.
+</pre><a href="#section-6.6.3-7" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="store-results-of-dmarc-processing">
-<section id="section-6.6.5">
+<section id="section-6.6.4">
           <h4 id="name-store-results-of-dmarc-proc">
-<a href="#section-6.6.5" class="section-number selfRef">6.6.5. </a><a href="#name-store-results-of-dmarc-proc" class="section-name selfRef">Store Results of DMARC Processing</a>
+<a href="#section-6.6.4" class="section-number selfRef">6.6.4. </a><a href="#name-store-results-of-dmarc-proc" class="section-name selfRef">Store Results of DMARC Processing</a>
           </h4>
-<p id="section-6.6.5-1">The results of Mail Receiver-based DMARC processing should be stored
+<p id="section-6.6.4-1">The results of Mail Receiver-based DMARC processing should be stored
 for eventual presentation back to the Domain Owner in the form of
 aggregate feedback reports.  <a href="#general-record-format" class="xref">Section 6.3</a> and the DMARC reporting docuents discuss aggregate
-feedback.<a href="#section-6.6.5-1" class="pilcrow">¶</a></p>
+feedback.<a href="#section-6.6.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3367,11 +3389,8 @@ Mail Receivers.<a href="#section-10.4-2" class="pilcrow">¶</a></p>
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.<a href="#section-10.4-3" class="pilcrow">¶</a></p>
 <p id="section-10.4-4">The initial set of entries in this registry is as follows:<a href="#section-10.4-4" class="pilcrow">¶</a></p>
-<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-1">
-          <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-dmarc-tag-registry-2" class="selfRef">"DMARC Tag Registry"</a>
-          </caption>
+<table class="left" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Tag Name</th>
@@ -3405,50 +3424,20 @@ when processed by implementations conforming to prior specifications.<a href="#s
               <td class="text-left" rowspan="1" colspan="1">current</td>
               <td class="text-left" rowspan="1" colspan="1">Requested handling policy</td>
             </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">pct</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Sampling rate</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">rf</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Failure reporting format(s)</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">ri</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Aggregate Reporting interval</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">rua</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for aggregate data</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">ruf</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for failure data</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">sp</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Requested handling policy for subdomains</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">v</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Specification version</td>
-            </tr>
           </tbody>
         </table>
+<p id="section-10.4-6">Issue 47, Original text to be deleted:<a href="#section-10.4-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-10.4-7">
+<pre>| pct      | RFC 7489  | current | Sampling rate |
+</pre><a href="#section-10.4-7" class="pilcrow">¶</a>
+</div>
+<p id="section-10.4-8">| rf       | RFC 7489  | current | Failure reporting format(s)              |
+| ri       | RFC 7489  | current | Aggregate Reporting interval             |
+| rua      | RFC 7489  | current | Reporting URI(s) for aggregate data      |
+| ruf      | RFC 7489  | current | Reporting URI(s) for failure data        |
+| sp       | RFC 7489  | current | Requested handling policy for subdomains |
+| v        | RFC 7489  | current | Specification version                    |
+Table: "DMARC Tag Registry"<a href="#section-10.4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="dmarc-report-format-registry">
@@ -4208,27 +4197,29 @@ of this DMARC policy record ("p=none")<a href="#section-b.2.1-4.2.1" class="pilc
 "dmarc-feedback@example.com"
 ("rua=mailto:dmarc-feedback@example.com")<a href="#section-b.2.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-b.2.1-4.4">
-              <p id="section-b.2.1-4.4.1">All messages from this Organizational Domain are subject to this
-policy (no "pct" tag present, so the default of 100% applies)<a href="#section-b.2.1-4.4.1" class="pilcrow">¶</a></p>
-</li>
 </ul>
-<p id="section-b.2.1-5">The DMARC policy record might look like this when retrieved using a
-common command-line tool:<a href="#section-b.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-b.2.1-5">Issue 47, Original text to be deleted:<a href="#section-b.2.1-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.2.1-6">
-<pre>  % dig +short TXT _dmarc.example.com.
-  "v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com"
+<pre>*  All messages from this Organizational Domain are subject to this
+   policy (no "pct" tag present, so the default of 100% applies)
 </pre><a href="#section-b.2.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-b.2.1-7">To publish such a record, the DNS administrator for the Domain Owner
-creates an entry like the following in the appropriate zone file
-(following the conventional zone file format):<a href="#section-b.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-b.2.1-7">The DMARC policy record might look like this when retrieved using a
+common command-line tool:<a href="#section-b.2.1-7" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.2.1-8">
+<pre>  % dig +short TXT _dmarc.example.com.
+  "v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com"
+</pre><a href="#section-b.2.1-8" class="pilcrow">¶</a>
+</div>
+<p id="section-b.2.1-9">To publish such a record, the DNS administrator for the Domain Owner
+creates an entry like the following in the appropriate zone file
+(following the conventional zone file format):<a href="#section-b.2.1-9" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.1-10">
 <pre>  ; DMARC record for the domain example.com
 
   _dmarc  IN TXT ( "v=DMARC1; p=none; "
                    "rua=mailto:dmarc-feedback@example.com" )
-</pre><a href="#section-b.2.1-8" class="pilcrow">¶</a>
+</pre><a href="#section-b.2.1-10" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -4415,31 +4406,50 @@ Domain that fail to authenticate ("p=quarantine")<a href="#section-b.2.4-7.3.1" 
      mailto:tld-test@thirdparty.example.net")
 </pre><a href="#section-b.2.4-11" class="pilcrow">¶</a>
 </div>
-<ul>
-<li id="section-b.2.4-12.1">25% of messages from this Organizational Domain are subject to
-action based on this policy ("pct=25")<a href="#section-b.2.4-12.1" class="pilcrow">¶</a>
-</li>
-</ul>
-<p id="section-b.2.4-13">The DMARC policy record might look like this when retrieved using a
+<p id="section-b.2.4-12">Issue 47, Original text to be deleted:<a href="#section-b.2.4-12" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.4-13">
+<pre>*  25% of messages from this Organizational Domain are subject to
+   action based on this policy ("pct=25")
+</pre><a href="#section-b.2.4-13" class="pilcrow">¶</a>
+</div>
+<p id="section-b.2.4-14">The DMARC policy record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):<a href="#section-b.2.4-13" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-b.2.4-14">
+line but is wrapped here for publication):<a href="#section-b.2.4-14" class="pilcrow">¶</a></p>
+<p id="section-b.2.4-15">Issue 47, Original text:<a href="#section-b.2.4-15" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.4-16">
 <pre>  % dig +short TXT _dmarc.test.example.com
   "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
    mailto:tld-test@thirdparty.example.net!10m; pct=25"
-</pre><a href="#section-b.2.4-14" class="pilcrow">¶</a>
+</pre><a href="#section-b.2.4-16" class="pilcrow">¶</a>
 </div>
-<p id="section-b.2.4-15">To publish such a record, the DNS administrator for the Domain Owner
+<p id="section-b.2.4-17">Issue 47, Proposed replacement text:<a href="#section-b.2.4-17" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.4-18">
+<pre>  % dig +short TXT _dmarc.test.example.com
+  "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
+   mailto:tld-test@thirdparty.example.net"
+</pre><a href="#section-b.2.4-18" class="pilcrow">¶</a>
+</div>
+<p id="section-b.2.4-19">To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
-file:<a href="#section-b.2.4-15" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-b.2.4-16">
+file:<a href="#section-b.2.4-19" class="pilcrow">¶</a></p>
+<p id="section-b.2.4-20">Issue 47, Original text:<a href="#section-b.2.4-20" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.4-21">
 <pre>  ; DMARC record for the domain example.com
 
   _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
                     "rua=mailto:dmarc-feedback@example.com,"
                     "mailto:tld-test@thirdparty.example.net!10m; "
                     "pct=25" )
-</pre><a href="#section-b.2.4-16" class="pilcrow">¶</a>
+</pre><a href="#section-b.2.4-21" class="pilcrow">¶</a>
+</div>
+<p id="section-b.2.4-22">Issue 47, Proposed replacement text:<a href="#section-b.2.4-22" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-b.2.4-23">
+<pre>  ; DMARC record for the domain example.com
+
+  _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
+                    "rua=mailto:dmarc-feedback@example.com,"
+                    "mailto:tld-test@thirdparty.example.net" )
+</pre><a href="#section-b.2.4-23" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -4917,6 +4927,20 @@ as replacement for current text in "Minimum Implemenatations"<a href="#section-c
 </li>
 <li id="section-c.10.2-1.2">Data demonstrating lack of use of feature entered into ticket -
 <a href="https://trac.ietf.org/trac/dmarc/ticket/52#comment:2">https://trac.ietf.org/trac/dmarc/ticket/52#comment:2</a><a href="#section-c.10.2-1.2" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-47-remove-pct-tag">
+<section id="section-c.10.3">
+          <h3 id="name-issue-47-remove-pct-tag">
+<a href="#section-c.10.3" class="section-number selfRef">C.10.3. </a><a href="#name-issue-47-remove-pct-tag" class="section-name selfRef">Issue 47 - Remove pct= tag</a>
+          </h3>
+<ul>
+<li id="section-c.10.3-1.1">Proposed text to remove all references to pct and message sampling<a href="#section-c.10.3-1.1" class="pilcrow">¶</a>
+</li>
+<li id="section-c.10.3-1.2">Data demonstrating lack of use of feature entered into ticket -
+<a href="https://trac.ietf.org/trac/dmarc/ticket/47#comment:4">https://trac.ietf.org/trac/dmarc/ticket/47#comment:4</a><a href="#section-c.10.3-1.2" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>

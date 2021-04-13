@@ -777,8 +777,11 @@ email that fails the DMARC mechanism check.  Rejection SHOULD
 occur during the SMTP transaction.  See <xref target="rejecting-messages"></xref> for some
 discussion of SMTP rejection methods and their implications.</dd>
 </dl></dd>
-<dt>pct:</dt>
-<dd><t>(plain-text integer between 0 and 100, inclusive; OPTIONAL;
+</dl>
+<t>Issue 47, Original text to be deleted:</t>
+
+<artwork>pct:
+:   (plain-text integer between 0 and 100, inclusive; OPTIONAL;
 default is 100).  Percentage of messages from the Domain Owner's
 mail stream to which the DMARC policy is to be applied.  However,
 this MUST NOT be applied to the DMARC-generated reports, all of
@@ -787,15 +790,18 @@ which must be sent and received unhindered.  The purpose of the
 enforcement of the DMARC mechanism.  The prospect of &quot;all or
 nothing&quot; is recognized as preventing many organizations from
 experimenting with strong authentication-based mechanisms.  See
-<xref target="message-sampling"></xref> for details.  Note that random selection based on
-this percentage, such as the following pseudocode, is adequate:</t>
-<t>if (random mod 100) &lt; pct then
-  selected = true
-else
-  selected = false</t>
-</dd>
+(#message-sampling) for details.  Note that random selection based
+on this percentage, such as the following pseudocode, is adequate:
+
+    if (random mod 100) &lt; pct then
+      selected = true
+    else
+      selected = false
+</artwork>
+
+<dl>
 <dt>rf:</dt>
-<dd><t>Format to be used for message-specific failure reports (colon-
+<dd>Format to be used for message-specific failure reports (colon-
 separated plain-text list of values; OPTIONAL; default is &quot;afrf&quot;).
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
@@ -806,8 +812,7 @@ different value SHOULD ignore it or MAY ignore the entire DMARC
 record.  For this version, only &quot;afrf&quot; (the auth-failure report
 type defined in <xref target="RFC6591"></xref>) is presently supported.  See the DMARC reporting documents
 for details.  For interoperability, the Authentication Failure
-Reporting Format (AFRF) MUST be supported.</t>
-</dd>
+Reporting Format (AFRF) MUST be supported.</dd>
 <dt>ri (do not use):</dt>
 <dd><t>Interval requested between aggregate reports (plain-text 32-bit
 unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
@@ -919,12 +924,23 @@ follows:</t>
                     dmarc-srequest /
                     dmarc-auri /
                     dmarc-furi /
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-adkim /
                     dmarc-aspf /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-ainterval /
                     dmarc-fo /
+Issue 47, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     dmarc-rfmt /
                     dmarc-percent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 47, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    dmarc-rfmt 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -944,11 +960,14 @@ follows:</t>
   dmarc-furi      = &quot;ruf&quot; *WSP &quot;=&quot; *WSP
                     dmarc-uri *(*WSP &quot;,&quot; *WSP dmarc-uri)
 
+Issue 52, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-adkim     = &quot;adkim&quot; *WSP &quot;=&quot; *WSP
                     ( &quot;r&quot; / &quot;s&quot; )
 
   dmarc-aspf      = &quot;aspf&quot; *WSP &quot;=&quot; *WSP
                     ( &quot;r&quot; / &quot;s&quot; )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   dmarc-ainterval = &quot;ri&quot; *WSP &quot;=&quot; *WSP 1*DIGIT
 
@@ -959,9 +978,12 @@ follows:</t>
   dmarc-rfmt      = &quot;rf&quot;  *WSP &quot;=&quot; *WSP Keyword *(*WSP &quot;:&quot; Keyword)
                     ; registered reporting formats only
 
+Issue 47, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   dmarc-percent   = &quot;pct&quot; *WSP &quot;=&quot; *WSP
                     ( DIGIT / %x31-39 DIGIT / &quot;100&quot;)
                     ; 0-100
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 </artwork>
 <t>&quot;Keyword&quot; is imported from Section 4.1.2 of <xref target="RFC5321"></xref>.</t>
 <t>Issue 53, Original text to be deleted:</t>
@@ -1146,29 +1168,34 @@ message being temporarily rejected (i.e., an SMTP 4yx reply), which
 invites the sending MTA to try again after the condition has possibly
 cleared, allowing a definite DMARC conclusion to be reached (&quot;fail
 closed&quot;).</t>
-</section>
+<t>Issue 47, Original text to be deleted:</t>
 
-<section anchor="message-sampling"><name>Message Sampling</name>
-<t>If the &quot;pct&quot; tag is present in the policy record, the Mail Receiver
+<artwork>###  Message Sampling {#message-sampling}
+
+If the &quot;pct&quot; tag is present in the policy record, the Mail Receiver
 MUST NOT enact the requested policy (&quot;p&quot; tag or &quot;sp&quot; tag&quot;) on more
 than the stated percent of the totality of affected messages.
 However, regardless of whether or not the &quot;pct&quot; tag is present, the
 Mail Receiver MUST include all relevant message data in any reports
-produced.</t>
-<t>If email is subject to the DMARC policy of &quot;quarantine&quot;, the Mail
+produced.
+
+If email is subject to the DMARC policy of &quot;quarantine&quot;, the Mail
 Receiver SHOULD quarantine the message.  If the email is not subject
 to the &quot;quarantine&quot; policy (due to the &quot;pct&quot; tag), the Mail Receiver
-SHOULD apply local message classification as normal.</t>
-<t>If email is subject to the DMARC policy of &quot;reject&quot;, the Mail
-Receiver SHOULD reject the message (see <xref target="rejecting-messages"></xref>).  If the email
-is not subject to the &quot;reject&quot; policy (due to the &quot;pct&quot; tag), the
-Mail Receiver SHOULD treat the email as though the &quot;quarantine&quot;
-policy applies.  This behavior allows Domain Owners to experiment
-with progressively stronger policies without relaxing existing
-policy.</t>
-<t>Mail Receivers implement &quot;pct&quot; via statistical mechanisms that
+SHOULD apply local message classification as normal.
+
+If email is subject to the DMARC policy of &quot;reject&quot;, the Mail
+Receiver SHOULD reject the message (see (#rejecting-messages)).  
+f the email is not subject to the &quot;reject&quot; policy (due to the &quot;pct&quot;
+tag), the Mail Receiver SHOULD treat the email as though the
+&quot;quarantine&quot; policy applies.  This behavior allows Domain Owners to
+experiment with progressively stronger policies without relaxing
+existing policy.
+
+Mail Receivers implement &quot;pct&quot; via statistical mechanisms that
 achieve a close approximation to the requested percentage and provide
-a representative sample across a reporting period.</t>
+a representative sample across a reporting period.
+</artwork>
 </section>
 
 <section anchor="store-results-of-dmarc-processing"><name>Store Results of DMARC Processing</name>
@@ -1540,8 +1567,7 @@ Mail Receivers.</t>
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.</t>
 <t>The initial set of entries in this registry is as follows:</t>
-<table align="left"><name>&quot;DMARC Tag Registry&quot;
-</name>
+<table align="left">
 <thead>
 <tr>
 <th align="left">Tag Name</th>
@@ -1579,57 +1605,19 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">current</td>
 <td align="left">Requested handling policy</td>
 </tr>
-
-<tr>
-<td align="left">pct</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Sampling rate</td>
-</tr>
-
-<tr>
-<td align="left">rf</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Failure reporting format(s)</td>
-</tr>
-
-<tr>
-<td align="left">ri</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Aggregate Reporting interval</td>
-</tr>
-
-<tr>
-<td align="left">rua</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Reporting URI(s) for aggregate data</td>
-</tr>
-
-<tr>
-<td align="left">ruf</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Reporting URI(s) for failure data</td>
-</tr>
-
-<tr>
-<td align="left">sp</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Requested handling policy for subdomains</td>
-</tr>
-
-<tr>
-<td align="left">v</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">Specification version</td>
-</tr>
 </tbody>
-</table></section>
+</table><t>Issue 47, Original text to be deleted:</t>
+
+<artwork>| pct      | RFC 7489  | current | Sampling rate |
+</artwork>
+<t>| rf       | RFC 7489  | current | Failure reporting format(s)              |
+| ri       | RFC 7489  | current | Aggregate Reporting interval             |
+| rua      | RFC 7489  | current | Reporting URI(s) for aggregate data      |
+| ruf      | RFC 7489  | current | Reporting URI(s) for failure data        |
+| sp       | RFC 7489  | current | Requested handling policy for subdomains |
+| v        | RFC 7489  | current | Specification version                    |
+Table: &quot;DMARC Tag Registry&quot;</t>
+</section>
 
 <section anchor="dmarc-report-format-registry"><name>DMARC Report Format Registry</name>
 <t>Also within &quot;Domain-based Message Authentication, Reporting, and
@@ -2188,10 +2176,12 @@ of this DMARC policy record (&quot;p=none&quot;)</t>
 &quot;dmarc-feedback@example.com&quot;
 (&quot;rua=mailto:dmarc-feedback@example.com&quot;)</t>
 </li>
-<li><t>All messages from this Organizational Domain are subject to this
-policy (no &quot;pct&quot; tag present, so the default of 100% applies)</t>
-</li>
 </ul>
+<t>Issue 47, Original text to be deleted:</t>
+
+<artwork>*  All messages from this Organizational Domain are subject to this
+   policy (no &quot;pct&quot; tag present, so the default of 100% applies)
+</artwork>
 <t>The DMARC policy record might look like this when retrieved using a
 common command-line tool:</t>
 
@@ -2368,22 +2358,30 @@ Domain that fail to authenticate (&quot;p=quarantine&quot;)</t>
    (&quot;rua=mailto:dmarc-feedback@example.com,
      mailto:tld-test@thirdparty.example.net&quot;)
 </artwork>
+<t>Issue 47, Original text to be deleted:</t>
 
-<ul>
-<li>25% of messages from this Organizational Domain are subject to
-action based on this policy (&quot;pct=25&quot;)</li>
-</ul>
+<artwork>*  25% of messages from this Organizational Domain are subject to
+   action based on this policy (&quot;pct=25&quot;)
+</artwork>
 <t>The DMARC policy record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
 line but is wrapped here for publication):</t>
+<t>Issue 47, Original text:</t>
 
 <artwork>  % dig +short TXT _dmarc.test.example.com
   &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
    mailto:tld-test@thirdparty.example.net!10m; pct=25&quot;
 </artwork>
+<t>Issue 47, Proposed replacement text:</t>
+
+<artwork>  % dig +short TXT _dmarc.test.example.com
+  &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
+   mailto:tld-test@thirdparty.example.net&quot;
+</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
 file:</t>
+<t>Issue 47, Original text:</t>
 
 <artwork>  ; DMARC record for the domain example.com
 
@@ -2391,6 +2389,14 @@ file:</t>
                     &quot;rua=mailto:dmarc-feedback@example.com,&quot;
                     &quot;mailto:tld-test@thirdparty.example.net!10m; &quot;
                     &quot;pct=25&quot; )
+</artwork>
+<t>Issue 47, Proposed replacement text:</t>
+
+<artwork>  ; DMARC record for the domain example.com
+
+  _dmarc IN  TXT  ( &quot;v=DMARC1; p=quarantine; &quot;
+                    &quot;rua=mailto:dmarc-feedback@example.com,&quot;
+                    &quot;mailto:tld-test@thirdparty.example.net&quot; )
 </artwork>
 </section>
 </section>
@@ -2719,6 +2725,15 @@ as replacement for current text in &quot;Minimum Implemenatations&quot;</li>
 <li>Proposed text to remove all references to strict alignment</li>
 <li>Data demonstrating lack of use of feature entered into ticket -
 <eref target="https://trac.ietf.org/trac/dmarc/ticket/52#comment:2">https://trac.ietf.org/trac/dmarc/ticket/52#comment:2</eref></li>
+</ul>
+</section>
+
+<section anchor="issue-47-remove-pct-tag"><name>Issue 47 - Remove pct= tag</name>
+
+<ul>
+<li>Proposed text to remove all references to pct and message sampling</li>
+<li>Data demonstrating lack of use of feature entered into ticket -
+<eref target="https://trac.ietf.org/trac/dmarc/ticket/47#comment:4">https://trac.ietf.org/trac/dmarc/ticket/47#comment:4</eref></li>
 </ul>
 </section>
 </section>
