@@ -40,13 +40,25 @@ and DMARC builds on those protocols. Using DMARC, Domain Owners that originate
 email can publish a DNS TXT record with their email authentication policies,
 preferred handling for mail that fails authentication checks, and request
 reports about email use of the domain name.</t>
-<t>As with SPF and DKIM, DMARC authentication checks result in verdicts of
-&quot;pass&quot; or &quot;fail&quot;. A DMARC pass verdict requires not only that SPF or DKIM
-pass for the message in question, but also that the domain validated by the
-SPF or DKIM check is aligned with the RFC5322.From domain. In
-the DMARC protocol, two domains are said to be &quot;in alignment&quot; if they have
-the same Organizational Domain (a.k.a., relaxed alignment) or they are
-identical (a.k.a., strict alignment).</t>
+<t>Issue 52, Original text:</t>
+
+<artwork>As with SPF and DKIM, DMARC authentication checks result in verdicts
+of &quot;pass&quot; or &quot;fail&quot;. A DMARC pass verdict requires not only that SPF
+or DKIM pass for the message in question, but also that the domain 
+validated by the SPF or DKIM check is aligned with the RFC5322.From 
+domain. In the DMARC protocol, two domains are said to be &quot;in
+alignment&quot; if they have the same Organizational Domain (a.k.a.,
+relaxed alignment) or they are identical (a.k.a., strict alignment).
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>As with SPF and DKIM, DMARC authentication checks result in verdicts
+of &quot;pass&quot; or &quot;fail&quot;. A DMARC pass verdict requires not only that SPF
+or DKIM pass for the message in question, but also that the domain
+validated by the SPF or DKIM check is aligned with the RFC5322.From
+domain. In the DMARC protocol, two domains are said to be &quot;in
+alignment&quot; if they have the same Organizational Domain.
+</artwork>
 <t>A DMARC pass result indicates only that the RFC5322.From domain has been
 authenticated in that message; there is no explicit or implied value assertion
 attributed to a message that receives such a verdict. A mail-receiving organization
@@ -252,7 +264,9 @@ the message.  Accordingly, DMARC operation is predicated on the input
 being a valid RFC5322 message object, and handling of such
 non-compliant cases is outside of the scope of this specification.
 Further discussion of this can be found in <xref target="extract-author-domain"></xref>.</t>
-<t>Each of the underlying authentication technologies that DMARC takes
+<t>Issue 52, Original text:</t>
+
+<artwork>Each of the underlying authentication technologies that DMARC takes
 as input yields authenticated domains as their outputs when they
 succeed.  From the perspective of DMARC, each can be operated in a
 &quot;strict&quot; mode or a &quot;relaxed&quot; mode.  A Domain Owner would normally
@@ -260,56 +274,118 @@ select strict mode if it wanted Mail Receivers to apply DMARC
 processing only to messages bearing an RFC5322.From domain exactly
 matching the domains those mechanisms will verify.  Relaxed mode can
 be used when the operator also wishes to affect message flows bearing
-subdomains of the verified domains.</t>
+subdomains of the verified domains.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>Each of the underlying authentication technologies that DMARC takes
+as input yields authenticated domains as their outputs when they
+succeed.
+</artwork>
 
 <section anchor="dkim-identifiers"><name>DKIM-Authenticated Identifiers</name>
-<t>DMARC permits Identifier Alignment, based on the result of a DKIM
+<t>Issue 52, Original text:</t>
+
+<artwork>DMARC permits Identifier Alignment, based on the result of a DKIM
 authentication, to be strict or relaxed.  (Note that these are not
-related to DKIM's &quot;simple&quot; and &quot;relaxed&quot; canonicalization modes.)</t>
-<t>In relaxed mode, the Organizational Domains of both the <xref target="RFC6376"></xref>-
+related to DKIM's &quot;simple&quot; and &quot;relaxed&quot; canonicalization modes.)
+
+In relaxed mode, the Organizational Domains of both the [@!RFC6376]-
 authenticated signing domain (taken from the value of the &quot;d=&quot; tag in
 the signature) and that of the RFC5322.From domain must be equal if
 the identifiers are to be considered aligned.  In strict mode, only
 an exact match between both of the Fully Qualified Domain Names
-(FQDNs) is considered to produce Identifier Alignment.</t>
-<t>To illustrate, in relaxed mode, if a validated DKIM signature
+(FQDNs) is considered to produce Identifier Alignment.
+
+To illustrate, in relaxed mode, if a validated DKIM signature
 successfully verifies with a &quot;d=&quot; domain of &quot;example.com&quot;, and the
 RFC5322.From address is &quot;alerts@news.example.com&quot;, the DKIM &quot;d=&quot;
 domain and the RFC5322.From domain are considered to be &quot;in
 alignment&quot;.  In strict mode, this test would fail, since the &quot;d=&quot;
-domain does not exactly match the FQDN of the address.</t>
-<t>However, a DKIM signature bearing a value of &quot;d=com&quot; would never
+domain does not exactly match the FQDN of the address.
+
+However, a DKIM signature bearing a value of &quot;d=com&quot; would never
 allow an &quot;in alignment&quot; result, as &quot;com&quot; should appear on all public
-suffix lists (see <xref target="public-suffix-lists"></xref>) and therefore cannot be an
-Organizational Domain.</t>
-<t>Identifier Alignment is required because a message can bear a valid
+suffix lists (see (#public-suffix-lists)) and therefore cannot be an
+Organizational Domain.
+
+Identifier Alignment is required because a message can bear a valid
 signature from any domain, including domains used by a mailing list
 or even a bad actor.  Therefore, merely bearing a valid signature is
-not enough to infer authenticity of the Author Domain.</t>
-<t>Note that a single email can contain multiple DKIM signatures, and it
+not enough to infer authenticity of the Author Domain.
+
+Note that a single email can contain multiple DKIM signatures, and it
 is considered to be a DMARC &quot;pass&quot; if any DKIM signature is aligned
-and verifies.</t>
+and verifies.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>DMARC requires Identifier Alignment based on the result of a DKIM
+authentication because a message can bear a valid signature from any 
+domain, including domains used by a mailing list or even a bad actor.
+Therefore, merely bearing a valid signature is not enough to infer
+authenticity of the Author Domain.
+
+To illustrate, if a validated DKIM signature successfully verifies
+with a &quot;d=&quot; domain of &quot;example.com&quot;, and the RFC5322.From address is
+&quot;alerts@news.example.com&quot;, the DKIM &quot;d=&quot; domain and the RFC5322.From
+domain are considered to be &quot;in alignment&quot;.  However, a DKIM
+signature bearing a value of &quot;d=com&quot; would never allow an &quot;in
+alignment&quot; result, as &quot;com&quot; should appear on all public suffix lists
+(see (#public-suffix-lists)) and therefore cannot be an
+Organizational Domain.
+
+Note that a single email can contain multiple DKIM signatures, and it
+is considered to be a DMARC &quot;pass&quot; if any DKIM signature is aligned
+and verifies.
+</artwork>
 </section>
 
 <section anchor="spf-identifiers"><name>SPF-Authenticated Identifiers</name>
-<t>DMARC permits Identifier Alignment, based on the result of an SPF
-authentication, to be strict or relaxed.</t>
-<t>In relaxed mode, the <xref target="RFC7208"></xref>-authenticated domain and RFC5322.From
-domain must have the same Organizational Domain.  In strict mode,
-only an exact DNS domain match is considered to produce Identifier
-Alignment.</t>
-<t>For example, if a message passes an SPF check with an
+<t>Issue 52, Original text:</t>
+
+<artwork>DMARC permits Identifier Alignment, based on the result of an SPF
+authentication, to be strict or relaxed.
+
+In relaxed mode, the [@!RFC7208]-authenticated domain and
+RFC5322.From domain must have the same Organizational Domain.  In
+strict mode, only an exact DNS domain match is considered to produce
+Identifier Alignment.
+
+For example, if a message passes an SPF check with an
 RFC5321.MailFrom domain of &quot;cbg.bounces.example.com&quot;, and the address
-portion of the RFC5322.From header field contains &quot;payments@example.com&quot;,
-the Authenticated RFC5321.MailFrom domain identifier and the
-RFC5322.From domain are considered to be &quot;in alignment&quot; in relaxed
-mode, but not in strict mode. In order for the two identifiers to
-be considered &quot;in alignment&quot; in strict mode, the domain parts would
-have to be identical.</t>
-<t>The reader should note that SPF alignment checks in DMARC rely solely
-on the RFC5321.MailFrom domain. This differs from section 2.3 of <xref target="RFC7208"></xref>,
-which recommends that SPF checks be done on not only the &quot;MAIL FROM&quot;
-but also on a separate check of the &quot;HELO&quot; identity.</t>
+portion of the RFC5322.From header field contains
+&quot;payments@example.com&quot;, the Authenticated RFC5321.MailFrom domain
+identifier and the RFC5322.From domain are considered to be &quot;in
+alignment&quot; in relaxed mode, but not in strict mode. In order for the
+two identifiers to be considered &quot;in alignment&quot; in strict mode, the
+domain parts would have to be identical.
+
+The reader should note that SPF alignment checks in DMARC rely solely 
+on the RFC5321.MailFrom domain. This differs from section 2.3 of
+[@!RFC7208], which recommends that SPF checks be done on not only the
+&quot;MAIL FROM&quot; but also on a separate check of the &quot;HELO&quot; identity.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>DMARC permits Identifier Alignment based on the result of an SPF
+authentication. As with DKIM, Identifier Alignement is determined
+based on whether or not two domain's Organizational Domains are the
+same.
+
+For example, if a message passes an SPF check with an
+RFC5321.MailFrom domain of &quot;cbg.bounces.example.com&quot;, and the address
+portion of the RFC5322.From header field contains
+&quot;payments@example.com&quot;, the Authenticated RFC5321.MailFrom domain
+identifier and the RFC5322.From domain are considered to be &quot;in
+alignment&quot; because they have the same Organizational Domain
+(&quot;example.com&quot;).
+
+The reader should note that SPF alignment checks in DMARC rely solely 
+on the RFC5321.MailFrom domain. This differs from section 2.3 of
+[@!RFC7208], which recommends that SPF checks be done on not only the
+&quot;MAIL FROM&quot; but also on a separate check of the &quot;HELO&quot; identity.
+</artwork>
 </section>
 
 <section anchor="alignment-and-extension-technologies"><name>Alignment and Extension Technologies</name>
@@ -621,28 +697,32 @@ initial set defined in this document.  Only tags defined in this
 document or in later extensions, and thus added to that registry, are
 to be processed; unknown tags MUST be ignored.</t>
 <t>The following tags are introduced as the initial valid DMARC tags:</t>
+<t>Issue 52, Original text to be deleted:</t>
 
-<dl>
-<dt>adkim:</dt>
-<dd><t>(plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
+<artwork>adkim:
+:   (plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
 strict or relaxed DKIM Identifier Alignment mode is required by
-the Domain Owner.  See <xref target="dkim-identifiers"></xref> for details.  Valid values
-are as follows:</t>
-<t>r: relaxed mode</t>
-<t>s: strict mode</t>
-</dd>
-<dt>aspf:</dt>
-<dd><t>(plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
+the Domain Owner.  See (#dkim-identifiers) for details.  Valid values
+are as follows:
+
+    r: relaxed mode
+
+    s: strict mode
+
+aspf:
+:   (plain-text; OPTIONAL; default is &quot;r&quot;.)  Indicates whether
 strict or relaxed SPF Identifier Alignment mode is required by the
-Domain Owner.  See <xref target="spf-identifiers"></xref> for details.  Valid values are as
-follows:</t>
+Domain Owner.  See (#spf-identifiers) for details.  Valid values are
+as follows:
+
+    r:
+    :   relaxed mode
+
+    s:
+    :   strict mode
+</artwork>
 
 <dl>
-<dt>r:</dt>
-<dd>relaxed mode</dd>
-<dt>s:</dt>
-<dd>strict mode</dd>
-</dl></dd>
 <dt>fo:</dt>
 <dd><t>Failure reporting options (plain-text; OPTIONAL; default is &quot;0&quot;)
 Provides requested options for generation of failure reports.
@@ -1318,9 +1398,17 @@ email on behalf of the Organizational Domain.</t>
 &quot;evil.example.com&quot; can send mail with an RFC5322.From header field
 containing &quot;foo@example.com&quot; that can pass both authentication and
 the DMARC check against &quot;example.com&quot;.</t>
-<t>The Organizational Domain administrator should be careful not to
+<t>Issue 52, Original text:</t>
+
+<artwork>The Organizational Domain administrator should be careful not to
 delegate control of subdomains if this is an issue, and to consider
-using the &quot;strict&quot; Identifier Alignment option if appropriate.</t>
+using the &quot;strict&quot; Identifier Alignment option if appropriate.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>The Organizational Domain administrator should be careful not to
+delegate control of subdomains if this is an issue.
+</artwork>
 </section>
 
 <section anchor="interoperability-issues"><name>Interoperability Issues</name>
@@ -1990,10 +2078,19 @@ alignment.</t>
      To: receiver@example.org
      Subject: here's a sample
 </artwork>
-<t>In this case, the RFC5322.From header parameter includes a DNS domain that
-is a parent of the RFC5321.MailFrom domain.  Thus, the identifiers
-are in alignment if relaxed SPF mode is requested by the Domain
-Owner, and not in alignment if strict SPF mode is requested.</t>
+<t>Issue 52, Original text:</t>
+
+<artwork>In this case, the RFC5322.From header parameter includes a DNS domain
+that is a parent of the RFC5321.MailFrom domain.  Thus, the
+identifiers are in alignment if relaxed SPF mode is requested by the
+Domain Owner, and not in alignment if strict SPF mode is requested.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>In this case, the RFC5322.From header parameter includes a DNS domain
+that is a parent of the RFC5321.MailFrom domain.  Thus, the
+identifiers are in alignment.
+</artwork>
 <t>Example 3: SPF not in alignment:</t>
 
 <artwork>     MAIL FROM: &lt;sender@example.net&gt;
@@ -2029,10 +2126,19 @@ identical DNS domains.  Thus, the identifiers are in alignment.</t>
      To: receiver@example.org
      Subject: here's a sample
 </artwork>
-<t>In this case, the DKIM signature's &quot;d=&quot; parameter includes a DNS
+<t>Issue 52, Original text:</t>
+
+<artwork>In this case, the DKIM signature's &quot;d=&quot; parameter includes a DNS
 domain that is a parent of the RFC5322.From domain.  Thus, the
 identifiers are in alignment for relaxed mode, but not for strict
-mode.</t>
+mode.
+</artwork>
+<t>Issue 52, Proposed replacement text:</t>
+
+<artwork>In this case, the DKIM signature's &quot;d=&quot; parameter includes a DNS
+domain that is a parent of the RFC5322.From domain.  Thus, the
+identifiers are in alignment.
+</artwork>
 <t>Example 3: DKIM not in alignment:</t>
 
 <artwork>     DKIM-Signature: v=1; ...; d=sample.net; ...
@@ -2314,10 +2420,19 @@ Identifiers.</t>
 <t>The presence of an Author Domain DMARC record indicates that the Mail
 Receiver should continue with DMARC-specific processing before
 returning a reply to the DATA command.</t>
-<t>Given a DMARC record and the set of Authenticated Identifiers, the
+<t>Issue 52, Original text:</t>
+
+<artwork>Given a DMARC record and the set of Authenticated Identifiers, the
 Mail Receiver checks to see if the Authenticated Identifiers align
 with the Author Domain (taking into consideration any strict versus
-relaxed options found in the DMARC record).</t>
+relaxed options found in the DMARC record).
+</artwork>
+<t>Issue 52, Proposed replacement text</t>
+
+<artwork>Given a DMARC record and the set of Authenticated Identifiers, the
+Mail Receiver checks to see if the Authenticated Identifiers align
+with the Author Domain.
+</artwork>
 <t>For example, the following sample data is considered to be from a
 piece of email originating from the Domain Owner of &quot;example.com&quot;:</t>
 
@@ -2595,6 +2710,15 @@ as replacement for current text in &quot;Minimum Implemenatations&quot;</li>
 <li>Proposed text to remove all references to message size chunking</li>
 <li>Data demonstrating lack of use of feature entered into ticket -
 <eref target="https://trac.ietf.org/trac/dmarc/ticket/53#comment:4">https://trac.ietf.org/trac/dmarc/ticket/53#comment:4</eref></li>
+</ul>
+</section>
+
+<section anchor="issue-52-remove-strict-alignment-and-adkim-and-aspf-tags"><name>Issue 52 - Remove strict alignment (and adkim and aspf tags)</name>
+
+<ul>
+<li>Proposed text to remove all references to strict alignment</li>
+<li>Data demonstrating lack of use of feature entered into ticket -
+<eref target="https://trac.ietf.org/trac/dmarc/ticket/52#comment:2">https://trac.ietf.org/trac/dmarc/ticket/52#comment:2</eref></li>
 </ul>
 </section>
 </section>
