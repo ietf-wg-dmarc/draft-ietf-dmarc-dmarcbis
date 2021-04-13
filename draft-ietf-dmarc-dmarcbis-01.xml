@@ -498,8 +498,10 @@ as defined in <xref target="terminology"></xref>.</t>
 </section>
 
 <section anchor="flow-diagram"><name>Flow Diagram</name>
+<t>Issue 2, Original text:</t>
 
-<sourcecode type="ascii-art"> +---------------+
+<artwork>~~~ ascii-art
+ +---------------+
  | Author Domain |&lt; . . . . . . . . . . . . . . . . . . . . . . .
  +---------------+                        .           .         .
      |                                    .           .         .
@@ -526,7 +528,41 @@ as defined in <xref target="terminology"></xref>.</t>
 
   MSA = Mail Submission Agent
   MDA = Mail Delivery Agent
-</sourcecode>
+~~~
+</artwork>
+<t>Issue 2, Proposed replacement text:</t>
+
+<artwork>~~~ ascii-art
+ +---------------+                             +--------------------+
+ | Author Domain |&lt; . . . . . . . . . . . .    | Return-Path Domain |
+ +---------------+                        .    +--------------------+
+     |                                    .               ^
+     V                                    V               .
+ +-----------+     +--------+       +----------+          v
+ |   MSA     |&lt;***&gt;|  DKIM  |       |   DMARC  |     +----------+
+ |  Service  |     | Signer |       | Verifier |&lt;***&gt;|    SPF   |
+ +-----------+     +--------+       +----------+  *  | Verifier |
+     |                                    ^       *  +----------+
+     |                                    *       *
+     V                                    v       *
+  +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
+  | sMTA |-------&gt;( other MTAs )-----&gt;| rMTA |    **&gt;|   DKIM   |
+  +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
+                                         |           +----------+
+                                         |                ^
+                                         V                .
+                                  +-----------+           .
+                    +---------+   |    MDA    |           v
+                    |  User   |&lt;--| Filtering |      +-----------+
+                    | Mailbox |   |  Engine   |      |   DKIM    |
+                    +---------+   +-----------+      |  Signing  |
+                                                     | Domain(s) |
+                                                     +-----------+
+
+  MSA = Mail Submission Agent
+  MDA = Mail Delivery Agent
+~~~
+</artwork>
 <t>The above diagram shows a simple flow of messages through a DMARC-
 aware system.  Solid lines denote the actual message flow, dotted
 lines involve DNS queries used to retrieve message policy related to
@@ -534,54 +570,68 @@ the supported message authentication schemes, and asterisk lines
 indicate data exchange between message-handling modules and message
 authentication modules.  &quot;sMTA&quot; is the sending MTA, and &quot;rMTA&quot; is the
 receiving MTA.</t>
-<t>In essence, the steps are as follows:</t>
+<t>Issue 2, Original text to be deleted and/or repurposed:</t>
 
-<ol>
-<li><t>Domain Owner constructs an SPF policy and publishes it in its
- DNS database as per <xref target="RFC7208"></xref>.  Domain Owner also configures its
- system for DKIM signing as described in <xref target="RFC6376"></xref>.  Finally, Domain
- Owner publishes via the DNS a DMARC message-handling policy.</t>
-</li>
-<li><t>Author generates a message and hands the message to Domain
- Owner's designated mail submission service.</t>
-</li>
-<li><t>Submission service passes relevant details to the DKIM signing
- module in order to generate a DKIM signature to be applied to
- the message.</t>
-</li>
-<li><t>Submission service relays the now-signed message to its
- designated transport service for routing to its intended
- recipient(s).</t>
-</li>
-<li><t>Message may pass through other relays but eventually arrives at
- a recipient's transport service.</t>
-</li>
-<li><t>Recipient delivery service conducts SPF and DKIM authentication
- checks by passing the necessary data to their respective
- modules, each of which requires queries to the Author Domain's
- DNS data (when identifiers are aligned; see below).</t>
-</li>
-<li><t>The results of these are passed to the DMARC module along with
- the Author's domain.  The DMARC module attempts to retrieve a
- policy from the DNS for that domain.  If none is found, the
- DMARC module determines the Organizational Domain and repeats
- the attempt to retrieve a policy from the DNS.  (This is
- described in further detail in <xref target="policy-discovery"></xref>.)</t>
-</li>
-<li><t>If a policy is found, it is combined with the Author's domain
- and the SPF and DKIM results to produce a DMARC policy result (a
- &quot;pass&quot; or &quot;fail&quot;) and can optionally cause one of two kinds of
- reports to be generated (not shown).</t>
-</li>
-<li><t>Recipient transport service either delivers the message to the
- recipient inbox or takes other local policy action based on the
- DMARC result (not shown).</t>
-</li>
-<li><t>When requested, Recipient transport service collects data from
- the message delivery session to be used in providing feedback
- (see <xref target="dmarc-feedback"></xref>).</t>
-</li>
-</ol>
+<artwork>
+In essence, the steps are as follows:
+
+1.   Domain Owner constructs an SPF policy and publishes it in its
+     DNS database as per [@!RFC7208].  Domain Owner also configures 
+     its system for DKIM signing as described in [@!RFC6376].
+     Finally, Domain Owner publishes via the DNS a DMARC 
+     message-handling policy.
+
+2.   Author generates a message and hands the message to Domain
+     Owner's designated mail submission service.
+
+3.   Submission service passes relevant details to the DKIM signing
+     module in order to generate a DKIM signature to be applied to
+     the message.
+
+4.   Submission service relays the now-signed message to its
+     designated transport service for routing to its intended
+     recipient(s).
+
+5.   Message may pass through other relays but eventually arrives at
+     a recipient's transport service.
+
+6.   Recipient delivery service conducts SPF and DKIM authentication
+     checks by passing the necessary data to their respective
+     modules, each of which requires queries to the Author Domain's
+     DNS data (when identifiers are aligned; see below).
+
+7.   The results of these are passed to the DMARC module along with
+     the Author's domain.  The DMARC module attempts to retrieve a
+     policy from the DNS for that domain.  If none is found, the
+     DMARC module determines the Organizational Domain and repeats
+     the attempt to retrieve a policy from the DNS.  (This is
+     described in further detail in (#policy-discovery).)
+
+8.   If a policy is found, it is combined with the Author's domain
+     and the SPF and DKIM results to produce a DMARC policy result (a
+     &quot;pass&quot; or &quot;fail&quot;) and can optionally cause one of two kinds of
+     reports to be generated (not shown).
+
+9.   Recipient transport service either delivers the message to the
+     recipient inbox or takes other local policy action based on the
+     DMARC result (not shown).
+
+10.  When requested, Recipient transport service collects data from
+     the message delivery session to be used in providing feedback
+     (see (#dmarc-feedback)).
+</artwork>
+<t>Issue 2, Proposed replacement text:</t>
+
+<artwork>Put simply, when a message reaches a DMARC-aware rMTA, a DNS query 
+will be initiated to determine if the author domain has published
+a DMARC policy. If a policy is found, the rMTA will use the results
+of SPF and DKIM validation checks to determine the ultimate DMARC 
+authentication status. The DMARC status will then factor into the 
+message handling decision made by the recipient's mail sytsem.
+
+More details on specific actions for the parties involved can be 
+found in (#domain-owner-actions) and (#mail-receiver-actions).
+</artwork>
 </section>
 </section>
 
@@ -998,19 +1048,92 @@ megabyte is 2^20, etc.
 </section>
 
 <section anchor="domain-owner-actions"><name>Domain Owner Actions</name>
-<t>To implement the DMARC mechanism, the only action required of a
+<t>Issue 2, Original text:</t>
+
+<artwork>To implement the DMARC mechanism, the only action required of a
 Domain Owner is the creation of the DMARC policy record in the DNS.
 However, in order to make meaningful use of DMARC, a Domain Owner
 must at minimum either establish an address to receive reports, or
 deploy authentication technologies and ensure Identifier Alignment.
-Most Domain Owners will want to do both.</t>
-<t>DMARC reports will be of significant size, and the addresses that
+Most Domain Owners will want to do both.
+
+DMARC reports will be of significant size, and the addresses that
 receive them are publicly visible, so we encourage Domain Owners to
 set up dedicated email addresses to receive and process reports, and
 to deploy abuse countermeasures on those email addresses as
-appropriate.</t>
-<t>Authentication technologies are discussed in <xref target="RFC6376"></xref> (see also
-<xref target="RFC5585"></xref> and <xref target="RFC5863"></xref>) and <xref target="RFC7208"></xref>.</t>
+appropriate.
+
+Authentication technologies are discussed in [@!RFC6376] (see also
+[@RFC5585] and [@RFC5863]) and [@!RFC7208].
+</artwork>
+<t>Issue 2, Proposed replacement text:</t>
+
+<artwork>This section describes Domain Owner actions to fully implement the
+DMARC mechanism.
+
+### Publish an SPF Policy
+Because DMARC relies on SPF [@!RFC7208] and DKIM [@!RFC6376], it 
+stands to reason that in order to take advantage of DMARC, a Domain
+Owner must first ensure that SPF and DKIM authentication is 
+configured to succeed. The easiest first step here is to choose a
+domain to use as the RFC5321.From domain (i.e., the Return-Path
+domain) for its mail, one that aligns with the Author Domain, and
+then publish an SPF policy in DNS for that domain.
+
+### Configure Sending System for DKIM Signing
+While it is possible to secure a DMARC pass verdict based on only
+SPF or DKIM, it is commonly accepted best practice to ensure that
+both authentication mechanisms are in place in order to guard 
+against failure of just one of them. The Domain Owner should choose
+as a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
+header) that aligns with the Author Domain and configure its system
+to sign using that domain.
+
+### Setup a Mailbox to Receive Aggregate Reports
+Proper consumption and analysis of DMARC aggregate reports is the 
+key to any successful DMARC deployment for a Domain Owner. DMARC
+aggregate reports, which are XML documents, contain valuable data 
+for the Domain Owner, showing sources of mail using the Author
+Domain. Depending on how mature the Domain Owner's DMARC rollout
+is, some of these sources could be legitimate ones that were
+overlooked during the intial deployment of SPF and/or DKIM.
+
+Because the aggregate reports are XML documents, it is strongly
+advised that they be machine-parsed, so setting up a mailbox 
+involves more than just the physical creation of the mailbox. Many
+third-party services exist that will process DMARC aggregate reports
+or the Domain Owner can create its own set of tools. No matter which
+method is chosen, the ability to parse these reports and consume
+the data contained in them will go a long way to ensuring a 
+successful deployment.
+
+### Publish a DMARC Policy for the Author Domain
+Once SPF, DKIM, and the aggregate reports mailbox are all in place,
+it's time to publish a DMARC record. For best results, Domain Owners
+SHOULD start with &quot;p=none&quot;, with the rua tag containg the mailbox
+created in the previous step.
+
+### Collect and Analyze Reports and Adjust Authentication
+The reason for starting at &quot;p=none&quot; is to ensure that nothing's been
+missed in the initial SPF and DKIM deployments. In all but the most
+trivial setups, it is possible for a Domain Owner to overlook a
+server here or be unaware of a third party sending agreeement there.
+Starting at &quot;p=none&quot;, therefore, takes advantage of DMARC's aggregate
+reporting function, with the Domain Owner using the reports to audit
+its own mail streams. Should any overlooked systems be found in the
+reports, the Domain Owner can adjust the SPF record and/or configure
+DKIM signing for those systems.
+
+### Decide If and When to Update DMARC Policy
+Once the Domain Owner is satisfied that it is properly authenticating
+all of its mail, then it is time to decide if it is appropriate to 
+change the p= value in its DMARC record to p=quarantine or p=reject.
+Depending on its cadence for sending mail, it may take many months
+of consuming DMARC aggregate reports before a Domain Owner reaches
+the point where it is sure that it is properly authenticating all
+of its mail, and the decision on which p= value to use will depend
+on its needs.
+</artwork>
 </section>
 
 <section anchor="mail-receiver-actions"><name>Mail Receiver Actions</name>
@@ -1830,10 +1953,8 @@ could reveal private information.</t>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2142.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3464.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5585.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5617.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5863.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6377.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
@@ -2734,6 +2855,15 @@ as replacement for current text in &quot;Minimum Implemenatations&quot;</li>
 <li>Proposed text to remove all references to pct and message sampling</li>
 <li>Data demonstrating lack of use of feature entered into ticket -
 <eref target="https://trac.ietf.org/trac/dmarc/ticket/47#comment:4">https://trac.ietf.org/trac/dmarc/ticket/47#comment:4</eref></li>
+</ul>
+</section>
+
+<section anchor="issue-2-flow-of-operations-text-in-dmarc-base"><name>Issue 2 - Flow of operations text in dmarc-base</name>
+
+<ul>
+<li>Update ASCII Art</li>
+<li>Proposed text to replace description of ASCII Art</li>
+<li>Proposed text to update Domain Owner Actions section</li>
 </ul>
 </section>
 </section>
