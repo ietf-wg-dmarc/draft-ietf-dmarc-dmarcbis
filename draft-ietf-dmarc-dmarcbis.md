@@ -645,6 +645,8 @@ a list of these to be provided.  The list of URIs is separated by commas
 (ASCII 0x2c).  A report is normally sent to each listed URI in the order
 provided by the Domain Owner.  
 
+Issue 53, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Each URI can have associated with it a maximum report size that may
 be sent to it.  This is accomplished by appending an exclamation
 point (ASCII 0x21), followed by a maximum-size indication, before a
@@ -658,6 +660,7 @@ additional reporting URIs in the list, a comma and the next URI.
 For example, the URI "mailto:reports@example.com!50m" would request
 that a report be sent via email to "reports@example.com" so long as
 the report payload does not exceed 50 megabytes.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A formal definition is provided in (#formal-definition).
 
@@ -802,20 +805,41 @@ effort basis.
     most of those set to a value of 3600. There was no evidence that any of these
     requests for something more frequent than once daily were being honored.
 
+Issue 53, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  A comma or
 exclamation point that is part of such a DMARC URI MUST be encoded
 per Section 2.1 of [@!RFC3986] so as to distinguish it from the list
-delimiter or an OPTIONAL size limit.  The DMARC reporting documents discuss
-considerations that apply when the domain name of a URI differs
-from that of the domain advertising the policy.  See (#external-report-addresses)
-for additional considerations.  Any valid URI can be specified.  A
-Mail Receiver MUST implement support for a "mailto:" URI, i.e.,
-the ability to send a DMARC report via electronic mail.  If not
-provided, Mail Receivers MUST NOT generate aggregate feedback
-reports.  URIs not supported by Mail Receivers MUST be ignored.
-The aggregate feedback report format is described in the DMARC reporting documents.
+delimiter or an OPTIONAL size limit.  The DMARC reporting documents 
+discuss considerations that apply when the domain name of a URI 
+differs from that of the domain advertising the policy.  See 
+(#external-report-addresses) for additional considerations.  Any
+valid URI can be specified.  A Mail Receiver MUST implement support
+for a "mailto:" URI, i.e., the ability to send a DMARC report via
+electronic mail.  If not provided, Mail Receivers MUST NOT generate
+aggregate feedback reports.  URIs not supported by Mail Receivers
+MUST be ignored.  The aggregate feedback report format is described
+in the DMARC reporting documents.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 53, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rua:
+:   Addresses to which aggregate feedback is to be sent (comma-
+separated plain-text list of DMARC URIs; OPTIONAL).  The DMARC 
+reporting documents discuss considerations that apply when the 
+domain name of a URI differs from that of the domain advertising 
+the policy.  See (#external-report-addresses) for additional 
+considerations.  Any valid URI can be specified.  A Mail Receiver 
+MUST implement support for a "mailto:" URI, i.e., the ability to 
+send a DMARC report via electronic mail.  If not provided, Mail 
+Receivers MUST NOT generate aggregate feedback reports.  URIs 
+not supported by Mail Receivers MUST be ignored.  The aggregate 
+feedback report format is described in the DMARC reporting documents.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 ruf:
 :   Addresses to which message-specific failure information is to
@@ -929,12 +953,15 @@ follows:
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
 
+Issue 53, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A size limitation in a dmarc-uri, if provided, is interpreted as a
 count of units followed by an OPTIONAL unit size ("k" for kilobytes,
 "m" for megabytes, "g" for gigabytes, "t" for terabytes).  Without a
 unit, the number is presumed to be a basic byte count.  Note that the
 units are considered to be powers of two; a kilobyte is 2^10, a
 megabyte is 2^20, etc.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ##  Domain Owner Actions {#domain-owner-actions}
 
@@ -1206,7 +1233,7 @@ The details of this feedback are described in a separate document.
 
 #  Minimum Implementations
 
-Existing text:
+Issue 66, Original text:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A minimum implementation of DMARC has the following characteristics:
@@ -1224,46 +1251,51 @@ A minimum implementation of DMARC has the following characteristics:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suggested replacement text for above section:
+Issue 66, Proposed replacement text:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Domain owners, intermediaries, and mail receivers can all claim to
 implement DMARC, but what that means will depend on their role in the
 transmission of mail. To remove any ambiguity from the claims, this
-document specifies the following minimum criteria that must be met for
-each agent to rightly claim to be "implementing DMARC".
+document specifies the following minimum criteria that must be met
+for each agent to rightly claim to be "implementing DMARC".
 
-Domain Owner: To implement DMARC, a domain owner MUST configure its domain
-to request that unauthenticated mail be rejected or at least treated with
-suspicion.  This means that it MUST  publish a policy record that:
+Domain Owner: To implement DMARC, a domain owner MUST configure its
+domain to request that unauthenticated mail be rejected or at least
+treated with suspicion.  This means that it MUST  publish a policy
+record that:
 
 * Has a p tag with a value of 'quarantine' or 'reject'
 * Has a rua tag with at least one valid URI
-* If applicable, has an sp tag with a value of 'quarantine' or 'reject'
+* If applicable, has an sp tag with a value of 'quarantine' or
+  'reject'
 
-While 'none' is a syntactically valid value for both the p and sp tags,
-the practical value of either the p tag or sp tag being 'none' means that
-the domain owner is still gathering information about mail flows for the
-domain or sub-domains, and is not yet ready to commit to requesting that
-unauthenticated mail receive different handling than authenticated mail.
+While 'none' is a syntactically valid value for both the p and sp
+tags, the practical value of either the p tag or sp tag being 'none'
+means that the domain owner is still gathering information about mail
+flows for the domain or sub-domains, and is not yet ready to commit
+to requesting that unauthenticated mail receive different handling
+than authenticated mail.
 
-Intermediary: To implement DMARC, an intermediary MUST do the following
-before passing the message to the next hop or rejecting it as appropriate:
-
-* Perform DMARC validation checks on inbound mail
-* Perform validation on any ARC header sets present in the message when
-  it arrives
-* Record the results of its authentication checks in a signed and sealed
-  ARC header set 
-
-Mail Receiver: To implement DMARC, a mail receiver MUST do the following:
+Intermediary: To implement DMARC, an intermediary MUST do the
+following before passing the message to the next hop or rejecting
+it as appropriate:
 
 * Perform DMARC validation checks on inbound mail
-* Perform validation checks on any ARC header sets present in the message
+* Perform validation on any ARC header sets present in the message
   when it arrives
-* Send aggregate reports to domain owners at least every 24 hours when a
-  minimum of 100 messages with that domain in the RFC5322.From header field
-  have been seen during the reporting period
+* Record the results of its authentication checks in a signed and
+  sealed ARC header set 
+
+Mail Receiver: To implement DMARC, a mail receiver MUST do the
+following:
+
+* Perform DMARC validation checks on inbound mail
+* Perform validation checks on any ARC header sets present in the
+  message when it arrives
+* Send aggregate reports to domain owners at least every 24 hours
+  when a minimum of 100 messages with that domain in the RFC5322.From
+  header field have been seen during the reporting period
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2206,6 +2238,8 @@ pre-production testing of messaging services.  It now wishes to
 request that participating receivers act to reject messages from this
 subdomain that fail to authenticate.
 
+Issue 53, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 As a first step, it will ask that a portion (1/4 in this example) of
 failing messages be quarantined, enabling examination of messages
 sent to mailboxes hosted by participating receivers.  Aggregate
@@ -2213,6 +2247,17 @@ feedback reports will be sent to a mailbox within the Organizational
 Domain, and to a mailbox at a third party selected and authorized to
 receive same by the Domain Owner.  Aggregate reports sent to the
 third party are limited to a maximum size of ten megabytes.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 53, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As a first step, it will ask that a portion (1/4 in this example) of
+failing messages be quarantined, enabling examination of messages
+sent to mailboxes hosted by participating receivers.  Aggregate
+feedback reports will be sent to a mailbox within the Organizational
+Domain, and to a mailbox at a third party selected and authorized to
+receive same by the Domain Owner.  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Domain Owner will accomplish this by constructing a policy record
 indicating that:
@@ -2225,11 +2270,23 @@ indicating that:
 *  Receivers should quarantine messages from this Organizational
    Domain that fail to authenticate ("p=quarantine")
 
+Issue 53, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *  Aggregate feedback reports should be sent via email to the
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net", with the latter
    subjected to a maximum size limit ("rua=mailto:dmarc-feedback@
    example.com,mailto:tld-test@thirdparty.example.net!10m")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 53, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*  Aggregate feedback reports should be sent via email to the
+   addresses "dmarc-feedback@example.com" and
+   "example-tld-test@thirdparty.example.net" 
+   ("rua=mailto:dmarc-feedback@example.com,
+     mailto:tld-test@thirdparty.example.net")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *  25% of messages from this Organizational Domain are subject to
    action based on this policy ("pct=25")
@@ -2494,6 +2551,12 @@ would normally appear as one continuous string.
 ### Issue 96 - Tweaks to Abstract and Introduction
 * Changed phrase in Abstract to "an email author's domain name"
 * Changed phrase in Introduction to "reports about email use of the domain name"
+
+## April 13, 2021
+### Issue 53 - Remove reporting message size chunking
+* Proposed text to remove all references to message size chunking
+* Data demonstrating lack of use of feature entered into ticket -
+  https://trac.ietf.org/trac/dmarc/ticket/53#comment:4
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
