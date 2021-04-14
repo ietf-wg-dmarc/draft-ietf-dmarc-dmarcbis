@@ -1210,11 +1210,13 @@ This section describes receiver actions in the DMARC environment.
 
 ###  Extract Author Domain {#extract-author-domain}
 
-The domain in the RFC5322.From header field is extracted as the domain to be
-evaluated by DMARC.  If the domain is encoded with UTF-8, the domain
-name must be converted to an A-label, as described in Section 2.3 of
-[@!RFC5890], for further processing.
+The domain in the RFC5322.From header field is extracted as the domain 
+to be evaluated by DMARC.  If the domain is encoded with UTF-8, the
+domain name must be converted to an A-label, as described in Section
+2.3 of [@!RFC5890], for further processing.
 
+Issue 107, Original text to be deleted:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In order to be processed by DMARC, a message typically needs to
 contain exactly one RFC5322.From domain (a single From: field with a
 single domain in it).  Not all messages meet this requirement, and
@@ -1222,26 +1224,46 @@ handling of them is outside of the scope of this document.  Typical
 exceptions, and the way they have been historically handled by DMARC
 participants, are as follows:
 
-*  Messages with multiple RFC5322.From header fields are typically rejected,
-   since that form is forbidden under RFC 5322 [@!RFC5322];
-
-*  Messages bearing a single RFC5322.From header field containing multiple
-   addresses (and, thus, multiple domain names to be evaluated) are
-   typically rejected because the sorts of mail normally protected by
-   DMARC do not use this format;
-
-*  Messages that have no RFC5322.From header field at all are typically
+*  Messages with multiple RFC5322.From header fields are typically
    rejected, since that form is forbidden under RFC 5322 [@!RFC5322];
 
-*  Messages with an RFC5322.From header field that contains no meaningful
-   domains, such as RFC 5322 [@!RFC5322]'s "group" syntax, are typically
-   ignored.
+*  Messages bearing a single RFC5322.From header field containing
+   multiple addresses (and, thus, multiple domain names to be
+   evaluated) are typically rejected because the sorts of mail
+   normally protected by DMARC do not use this format;
 
-The case of a syntactically valid multi-valued RFC5322.From header field
-presents a particular challenge.  The process in this case is to
-apply the DMARC check using each of those domains found in the
-RFC5322.From header field as the Author Domain and apply the most strict
-policy selected among the checks that fail.
+*  Messages that have no RFC5322.From header field at all are
+   typically rejected, since that form is forbidden under RFC 5322
+   [@!RFC5322];
+
+*  Messages with an RFC5322.From header field that contains no
+   meaningful domains, such as RFC 5322 [@!RFC5322]'s "group"
+   syntax, are typically ignored.
+
+The case of a syntactically valid multi-valued RFC5322.From header
+field presents a particular challenge.  The process in this case is
+to apply the DMARC check using each of those domains found in the
+RFC5322.From header field as the Author Domain and apply the most
+strict policy selected among the checks that fail.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 107, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In order to be processed by DMARC, a message typically needs to
+contain exactly one RFC5322.From domain (a single From: field with a
+single domain in it). Not all messages meet this requirement, and
+the handling of those that are forbidden under RFC 5322 [@!RFC5322]
+or that contain no meaningful domains is outside the scope of this
+document.
+
+The case of a syntactically valid multi-valued RFC5322.From header
+field presents a particular challenge. When a single RFC5322.From
+header field contains multiple addresses, it is possible that there
+may be multiple domains used in those addresses. The process in this
+case is to only proceed with DMARC checking if the domain is
+identical for all of the addresses in a multi-valued RFC5322.From
+header field. 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ###  Determine Handling Policy {#determine-handling-policy}
 
@@ -2864,6 +2886,11 @@ would normally appear as one continuous string.
 * Update ASCII Art
 * Proposed text to replace description of ASCII Art
 * Proposed text to update Domain Owner Actions section
+
+## April 14, 2021
+### Issue 107 - DMARCbis should take a stand on multi-valued From fields
+* Proposed text that limits processing to only those times when all domains
+  are the same.
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
