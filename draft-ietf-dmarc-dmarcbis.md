@@ -859,16 +859,19 @@ alphabetic characters shown in the list.
        evaluation, regardless of its alignment.  SPF-specific
        reporting is described in [@!RFC6652].
 
+Issue 85, Original text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 p:
-:   Requested Mail Receiver policy (plain-text; RECOMMENDED for policy
-records).  Indicates the policy to be enacted by the Receiver at
-the request of the Domain Owner.  Policy applies to the domain
+:   Requested Mail Receiver policy (plain-text; RECOMMENDED for
+policy records).  Indicates the policy to be enacted by the Receiver
+at the request of the Domain Owner.  Policy applies to the domain
 queried and to subdomains, unless subdomain policy is explicitly
 described using the "sp" tag.  This tag is applicable for policy
 records only, and has no meaning for third-party reporting records 
 (as discussed in the document(s) that discuss DMARC reporting in more 
-detail). If the tag is not present in a policy record, it is assumed to
-be "p=none" as per (#policy-discovery). Possible values are as follows:
+detail). If the tag is not present in a policy record, it is assumed
+to be "p=none" as per (#policy-discovery). Possible values are as
+follows:
 
     none:
     :   The Domain Owner requests no specific action be taken
@@ -884,9 +887,37 @@ be "p=none" as per (#policy-discovery). Possible values are as follows:
     reject:
     :   The Domain Owner wishes for Mail Receivers to reject
         email that fails the DMARC mechanism check.  Rejection SHOULD
-        occur during the SMTP transaction.  See (#rejecting-messages) for some
-        discussion of SMTP rejection methods and their implications.
+        occur during the SMTP transaction.  See (#rejecting-messages)
+        for some discussion of SMTP rejection methods and their
+        implications.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Issue 85, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+p: 
+:   Domain Owner Assessment Policy (plain-text; REQUIRED for policy
+    records). Indicates the severity of concern the domain owner has,
+    for mail using its domain but not passing DMARC validation.
+    Policy applies to the domain queried and to subdomains, unless
+    subdomain policy is explicitly described using the "sp" tag. This
+    tag is mandatory for policy records only, but not for third-party
+    reporting records (see Aggregate and Forensic Reporting Docs).
+    Possible values are as follows:
+
+    none: 
+    :   The Domain Owner offers no expression of concern.
+
+    quarantine:
+    :   The Domain Owner considers such mail to be suspicious. It
+        is possible the mail is valid, although the failure creates
+        a significant concern.
+
+    reject:
+    :   The Domain Owner considers all such failures to be a clear
+        indication that the use of the domain name is not valid. See
+        (#rejecting-messages) for some discussion of SMTP rejection
+        methods and their implications.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Issue 47, Original text to be deleted:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2924,6 +2955,11 @@ would normally appear as one continuous string.
 
 ### Issue 82 - Deprecate rf= and maybe fo= tag
 * Proposed text to deprecate rf= tag, while leaving fo= tag as is
+
+### Issue 85 - Proposed change to wording describing 'p' tag and values
+* The language expressing the semantics is proposed to be changed to be, 
+  in a sense, egocentric. How do I, the domain owner feel about (assess)
+  the meaning of a DMARC failure?
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
