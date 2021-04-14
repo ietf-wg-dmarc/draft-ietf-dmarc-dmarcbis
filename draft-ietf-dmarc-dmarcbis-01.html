@@ -1573,6 +1573,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.11.2.1">
                     <p id="section-toc.1-1.16.2.11.2.1.1"><a href="#section-c.11.1" class="xref">C.11.1</a>.  <a href="#name-issue-107-dmarcbis-should-t" class="xref">Issue 107 - DMARCbis should take a stand on multi-valued From fields</a><a href="#section-toc.1-1.16.2.11.2.1.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.11.2.2">
+                    <p id="section-toc.1-1.16.2.11.2.2.1"><a href="#section-c.11.2" class="xref">C.11.2</a>.  <a href="#name-issue-82-deprecate-rf-and-m" class="xref">Issue 82 - Deprecate rf= and maybe fo= tag</a><a href="#section-toc.1-1.16.2.11.2.2.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -2551,25 +2554,54 @@ on this percentage, such as the following pseudocode, is adequate:
       selected = false
 </pre><a href="#section-6.3-8" class="pilcrow">¶</a>
 </div>
-<dl class="dlParallel" id="section-6.3-9">
-          <dt id="section-6.3-9.1">rf:</dt>
-<dd id="section-6.3-9.2">Format to be used for message-specific failure reports (colon-
+<p id="section-6.3-9">Issue 82, Orginal text:<a href="#section-6.3-9" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-10">
+<pre>rf:
+:   Format to be used for message-specific failure reports (colon-
 separated plain-text list of values; OPTIONAL; default is "afrf").
 The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
-<span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span> and <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span> tests to report details of the individual
+[@!RFC7208] and [@!RFC6376] tests to report details of the individual
 failure.  The values MUST be present in the registry of reporting
-formats defined in <a href="#iana-considerations" class="xref">Section 10</a>; a Mail Receiver observing a
-different value SHOULD ignore it or MAY ignore the entire DMARC
+formats defined in (#iana-considerations); a Mail Receiver observing
+a different value SHOULD ignore it or MAY ignore the entire DMARC
 record.  For this version, only "afrf" (the auth-failure report
-type defined in <span>[<a href="#RFC6591" class="xref">RFC6591</a>]</span>) is presently supported.  See the DMARC reporting documents
-for details.  For interoperability, the Authentication Failure
-Reporting Format (AFRF) MUST be supported.<a href="#section-6.3-9.2" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-6.3-9.3">ri (do not use):</dt>
-<dd id="section-6.3-9.4">
-            <p id="section-6.3-9.4.1">Interval requested between aggregate reports (plain-text 32-bit
+type defined in [@!RFC6591]) is presently supported.  See the DMARC
+reporting documents for details.  For interoperability, the
+Authentication Failure Reporting Format (AFRF) MUST be supported.
+</pre><a href="#section-6.3-10" class="pilcrow">¶</a>
+</div>
+<p id="section-6.3-11">Issue 82, Proposed replacement text:<a href="#section-6.3-11" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-12">
+<pre>rf (do not use):
+:   Format to be used for message-specific failure reports (colon-
+separated plain-text list of values; OPTIONAL; default is "afrf").
+This tag SHOULD NOT be used in a DMARC record. See the note at the
+end for more information. The value of this tag is a list of one or
+more report formats as requested by the Domain Owner to be used when
+a message fails both [@!RFC7208] and [@!RFC6376] tests to report
+details of the individual failure. The values MUST be present in the
+registry of reporting formats defined in (#iana-considerations); a
+Mail Receiver observing a different value SHOULD ignore it or MAY
+ignore the entire DMARC record.  For this version, only "afrf" (the
+auth-failure report type defined in [@!RFC6591]) is presently
+supported.  See the DMARC reporting documents for details.  For
+interoperability, the Authentication Failure Reporting Format (AFRF)
+MUST be supported.
+
+    Note: Ever-broadening privacy laws in many governmental
+    jurisdictions have had the effect of receivers refusing to
+    send failure reports or at best redacting so much information
+    from them as to render them mostly useless to the Domain Owner.
+    As such, it is unlikely that there will ever be formats other
+    than "afrf" developed for failure reports, and so this tag
+    should not be used.
+</pre><a href="#section-6.3-12" class="pilcrow">¶</a>
+</div>
+<dl class="dlParallel" id="section-6.3-13">
+          <dt id="section-6.3-13.1">ri (do not use):</dt>
+<dd id="section-6.3-13.2">
+            <p id="section-6.3-13.2.1">Interval requested between aggregate reports (plain-text 32-bit
 unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
 be used in a DMARC record. See the note at the end for more information.
 Indicates a request to Receivers to generate aggregate reports separated
@@ -2577,16 +2609,16 @@ by no more than the requested number of seconds.  DMARC implementations
 MUST be able to provide daily reports and SHOULD be able to
 provide hourly reports when requested.  However, anything other
 than a daily report is understood to be accommodated on a best-
-effort basis.<a href="#section-6.3-9.4.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-9.4.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
+effort basis.<a href="#section-6.3-13.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.3-13.2.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
 that fewer than 2% were publishing an ri tag with a non-default value, with
 most of those set to a value of 3600. There was no evidence that any of these
-requests for something more frequent than once daily were being honored.<a href="#section-6.3-9.4.2" class="pilcrow">¶</a></p>
+requests for something more frequent than once daily were being honored.<a href="#section-6.3-13.2.2" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-10">Issue 53, Original text:<a href="#section-6.3-10" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6.3-11">
+<p id="section-6.3-14">Issue 53, Original text:<a href="#section-6.3-14" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-15">
 <pre>rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  A comma or
@@ -2602,10 +2634,10 @@ electronic mail.  If not provided, Mail Receivers MUST NOT generate
 aggregate feedback reports.  URIs not supported by Mail Receivers
 MUST be ignored.  The aggregate feedback report format is described
 in the DMARC reporting documents.
-</pre><a href="#section-6.3-11" class="pilcrow">¶</a>
+</pre><a href="#section-6.3-15" class="pilcrow">¶</a>
 </div>
-<p id="section-6.3-12">Issue 53, Proposed replacement text:<a href="#section-6.3-12" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6.3-13">
+<p id="section-6.3-16">Issue 53, Proposed replacement text:<a href="#section-6.3-16" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.3-17">
 <pre>rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  The DMARC
@@ -2618,11 +2650,11 @@ send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate aggregate feedback reports.  URIs
 not supported by Mail Receivers MUST be ignored.  The aggregate
 feedback report format is described in the DMARC reporting documents.
-</pre><a href="#section-6.3-13" class="pilcrow">¶</a>
+</pre><a href="#section-6.3-17" class="pilcrow">¶</a>
 </div>
-<dl class="dlParallel" id="section-6.3-14">
-          <dt id="section-6.3-14.1">ruf:</dt>
-<dd id="section-6.3-14.2">Addresses to which message-specific failure information is to
+<dl class="dlParallel" id="section-6.3-18">
+          <dt id="section-6.3-18.1">ruf:</dt>
+<dd id="section-6.3-18.2">Addresses to which message-specific failure information is to
 be reported (comma-separated plain-text list of DMARC URIs;
 OPTIONAL).  If present, the Domain Owner is requesting Mail
 Receivers to send detailed failure reports about messages that
@@ -2634,11 +2666,11 @@ from that of the domain advertising the policy.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate failure reports.  See <a href="#external-report-addresses" class="xref">Section 11.5</a> for
-additional considerations.<a href="#section-6.3-14.2" class="pilcrow">¶</a>
+additional considerations.<a href="#section-6.3-18.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-14.3">sp:</dt>
-<dd id="section-6.3-14.4">Requested Mail Receiver policy for all subdomains (plain-text;
+<dt id="section-6.3-18.3">sp:</dt>
+<dd id="section-6.3-18.4">Requested Mail Receiver policy for all subdomains (plain-text;
 OPTIONAL).  Indicates the policy to be enacted by the Receiver at
 the request of the Domain Owner.  It applies only to subdomains of
 the domain queried and not to the domain itself.  Its syntax is
@@ -2646,28 +2678,28 @@ identical to that of the "p" tag defined above.  If absent, the
 policy specified by the "p" tag MUST be applied for subdomains.
 Note that "sp" will be ignored for DMARC records published on
 subdomains of Organizational Domains due to the effect of the
-DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.6.3</a>.<a href="#section-6.3-14.4" class="pilcrow">¶</a>
+DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.6.3</a>.<a href="#section-6.3-18.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-14.5">v:</dt>
-<dd id="section-6.3-14.6">Version (plain-text; REQUIRED).  Identifies the record retrieved
+<dt id="section-6.3-18.5">v:</dt>
+<dd id="section-6.3-18.6">Version (plain-text; REQUIRED).  Identifies the record retrieved
 as a DMARC record.  It MUST have the value of "DMARC1".  The value
 of this tag MUST match precisely; if it does not or it is absent,
 the entire retrieved record MUST be ignored.  It MUST be the first
-tag in the list.<a href="#section-6.3-14.6" class="pilcrow">¶</a>
+tag in the list.<a href="#section-6.3-18.6" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-15">A DMARC policy record MUST comply with the formal specification found
+<p id="section-6.3-19">A DMARC policy record MUST comply with the formal specification found
 in <a href="#formal-definition" class="xref">Section 6.4</a> in that the "v" tag MUST be present and MUST
 appear first.  Unknown tags MUST be ignored.  Syntax errors
 in the remainder of the record SHOULD be discarded in favor of
-default values (if any) or ignored outright.<a href="#section-6.3-15" class="pilcrow">¶</a></p>
-<p id="section-6.3-16">Note that given the rules of the previous paragraph, addition of a
+default values (if any) or ignored outright.<a href="#section-6.3-19" class="pilcrow">¶</a></p>
+<p id="section-6.3-20">Note that given the rules of the previous paragraph, addition of a
 new tag into the registered list of tags does not itself require a
 new version of DMARC to be generated (with a corresponding change to
 the "v" tag's value), but a change to any existing tags does require
-a new version of DMARC.<a href="#section-6.3-16" class="pilcrow">¶</a></p>
+a new version of DMARC.<a href="#section-6.3-20" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-definition">
@@ -5115,6 +5147,17 @@ as replacement for current text in "Minimum Implemenatations"<a href="#section-c
 <ul>
 <li id="section-c.11.1-1.1">Proposed text that limits processing to only those times when all domains
 are the same.<a href="#section-c.11.1-1.1" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-82-deprecate-rf-and-maybe-fo-tag">
+<section id="section-c.11.2">
+          <h3 id="name-issue-82-deprecate-rf-and-m">
+<a href="#section-c.11.2" class="section-number selfRef">C.11.2. </a><a href="#name-issue-82-deprecate-rf-and-m" class="section-name selfRef">Issue 82 - Deprecate rf= and maybe fo= tag</a>
+          </h3>
+<ul>
+<li id="section-c.11.2-1.1">Proposed text to deprecate rf= tag, while leaving fo= tag as is<a href="#section-c.11.2-1.1" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>

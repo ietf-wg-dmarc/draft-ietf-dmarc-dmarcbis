@@ -909,6 +909,8 @@ on this percentage, such as the following pseudocode, is adequate:
       selected = false
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Issue 82, Orginal text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 rf:
 :   Format to be used for message-specific failure reports (colon-
 separated plain-text list of values; OPTIONAL; default is "afrf").
@@ -916,12 +918,40 @@ The value of this tag is a list of one or more report formats as
 requested by the Domain Owner to be used when a message fails both
 [@!RFC7208] and [@!RFC6376] tests to report details of the individual
 failure.  The values MUST be present in the registry of reporting
-formats defined in (#iana-considerations); a Mail Receiver observing a
-different value SHOULD ignore it or MAY ignore the entire DMARC
+formats defined in (#iana-considerations); a Mail Receiver observing
+a different value SHOULD ignore it or MAY ignore the entire DMARC
 record.  For this version, only "afrf" (the auth-failure report
-type defined in [@!RFC6591]) is presently supported.  See the DMARC reporting documents
-for details.  For interoperability, the Authentication Failure
-Reporting Format (AFRF) MUST be supported.
+type defined in [@!RFC6591]) is presently supported.  See the DMARC
+reporting documents for details.  For interoperability, the
+Authentication Failure Reporting Format (AFRF) MUST be supported.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 82, Proposed replacement text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rf (do not use):
+:   Format to be used for message-specific failure reports (colon-
+separated plain-text list of values; OPTIONAL; default is "afrf").
+This tag SHOULD NOT be used in a DMARC record. See the note at the
+end for more information. The value of this tag is a list of one or
+more report formats as requested by the Domain Owner to be used when
+a message fails both [@!RFC7208] and [@!RFC6376] tests to report
+details of the individual failure. The values MUST be present in the
+registry of reporting formats defined in (#iana-considerations); a
+Mail Receiver observing a different value SHOULD ignore it or MAY
+ignore the entire DMARC record.  For this version, only "afrf" (the
+auth-failure report type defined in [@!RFC6591]) is presently
+supported.  See the DMARC reporting documents for details.  For
+interoperability, the Authentication Failure Reporting Format (AFRF)
+MUST be supported.
+
+    Note: Ever-broadening privacy laws in many governmental 
+    jurisdictions have had the effect of receivers refusing to 
+    send failure reports or at best redacting so much information
+    from them as to render them mostly useless to the Domain Owner.
+    As such, it is unlikely that there will ever be formats other
+    than "afrf" developed for failure reports, and so this tag
+    should not be used.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ri (do not use):
 :   Interval requested between aggregate reports (plain-text 32-bit
@@ -2891,6 +2921,9 @@ would normally appear as one continuous string.
 ### Issue 107 - DMARCbis should take a stand on multi-valued From fields
 * Proposed text that limits processing to only those times when all domains
   are the same.
+
+### Issue 82 - Deprecate rf= and maybe fo= tag
+* Proposed text to deprecate rf= tag, while leaving fo= tag as is
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
