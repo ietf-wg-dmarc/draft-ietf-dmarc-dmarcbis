@@ -1670,6 +1670,38 @@ registry:</t>
 <t>Value:  the domain portion of the RFC5322.From header field</t>
 <t>Status:  active</t>
 <t>Version:  1</t>
+<t>Issue 86, Proposed text to add:</t>
+
+<artwork>Method:  dmarc
+
+Defined:  RFC 7489
+
+ptype:  polrec
+
+Property:  p
+
+Value:  the p= value read from the discovered policy record
+
+Status:  active
+
+Version:  1
+
+Method:  dmarc
+
+Defined:  RFC 7489
+
+ptype:  polrec
+
+Property:  domain
+
+Value:  the domain at which the policy record was discovered, if 
+        different from the RFC5322.From domain
+
+Status:  active
+
+Version:  1
+
+</artwork>
 </section>
 
 <section anchor="authentication-results-result-registry-update"><name>Authentication-Results Result Registry Update</name>
@@ -1769,7 +1801,8 @@ Mail Receivers.</t>
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.</t>
 <t>The initial set of entries in this registry is as follows:</t>
-<table align="left">
+<table align="left"><name>&quot;DMARC Tag Registry&quot;
+</name>
 <thead>
 <tr>
 <th align="left">Tag Name</th>
@@ -1780,20 +1813,6 @@ when processed by implementations conforming to prior specifications.</t>
 </thead>
 
 <tbody>
-<tr>
-<td align="left">adkim</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">DKIM alignment mode</td>
-</tr>
-
-<tr>
-<td align="left">aspf</td>
-<td align="left">RFC 7489</td>
-<td align="left">current</td>
-<td align="left">SPF alignment mode</td>
-</tr>
-
 <tr>
 <td align="left">fo</td>
 <td align="left">RFC 7489</td>
@@ -1807,18 +1826,58 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">current</td>
 <td align="left">Requested handling policy</td>
 </tr>
+
+<tr>
+<td align="left">rf</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Failure reporting format(s)</td>
+</tr>
+
+<tr>
+<td align="left">ri</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Aggregate Reporting interval</td>
+</tr>
+
+<tr>
+<td align="left">rua</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Reporting URI(s) for aggregate data</td>
+</tr>
+
+<tr>
+<td align="left">ruf</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Reporting URI(s) for failure data</td>
+</tr>
+
+<tr>
+<td align="left">sp</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Requested handling policy for subdomains</td>
+</tr>
+
+<tr>
+<td align="left">v</td>
+<td align="left">RFC 7489</td>
+<td align="left">current</td>
+<td align="left">Specification version</td>
+</tr>
 </tbody>
-</table><t>Issue 47, Original text to be deleted:</t>
+</table><t>Issue 47, Original text to be deleted from table above:</t>
 
 <artwork>| pct      | RFC 7489  | current | Sampling rate |
 </artwork>
-<t>| rf       | RFC 7489  | current | Failure reporting format(s)              |
-| ri       | RFC 7489  | current | Aggregate Reporting interval             |
-| rua      | RFC 7489  | current | Reporting URI(s) for aggregate data      |
-| ruf      | RFC 7489  | current | Reporting URI(s) for failure data        |
-| sp       | RFC 7489  | current | Requested handling policy for subdomains |
-| v        | RFC 7489  | current | Specification version                    |
-Table: &quot;DMARC Tag Registry&quot;</t>
+<t>Issue 52, Original text to be deleted from table above:</t>
+
+<artwork>| adkim    | RFC 7489  | current | DKIM alignment mode    |
+| aspf     | RFC 7489  | current | SPF alignment mode     |
+</artwork>
 </section>
 
 <section anchor="dmarc-report-format-registry"><name>DMARC Report Format Registry</name>
@@ -2970,6 +3029,18 @@ are the same.</li>
 <li>The language expressing the semantics is proposed to be changed to be,
 in a sense, egocentric. How do I, the domain owner feel about (assess)
 the meaning of a DMARC failure?</li>
+</ul>
+</section>
+</section>
+
+<section anchor="april-15-2021"><name>April 15, 2021</name>
+
+<section anchor="issue-86-a-r-results-for-dmarc"><name>Issue 86 - A-R results for DMARC</name>
+
+<ul>
+<li>Proposed text to add for polrec.p and polrec.domain methods for registry
+update.</li>
+<li>Did not include polrec.pct due to proposal to remove pct tag (Issue 47)</li>
 </ul>
 </section>
 </section>
