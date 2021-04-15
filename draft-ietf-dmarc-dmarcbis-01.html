@@ -1587,6 +1587,9 @@ choices for incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></
 <li class="toc ulEmpty" id="section-toc.1-1.16.2.12.2.1">
                     <p id="section-toc.1-1.16.2.12.2.1.1"><a href="#section-c.12.1" class="xref">C.12.1</a>.  <a href="#name-issue-86-a-r-results-for-dm" class="xref">Issue 86 - A-R results for DMARC</a><a href="#section-toc.1-1.16.2.12.2.1.1" class="pilcrow">¶</a></p>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.12.2.2">
+                    <p id="section-toc.1-1.16.2.12.2.2.1"><a href="#section-c.12.2" class="xref">C.12.2</a>.  <a href="#name-issue-62-make-aggregate-rep" class="xref">Issue 62 - Make aggregate reporting a normative MUST</a><a href="#section-toc.1-1.16.2.12.2.2.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 </li>
 </ul>
@@ -3172,6 +3175,28 @@ a representative sample across a reporting period.
 for eventual presentation back to the Domain Owner in the form of
 aggregate feedback reports.  <a href="#general-record-format" class="xref">Section 6.3</a> and the DMARC reporting docuents discuss aggregate
 feedback.<a href="#section-6.6.4-1" class="pilcrow">¶</a></p>
+<p id="section-6.6.4-2">Issue 62, Proposed new text:<a href="#section-6.6.4-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.6.4-3">
+<pre>### Send Aggregate Reports {#send-aggregate-reports}
+
+For a Domain Owner, DMARC aggregate reports provide data about all
+mailstreams making use of its domain, to include not only
+illegitimate uses but also, and perhaps more importantly, all
+legitimate uses. Domain Owners can use aggregate reports to ensure
+that all legitimate uses of their domain for sending email are
+properly authenticated, and once they are, increase the severity of
+concern expressed in the p= tag in their DMARC policy records from
+none to quarantine to reject, if appropriate. In turn, DMARC policy
+records with p= tag values of 'quarantine' or 'reject' are higher
+value signals to Mail Receivers, ones that can assist Mail Receivers
+with handling decisions for a message in ways that p= tag values of
+'none' cannot.
+
+In order to ensure maximum usefulness for DMARC across the email
+ecosystem, then, Mail Receivers MUST generate and send aggregate
+reports with a frequency of at least once every 24 hours.
+</pre><a href="#section-6.6.4-3" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>
@@ -5287,6 +5312,18 @@ the meaning of a DMARC failure?<a href="#section-c.11.3-1.1" class="pilcrow">¶<
 update.<a href="#section-c.12.1-1.1" class="pilcrow">¶</a>
 </li>
 <li id="section-c.12.1-1.2">Did not include polrec.pct due to proposal to remove pct tag (Issue 47)<a href="#section-c.12.1-1.2" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="issue-62-make-aggregate-reporting-a-normative-must">
+<section id="section-c.12.2">
+          <h3 id="name-issue-62-make-aggregate-rep">
+<a href="#section-c.12.2" class="section-number selfRef">C.12.2. </a><a href="#name-issue-62-make-aggregate-rep" class="section-name selfRef">Issue 62 - Make aggregate reporting a normative MUST</a>
+          </h3>
+<ul>
+<li id="section-c.12.2-1.1">Proposed text to do just that in Mail Receiver Actions, section
+titled "Send Aggregate Reports"<a href="#section-c.12.2-1.1" class="pilcrow">¶</a>
 </li>
 </ul>
 </section>

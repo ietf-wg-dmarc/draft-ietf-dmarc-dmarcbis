@@ -1479,6 +1479,28 @@ for eventual presentation back to the Domain Owner in the form of
 aggregate feedback reports.  (#general-record-format) and the DMARC reporting docuents discuss aggregate
 feedback.
 
+Issue 62, Proposed new text:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Send Aggregate Reports {#send-aggregate-reports}
+
+For a Domain Owner, DMARC aggregate reports provide data about all
+mailstreams making use of its domain, to include not only 
+illegitimate uses but also, and perhaps more importantly, all 
+legitimate uses. Domain Owners can use aggregate reports to ensure
+that all legitimate uses of their domain for sending email are 
+properly authenticated, and once they are, increase the severity of
+concern expressed in the p= tag in their DMARC policy records from
+none to quarantine to reject, if appropriate. In turn, DMARC policy
+records with p= tag values of 'quarantine' or 'reject' are higher
+value signals to Mail Receivers, ones that can assist Mail Receivers
+with handling decisions for a message in ways that p= tag values of
+'none' cannot. 
+
+In order to ensure maximum usefulness for DMARC across the email
+ecosystem, then, Mail Receivers MUST generate and send aggregate
+reports with a frequency of at least once every 24 hours.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ##  Policy Enforcement Considerations {#policy-enforcement-considerations}
 
 Mail Receivers MAY choose to reject or quarantine email even if email
@@ -3004,6 +3026,10 @@ would normally appear as one continuous string.
 * Proposed text to add for polrec.p and polrec.domain methods for registry
   update.
 * Did not include polrec.pct due to proposal to remove pct tag (Issue 47)
+
+### Issue 62 - Make aggregate reporting a normative MUST
+* Proposed text to do just that in Mail Receiver Actions, section
+  titled "Send Aggregate Reports"
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
