@@ -1768,6 +1768,39 @@ Status:  active
 
 Version:  1
 
+Issue 86, Proposed text to add:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Method:  dmarc
+
+Defined:  RFC 7489
+
+ptype:  polrec
+
+Property:  p
+
+Value:  the p= value read from the discovered policy record
+
+Status:  active
+
+Version:  1
+
+Method:  dmarc
+
+Defined:  RFC 7489
+
+ptype:  polrec
+
+Property:  domain
+
+Value:  the domain at which the policy record was discovered, if 
+        different from the RFC5322.From domain
+
+Status:  active
+
+Version:  1
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ## Authentication-Results Result Registry Update {#authentication-results-result-registry-update}
 
 IANA has added the following in the "Email Authentication Result
@@ -1891,14 +1924,8 @@ The initial set of entries in this registry is as follows:
 {align="left"}
 | Tag Name | Reference | Status  | Description                              |
 |:---------|:----------|:--------|:-----------------------------------------|
-| adkim    | RFC 7489  | current | DKIM alignment mode                      |
-| aspf     | RFC 7489  | current | SPF alignment mode                       |
 | fo       | RFC 7489  | current | Failure reporting options                |
 | p        | RFC 7489  | current | Requested handling policy                |
-Issue 47, Original text to be deleted:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-| pct      | RFC 7489  | current | Sampling rate |
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 | rf       | RFC 7489  | current | Failure reporting format(s)              |
 | ri       | RFC 7489  | current | Aggregate Reporting interval             |
 | rua      | RFC 7489  | current | Reporting URI(s) for aggregate data      |
@@ -1906,6 +1933,17 @@ Issue 47, Original text to be deleted:
 | sp       | RFC 7489  | current | Requested handling policy for subdomains |
 | v        | RFC 7489  | current | Specification version                    |
 Table: "DMARC Tag Registry"
+
+Issue 47, Original text to be deleted from table above:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| pct      | RFC 7489  | current | Sampling rate |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Issue 52, Original text to be deleted from table above:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| adkim    | RFC 7489  | current | DKIM alignment mode    |
+| aspf     | RFC 7489  | current | SPF alignment mode     |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ##  DMARC Report Format Registry {#dmarc-report-format-registry}
 
@@ -2960,6 +2998,12 @@ would normally appear as one continuous string.
 * The language expressing the semantics is proposed to be changed to be, 
   in a sense, egocentric. How do I, the domain owner feel about (assess)
   the meaning of a DMARC failure?
+
+## April 15, 2021
+### Issue 86 - A-R results for DMARC
+* Proposed text to add for polrec.p and polrec.domain methods for registry
+  update.
+* Did not include polrec.pct due to proposal to remove pct tag (Issue 47)
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
