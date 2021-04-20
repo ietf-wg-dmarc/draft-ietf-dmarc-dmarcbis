@@ -10,9 +10,10 @@
 <meta content="
        This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol. 
-       Tickets 75, 80, 85, 96 
+       Tickets 75, 80, 85, 96, and 108 
        DMARC permits the owner of an email author's domain name to enable
-validation of the domain's use, to indicate the Domain Owner's
+validation of the domain's use, to indicate the Domain Owner's or
+Public Suffix Operator's
 severity of concern regarding failed validation, and to request
 reports about use of the domain name. Mail receiving organizations
 can use this information when evaluating handling choices for
@@ -1114,7 +1115,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 21 October 2021</td>
+<td class="center">Expires 22 October 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1130,12 +1131,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-04-19" class="published">19 April 2021</time>
+<time datetime="2021-04-20" class="published">20 April 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-10-21">21 October 2021</time></dd>
+<dd class="expires"><time datetime="2021-10-22">22 October 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1154,9 +1155,10 @@ dd.break {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2"><em>Tickets 75, 80, 85, 96</em><a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-2"><em>Tickets 75, 80, 85, 96, and 108</em><a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">DMARC permits the owner of an email author's domain name to enable
-validation of the domain's use, to indicate the Domain Owner's
+validation of the domain's use, to indicate the Domain Owner's or
+Public Suffix Operator's
 severity of concern regarding failed validation, and to request
 reports about use of the domain name. Mail receiving organizations
 can use this information when evaluating handling choices for
@@ -1182,7 +1184,7 @@ incoming mail.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1235,21 +1237,60 @@ incoming mail.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-terminology-and-definitions" class="xref">Terminology and Definitions</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-identifier-alignment" class="xref">Identifier Alignment</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-conventions-used-in-this-do" class="xref">Conventions Used in This Document</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-authenticated-identifiers" class="xref">Authenticated Identifiers</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-author-domain" class="xref">Author Domain</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-domain-owner" class="xref">Domain Owner</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-identifier-alignment" class="xref">Identifier Alignment</a><a href="#section-toc.1-1.3.2.5.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="xref">3.6</a>.  <a href="#name-longest-psd" class="xref">Longest PSD</a><a href="#section-toc.1-1.3.2.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="xref">3.7</a>.  <a href="#name-mail-receiver" class="xref">Mail Receiver</a><a href="#section-toc.1-1.3.2.7.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.8">
+                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="xref">3.8</a>.  <a href="#name-non-existent-domains" class="xref">Non-existent Domains</a><a href="#section-toc.1-1.3.2.8.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.9">
+                <p id="section-toc.1-1.3.2.9.1"><a href="#section-3.9" class="xref">3.9</a>.  <a href="#name-organizational-domain" class="xref">Organizational Domain</a><a href="#section-toc.1-1.3.2.9.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.10">
+                <p id="section-toc.1-1.3.2.10.1"><a href="#section-3.10" class="xref">3.10</a>. <a href="#name-public-suffix-domain-psd" class="xref">Public Suffix Domain (PSD)</a><a href="#section-toc.1-1.3.2.10.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.11">
+                <p id="section-toc.1-1.3.2.11.1"><a href="#section-3.11" class="xref">3.11</a>. <a href="#name-public-suffix-operator-pso" class="xref">Public Suffix Operator (PSO)</a><a href="#section-toc.1-1.3.2.11.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.12">
+                <p id="section-toc.1-1.3.2.12.1"><a href="#section-3.12" class="xref">3.12</a>. <a href="#name-pso-controlled-domain-names" class="xref">PSO Controlled Domain Names</a><a href="#section-toc.1-1.3.2.12.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.13">
+                <p id="section-toc.1-1.3.2.13.1"><a href="#section-3.13" class="xref">3.13</a>. <a href="#name-report-receiver" class="xref">Report Receiver</a><a href="#section-toc.1-1.3.2.13.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.14">
+                <p id="section-toc.1-1.3.2.14.1"><a href="#section-3.14" class="xref">3.14</a>. <a href="#name-more-on-identifier-alignmen" class="xref">More on Identifier Alignment</a><a href="#section-toc.1-1.3.2.14.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-dkim-authenticated-identifi" class="xref">DKIM-Authenticated Identifiers</a><a href="#section-toc.1-1.3.2.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.14.2.1">
+                    <p id="section-toc.1-1.3.2.14.2.1.1"><a href="#section-3.14.1" class="xref">3.14.1</a>.  <a href="#name-dkim-authenticated-identifi" class="xref">DKIM-Authenticated Identifiers</a><a href="#section-toc.1-1.3.2.14.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1.2.2">
-                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="xref">3.1.2</a>.  <a href="#name-spf-authenticated-identifie" class="xref">SPF-Authenticated Identifiers</a><a href="#section-toc.1-1.3.2.1.2.2.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.14.2.2">
+                    <p id="section-toc.1-1.3.2.14.2.2.1"><a href="#section-3.14.2" class="xref">3.14.2</a>.  <a href="#name-spf-authenticated-identifie" class="xref">SPF-Authenticated Identifiers</a><a href="#section-toc.1-1.3.2.14.2.2.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1.2.3">
-                    <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="xref">3.1.3</a>.  <a href="#name-alignment-and-extension-tec" class="xref">Alignment and Extension Technologies</a><a href="#section-toc.1-1.3.2.1.2.3.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.14.2.3">
+                    <p id="section-toc.1-1.3.2.14.2.3.1"><a href="#section-3.14.3" class="xref">3.14.3</a>.  <a href="#name-alignment-and-extension-tec" class="xref">Alignment and Extension Technologies</a><a href="#section-toc.1-1.3.2.14.2.3.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-organizational-domain" class="xref">Organizational Domain</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.3.2.15">
+                <p id="section-toc.1-1.3.2.15.1"><a href="#section-3.15" class="xref">3.15</a>. <a href="#name-determining-the-organizatio" class="xref">Determining The Organizational Domain</a><a href="#section-toc.1-1.3.2.15.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -1309,27 +1350,30 @@ incoming mail.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.6.2.6">
-                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="xref">6.6</a>.  <a href="#name-mail-receiver-actions" class="xref">Mail Receiver Actions</a><a href="#section-toc.1-1.6.2.6.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.6.2.6.1"><a href="#section-6.6" class="xref">6.6</a>.  <a href="#name-pso-actions" class="xref">PSO Actions</a><a href="#section-toc.1-1.6.2.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7">
+                <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="xref">6.7</a>.  <a href="#name-mail-receiver-actions" class="xref">Mail Receiver Actions</a><a href="#section-toc.1-1.6.2.7.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.1">
-                    <p id="section-toc.1-1.6.2.6.2.1.1"><a href="#section-6.6.1" class="xref">6.6.1</a>.  <a href="#name-extract-author-domain" class="xref">Extract Author Domain</a><a href="#section-toc.1-1.6.2.6.2.1.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7.2.1">
+                    <p id="section-toc.1-1.6.2.7.2.1.1"><a href="#section-6.7.1" class="xref">6.7.1</a>.  <a href="#name-extract-author-domain" class="xref">Extract Author Domain</a><a href="#section-toc.1-1.6.2.7.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.2">
-                    <p id="section-toc.1-1.6.2.6.2.2.1"><a href="#section-6.6.2" class="xref">6.6.2</a>.  <a href="#name-determine-handling-policy" class="xref">Determine Handling Policy</a><a href="#section-toc.1-1.6.2.6.2.2.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7.2.2">
+                    <p id="section-toc.1-1.6.2.7.2.2.1"><a href="#section-6.7.2" class="xref">6.7.2</a>.  <a href="#name-determine-handling-policy" class="xref">Determine Handling Policy</a><a href="#section-toc.1-1.6.2.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.3">
-                    <p id="section-toc.1-1.6.2.6.2.3.1"><a href="#section-6.6.3" class="xref">6.6.3</a>.  <a href="#name-policy-discovery" class="xref">Policy Discovery</a><a href="#section-toc.1-1.6.2.6.2.3.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7.2.3">
+                    <p id="section-toc.1-1.6.2.7.2.3.1"><a href="#section-6.7.3" class="xref">6.7.3</a>.  <a href="#name-policy-discovery" class="xref">Policy Discovery</a><a href="#section-toc.1-1.6.2.7.2.3.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.4">
-                    <p id="section-toc.1-1.6.2.6.2.4.1"><a href="#section-6.6.4" class="xref">6.6.4</a>.  <a href="#name-store-results-of-dmarc-proc" class="xref">Store Results of DMARC Processing</a><a href="#section-toc.1-1.6.2.6.2.4.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7.2.4">
+                    <p id="section-toc.1-1.6.2.7.2.4.1"><a href="#section-6.7.4" class="xref">6.7.4</a>.  <a href="#name-store-results-of-dmarc-proc" class="xref">Store Results of DMARC Processing</a><a href="#section-toc.1-1.6.2.7.2.4.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.6.2.5">
-                    <p id="section-toc.1-1.6.2.6.2.5.1"><a href="#section-6.6.5" class="xref">6.6.5</a>.  <a href="#name-send-aggregate-reports" class="xref">Send Aggregate Reports</a><a href="#section-toc.1-1.6.2.6.2.5.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.7.2.5">
+                    <p id="section-toc.1-1.6.2.7.2.5.1"><a href="#section-6.7.5" class="xref">6.7.5</a>.  <a href="#name-send-aggregate-reports" class="xref">Send Aggregate Reports</a><a href="#section-toc.1-1.6.2.7.2.5.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6.2.7">
-                <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="xref">6.7</a>.  <a href="#name-policy-enforcement-consider" class="xref">Policy Enforcement Considerations</a><a href="#section-toc.1-1.6.2.7.1" class="pilcrow">¶</a></p>
+<li class="toc ulEmpty" id="section-toc.1-1.6.2.8">
+                <p id="section-toc.1-1.6.2.8.1"><a href="#section-6.8" class="xref">6.8</a>.  <a href="#name-policy-enforcement-consider" class="xref">Policy Enforcement Considerations</a><a href="#section-toc.1-1.6.2.8.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -1624,6 +1668,14 @@ incoming mail.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.14">
+                <p id="section-toc.1-1.16.2.14.1"><a href="#section-c.14" class="xref">C.14</a>. <a href="#name-april-20-2021" class="xref">April 20, 2021</a><a href="#section-toc.1-1.16.2.14.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.16.2.14.2.1">
+                    <p id="section-toc.1-1.16.2.14.2.1.1"><a href="#section-c.14.1" class="xref">C.14.1</a>.  <a href="#name-ticket-108-changes-to-dmarc" class="xref">Ticket 108 - Changes to DMARCbis for PSD</a><a href="#section-toc.1-1.16.2.14.2.1.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.17">
@@ -1644,7 +1696,7 @@ incoming mail.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 <p id="section-1-1">RFC EDITOR: PLEASE REMOVE THE FOLLOWING PARAGRAPH BEFORE PUBLISHING:
 The source for this draft is maintained in GitHub at:
 <a href="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis</a><a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2"><em>Tickets 80, 85, and 96</em><a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-2"><em>Tickets 80, 85, 96, and 108</em><a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">The Sender Policy Framework (<span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>) and DomainKeys Identified
 Mail (<span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span>) protocols provide domain-level authentication
 which is not directly associated with the RFC5322.From domain, and
@@ -1652,7 +1704,9 @@ DMARC builds on those protocols. Using DMARC, Domain Owners that
 originate email can publish a DNS TXT record with their email
 authentication policies, state their level of concern for mail that
 fails authentication checks, and request reports about email use of
-the domain name.<a href="#section-1-3" class="pilcrow">¶</a></p>
+the domain name. Similarly, Public Suffix Operators (PSOs) may do
+the same for PSO Controlled Domain Names and non-existent subdomains
+of the PSO Controlled Domain Name.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4"><em>Ticket 52</em><a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">As with SPF and DKIM, DMARC authentication checks result in verdicts
 of "pass" or "fail". A DMARC pass verdict requires not only that SPF
@@ -1660,26 +1714,29 @@ or DKIM pass for the message in question, but also that the domain
 validated by the SPF or DKIM check is aligned with the RFC5322.From
 domain. In the DMARC protocol, two domains are said to be "in
 alignment" if they have the same Organizational Domain.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6"><em>Tickets 75, 80, and 85</em><a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6"><em>Tickets 75, 80, 85, and 108</em><a href="#section-1-6" class="pilcrow">¶</a></p>
 <p id="section-1-7">A DMARC pass result indicates only that the RFC5322.From domain has
 been authenticated in that message; there is no explicit or implied
 value assertion attributed to a message that receives such a verdict.
 A mail-receiving organization that performs a DMARC validation check
 on inbound mail can choose to use the result and the published
-severity of concern expresed by the Domain Owner for authentication
+severity of concern expresed by the Domain Owner or PSO for authentication
 failures to inform its mail handling decision for that message.<a href="#section-1-7" class="pilcrow">¶</a></p>
 <p id="section-1-8">For a mail-receiving organization supporting DMARC, a message that
 passes validation is part of a message stream that is reliably
-associated with the Domain Owner. Therefore reputation assessment
-of that stream by the mail-receiving organization does not need to
-be encumbered by accounting for unauthorized use of the domain.  A
-message that fails this validation cannot reliably be associated with
-the aligned domain and its reputation.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9"><em>Ticket 80</em><a href="#section-1-9" class="pilcrow">¶</a></p>
-<p id="section-1-10">DMARC also describes a reporting framework in which mail-receiving domains
+associated with the Domain Owner and/or any, some, or all of the
+Authenticated Identifiers. Therefore,
+reputation assessment of that stream by the mail-receiving organization
+does not need to be encumbered by accounting for unauthorized use of any
+domains.  A message that fails this validation cannot reliably be associated with
+the Domain Owner's domain and its reputation.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9"><em>Tickets 80 and 108</em><a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-10">DMARC, in the associated <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span> and <span>[<a href="#DMARC-Failure-Reporting" class="xref">DMARC-Failure-Reporting</a>]</span>
+documents, also describes a reporting framework in which mail-receiving domains
 can generate regular reports containing data about messages seen that claim
 to be from domains that publish DMARC policies, and send those reports to
-one or more addresses as requested by the Domain Owner's DMARC policy record.<a href="#section-1-10" class="pilcrow">¶</a></p>
+one or more addresses as requested by the Domain Owner's or PSO's DMARC policy
+record.<a href="#section-1-10" class="pilcrow">¶</a></p>
 <p id="section-1-11">Experience with DMARC has revealed some issues of interoperability
 with email in general that require due consideration before
 deployment, particularly with configurations that can cause mail to
@@ -1700,15 +1757,15 @@ documented as out of scope.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-high-level-goals" class="section-name selfRef">High-Level Goals</a>
         </h3>
 <p id="section-2.1-1">DMARC has the following high-level goals:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2"><em>Ticket 85</em><a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-2"><em>Tickets 85 and 108</em><a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <ul>
 <li id="section-2.1-3.1">
-            <p id="section-2.1-3.1.1">Allow Domain Owners to assert their severity of concern for
+            <p id="section-2.1-3.1.1">Allow Domain Owners and PSOs to assert their severity of concern for
 authentication failures for messages purporting to have
 authorship within the domain.<a href="#section-2.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.1-3.2">
-            <p id="section-2.1-3.2.1">Allow Domain Owners to verify their authentication deployment.<a href="#section-2.1-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-3.2.1">Allow Domain Owners and PSOs to verify their authentication deployment.<a href="#section-2.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.1-3.3">
             <p id="section-2.1-3.3.1">Minimize implementation complexity for both senders and receivers,
@@ -1800,6 +1857,7 @@ useful in the creation of reliable and defensible message streams.<a href="#sect
 otherwise fraudulent email.  In particular, it does not address the
 use of visually similar domain names ("cousin domains") or abuse of
 the RFC5322.From human-readable &lt;display-name&gt;.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-4"><em>Ticket 108</em><a href="#section-2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1810,11 +1868,16 @@ the RFC5322.From human-readable &lt;display-name&gt;.<a href="#section-2.4-3" cl
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terminology-and-definitions" class="section-name selfRef">Terminology and Definitions</a>
       </h2>
 <p id="section-3-1">This section defines terms used in the rest of the document.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+<div id="conventions-used-in-this-document">
+<section id="section-3.1">
+        <h3 id="name-conventions-used-in-this-do">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-conventions-used-in-this-do" class="section-name selfRef">Conventions Used in This Document</a>
+        </h3>
+<p id="section-3.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
 document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span>
-when, and only when, they appear in all capitals, as shown here.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">Readers are encouraged to be familiar with the contents of
+when, and only when, they appear in all capitals, as shown here.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Readers are encouraged to be familiar with the contents of
 <span>[<a href="#RFC5598" class="xref">RFC5598</a>]</span>.  In particular, that document defines various roles in
 the messaging infrastructure that can appear the same or separate in
 various contexts.  For example, a Domain Owner could, via the
@@ -1822,23 +1885,33 @@ messaging security mechanisms on which DMARC is based, delegate the
 ability to send mail as the Domain Owner to a third party with
 another role.  This document does not address the distinctions among
 such roles; the reader is encouraged to become familiar with that
-material before continuing.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">The following terms are also used:<a href="#section-3-4" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-3-5">
-        <dt id="section-3-5.1">Authenticated Identifiers:</dt>
-<dd id="section-3-5.2">Domain-level identifiers that are
-validated using authentication technologies are referred to as
-"Authenticated Identifiers".  See <a href="#authenicated-mechanisms" class="xref">Section 4.1</a> for details about
-the supported mechanisms.<a href="#section-3-5.2" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-3-5.3">Author Domain:</dt>
-<dd id="section-3-5.4">The domain name of the apparent author, as extracted
-from the From: header field.<a href="#section-3-5.4" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-3-5.5">Domain Owner:</dt>
-<dd id="section-3-5.6">An entity or organization that owns a DNS domain.  The
+material before continuing.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authenticated-identifiers">
+<section id="section-3.2">
+        <h3 id="name-authenticated-identifiers">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-authenticated-identifiers" class="section-name selfRef">Authenticated Identifiers</a>
+        </h3>
+<p id="section-3.2-1">Domain-level identifiers that are validated using authentication technologies
+are referred to as "Authenticated Identifiers".  See <a href="#authenicated-mechanisms" class="xref">Section 4.1</a>
+for details about the supported mechanisms.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="author-domain">
+<section id="section-3.3">
+        <h3 id="name-author-domain">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-author-domain" class="section-name selfRef">Author Domain</a>
+        </h3>
+<p id="section-3.3-1">The domain name of the apparent author, as extracted from the From: header field.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="domain-owner">
+<section id="section-3.4">
+        <h3 id="name-domain-owner">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-domain-owner" class="section-name selfRef">Domain Owner</a>
+        </h3>
+<p id="section-3.4-1">An entity or organization that owns a DNS domain.  The
 term "owns" here indicates that the entity or organization being
 referenced holds the registration of that DNS domain.  Domain
 Owners range from complex, globally distributed organizations, to
@@ -1847,71 +1920,123 @@ individuals responsible for maintaining personal domains.  This
 specification uses this term as analogous to an Administrative
 Management Domain as defined in <span>[<a href="#RFC5598" class="xref">RFC5598</a>]</span>.  It can also refer
 to delegates, such as Report Receivers, when those are outside of
-their immediate management domain.<a href="#section-3-5.6" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-</dl>
-<p id="section-3-6"><em>Ticket 52</em><a href="#section-3-6" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-3-7">
-        <dt id="section-3-7.1">Identifier Alignment:</dt>
-<dd id="section-3-7.2">When the domain in the address in the From: header field
-has the same Organizational Domain as a domain validated by SPF or
-DKIM (or both), it has Identifier Alignment. (see below)<a href="#section-3-7.2" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-3-7.3">Mail Receiver:</dt>
-<dd id="section-3-7.4">The entity or organization that receives and
-processes email.  Mail Receivers operate one or more Internet-
-facing Mail Transport Agents (MTAs).<a href="#section-3-7.4" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-3-7.5">Organizational Domain:</dt>
-<dd id="section-3-7.6">The domain that was registered with a domain
-name registrar.  In the absence of more accurate methods,
-heuristics are used to determine this, since it is not always the
-case that the registered domain name is simply a top-level DNS
-domain plus one component (e.g., "example.com", where "com" is a
-top-level domain).  The Organizational Domain is determined by
-applying the algorithm found in <a href="#organizational-domain" class="xref">Section 3.2</a>.<a href="#section-3-7.6" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-</dl>
-<p id="section-3-8"><em>Ticket 109</em><a href="#section-3-8" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-3-9">
-        <dt id="section-3-9.1">Report Receiver:</dt>
-<dd id="section-3-9.2">An operator that receives reports from another operator
-implementing the reporting mechanism described in this document.
+their immediate management domain.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2"><em>Ticket 52</em><a href="#section-3.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="identifier-alignment">
+<section id="section-3.5">
+        <h3 id="name-identifier-alignment">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-identifier-alignment" class="section-name selfRef">Identifier Alignment</a>
+        </h3>
+<p id="section-3.5-1">When the domain in the address in the From: header field has the
+same Organizational Domain as a domain validated by SPF or DKIM
+(or both), it has Identifier Alignment. (see below)<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="longest-psd">
+<section id="section-3.6">
+        <h3 id="name-longest-psd">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-longest-psd" class="section-name selfRef">Longest PSD</a>
+        </h3>
+<p id="section-3.6-1">The term Longest PSD is defined in <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="mail-receiver">
+<section id="section-3.7">
+        <h3 id="name-mail-receiver">
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-mail-receiver" class="section-name selfRef">Mail Receiver</a>
+        </h3>
+<p id="section-3.7-1">The entity or organization that receives and processes email.<br>
+Mail Receivers operate one or more Internet- facing Mail Transport
+Agents (MTAs).<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="non-existent-domains">
+<section id="section-3.8">
+        <h3 id="name-non-existent-domains">
+<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-non-existent-domains" class="section-name selfRef">Non-existent Domains</a>
+        </h3>
+<p id="section-3.8-1">For DMARC purposes, a non-existent domain is a domain for which there
+is an NXDOMAIN or NODATA response for A, AAAA, and MX records.  This
+is a broader definition than that in NXDOMAIN <span>[<a href="#RFC8020" class="xref">RFC8020</a>]</span>.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="organizational-domain">
+<section id="section-3.9">
+        <h3 id="name-organizational-domain">
+<a href="#section-3.9" class="section-number selfRef">3.9. </a><a href="#name-organizational-domain" class="section-name selfRef">Organizational Domain</a>
+        </h3>
+<p id="section-3.9-1">The domain that was registered with a domain name registrar.  In
+the absence of more accurate methods, heuristics are used to determine
+this, since it is not always the case that the registered domain name
+is simply a top-level DNS domain plus one component (e.g., "example.com",
+where "com" is a top-level domain).  The Organizational Domain is
+determined by applying the algorithm found in <a href="#determining-the-organizational-domain" class="xref">Section 3.15</a>.<a href="#section-3.9-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="public-suffix-domain">
+<section id="section-3.10">
+        <h3 id="name-public-suffix-domain-psd">
+<a href="#section-3.10" class="section-number selfRef">3.10. </a><a href="#name-public-suffix-domain-psd" class="section-name selfRef">Public Suffix Domain (PSD)</a>
+        </h3>
+<p id="section-3.10-1">The term Public Suffix Domain is defined in <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>.<a href="#section-3.10-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="public-suffix-operator">
+<section id="section-3.11">
+        <h3 id="name-public-suffix-operator-pso">
+<a href="#section-3.11" class="section-number selfRef">3.11. </a><a href="#name-public-suffix-operator-pso" class="section-name selfRef">Public Suffix Operator (PSO)</a>
+        </h3>
+<p id="section-3.11-1">The term Public Suffix Operator is defined in <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>.<a href="#section-3.11-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="pso-controlled-domain-names">
+<section id="section-3.12">
+        <h3 id="name-pso-controlled-domain-names">
+<a href="#section-3.12" class="section-number selfRef">3.12. </a><a href="#name-pso-controlled-domain-names" class="section-name selfRef">PSO Controlled Domain Names</a>
+        </h3>
+<p id="section-3.12-1">The term PSO Controlled Domain Names is defined in <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>.<a href="#section-3.12-1" class="pilcrow">¶</a></p>
+<p id="section-3.12-2"><em>Tickets 108 and 109</em><a href="#section-3.12-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="report-receiver">
+<section id="section-3.13">
+        <h3 id="name-report-receiver">
+<a href="#section-3.13" class="section-number selfRef">3.13. </a><a href="#name-report-receiver" class="section-name selfRef">Report Receiver</a>
+        </h3>
+<p id="section-3.13-1">An operator that receives reports from another operator
+implementing the reporting mechanisms described in this document.
 Such an operator might be receiving reports about messages related
-to a domain for which it is the Domain Owner, or reports about
+to a domain for which it is the Domain Owner or PSO, or reports about
 messages related to another operator's domain.  This term applies
 collectively to the system components that receive and process these
-reports and the organizations that operate them.<a href="#section-3-9.2" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-</dl>
-<div id="identifier-alignment">
-<section id="section-3.1">
-        <h3 id="name-identifier-alignment">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-identifier-alignment" class="section-name selfRef">Identifier Alignment</a>
+reports and the organizations that operate them.<a href="#section-3.13-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="more-on-identifier-alignment">
+<section id="section-3.14">
+        <h3 id="name-more-on-identifier-alignmen">
+<a href="#section-3.14" class="section-number selfRef">3.14. </a><a href="#name-more-on-identifier-alignmen" class="section-name selfRef">More on Identifier Alignment</a>
         </h3>
-<p id="section-3.1-1"><em>Ticket 109</em><a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Email authentication technologies authenticate various (and
+<p id="section-3.14-1"><em>Ticket 109</em><a href="#section-3.14-1" class="pilcrow">¶</a></p>
+<p id="section-3.14-2">Email authentication technologies authenticate various (and
 disparate) aspects of an individual message.  For example, DKIM <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span>
 authenticates the domain that affixed a signature to the message,
 while SPF <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span> can authenticate either the domain that appears in the
 RFC5321.MailFrom (MAIL FROM) portion of <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span> or the RFC5321.EHLO/
 HELO domain, or both.  These may be different domains, and they are
-typically not visible to the end user.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3"><em>Ticket 52</em><a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">DMARC authenticates use of the RFC5322.From domain by requiring that
+typically not visible to the end user.<a href="#section-3.14-2" class="pilcrow">¶</a></p>
+<p id="section-3.14-3"><em>Ticket 52</em><a href="#section-3.14-3" class="pilcrow">¶</a></p>
+<p id="section-3.14-4">DMARC authenticates use of the RFC5322.From domain by requiring that
 it have the same Organizational Domain (be aligned with) as an
 Authenticated Identifier. The RFC5322.From domain was selected as the
 central identity of the DMARC mechanism because it is a required
 message header field and therefore guaranteed to be present in
 compliant messages, and most Mail User Agents (MUAs) represent the
 RFC5322.From header field as the originator of the message and render
-some or all of this header field's content to end users.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1-5">Thus, this field is the one used by end users to identify the source
+some or all of this header field's content to end users.<a href="#section-3.14-4" class="pilcrow">¶</a></p>
+<p id="section-3.14-5">Thus, this field is the one used by end users to identify the source
 of the message and therefore is a prime target for abuse.  Many
 high-profile email sources, such as email service providers, require
 that the sending agent have authenticated before email can be
@@ -1919,132 +2044,132 @@ generated.  Thus, for these mailboxes, the mechanism described in
 this document provides recipient end users with strong evidence that
 the message was indeed originated by the agent they associate with
 that mailbox, if the end user knows that these various protections
-have been provided.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">Domain names in this context are to be compared in a case-insensitive
-manner, per <span>[<a href="#RFC4343" class="xref">RFC4343</a>]</span>.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.1-7">It is important to note that Identifier Alignment cannot occur with a
+have been provided.<a href="#section-3.14-5" class="pilcrow">¶</a></p>
+<p id="section-3.14-6">Domain names in this context are to be compared in a case-insensitive
+manner, per <span>[<a href="#RFC4343" class="xref">RFC4343</a>]</span>.<a href="#section-3.14-6" class="pilcrow">¶</a></p>
+<p id="section-3.14-7">It is important to note that Identifier Alignment cannot occur with a
 message that is not valid per <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>, particularly one with a
 malformed, absent, or repeated RFC5322.From header field, since in that case
 there is no reliable way to determine a DMARC policy that applies to
 the message.  Accordingly, DMARC operation is predicated on the input
 being a valid RFC5322 message object, and handling of such
 non-compliant cases is outside of the scope of this specification.
-Further discussion of this can be found in <a href="#extract-author-domain" class="xref">Section 6.6.1</a>.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.1-8"><em>Ticket 52</em><a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">Each of the underlying authentication technologies that DMARC takes
+Further discussion of this can be found in <a href="#extract-author-domain" class="xref">Section 6.7.1</a>.<a href="#section-3.14-7" class="pilcrow">¶</a></p>
+<p id="section-3.14-8"><em>Ticket 52</em><a href="#section-3.14-8" class="pilcrow">¶</a></p>
+<p id="section-3.14-9">Each of the underlying authentication technologies that DMARC takes
 as input yields authenticated domains as their outputs when they
-succeed.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+succeed.<a href="#section-3.14-9" class="pilcrow">¶</a></p>
 <div id="dkim-identifiers">
-<section id="section-3.1.1">
+<section id="section-3.14.1">
           <h4 id="name-dkim-authenticated-identifi">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-dkim-authenticated-identifi" class="section-name selfRef">DKIM-Authenticated Identifiers</a>
+<a href="#section-3.14.1" class="section-number selfRef">3.14.1. </a><a href="#name-dkim-authenticated-identifi" class="section-name selfRef">DKIM-Authenticated Identifiers</a>
           </h4>
-<p id="section-3.1.1-1"><em>Ticket 52</em><a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-2">DMARC requires Identifier Alignment based on the result of a DKIM
+<p id="section-3.14.1-1"><em>Ticket 52</em><a href="#section-3.14.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-2">DMARC requires Identifier Alignment based on the result of a DKIM
 authentication because a message can bear a valid signature from any
 domain, including domains used by a mailing list or even a bad actor.
 Therefore, merely bearing a valid signature is not enough to infer
-authenticity of the Author Domain.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-3">To illustrate, if a validated DKIM signature successfully verifies
+authenticity of the Author Domain.<a href="#section-3.14.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-3">To illustrate, if a validated DKIM signature successfully verifies
 with a "d=" domain of "example.com", and the RFC5322.From address is
 "alerts@news.example.com", the DKIM "d=" domain and the RFC5322.From
 domain are considered to be "in alignment".  However, a DKIM
 signature bearing a value of "d=com" would never allow an "in
 alignment" result, as "com" should appear on all public suffix lists
 (see <a href="#public-suffix-lists" class="xref">Appendix A.6.1</a>) and therefore cannot be an
-Organizational Domain.<a href="#section-3.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.1-4">Note that a single email can contain multiple DKIM signatures, and it
+Organizational Domain.<a href="#section-3.14.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-4">Note that a single email can contain multiple DKIM signatures, and it
 is considered to be a DMARC "pass" if any DKIM signature is aligned
-and verifies.<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+and verifies.<a href="#section-3.14.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="spf-identifiers">
-<section id="section-3.1.2">
+<section id="section-3.14.2">
           <h4 id="name-spf-authenticated-identifie">
-<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-spf-authenticated-identifie" class="section-name selfRef">SPF-Authenticated Identifiers</a>
+<a href="#section-3.14.2" class="section-number selfRef">3.14.2. </a><a href="#name-spf-authenticated-identifie" class="section-name selfRef">SPF-Authenticated Identifiers</a>
           </h4>
-<p id="section-3.1.2-1"><em>Ticket 52</em><a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">DMARC permits Identifier Alignment based on the result of an SPF
+<p id="section-3.14.2-1"><em>Ticket 52</em><a href="#section-3.14.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-2">DMARC permits Identifier Alignment based on the result of an SPF
 authentication. As with DKIM, Identifier Alignement is determined
 based on whether or not two domain's Organizational Domains are the
-same.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-3">For example, if a message passes an SPF check with an
+same.<a href="#section-3.14.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-3">For example, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
 portion of the RFC5322.From header field contains
 "payments@example.com", the Authenticated RFC5321.MailFrom domain
 identifier and the RFC5322.From domain are considered to be "in
 alignment" because they have the same Organizational Domain
-("example.com").<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-4"><em>Ticket 1</em><a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-5">The reader should note that SPF alignment checks in DMARC rely solely
+("example.com").<a href="#section-3.14.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-4"><em>Ticket 1</em><a href="#section-3.14.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-5">The reader should note that SPF alignment checks in DMARC rely solely
 on the RFC5321.MailFrom domain. This differs from section 2.3 of
 <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>, which recommends that SPF checks be done on not only the
-"MAIL FROM" but also on a separate check of the "HELO" identity.<a href="#section-3.1.2-5" class="pilcrow">¶</a></p>
+"MAIL FROM" but also on a separate check of the "HELO" identity.<a href="#section-3.14.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="alignment-and-extension-technologies">
-<section id="section-3.1.3">
+<section id="section-3.14.3">
           <h4 id="name-alignment-and-extension-tec">
-<a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-alignment-and-extension-tec" class="section-name selfRef">Alignment and Extension Technologies</a>
+<a href="#section-3.14.3" class="section-number selfRef">3.14.3. </a><a href="#name-alignment-and-extension-tec" class="section-name selfRef">Alignment and Extension Technologies</a>
           </h4>
-<p id="section-3.1.3-1">If in the future DMARC is extended to include the use of other
+<p id="section-3.14.3-1">If in the future DMARC is extended to include the use of other
 authentication mechanisms, the extensions will need to allow for
 domain identifier extraction so that alignment with the RFC5322.From
-domain can be verified.<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
+domain can be verified.<a href="#section-3.14.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="organizational-domain">
-<section id="section-3.2">
-        <h3 id="name-organizational-domain">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-organizational-domain" class="section-name selfRef">Organizational Domain</a>
+<div id="determining-the-organizational-domain">
+<section id="section-3.15">
+        <h3 id="name-determining-the-organizatio">
+<a href="#section-3.15" class="section-number selfRef">3.15. </a><a href="#name-determining-the-organizatio" class="section-name selfRef">Determining The Organizational Domain</a>
         </h3>
-<p id="section-3.2-1">The Organizational Domain is determined using the following
-algorithm:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.2-2">
-          <li id="section-3.2-2.1">
-            <p id="section-3.2-2.1.1">Acquire a "public suffix" list, i.e., a list of DNS domain names
+<p id="section-3.15-1">The Organizational Domain is determined using the following
+algorithm:<a href="#section-3.15-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.15-2">
+          <li id="section-3.15-2.1">
+            <p id="section-3.15-2.1.1">Acquire a "public suffix" list, i.e., a list of DNS domain names
 reserved for registrations.  Some country Top-Level Domains
 (TLDs) make specific registration requirements, e.g., the United
 Kingdom places company registrations under ".co.uk"; other TLDs
 such as ".com" appear in the IANA registry of top-level DNS
 domains.  A public suffix list is the union of all of these.
 <a href="#public-suffix-lists" class="xref">Appendix A.6.1</a> contains some discussion about obtaining a public
-suffix list.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+suffix list.<a href="#section-3.15-2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">Break the subject DNS domain name into a set of "n" ordered
+<li id="section-3.15-2.2">
+            <p id="section-3.15-2.2.1">Break the subject DNS domain name into a set of "n" ordered
 labels.  Number these labels from right to left; e.g., for
 "example.com", "com" would be label 1 and "example" would be
-label 2.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+label 2.<a href="#section-3.15-2.2.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-3.2-2.3">
-            <p id="section-3.2-2.3.1">Search the public suffix list for the name that matches the
+<li id="section-3.15-2.3">
+            <p id="section-3.15-2.3.1">Search the public suffix list for the name that matches the
 largest number of labels found in the subject DNS domain.  Let
-that number be "x".<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
+that number be "x".<a href="#section-3.15-2.3.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-3.2-2.4">
-            <p id="section-3.2-2.4.1">Construct a new DNS domain name using the name that matched from
+<li id="section-3.15-2.4">
+            <p id="section-3.15-2.4.1">Construct a new DNS domain name using the name that matched from
 the public suffix list and prefixing to it the "x+1"th label from
-the subject domain.  This new name is the Organizational Domain.<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+the subject domain.  This new name is the Organizational Domain.<a href="#section-3.15-2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
-<p id="section-3.2-3">Thus, since "com" is an IANA-registered TLD, a subject domain of
+<p id="section-3.15-3">Thus, since "com" is an IANA-registered TLD, a subject domain of
 "a.b.c.d.example.com" would have an Organizational Domain of
-"example.com".<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">The process of determining a suffix is currently a heuristic one.  No
-list is guaranteed to be accurate or current.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">Ticket 109, Original text:
-(Seems like these two paragraphs should be moved elsewhere?)<a href="#section-3.2-5" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-3.2-6">
+"example.com".<a href="#section-3.15-3" class="pilcrow">¶</a></p>
+<p id="section-3.15-4">The process of determining a suffix is currently a heuristic one.  No
+list is guaranteed to be accurate or current.<a href="#section-3.15-4" class="pilcrow">¶</a></p>
+<p id="section-3.15-5">Ticket 109, Original text:
+(Seems like these two paragraphs should be moved elsewhere?)<a href="#section-3.15-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.15-6">
 <pre>In addition to Mediators, mail that is sent by authorized,
 independent third parties might not be sent with Identifier
 Alignment, also preventing a "pass" result.
 
 Issues specific to the use of policy mechanisms alongside DKIM are
 further discussed in [@RFC6377], particularly Section 5.2.
-</pre><a href="#section-3.2-6" class="pilcrow">¶</a>
+</pre><a href="#section-3.15-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2085,41 +2210,42 @@ command has a null path.<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
         <h3 id="name-key-concepts">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-key-concepts" class="section-name selfRef">Key Concepts</a>
         </h3>
-<p id="section-4.2-1">DMARC policies are published by the Domain Owner, and retrieved by
-the Mail Receiver during the SMTP session, via the DNS.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2"><em>Tickets 52 and 75</em><a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3">DMARC's filtering function is based on whether the RFC5322.From
+<p id="section-4.2-1"><em>Ticket 108</em><a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">DMARC policies are published by the Domain Owner or PSO, and retrieved by
+the Mail Receiver during the SMTP session, via the DNS.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3"><em>Tickets 52 and 75</em><a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">DMARC's filtering function is based on whether the RFC5322.From
 domain is aligned with (has the same Organizational Domain as) an
 authenticated domain name from SPF or DKIM.  When a DMARC policy
 is published for the domain name found in the RFC5322.From header
 field, and that domain name is not validated through SPF or DKIM,
 the handling of that message can be affected by that DMARC policy
-when delivered to a participating receiver.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.2-4">It is important to note that the authentication mechanisms employed
+when delivered to a participating receiver.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">It is important to note that the authentication mechanisms employed
 by DMARC authenticate only a DNS domain and do not authenticate the
 local-part of any email address identifier found in a message, nor do
-they validate the legitimacy of message content.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2-5"><em>Ticket 109</em><a href="#section-4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.2-6">DMARC's feedback component involves the collection of information
-about received messages claiming to be from the Organizational Domain
-for periodic aggregate reports to the Domain Owner.  The parameters
-and format for such reports are discussed in another document.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.2-7">A DMARC-enabled Mail Receiver might also generate per-message reports
+they validate the legitimacy of message content.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-6"><em>Tickets 108 and 109</em><a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">DMARC's feedback component involves the collection of information
+about received messages claiming to be from the Author Domain
+for periodic aggregate reports to the Domain Owner or PSO.  The
+parameters and format for such reports are discussed in <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span><a href="#section-4.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.2-8">A DMARC-enabled Mail Receiver might also generate per-message reports
 that contain information related to individual messages that fail SPF
 and/or DKIM.  Per-message failure reports are a useful source of
 information when debugging deployments (if messages can be determined
 to be legitimate even though failing authentication) or in analyzing
 attacks.  The capability for such services is enabled by DMARC but
-defined in other referenced material such as <span>[<a href="#RFC6591" class="xref">RFC6591</a>]</span>.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
-<p id="section-4.2-8">A message satisfies the DMARC checks if at least one of the supported
-authentication mechanisms:<a href="#section-4.2-8" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4.2-9">
-          <li id="section-4.2-9.1">
-            <p id="section-4.2-9.1.1">produces a "pass" result, and<a href="#section-4.2-9.1.1" class="pilcrow">¶</a></p>
+defined in other referenced material such as <span>[<a href="#RFC6591" class="xref">RFC6591</a>]</span> and <span>[<a href="#DMARC-Failure-Reporting" class="xref">DMARC-Failure-Reporting</a>]</span><a href="#section-4.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.2-9">A message satisfies the DMARC checks if at least one of the supported
+authentication mechanisms:<a href="#section-4.2-9" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.2-10">
+          <li id="section-4.2-10.1">
+            <p id="section-4.2-10.1.1">produces a "pass" result, and<a href="#section-4.2-10.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-4.2-9.2">
-            <p id="section-4.2-9.2.1">produces that result based on an identifier that is in alignment,
-as defined in <a href="#terminology" class="xref">Section 3</a>.<a href="#section-4.2-9.2.1" class="pilcrow">¶</a></p>
+<li id="section-4.2-10.2">
+            <p id="section-4.2-10.2.1">produces that result based on an identifier that is in alignment,
+as defined in <a href="#terminology" class="xref">Section 3</a>.<a href="#section-4.2-10.2.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
 </section>
@@ -2176,7 +2302,7 @@ of SPF and DKIM validation checks to determine the ultimate DMARC
 authentication status. The DMARC status can then factor into the
 message handling decision made by the recipient's mail sytsem.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 <p id="section-4.3-6">More details on specific actions for the parties involved can be
-found in <a href="#domain-owner-actions" class="xref">Section 6.5</a> and <a href="#mail-receiver-actions" class="xref">Section 6.6</a>.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
+found in <a href="#domain-owner-actions" class="xref">Section 6.5</a> and <a href="#mail-receiver-actions" class="xref">Section 6.7</a>.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2210,7 +2336,7 @@ scope of this specification.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">Since the sorts of mail typically protected by DMARC participants
 tend to only have single Authors, DMARC participants generally
 operate under a slightly restricted profile of RFC5322 with respect
-to the expected syntax of this field.  See <a href="#mail-receiver-actions" class="xref">Section 6.6</a> for details.<a href="#section-5-5" class="pilcrow">¶</a></p>
+to the expected syntax of this field.  See <a href="#mail-receiver-actions" class="xref">Section 6.7</a> for details.<a href="#section-5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="policy">
@@ -2218,39 +2344,39 @@ to the expected syntax of this field.  See <a href="#mail-receiver-actions" clas
       <h2 id="name-policy">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-policy" class="section-name selfRef">Policy</a>
       </h2>
-<p id="section-6-1">DMARC policies are published by Domain Owners and applied by Mail
-Receivers.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2"><em>Tickets 75 and 85</em>
-A Domain Owner advertises DMARC participation of one or more of its
+<p id="section-6-1"><em>Tickets 75, 85 and 108</em><a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">DMARC policies are published by Domain Owners and PSOs and can be
+used by Mail Receivers to inform their message handling decisions.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">A Domain Owner or PSO advertises DMARC participation of one or more of its
 domains by adding a DNS TXT record (described in <a href="#dmarc-policy-record" class="xref">Section 6.1</a>) to
-those domains.  In doing so, Domain Owners indicate their severity of
+those domains.  In doing so, Domain Owners and PSOs indicate their severity of
 concern regarding failed authentication for email messages making use
 of their domain in the RFC5322.From header field as well as the provision
 of feedback about those messages. Mail Receivers in turn can take into
 account the Domain Owner's severity of concern when making handling
-decisions about email messages that fail DMARC authentication checks.<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">A Domain Owner may choose not to participate in DMARC evaluation by
+decisions about email messages that fail DMARC authentication checks.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">A Domain Owner or PSO may choose not to participate in DMARC evaluation by
 Mail Receivers.  In this case, the Domain Owner simply declines to
 advertise participation in those schemes.  For example, if the
 results of path authorization checks ought not be considered as part
 of the overall DMARC result for a given Author Domain, then the
 Domain Owner does not publish an SPF policy record that can produce
-an SPF pass result.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">A Mail Receiver implementing the DMARC mechanism SHOULD make a
-best-effort attempt to adhere to the Domain Owner's published DMARC
-policy when a message fails the DMARC test.  Since email streams can
-be complicated (due to forwarding, existing RFC5322.From
-domain-spoofing services, etc.), Mail Receivers MAY deviate from a
-Domain Owner's published policy during message processing and SHOULD
+an SPF pass result.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">A Mail Receiver implementing the DMARC mechanism SHOULD make a
+best-effort attempt to adhere to the Domain Owner's or PSO's published DMARC
+Domain Owner Assessment Policy when a message fails the DMARC test.<br>
+Since email streams can be complicated (due to forwarding, existing RFC5322.From
+domain-spoofing services, etc.), Mail Receivers MAY deviate from a published
+Domain Owner Assessment Policy during message processing and SHOULD
 make available the fact of and reason for the deviation to the Domain
 Owner via feedback reporting, specifically using the "PolicyOverride"
-feature of the aggregate report (see the DMARC reporting documents).<a href="#section-6-4" class="pilcrow">¶</a></p>
+feature of the aggregate report defined in <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span><a href="#section-6-5" class="pilcrow">¶</a></p>
 <div id="dmarc-policy-record">
 <section id="section-6.1">
         <h3 id="name-dmarc-policy-record">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-dmarc-policy-record" class="section-name selfRef">DMARC Policy Record</a>
         </h3>
-<p id="section-6.1-1">Domain Owner DMARC preferences are stored as DNS TXT records in
+<p id="section-6.1-1">Domain Owner and PSO DMARC preferences are stored as DNS TXT records in
 subdomains named "_dmarc".  For example, the Domain Owner of
 "example.com" would post DMARC preferences in a TXT record at
 "_dmarc.example.com".  Similarly, a Mail Receiver wishing to query
@@ -2279,13 +2405,13 @@ objects in order and parsing the result as a single string.<a href="#section-6.1
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-dmarc-uris" class="section-name selfRef">DMARC URIs</a>
         </h3>
 <p id="section-6.2-1"><span>[<a href="#RFC3986" class="xref">RFC3986</a>]</span> defines a generic syntax for identifying a resource.  The DMARC
-mechanism uses this as the format by which a Domain Owner specifies
+mechanism uses this as the format by which a Domain Owner or PSO specifies
 the destination for the two report types that are supported.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.2-2"><em>Ticket 54</em><a href="#section-6.2-2" class="pilcrow">¶</a></p>
 <p id="section-6.2-3">The place such URIs are specified (see <a href="#general-record-format" class="xref">Section 6.3</a>) allows
 a list of these to be provided.  The list of URIs is separated by commas
 (ASCII 0x2c).  A report is normally sent to each listed URI in the order
-provided by the Domain Owner.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+provided in the DMARC record.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4"><em>Ticket 53</em><a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <p id="section-6.2-5">A formal definition is provided in <a href="#formal-definition" class="xref">Section 6.4</a>.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
 </section>
@@ -2343,74 +2469,93 @@ reporting is described in <span>[<a href="#RFC6652" class="xref">RFC6652</a>]</s
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-7"><em>Tickets 72 and 85</em><a href="#section-6.3-7" class="pilcrow">¶</a></p>
+<p id="section-6.3-7"><em>Tickets 85 and 108</em><a href="#section-6.3-7" class="pilcrow">¶</a></p>
 <dl class="dlParallel" id="section-6.3-8">
-          <dt id="section-6.3-8.1">p:</dt>
-<dd id="section-6.3-8.2">
-            <p id="section-6.3-8.2.1">Domain Owner Assessment Policy (plain-text; RECOMMENDED for policy
-records). Indicates the severity of concern the Domain Owner has
-for mail using its domain but not passing DMARC validation.
+          <dt id="section-6.3-8.1">np:</dt>
+<dd id="section-6.3-8.2">Domain Owner Assessment Policy for non-existent subdomains
+(plain-text; OPTIONAL).  Indicates the severity of concern the
+Domain Owner or PSO has for mail using non-existent subdomains of the
+domain queried. It applies only to non-existent subdomains of
+the domain queried and not to either existing subdomains or
+the domain itself.  Its syntax is identical to that of the "p"
+tag defined below.  If the "np" tag is absent, the policy
+specified by the "sp" tag (if the "sp" tag is present) or the
+policy specified by the "p" tag, if the "sp" tag is not present,
+MUST be applied for non-existent subdomains.  Note that "np" will
+be ignored for DMARC records published on subdomains of Organizational
+Domains and PSDs due to the effect of the DMARC policy discovery
+mechanism described in <a href="#policy-discovery" class="xref">Section 6.7.3</a>.<a href="#section-6.3-8.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
+<p id="section-6.3-9"><em>Tickets 72 and 85</em><a href="#section-6.3-9" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-10">
+          <dt id="section-6.3-10.1">p:</dt>
+<dd id="section-6.3-10.2">
+            <p id="section-6.3-10.2.1">Domain Owner Assessment Policy (plain-text; RECOMMENDED for policy
+records). Indicates the severity of concern the Domain Owner or PSO
+has for mail using its domain but not passing DMARC validation.
 Policy applies to the domain queried and to subdomains, unless
-subdomain policy is explicitly described using the "sp" tag. This
-tag is mandatory for policy records only, but not for third-party
-reporting records (see Aggregate and Forensic Reporting Docs).
-Possible values are as follows:<a href="#section-6.3-8.2.1" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-6.3-8.2.2">
-              <dt id="section-6.3-8.2.2.1">none:</dt>
-<dd id="section-6.3-8.2.2.2">The Domain Owner offers no expression of concern.<a href="#section-6.3-8.2.2.2" class="pilcrow">¶</a>
+subdomain policy is explicitly described using the "sp" or "np" tags.
+This tag is mandatory for policy records only, but not for third-party
+reporting records (see <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span> and <span>[<a href="#DMARC-Failure-Reporting" class="xref">DMARC-Failure-Reporting</a>]</span>)
+Possible values are as follows:<a href="#section-6.3-10.2.1" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-10.2.2">
+              <dt id="section-6.3-10.2.2.1">none:</dt>
+<dd id="section-6.3-10.2.2.2">The Domain Owner offers no expression of concern.<a href="#section-6.3-10.2.2.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-8.2.2.3">quarantine:</dt>
-<dd id="section-6.3-8.2.2.4">The Domain Owner considers such mail to be suspicious. It
+<dt id="section-6.3-10.2.2.3">quarantine:</dt>
+<dd id="section-6.3-10.2.2.4">The Domain Owner considers such mail to be suspicious. It
 is possible the mail is valid, although the failure creates
-a significant concern.<a href="#section-6.3-8.2.2.4" class="pilcrow">¶</a>
+a significant concern.<a href="#section-6.3-10.2.2.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-8.2.2.5">reject:</dt>
-<dd id="section-6.3-8.2.2.6">The Domain Owner considers all such failures to be a clear
+<dt id="section-6.3-10.2.2.5">reject:</dt>
+<dd id="section-6.3-10.2.2.6">The Domain Owner considers all such failures to be a clear
 indication that the use of the domain name is not valid. See
 <a href="#rejecting-messages" class="xref">Section 9.3</a> for some discussion of SMTP rejection
-methods and their implications.<a href="#section-6.3-8.2.2.6" class="pilcrow">¶</a>
+methods and their implications.<a href="#section-6.3-10.2.2.6" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-9"><em>Ticket 47</em><a href="#section-6.3-9" class="pilcrow">¶</a></p>
-<p id="section-6.3-10"><em>Ticket 82</em><a href="#section-6.3-10" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-6.3-11">
-          <dt id="section-6.3-11.1">rf (do not use):</dt>
-<dd id="section-6.3-11.2">
-            <p id="section-6.3-11.2.1">Format to be used for message-specific failure reports (colon-
+<p id="section-6.3-11"><em>Ticket 47</em><a href="#section-6.3-11" class="pilcrow">¶</a></p>
+<p id="section-6.3-12"><em>Ticket 82</em><a href="#section-6.3-12" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-13">
+          <dt id="section-6.3-13.1">rf (do not use):</dt>
+<dd id="section-6.3-13.2">
+            <p id="section-6.3-13.2.1">Format to be used for message-specific failure reports (colon-
 separated plain-text list of values; OPTIONAL; default is "afrf").
 This tag SHOULD NOT be used in a DMARC record. See the note at the
 end for more information. The value of this tag is a list of one or
-more report formats as requested by the Domain Owner to be used when
+more report formats as requested by the Domain Owner or PSO to be used when
 a message fails both <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span> and <span>[<a href="#RFC6376" class="xref">RFC6376</a>]</span> tests to report
 details of the individual failure. The values MUST be present in the
 registry of reporting formats defined in <a href="#iana-considerations" class="xref">Section 10</a>; a
 Mail Receiver observing a different value SHOULD ignore it or MAY
 ignore the entire DMARC record.  For this version, only "afrf" (the
 auth-failure report type defined in <span>[<a href="#RFC6591" class="xref">RFC6591</a>]</span>) is presently
-supported.  See the DMARC reporting documents for details.  For
+supported.  See <span>[<a href="#DMARC-Failure-Reporting" class="xref">DMARC-Failure-Reporting</a>]</span> for details.  For
 interoperability, the Authentication Failure Reporting Format (AFRF)
-MUST be supported.<a href="#section-6.3-11.2.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-11.2.2">Note: Ever-broadening privacy laws in many governmental
+MUST be supported.<a href="#section-6.3-13.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.3-13.2.2">Note: Ever-broadening privacy laws in many governmental
 jurisdictions have had the effect of receivers refusing to
 send failure reports or at best redacting so much information
-from them as to render them mostly useless to the Domain Owner.
+from them as to render them mostly useless to the Report Receiver.
 As such, it is unlikely that there will ever be formats other
 than "afrf" developed for failure reports, and so this tag
-should not be used.<a href="#section-6.3-11.2.2" class="pilcrow">¶</a></p>
+should not be used.<a href="#section-6.3-13.2.2" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-12"><em>Ticket 50</em><a href="#section-6.3-12" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-6.3-13">
-          <dt id="section-6.3-13.1">ri (do not use):</dt>
-<dd id="section-6.3-13.2">
-            <p id="section-6.3-13.2.1">Interval requested between aggregate reports (plain-text 32-bit
+<p id="section-6.3-14"><em>Ticket 50</em><a href="#section-6.3-14" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-15">
+          <dt id="section-6.3-15.1">ri (do not use):</dt>
+<dd id="section-6.3-15.2">
+            <p id="section-6.3-15.2.1">Interval requested between aggregate reports (plain-text 32-bit
 unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
 be used in a DMARC record. See the note at the end for more information.
 Indicates a request to Receivers to generate aggregate reports separated
@@ -2418,81 +2563,86 @@ by no more than the requested number of seconds.  DMARC implementations
 MUST be able to provide daily reports and SHOULD be able to
 provide hourly reports when requested.  However, anything other
 than a daily report is understood to be accommodated on a best-
-effort basis.<a href="#section-6.3-13.2.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-13.2.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
+effort basis.<a href="#section-6.3-15.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.3-15.2.2">Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
 that fewer than 2% were publishing an ri tag with a non-default value, with
 most of those set to a value of 3600. There was no evidence that any of these
-requests for something more frequent than once daily were being honored.<a href="#section-6.3-13.2.2" class="pilcrow">¶</a></p>
+requests for something more frequent than once daily were being honored.<a href="#section-6.3-15.2.2" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-14"><em>Ticket 53</em><a href="#section-6.3-14" class="pilcrow">¶</a></p>
-<dl class="dlParallel" id="section-6.3-15">
-          <dt id="section-6.3-15.1">rua:</dt>
-<dd id="section-6.3-15.2">Addresses to which aggregate feedback is to be sent (comma-
-separated plain-text list of DMARC URIs; OPTIONAL).  The DMARC
-reporting documents discuss considerations that apply when the
-domain name of a URI differs from that of the domain advertising
-the policy.  See <a href="#external-report-addresses" class="xref">Section 11.5</a> for additional
+<p id="section-6.3-16"><em>Ticket 53</em><a href="#section-6.3-16" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-17">
+          <dt id="section-6.3-17.1">rua:</dt>
+<dd id="section-6.3-17.2">Addresses to which aggregate feedback is to be sent (comma-
+separated plain-text list of DMARC URIs; OPTIONAL).  <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>
+discusses considerations that apply when the domain name of a URI differs
+from that of the domain advertising the policy.<br>
+See <a href="#external-report-addresses" class="xref">Section 11.5</a> for additional
 considerations.  Any valid URI can be specified.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate aggregate feedback reports.  URIs
 not supported by Mail Receivers MUST be ignored.  The aggregate
-feedback report format is described in the DMARC reporting documents.<a href="#section-6.3-15.2" class="pilcrow">¶</a>
+feedback report format is described in the DMARC reporting documents.<a href="#section-6.3-17.2" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-15.3">ruf:</dt>
-<dd id="section-6.3-15.4">Addresses to which message-specific failure information is to
+<dt id="section-6.3-17.3">ruf:</dt>
+<dd id="section-6.3-17.4">Addresses to which message-specific failure information is to
 be reported (comma-separated plain-text list of DMARC URIs;
-OPTIONAL).  If present, the Domain Owner is requesting Mail
+OPTIONAL).  If present, the Domain Owner or PSO is requesting Mail
 Receivers to send detailed failure reports about messages that
 fail the DMARC evaluation in specific ways (see the "fo" tag
 above).  The format of the message to be generated MUST follow the
-format specified for the "rf" tag.  The DMARC reporting documents discuss
+format specified for the "rf" tag.  <span>[<a href="#DMARC-Failure-Reporting" class="xref">DMARC-Failure-Reporting</a>]</span> discusses
 considerations that apply when the domain name of a URI differs
 from that of the domain advertising the policy.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate failure reports.  See <a href="#external-report-addresses" class="xref">Section 11.5</a> for
-additional considerations.<a href="#section-6.3-15.4" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-6.3-15.5">sp:</dt>
-<dd id="section-6.3-15.6">Requested Mail Receiver policy for all subdomains (plain-text;
-OPTIONAL).  Indicates the policy to be enacted by the Receiver at
-the request of the Domain Owner.  It applies only to subdomains of
-the domain queried and not to the domain itself.  Its syntax is
-identical to that of the "p" tag defined above.  If absent, the
-policy specified by the "p" tag MUST be applied for subdomains.
-Note that "sp" will be ignored for DMARC records published on
-subdomains of Organizational Domains due to the effect of the
-DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.6.3</a>.<a href="#section-6.3-15.6" class="pilcrow">¶</a>
-</dd>
-<dd class="break"></dd>
-<dt id="section-6.3-15.7">v:</dt>
-<dd id="section-6.3-15.8">Version (plain-text; REQUIRED).  Identifies the record retrieved
-as a DMARC record.  It MUST have the value of "DMARC1".  The value
-of this tag MUST match precisely; if it does not or it is absent,
-the entire retrieved record MUST be ignored.  It MUST be the first
-tag in the list.<a href="#section-6.3-15.8" class="pilcrow">¶</a>
+additional considerations.<a href="#section-6.3-17.4" class="pilcrow">¶</a>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-16">A DMARC policy record MUST comply with the formal specification found
+<p id="section-6.3-18"><em>Tickets 85 and 108</em><a href="#section-6.3-18" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-6.3-19">
+          <dt id="section-6.3-19.1">sp:</dt>
+<dd id="section-6.3-19.2">Domain Owner Assessment Policy for all subdomains (plain-text;
+OPTIONAL). Indicates the severity of concern the Domain Owner or PSO has
+for mail using an existing subdomain of the domain queried but not
+passing DMARC validation.  It applies only to subdomains of
+the domain queried and not to the domain itself.  Its syntax is
+identical to that of the "p" tag defined above.  If both the "sp"
+tag is absent and the "np" tag is either absent or not applicable,
+the policy specified by the "p" tag MUST be applied for subdomains.
+Note that "sp" will be ignored for DMARC records published on
+subdomains of Organizational Domains due to the effect of the
+DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.7.3</a>.<a href="#section-6.3-19.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-6.3-19.3">v:</dt>
+<dd id="section-6.3-19.4">Version (plain-text; REQUIRED).  Identifies the record retrieved
+as a DMARC record.  It MUST have the value of "DMARC1".  The value
+of this tag MUST match precisely; if it does not or it is absent,
+the entire retrieved record MUST be ignored.  It MUST be the first
+tag in the list.<a href="#section-6.3-19.4" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
+<p id="section-6.3-20">A DMARC policy record MUST comply with the formal specification found
 in <a href="#formal-definition" class="xref">Section 6.4</a> in that the "v" tag MUST be present and MUST
 appear first.  Unknown tags MUST be ignored.  Syntax errors
 in the remainder of the record SHOULD be discarded in favor of
-default values (if any) or ignored outright.<a href="#section-6.3-16" class="pilcrow">¶</a></p>
-<p id="section-6.3-17">Note that given the rules of the previous paragraph, addition of a
+default values (if any) or ignored outright.<a href="#section-6.3-20" class="pilcrow">¶</a></p>
+<p id="section-6.3-21">Note that given the rules of the previous paragraph, addition of a
 new tag into the registered list of tags does not itself require a
 new version of DMARC to be generated (with a corresponding change to
 the "v" tag's value), but a change to any existing tags does require
-a new version of DMARC.<a href="#section-6.3-17" class="pilcrow">¶</a></p>
-<p id="section-6.3-18"><em>Ticket 109</em>
+a new version of DMARC.<a href="#section-6.3-21" class="pilcrow">¶</a></p>
+<p id="section-6.3-22"><em>Ticket 109</em>
 Question: Does removal of a tag or tags, as proposed through other
 tickets, constitute "a change to any existing tags", thus requiring
-"a new version of DMARC"?<a href="#section-6.3-18" class="pilcrow">¶</a></p>
+"a new version of DMARC"?<a href="#section-6.3-22" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-definition">
@@ -2565,7 +2715,7 @@ _Ticket 47_
         <h3 id="name-domain-owner-actions">
 <a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-domain-owner-actions" class="section-name selfRef">Domain Owner Actions</a>
         </h3>
-<p id="section-6.5-1"><em>Tickets 2 and 109</em><a href="#section-6.5-1" class="pilcrow">¶</a></p>
+<p id="section-6.5-1"><em>Tickets 2, 108, and 109</em><a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <p id="section-6.5-2">This section describes Domain Owner actions to fully implement the
 DMARC mechanism.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
 <div id="publish-an-spf-policy-for-an-aligned-domain">
@@ -2603,8 +2753,8 @@ to sign using that domain.<a href="#section-6.5.2-1" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-6.5.3-1">Proper consumption and analysis of DMARC aggregate reports is the
 key to any successful DMARC deployment for a Domain Owner. DMARC
-aggregate reports, which are XML documents, contain valuable data
-for the Domain Owner, showing sources of mail using the Author
+aggregate reports, which are XML documents and are defined in <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>,
+contain valuable data for the Domain Owner, showing sources of mail using the Author
 Domain. Depending on how mature the Domain Owner's DMARC rollout
 is, some of these sources could be legitimate ones that were
 overlooked during the intial deployment of SPF and/or DKIM.<a href="#section-6.5.3-1" class="pilcrow">¶</a></p>
@@ -2662,201 +2812,248 @@ on its needs.<a href="#section-6.5.6-1" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="mail-receiver-actions">
+<div id="pso-actions">
 <section id="section-6.6">
-        <h3 id="name-mail-receiver-actions">
-<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-mail-receiver-actions" class="section-name selfRef">Mail Receiver Actions</a>
+        <h3 id="name-pso-actions">
+<a href="#section-6.6" class="section-number selfRef">6.6. </a><a href="#name-pso-actions" class="section-name selfRef">PSO Actions</a>
         </h3>
-<p id="section-6.6-1">This section describes receiver actions in the DMARC environment.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+<p id="section-6.6-1">In addition to the DMARC Domain Owner actions, PSOs that require use
+of DMARC and participate in PSD DMARC ought to make that information
+availablle to Mail Receivers. <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span> is an experimental
+method for doing so, and the experiment is described in Appendix A
+of that document.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="mail-receiver-actions">
+<section id="section-6.7">
+        <h3 id="name-mail-receiver-actions">
+<a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-mail-receiver-actions" class="section-name selfRef">Mail Receiver Actions</a>
+        </h3>
+<p id="section-6.7-1">This section describes receiver actions in the DMARC environment.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
 <div id="extract-author-domain">
-<section id="section-6.6.1">
+<section id="section-6.7.1">
           <h4 id="name-extract-author-domain">
-<a href="#section-6.6.1" class="section-number selfRef">6.6.1. </a><a href="#name-extract-author-domain" class="section-name selfRef">Extract Author Domain</a>
+<a href="#section-6.7.1" class="section-number selfRef">6.7.1. </a><a href="#name-extract-author-domain" class="section-name selfRef">Extract Author Domain</a>
           </h4>
-<p id="section-6.6.1-1">The domain in the RFC5322.From header field is extracted as the domain
+<p id="section-6.7.1-1">The domain in the RFC5322.From header field is extracted as the domain
 to be evaluated by DMARC.  If the domain is encoded with UTF-8, the
 domain name must be converted to an A-label, as described in Section
-2.3 of <span>[<a href="#RFC5890" class="xref">RFC5890</a>]</span>, for further processing.<a href="#section-6.6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.1-2"><em>Ticket 107</em><a href="#section-6.6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.6.1-3">In order to be processed by DMARC, a message typically needs to
+2.3 of <span>[<a href="#RFC5890" class="xref">RFC5890</a>]</span>, for further processing.<a href="#section-6.7.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-2"><em>Ticket 107</em><a href="#section-6.7.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-3">In order to be processed by DMARC, a message typically needs to
 contain exactly one RFC5322.From domain (a single From: field with a
 single domain in it). Not all messages meet this requirement, and
 the handling of those that are forbidden under RFC 5322 <span>[<a href="#RFC5322" class="xref">RFC5322</a>]</span>
 or that contain no meaningful domains is outside the scope of this
-document.<a href="#section-6.6.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.6.1-4">The case of a syntactically valid multi-valued RFC5322.From header
+document.<a href="#section-6.7.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-4">The case of a syntactically valid multi-valued RFC5322.From header
 field presents a particular challenge. When a single RFC5322.From
 header field contains multiple addresses, it is possible that there
 may be multiple domains used in those addresses. The process in this
 case is to only proceed with DMARC checking if the domain is
 identical for all of the addresses in a multi-valued RFC5322.From
 header field. Multi-valued RFC5322.From header fields with multiple
-domains MUST be exempt from DMARC checking.<a href="#section-6.6.1-4" class="pilcrow">¶</a></p>
+domains MUST be exempt from DMARC checking.<a href="#section-6.7.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-5"><em>Ticket 108</em><a href="#section-6.7.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.7.1-6">Note that domain names that appear on a public suffix list are not
+exempt from DMARC policy application and reporting.<a href="#section-6.7.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="determine-handling-policy">
-<section id="section-6.6.2">
+<section id="section-6.7.2">
           <h4 id="name-determine-handling-policy">
-<a href="#section-6.6.2" class="section-number selfRef">6.6.2. </a><a href="#name-determine-handling-policy" class="section-name selfRef">Determine Handling Policy</a>
+<a href="#section-6.7.2" class="section-number selfRef">6.7.2. </a><a href="#name-determine-handling-policy" class="section-name selfRef">Determine Handling Policy</a>
           </h4>
-<p id="section-6.6.2-1">To arrive at a policy for an individual message, Mail Receivers MUST
+<p id="section-6.7.2-1">To arrive at a policy for an individual message, Mail Receivers MUST
 perform the following actions or their semantic equivalents.
 Steps 2-4 MAY be done in parallel, whereas steps 5 and 6 require
-input from previous steps.<a href="#section-6.6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.2-2">The steps are as follows:<a href="#section-6.6.2-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.6.2-3">
-            <li id="section-6.6.2-3.1">
-              <p id="section-6.6.2-3.1.1">Extract the RFC5322.From domain from the message (as above).<a href="#section-6.6.2-3.1.1" class="pilcrow">¶</a></p>
+input from previous steps.<a href="#section-6.7.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.2-2">The steps are as follows:<a href="#section-6.7.2-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.7.2-3">
+            <li id="section-6.7.2-3.1">
+              <p id="section-6.7.2-3.1.1">Extract the RFC5322.From domain from the message (as above).<a href="#section-6.7.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.2-3.2">
-              <p id="section-6.6.2-3.2.1">Query the DNS for a DMARC policy record.  Continue if one is
+<li id="section-6.7.2-3.2">
+              <p id="section-6.7.2-3.2.1">Query the DNS for a DMARC policy record.  Continue if one is
 found, or terminate DMARC evaluation otherwise.  See
-<a href="#policy-discovery" class="xref">Section 6.6.3</a> for details.<a href="#section-6.6.2-3.2.1" class="pilcrow">¶</a></p>
+<a href="#policy-discovery" class="xref">Section 6.7.3</a> for details.<a href="#section-6.7.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
-<p id="section-6.6.2-4"><em>Ticket 3</em><a href="#section-6.6.2-4" class="pilcrow">¶</a></p>
-<ol start="3" type="1" class="normal type-1" id="section-6.6.2-5">
-            <li id="section-6.6.2-5.1">
-              <p id="section-6.6.2-5.1.1">Perform DKIM signature verification checks.  A single email could
+<p id="section-6.7.2-4"><em>Ticket 3</em><a href="#section-6.7.2-4" class="pilcrow">¶</a></p>
+<ol start="3" type="1" class="normal type-1" id="section-6.7.2-5">
+            <li id="section-6.7.2-5.1">
+              <p id="section-6.7.2-5.1.1">Perform DKIM signature verification checks.  A single email could
 contain multiple DKIM signatures.  The results of this step are
 passed to the remainder of the algorithm, MUST include "pass" or
 "fail", and if "fail", SHOULD include information about the reasons
 for failure. The results MUST further include the value of the "d="
-and "s=" tags from each checked DKIM signature.<a href="#section-6.6.2-5.1.1" class="pilcrow">¶</a></p>
+and "s=" tags from each checked DKIM signature.<a href="#section-6.7.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.2-5.2">
-              <p id="section-6.6.2-5.2.1">Perform SPF validation checks.  The results of this step are
+<li id="section-6.7.2-5.2">
+              <p id="section-6.7.2-5.2.1">Perform SPF validation checks.  The results of this step are
 passed to the remainder of the algorithm, MUST include "pass" or
 "fail", and if "fail", SHOULD include information about the reasons
 for failure. The results MUST further include the domain name used
-to complete the SPF check.<a href="#section-6.6.2-5.2.1" class="pilcrow">¶</a></p>
+to complete the SPF check.<a href="#section-6.7.2-5.2.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.2-5.3">
-              <p id="section-6.6.2-5.3.1">Conduct Identifier Alignment checks.  With authentication checks
+<li id="section-6.7.2-5.3">
+              <p id="section-6.7.2-5.3.1">Conduct Identifier Alignment checks.  With authentication checks
 and policy discovery performed, the Mail Receiver checks to see
 if Authenticated Identifiers fall into alignment as described in
 <a href="#terminology" class="xref">Section 3</a>.  If one or more of the Authenticated Identifiers align
 with the RFC5322.From domain, the message is considered to pass
 the DMARC mechanism check.  All other conditions (authentication
 failures, identifier mismatches) are considered to be DMARC
-mechanism check failures.<a href="#section-6.6.2-5.3.1" class="pilcrow">¶</a></p>
+mechanism check failures.<a href="#section-6.7.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
-<p id="section-6.6.2-6"><em>Tickets 75 and 109</em><a href="#section-6.6.2-6" class="pilcrow">¶</a></p>
-<ol start="6" type="1" class="normal type-1" id="section-6.6.2-7">
-            <li id="section-6.6.2-7.1">Apply policy.  Emails that fail the DMARC mechanism check are
+<p id="section-6.7.2-6"><em>Tickets 75 and 109</em><a href="#section-6.7.2-6" class="pilcrow">¶</a></p>
+<ol start="6" type="1" class="normal type-1" id="section-6.7.2-7">
+            <li id="section-6.7.2-7.1">Apply policy.  Emails that fail the DMARC mechanism check are
 handled in accordance with the discovered DMARC policy of the
 Domain Owner and any local policy rules enforced by the Mail Receiver.
-See <a href="#general-record-format" class="xref">Section 6.3</a> for details.<a href="#section-6.6.2-7.1" class="pilcrow">¶</a>
+See <a href="#general-record-format" class="xref">Section 6.3</a> for details.<a href="#section-6.7.2-7.1" class="pilcrow">¶</a>
 </li>
 </ol>
-<p id="section-6.6.2-8">Heuristics applied in the absence of use by a Domain Owner of either
+<p id="section-6.7.2-8">Heuristics applied in the absence of use by a Domain Owner of either
 SPF or DKIM (e.g., <span>[<a href="#Best-Guess-SPF" class="xref">Best-Guess-SPF</a>]</span>) SHOULD NOT be used, as it may be
 the case that the Domain Owner wishes a Message Receiver not to
 consider the results of that underlying authentication protocol at
-all.<a href="#section-6.6.2-8" class="pilcrow">¶</a></p>
-<p id="section-6.6.2-9">DMARC evaluation can only yield a "pass" result after one of the
+all.<a href="#section-6.7.2-8" class="pilcrow">¶</a></p>
+<p id="section-6.7.2-9">DMARC evaluation can only yield a "pass" result after one of the
 underlying authentication mechanisms passes for an aligned
 identifier.  If neither passes and one or both of them fail due to a
 temporary error, the Receiver evaluating the message is unable to
 conclude that the DMARC mechanism had a permanent failure; they
 therefore cannot apply the advertised DMARC policy.  When otherwise
 appropriate, Receivers MAY send feedback reports regarding temporary
-errors.<a href="#section-6.6.2-9" class="pilcrow">¶</a></p>
-<p id="section-6.6.2-10">Handling of messages for which SPF and/or DKIM evaluation encounter a
-permanent DNS error is left to the discretion of the Mail Receiver.<a href="#section-6.6.2-10" class="pilcrow">¶</a></p>
+errors.<a href="#section-6.7.2-9" class="pilcrow">¶</a></p>
+<p id="section-6.7.2-10">Handling of messages for which SPF and/or DKIM evaluation encounter a
+permanent DNS error is left to the discretion of the Mail Receiver.<a href="#section-6.7.2-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="policy-discovery">
-<section id="section-6.6.3">
+<section id="section-6.7.3">
           <h4 id="name-policy-discovery">
-<a href="#section-6.6.3" class="section-number selfRef">6.6.3. </a><a href="#name-policy-discovery" class="section-name selfRef">Policy Discovery</a>
+<a href="#section-6.7.3" class="section-number selfRef">6.7.3. </a><a href="#name-policy-discovery" class="section-name selfRef">Policy Discovery</a>
           </h4>
-<p id="section-6.6.3-1">As stated above, the DMARC mechanism uses DNS TXT records to
+<p id="section-6.7.3-1">As stated above, the DMARC mechanism uses DNS TXT records to
 advertise policy.  Policy discovery is accomplished via a method
 similar to the method used for SPF records.  This method, and the
 important differences between DMARC and SPF mechanisms, are discussed
-below.<a href="#section-6.6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.3-2">To balance the conflicting requirements of supporting wildcarding,
+below.<a href="#section-6.7.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.3-2">To balance the conflicting requirements of supporting wildcarding,
 allowing subdomain policy overrides, and limiting DNS query load, the
-following DNS lookup scheme is employed:<a href="#section-6.6.3-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.6.3-3">
-            <li id="section-6.6.3-3.1">
-              <p id="section-6.6.3-3.1.1">Mail Receivers MUST query the DNS for a DMARC TXT record at the
+following DNS lookup scheme is employed:<a href="#section-6.7.3-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.7.3-3">
+            <li id="section-6.7.3-3.1">
+              <p id="section-6.7.3-3.1.1">Mail Receivers MUST query the DNS for a DMARC TXT record at the
 DNS domain matching the one found in the RFC5322.From domain in
-the message.  A possibly empty set of records is returned.<a href="#section-6.6.3-3.1.1" class="pilcrow">¶</a></p>
+the message.  A possibly empty set of records is returned.<a href="#section-6.7.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.2">
-              <p id="section-6.6.3-3.2.1">Records that do not start with a "v=" tag that identifies the
-current version of DMARC are discarded.<a href="#section-6.6.3-3.2.1" class="pilcrow">¶</a></p>
+<li id="section-6.7.3-3.2">
+              <p id="section-6.7.3-3.2.1">Records that do not start with a "v=" tag that identifies the
+current version of DMARC are discarded.<a href="#section-6.7.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.3">
-              <p id="section-6.6.3-3.3.1">If the set is now empty, the Mail Receiver MUST query the DNS for
+<li id="section-6.7.3-3.3">
+              <p id="section-6.7.3-3.3.1">If the set is now empty, the Mail Receiver MUST query the DNS for
 a DMARC TXT record at the DNS domain matching the Organizational
 Domain in place of the RFC5322.From domain in the message (if
 different).  This record can contain policy to be asserted for
 subdomains of the Organizational Domain.  A possibly empty set of
-records is returned.<a href="#section-6.6.3-3.3.1" class="pilcrow">¶</a></p>
+records is returned.<a href="#section-6.7.3-3.3.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.4">
-              <p id="section-6.6.3-3.4.1">Records that do not start with a "v=" tag that identifies the
-current version of DMARC are discarded.<a href="#section-6.6.3-3.4.1" class="pilcrow">¶</a></p>
+</ol>
+<p id="section-6.7.3-4"><em>Ticket 109</em><a href="#section-6.7.3-4" class="pilcrow">¶</a></p>
+<ol start="4" type="1" class="normal type-1" id="section-6.7.3-5">
+            <li id="section-6.7.3-5.1">
+              <p id="section-6.7.3-5.1.1">If the set is now empty and the longest PSD <a href="#longest-psd" class="xref">Section 3.6</a> of the
+Organizational Domain is one that the receiver has determined is
+acceptable for PSD DMARC (discussed in the <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>
+experiment description (Appendix A)), the Mail Receiver MUST query
+the DNS for a DMARC TXT record at the DNS domain matching the
+<span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span> longest PSD <a href="#longest-psd" class="xref">Section 3.6</a> in place of the
+RFC5322.From domain in the message (if different).  A possibly
+empty set of records is returned.<a href="#section-6.7.3-5.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.5">
-              <p id="section-6.6.3-3.5.1">If the remaining set contains multiple records or no records,
+<li id="section-6.7.3-5.2">
+              <p id="section-6.7.3-5.2.1">Records that do not start with a "v=" tag that identifies the
+current version of DMARC are discarded.<a href="#section-6.7.3-5.2.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-6.7.3-5.3">
+              <p id="section-6.7.3-5.3.1">If the remaining set contains multiple records or no records,
 policy discovery terminates and DMARC processing is not applied
-to this message.<a href="#section-6.6.3-3.5.1" class="pilcrow">¶</a></p>
+to this message.<a href="#section-6.7.3-5.3.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.6">
-              <p id="section-6.6.3-3.6.1">If a retrieved policy record does not contain a valid "p" tag, or
-contains an "sp" tag that is not valid, then:<a href="#section-6.6.3-3.6.1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.6.3-3.6.2">
-                <li id="section-6.6.3-3.6.2.1">
-                  <p id="section-6.6.3-3.6.2.1.1">if a "rua" tag is present and contains at least one
+<li id="section-6.7.3-5.4">
+              <p id="section-6.7.3-5.4.1">If a retrieved policy record does not contain a valid "p" tag, or
+contains an "sp" tag that is not valid, then:<a href="#section-6.7.3-5.4.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.7.3-5.4.2">
+                <li id="section-6.7.3-5.4.2.1">
+                  <p id="section-6.7.3-5.4.2.1.1">if a "rua" tag is present and contains at least one
 syntactically valid reporting URI, the Mail Receiver SHOULD
 act as if a record containing a valid "v" tag and "p=none"
-was retrieved, and continue processing;<a href="#section-6.6.3-3.6.2.1.1" class="pilcrow">¶</a></p>
+was retrieved, and continue processing;<a href="#section-6.7.3-5.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li id="section-6.6.3-3.6.2.2">
-                  <p id="section-6.6.3-3.6.2.2.1">otherwise, the Mail Receiver applies no DMARC processing to
-this message.<a href="#section-6.6.3-3.6.2.2.1" class="pilcrow">¶</a></p>
-</li>
-</ol>
+<li id="section-6.7.3-5.4.2.2">
+                  <p id="section-6.7.3-5.4.2.2.1">otherwise, the Mail Receiver applies no DMARC processing to
+this message.<a href="#section-6.7.3-5.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
 </ol>
-<p id="section-6.6.3-4">If the set produced by the mechanism above contains no DMARC policy
+</li>
+</ol>
+<p id="section-6.7.3-6">If the set produced by the mechanism above contains no DMARC policy
 record (i.e., any indication that there is no such record as opposed
 to a transient DNS error), Mail Receivers SHOULD NOT apply the DMARC
-mechanism to the message.<a href="#section-6.6.3-4" class="pilcrow">¶</a></p>
-<p id="section-6.6.3-5">Handling of DNS errors when querying for the DMARC policy record is
+mechanism to the message.<a href="#section-6.7.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.7.3-7">Handling of DNS errors when querying for the DMARC policy record is
 left to the discretion of the Mail Receiver.  For example, to ensure
 minimal disruption of mail flow, transient errors could result in
 delivery of the message ("fail open"), or they could result in the
 message being temporarily rejected (i.e., an SMTP 4yx reply), which
 invites the sending MTA to try again after the condition has possibly
 cleared, allowing a definite DMARC conclusion to be reached ("fail
-closed").<a href="#section-6.6.3-5" class="pilcrow">¶</a></p>
-<p id="section-6.6.3-6"><em>Ticket 47</em><a href="#section-6.6.3-6" class="pilcrow">¶</a></p>
+closed").<a href="#section-6.7.3-7" class="pilcrow">¶</a></p>
+<p id="section-6.7.3-8"><em>Ticket 108</em><a href="#section-6.7.3-8" class="pilcrow">¶</a></p>
+<div id="longest-psd-example">
+<section id="section-6.7.3.1">
+            <h5 id="name-longest-psd-example">
+<a href="#section-6.7.3.1" class="section-number selfRef">6.7.3.1. </a><a href="#name-longest-psd-example" class="section-name selfRef">Longest PSD Example</a>
+            </h5>
+<p id="section-6.7.3.1-1">As an example of step 4 above, for a message with the Organizational
+Domain of "example.compute.cloudcompany.com.example", the query for
+PSD DMARC would use "compute.cloudcompany.com.example" as the <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span>
+longest PSD <a href="#longest-psd" class="xref">Section 3.6</a>.  The receiver would check to see if that
+PSD is listed in the DMARC PSD Registry, and if so, perform the
+policy lookup at "_dmarc.compute.cloudcompany.com.example".<a href="#section-6.7.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.3.1-2">Note: Because the PSD policy query comes after the Organizational
+Domain policy query, PSD policy is not used for Organizational
+domains that have published a DMARC policy.  Specifically, this is
+not a mechanism to provide feedback addresses (RUA/RUF) when an
+Organizational Domain has declined to do so.<a href="#section-6.7.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.7.3.1-3"><em>Ticket 47</em><a href="#section-6.7.3.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="store-results-of-dmarc-processing">
-<section id="section-6.6.4">
+<section id="section-6.7.4">
           <h4 id="name-store-results-of-dmarc-proc">
-<a href="#section-6.6.4" class="section-number selfRef">6.6.4. </a><a href="#name-store-results-of-dmarc-proc" class="section-name selfRef">Store Results of DMARC Processing</a>
+<a href="#section-6.7.4" class="section-number selfRef">6.7.4. </a><a href="#name-store-results-of-dmarc-proc" class="section-name selfRef">Store Results of DMARC Processing</a>
           </h4>
-<p id="section-6.6.4-1">The results of Mail Receiver-based DMARC processing should be stored
+<p id="section-6.7.4-1">The results of Mail Receiver-based DMARC processing should be stored
 for eventual presentation back to the Domain Owner in the form of
-aggregate feedback reports.  <a href="#general-record-format" class="xref">Section 6.3</a> and the DMARC
-reporting docuents discuss aggregate feedback.<a href="#section-6.6.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.4-2"><em>Ticket 62</em><a href="#section-6.6.4-2" class="pilcrow">¶</a></p>
+aggregate feedback reports.  <a href="#general-record-format" class="xref">Section 6.3</a> and
+<span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span> discuss aggregate feedback.<a href="#section-6.7.4-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.4-2"><em>Ticket 62</em><a href="#section-6.7.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="send-aggregate-reports">
-<section id="section-6.6.5">
+<section id="section-6.7.5">
           <h4 id="name-send-aggregate-reports">
-<a href="#section-6.6.5" class="section-number selfRef">6.6.5. </a><a href="#name-send-aggregate-reports" class="section-name selfRef">Send Aggregate Reports</a>
+<a href="#section-6.7.5" class="section-number selfRef">6.7.5. </a><a href="#name-send-aggregate-reports" class="section-name selfRef">Send Aggregate Reports</a>
           </h4>
-<p id="section-6.6.5-1">For a Domain Owner, DMARC aggregate reports provide data about all
+<p id="section-6.7.5-1">For a Domain Owner, DMARC aggregate reports provide data about all
 mailstreams making use of its domain in email, to include not only
 illegitimate uses but also, and perhaps more importantly, all
 legitimate uses. Domain Owners can use aggregate reports to ensure
@@ -2867,26 +3064,26 @@ none to quarantine to reject, if appropriate. In turn, DMARC policy
 records with p= tag values of 'quarantine' or 'reject' are higher
 value signals to Mail Receivers, ones that can assist Mail Receivers
 with handling decisions for a message in ways that p= tag values of
-'none' cannot.<a href="#section-6.6.5-1" class="pilcrow">¶</a></p>
-<p id="section-6.6.5-2">In order to ensure maximum usefulness for DMARC across the email
+'none' cannot.<a href="#section-6.7.5-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.5-2">In order to ensure maximum usefulness for DMARC across the email
 ecosystem, then, Mail Receivers MUST generate and send aggregate
-reports with a frequency of at least once every 24 hours.<a href="#section-6.6.5-2" class="pilcrow">¶</a></p>
+reports with a frequency of at least once every 24 hours.<a href="#section-6.7.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="policy-enforcement-considerations">
-<section id="section-6.7">
+<section id="section-6.8">
         <h3 id="name-policy-enforcement-consider">
-<a href="#section-6.7" class="section-number selfRef">6.7. </a><a href="#name-policy-enforcement-consider" class="section-name selfRef">Policy Enforcement Considerations</a>
+<a href="#section-6.8" class="section-number selfRef">6.8. </a><a href="#name-policy-enforcement-consider" class="section-name selfRef">Policy Enforcement Considerations</a>
         </h3>
-<p id="section-6.7-1">Mail Receivers MAY choose to reject or quarantine email even if email
+<p id="section-6.8-1">Mail Receivers MAY choose to reject or quarantine email even if email
 passes the DMARC mechanism check.  The DMARC mechanism does not
 inform Mail Receivers whether an email stream is "good".  Mail
 Receivers are encouraged to maintain anti-abuse technologies to
-combat the possibility of DMARC-enabled criminal campaigns.<a href="#section-6.7-1" class="pilcrow">¶</a></p>
-<p id="section-6.7-2"><em>Ticket 109</em><a href="#section-6.7-2" class="pilcrow">¶</a></p>
-<p id="section-6.7-3">Mail Receivers MAY choose to accept email that fails the DMARC
+combat the possibility of DMARC-enabled criminal campaigns.<a href="#section-6.8-1" class="pilcrow">¶</a></p>
+<p id="section-6.8-2"><em>Ticket 109</em><a href="#section-6.8-2" class="pilcrow">¶</a></p>
+<p id="section-6.8-3">Mail Receivers MAY choose to accept email that fails the DMARC
 mechanism check even if the published Domain Owner Assessment Policy
 is "reject".  Mail Receivers need to make a best effort not to increase
 the likelihood of accepting abusive mail if they choose not to honor
@@ -2894,37 +3091,37 @@ the published Domain Owner Assessment Policy.  At a minimum, addition
 of the Authentication-Results header field (see <span>[<a href="#RFC8601" class="xref">RFC8601</a>]</span>) is
 RECOMMENDED when delivery of failing mail is done.  When this is
 done, the DNS domain name thus recorded MUST be encoded as an
-A-label.<a href="#section-6.7-3" class="pilcrow">¶</a></p>
-<p id="section-6.7-4">Mail Receivers are only obligated to report reject or quarantine
+A-label.<a href="#section-6.8-3" class="pilcrow">¶</a></p>
+<p id="section-6.8-4">Mail Receivers are only obligated to report reject or quarantine
 policy actions in aggregate feedback reports that are due to published
 DMARC Domain Owner Assessment Policy. They are not required to report
 reject or quarantine actions that are the result of local policy. If
 local policy information is exposed, abusers can gain insight into the
-effectiveness and delivery rates of spam campaigns.<a href="#section-6.7-4" class="pilcrow">¶</a></p>
-<p id="section-6.7-5"><em>Ticket 75</em><a href="#section-6.7-5" class="pilcrow">¶</a></p>
-<p id="section-6.7-6">Final handling of a message is always a matter of local policy.
+effectiveness and delivery rates of spam campaigns.<a href="#section-6.8-4" class="pilcrow">¶</a></p>
+<p id="section-6.8-5"><em>Ticket 75</em><a href="#section-6.8-5" class="pilcrow">¶</a></p>
+<p id="section-6.8-6">Final handling of a message is always a matter of local policy.
 An operator that wishes to favor DMARC policy over SPF policy, for
 example, will disregard the SPF policy, since enacting an
 SPF-determined rejection prevents evaluation of DKIM; DKIM might
 otherwise pass, satisfying the DMARC evaluation.  There is a
 trade-off to doing so, namely acceptance and processing of the entire
-message body in exchange for the enhanced protection DMARC provides.<a href="#section-6.7-6" class="pilcrow">¶</a></p>
-<p id="section-6.7-7">DMARC-compliant Mail Receivers typically disregard any mail-handling
+message body in exchange for the enhanced protection DMARC provides.<a href="#section-6.8-6" class="pilcrow">¶</a></p>
+<p id="section-6.8-7">DMARC-compliant Mail Receivers typically disregard any mail-handling
 directive discovered as part of an authentication mechanism (e.g.,
 Author Domain Signing Practices (ADSP), SPF) where a DMARC record is
 also discovered that specifies a policy other than "none".  Deviating
 from this practice introduces inconsistency among DMARC operators in
 terms of handling of the message.  However, such deviation is not
-proscribed.<a href="#section-6.7-7" class="pilcrow">¶</a></p>
-<p id="section-6.7-8"><em>Ticket 75</em><a href="#section-6.7-8" class="pilcrow">¶</a></p>
-<p id="section-6.7-9">To enable Domain Owners to receive DMARC feedback without impacting
+proscribed.<a href="#section-6.8-7" class="pilcrow">¶</a></p>
+<p id="section-6.8-8"><em>Ticket 75</em><a href="#section-6.8-8" class="pilcrow">¶</a></p>
+<p id="section-6.8-9">To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" SHOULD NOT
-modify existing mail handling processes.<a href="#section-6.7-9" class="pilcrow">¶</a></p>
-<p id="section-6.7-10"><em>Ticket 62</em><a href="#section-6.7-10" class="pilcrow">¶</a></p>
-<p id="section-6.7-11">Mail Receivers MUST also implement reporting instructions of DMARC,
+modify existing mail handling processes.<a href="#section-6.8-9" class="pilcrow">¶</a></p>
+<p id="section-6.8-10"><em>Ticket 62</em><a href="#section-6.8-10" class="pilcrow">¶</a></p>
+<p id="section-6.8-11">Mail Receivers MUST also implement reporting instructions of DMARC,
 even in the absence of a request for DKIM reporting <span>[<a href="#RFC6651" class="xref">RFC6651</a>]</span> or
 SPF reporting <span>[<a href="#RFC6652" class="xref">RFC6652</a>]</span>.  Furthermore, the presence of such requests
-SHOULD NOT affect DMARC reporting.<a href="#section-6.7-11" class="pilcrow">¶</a></p>
+SHOULD NOT affect DMARC reporting.<a href="#section-6.8-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2940,7 +3137,12 @@ critical to establishing and maintaining accurate authentication
 deployments.  When Domain Owners can see what effect their policies
 and practices are having, they are better willing and able to use
 quarantine and reject policies.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">The details of this feedback are described in a separate document.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-2">The details of this feedback are described in <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span><a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3"><em>Ticket 108</em><a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">Operational note for PSD DMARC: For PSOs, feedback for non-existent
+domains is desirable and useful, just as it is for org-level DMARC
+operators.  See Section 4 of <span>[<a href="#DMARC-PSD" class="xref">DMARC-PSD</a>]</span> for discussion of
+Privacy Considerations for PSD DMARC<a href="#section-7-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="minimum-implementations">
@@ -3036,14 +3238,14 @@ aware of this.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 number of considerations related to DNS caching.  The inherent
 conflict between freshness and the impact of caching on the reduction
 of DNS-lookup overhead should be considered from the Mail Receiver's
-point of view.  Should Domain Owners publish a DNS record with a very
+point of view.  Should Domain Owners or PSOs publish a DNS record with a very
 short TTL, Mail Receivers can be provoked through the injection of
-large volumes of messages to overwhelm the Domain Owner's DNS.
+large volumes of messages to overwhelm the publisher's DNS.
 Although this is not a concern specific to DMARC, the implications of
 a very short TTL should be considered when publishing DMARC policies.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2-2">Conversely, long TTLs will cause records to be cached for long
 periods of time.  This can cause a critical change to DMARC
-parameters advertised by a Domain Owner to go unnoticed for the
+parameters advertised by a Domain Owner or PSO to go unnoticed for the
 length of the TTL (while waiting for DNS caches to expire).  Avoiding
 this problem can mean shorter TTLs, with the potential problems
 described above.  A balance should be sought to maintain
@@ -3619,6 +3821,18 @@ could reveal private information.<a href="#section-11.6-2" class="pilcrow">¶</a
 <a href="#section-12" class="section-number selfRef">12. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
+<dt id="DMARC-Aggregate-Reporting">[DMARC-Aggregate-Reporting]</dt>
+<dd>
+<span class="refAuthor">Brotman, A., Ed.</span>, <span class="refTitle">"DMARC Aggregate Reporting"</span>, <time datetime="2021-02">February 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-ietf-dmarc-aggregate-reporting/">https://datatracker.ietf.org/doc/draft-ietf-dmarc-aggregate-reporting/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DMARC-Failure-Reporting">[DMARC-Failure-Reporting]</dt>
+<dd>
+<span class="refAuthor">Jones, S.M., Ed.</span><span class="refAuthor"> and A. Vesely, Ed.</span>, <span class="refTitle">"DMARC Failure Reporting"</span>, <time datetime="2021-02">February 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-ietf-dmarc-failure-reporting/">https://datatracker.ietf.org/doc/draft-ietf-dmarc-failure-reporting/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DMARC-PSD">[DMARC-PSD]</dt>
+<dd>
+<span class="refAuthor">Kitterman, S.</span><span class="refAuthor"> and T. Wicinski, Ed.</span>, <span class="refTitle">"Experimental DMARC Extension For Public Suffix Domains"</span>, <time datetime="2021-04">April 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/?include_text=1">https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/?include_text=1</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
 <dd>
 <span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - implementation and specification"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1035</span>, <span class="seriesInfo">DOI 10.17487/RFC1035</span>, <time datetime="1987-11">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1035">https://www.rfc-editor.org/info/rfc1035</a>&gt;</span>. </dd>
@@ -3705,6 +3919,10 @@ could reveal private information.<a href="#section-11.6-2" class="pilcrow">¶</a
 <dt id="RFC6377">[RFC6377]</dt>
 <dd>
 <span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"DomainKeys Identified Mail (DKIM) and Mailing Lists"</span>, <span class="seriesInfo">BCP 167</span>, <span class="seriesInfo">RFC 6377</span>, <span class="seriesInfo">DOI 10.17487/RFC6377</span>, <time datetime="2011-09">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6377">https://www.rfc-editor.org/info/rfc6377</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8020">[RFC8020]</dt>
+<dd>
+<span class="refAuthor">Bortzmeyer, S.</span><span class="refAuthor"> and S. Huque</span>, <span class="refTitle">"NXDOMAIN: There Really Is Nothing Underneath"</span>, <span class="seriesInfo">RFC 8020</span>, <span class="seriesInfo">DOI 10.17487/RFC8020</span>, <time datetime="2016-11">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8020">https://www.rfc-editor.org/info/rfc8020</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8126">[RFC8126]</dt>
 <dd>
@@ -3931,7 +4149,7 @@ labels; this would cause a Mail Receiver to attempt a large number of
 queries in search of a policy record.  Sending many such messages
 constitutes an amplified denial-of-service attack.<a href="#section-a.6-3" class="pilcrow">¶</a></p>
 <p id="section-a.6-4">The Organizational Domain mechanism is a necessary component to the
-goals of DMARC.  The method described in <a href="#organizational-domain" class="xref">Section 3.2</a> is far from
+goals of DMARC.  The method described in <a href="#determining-the-organizational-domain" class="xref">Section 3.15</a> is far from
 perfect but serves this purpose reasonably well without adding undue
 burden or semantics to the DNS.  If a method is created to do so that
 is more reliable and secure than the use of a public suffix list,
@@ -4256,7 +4474,7 @@ for the full details of this mechanism.<a href="#section-b.2.3-14" class="pilcro
 <p id="section-b.2.3-15"><em>Tickets 47 and 53</em><a href="#section-b.2.3-15" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="subdomain--and-multiple-aggregate-report-uris">
+<div id="subdomain-and-multiple-aggregate-report-uris">
 <section id="section-b.2.4">
           <h3 id="name-subdomain-and-multiple-aggr">
 <a href="#section-b.2.4" class="section-number selfRef">B.2.4. </a><a href="#name-subdomain-and-multiple-aggr" class="section-name selfRef">Subdomain and Multiple Aggregate Report URIs</a>
@@ -4474,7 +4692,7 @@ Domain Owner can begin deployment of authentication technologies
 across uncovered email sources.  Additionally, the Domain Owner may
 come to an understanding of how its domain is being misused.<a href="#section-b.5-3" class="pilcrow">¶</a></p>
 <p id="section-b.5-4"><em>Ticket 109</em><a href="#section-b.5-4" class="pilcrow">¶</a></p>
-<p id="section-b.5-5">(Aggregate report example should be moved to Aggregate Reporting Document)<a href="#section-b.5-5" class="pilcrow">¶</a></p>
+<p id="section-b.5-5">(Aggregate report example should be moved to <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>)<a href="#section-b.5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4907,6 +5125,26 @@ in tracker<a href="#section-c.13.1-1.2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
+<div id="april-20-2021">
+<section id="section-c.14">
+        <h2 id="name-april-20-2021">
+<a href="#section-c.14" class="section-number selfRef">C.14. </a><a href="#name-april-20-2021" class="section-name selfRef">April 20, 2021</a>
+        </h2>
+<div id="ticket-108-changes-to-dmarcbis-for-psd">
+<section id="section-c.14.1">
+          <h3 id="name-ticket-108-changes-to-dmarc">
+<a href="#section-c.14.1" class="section-number selfRef">C.14.1. </a><a href="#name-ticket-108-changes-to-dmarc" class="section-name selfRef">Ticket 108 - Changes to DMARCbis for PSD</a>
+          </h3>
+<ul>
+<li id="section-c.14.1-1.1">Incorporating requests for changes to DMARCbis made in text of
+"Experimental DMARC Extension for Public Suffix Domains"
+(<a href="https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/">https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/</a>)<a href="#section-c.14.1-1.1" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="acknowledgements">
@@ -4931,6 +5169,7 @@ on by J.D. Falk.<a href="#section-appendix.d-1" class="pilcrow">¶</a></p>
 Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
 J. Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine,
 S. Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J. Turnbull.<a href="#section-appendix.d-2" class="pilcrow">¶</a></p>
+<p id="section-appendix.d-3"><em>Ticket 108</em><a href="#section-appendix.d-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
