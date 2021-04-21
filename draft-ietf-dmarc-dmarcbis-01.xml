@@ -233,7 +233,7 @@ Agents (MTAs).</t>
 <section anchor="non-existent-domains"><name>Non-existent Domains</name>
 <t>For DMARC purposes, a non-existent domain is a domain for which there
 is an NXDOMAIN or NODATA response for A, AAAA, and MX records.  This
-is a broader definition than that in NXDOMAIN <xref target="RFC8020"></xref>.</t>
+is a broader definition than that in <xref target="RFC8020"></xref>.</t>
 </section>
 
 <section anchor="organizational-domain"><name>Organizational Domain</name>
