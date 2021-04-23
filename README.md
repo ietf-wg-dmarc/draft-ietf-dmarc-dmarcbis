@@ -7,7 +7,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489 (if approved)                             J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 24 October 2021                                   22 April 2021
+Expires: 25 October 2021                                   23 April 2021
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 October 2021.
+   This Internet-Draft will expire on 25 October 2021.
 
 Copyright Notice
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 1]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 1]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -106,11 +106,11 @@ Table of Contents
      6.3.  General Record Format . . . . . . . . . . . . . . . . . .  19
      6.4.  Formal Definition . . . . . . . . . . . . . . . . . . . .  23
      6.5.  Domain Owner Actions  . . . . . . . . . . . . . . . . . .  24
-       6.5.1.  Publish an SPF Policy for an Aligned Domain . . . . .  24
+       6.5.1.  Publish an SPF Policy for an Aligned Domain . . . . .  25
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 2]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 2]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -166,7 +166,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 3]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 3]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -222,7 +222,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 4]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 4]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -245,6 +245,9 @@ Internet-Draft                  DMARCbis                      April 2021
        C.13.1.  Ticket 109 - Sanity Check DMARCbis Document  . . . .  67
      C.14. April 20, 2021  . . . . . . . . . . . . . . . . . . . . .  67
        C.14.1.  Ticket 108 - Changes to DMARCbis for PSD . . . . . .  67
+     C.15. April 22, 2021  . . . . . . . . . . . . . . . . . . . . .  67
+       C.15.1.  Ticket 104 - Update the Security Considerations
+               section 11.3 on DNS . . . . . . . . . . . . . . . . .  67
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  67
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  68
 
@@ -275,10 +278,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 5]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 5]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -334,7 +334,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 6]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 6]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -390,7 +390,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 7]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 7]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -446,7 +446,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 8]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 8]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -502,7 +502,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021                [Page 9]
+Herr (ed) & Levine (ed)  Expires 25 October 2021                [Page 9]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -558,7 +558,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 10]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 10]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -614,7 +614,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 11]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 11]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -670,7 +670,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 12]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 12]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -726,7 +726,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 13]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 13]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -782,7 +782,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 14]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 14]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -838,7 +838,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 15]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 15]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -894,7 +894,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 16]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 16]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -950,7 +950,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 17]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 17]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1006,7 +1006,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 18]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 18]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1038,6 +1038,35 @@ Internet-Draft                  DMARCbis                      April 2021
 
    _Tickets 4 and 109_
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 19]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
    fo:  Failure reporting options (plain-text; OPTIONAL; default is "0")
       Provides requested options for generation of failure reports.
       Report generators MAY choose to adhere to the requested options.
@@ -1059,14 +1088,6 @@ Internet-Draft                  DMARCbis                      April 2021
          specific reporting is described in [RFC6651].
 
       s:  Generate an SPF failure report if the message failed SPF
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 19]
-
-Internet-Draft                  DMARCbis                      April 2021
-
-
          evaluation, regardless of its alignment.  SPF-specific
          reporting is described in [RFC6652].
 
@@ -1094,6 +1115,14 @@ Internet-Draft                  DMARCbis                      April 2021
       validation.  Policy applies to the domain queried and to
       subdomains, unless subdomain policy is explicitly described using
       the "sp" or "np" tags.  This tag is mandatory for policy records
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 20]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
       only, but not for third-party reporting records (see
       [DMARC-Aggregate-Reporting] and [DMARC-Failure-Reporting])
       Possible values are as follows:
@@ -1114,15 +1143,6 @@ Internet-Draft                  DMARCbis                      April 2021
    _Ticket 82_
 
    rf (do not use):  Format to be used for message-specific failure
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 20]
-
-Internet-Draft                  DMARCbis                      April 2021
-
-
       reports (colon- separated plain-text list of values; OPTIONAL;
       default is "afrf").  This tag SHOULD NOT be used in a DMARC
       record.  See the note at the end for more information.  The value
@@ -1151,6 +1171,14 @@ Internet-Draft                  DMARCbis                      April 2021
       This tag SHOULD NOT be used in a DMARC record.  See the note at
       the end for more information.  Indicates a request to Receivers to
       generate aggregate reports separated by no more than the requested
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 21]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
       number of seconds.  DMARC implementations MUST be able to provide
       daily reports and SHOULD be able to provide hourly reports when
       requested.  However, anything other than a daily report is
@@ -1169,16 +1197,8 @@ Internet-Draft                  DMARCbis                      April 2021
       [DMARC-Aggregate-Reporting] discusses considerations that apply
       when the domain name of a URI differs from that of the domain
       advertising the policy.
-      See Section 11.5 for additional considerations.  Any valid URI can
-      be specified.  A Mail Receiver MUST implement support for a
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 21]
-
-Internet-Draft                  DMARCbis                      April 2021
-
-
+         See Section 11.5 for additional considerations.  Any valid URI
+      can be specified.  A Mail Receiver MUST implement support for a
       "mailto:" URI, i.e., the ability to send a DMARC report via
       electronic mail.  If not provided, Mail Receivers MUST NOT
       generate aggregate feedback reports.  URIs not supported by Mail
@@ -1207,6 +1227,14 @@ Internet-Draft                  DMARCbis                      April 2021
       but not passing DMARC validation.  It applies only to subdomains
       of the domain queried and not to the domain itself.  Its syntax is
       identical to that of the "p" tag defined above.  If both the "sp"
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 22]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
       tag is absent and the "np" tag is either absent or not applicable,
       the policy specified by the "p" tag MUST be applied for
       subdomains.  Note that "sp" will be ignored for DMARC records
@@ -1225,15 +1253,6 @@ Internet-Draft                  DMARCbis                      April 2021
    first.  Unknown tags MUST be ignored.  Syntax errors in the remainder
    of the record SHOULD be discarded in favor of default values (if any)
    or ignored outright.
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 22]
-
-Internet-Draft                  DMARCbis                      April 2021
-
 
    Note that given the rules of the previous paragraph, addition of a
    new tag into the registered list of tags does not itself require a
@@ -1264,6 +1283,14 @@ Internet-Draft                  DMARCbis                      April 2021
 
      dmarc-tag       = dmarc-request /
                        dmarc-srequest /
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 23]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
                        dmarc-auri /
                        dmarc-furi /
                        dmarc-ainterval /
@@ -1283,14 +1310,6 @@ Internet-Draft                  DMARCbis                      April 2021
                        ( "none" / "quarantine" / "reject" )
 
      dmarc-auri      = "rua" *WSP "=" *WSP
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 23]
-
-Internet-Draft                  DMARCbis                      April 2021
-
-
                        dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
      dmarc-furi      = "ruf" *WSP "=" *WSP
@@ -1321,6 +1340,13 @@ Internet-Draft                  DMARCbis                      April 2021
    This section describes Domain Owner actions to fully implement the
    DMARC mechanism.
 
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 24]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
 6.5.1.  Publish an SPF Policy for an Aligned Domain
 
    Because DMARC relies on SPF [RFC7208] and DKIM [RFC6376], in order to
@@ -1330,22 +1356,6 @@ Internet-Draft                  DMARCbis                      April 2021
    domain (i.e., the Return-Path domain) for its mail, one that aligns
    with the Author Domain, and then publish an SPF policy in DNS for
    that domain.
-
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 24]
-
-Internet-Draft                  DMARCbis                      April 2021
-
 
 6.5.2.  Configure Sending System for DKIM Signing Using an Aligned
         Domain
@@ -1388,17 +1398,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 25]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 25]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1454,7 +1454,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 26]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 26]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1510,7 +1510,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 27]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 27]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1566,7 +1566,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 28]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 28]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1622,7 +1622,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 29]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 29]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1678,7 +1678,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 30]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 30]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1734,7 +1734,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 31]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 31]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1790,7 +1790,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 32]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 32]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1846,7 +1846,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 33]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 33]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1902,7 +1902,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 34]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 34]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -1958,7 +1958,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 35]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 35]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2014,7 +2014,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 36]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 36]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2070,7 +2070,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 37]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 37]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2126,7 +2126,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 38]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 38]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2182,7 +2182,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 39]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 39]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2238,12 +2238,12 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 40]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 40]
 
 Internet-Draft                  DMARCbis                      April 2021
 
 
-   +==========+===========+==========+==============================+
+   +----------+-----------+----------+------------------------------+
    | Tag Name | Reference | Status   | Description                  |
    +==========+===========+==========+==============================+
    | adkim    | RFC 7489  | historic | DKIM alignment mode          |
@@ -2294,14 +2294,14 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 41]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 41]
 
 Internet-Draft                  DMARCbis                      April 2021
 
 
    The initial entry in this registry is as follows:
 
-   +========+===========+=========+==================================+
+   +--------+-----------+---------+----------------------------------+
    | Format | Reference | Status  | Description                      |
    | Name   |           |         |                                  |
    +========+===========+=========+==================================+
@@ -2316,7 +2316,7 @@ Internet-Draft                  DMARCbis                      April 2021
    Per [!@RFC8552], please add the following entry to the "Underscored
    and Globally Scoped DNS Node Names" registry:
 
-   +=========+============+===========+
+   +---------+------------+-----------+
    | RR Type | _NODE NAME | Reference |
    +=========+============+===========+
    | TXT     | _dmarc     | RFC 7489  |
@@ -2350,7 +2350,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 42]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 42]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2366,6 +2366,8 @@ Internet-Draft                  DMARCbis                      April 2021
    *  deliberate construction of reports containing false claims for the
       Submitter or Reported-Domain fields, including the possibility of
       false data from compromised but known Mail Receivers.
+
+   _Ticket 104_
 
 11.3.  DNS Security
 
@@ -2404,9 +2406,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 43]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 43]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2462,7 +2462,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 44]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 44]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2518,7 +2518,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 45]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 45]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2574,7 +2574,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 46]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 46]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2630,7 +2630,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 47]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 47]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2686,7 +2686,7 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 48]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 48]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2742,7 +2742,7 @@ A.3.  Sender Header Field
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 49]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 49]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2798,7 +2798,7 @@ A.5.  Issues with ADSP in Operation
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 50]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 50]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2854,7 +2854,7 @@ A.6.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 51]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 51]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2910,7 +2910,7 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 52]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 52]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -2966,7 +2966,7 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 53]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 53]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3022,7 +3022,7 @@ B.2.  Domain Owner Example
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 54]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 54]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3078,7 +3078,7 @@ B.2.1.  Entire Domain, Monitoring Only
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 55]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 55]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3134,7 +3134,7 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 56]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 56]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3190,7 +3190,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 57]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 57]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3246,7 +3246,7 @@ B.2.4.  Subdomain and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 58]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 58]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3302,7 +3302,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 59]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 59]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3358,7 +3358,7 @@ B.4.  Processing of SMTP Time
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 60]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 60]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3414,7 +3414,7 @@ Internet-Draft                  DMARCbis                      April 2021
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 61]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 61]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3470,7 +3470,7 @@ C.1.1.  Ticket 80 - DMARCbis SHould Have Clear and Concise Defintion of
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 62]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 62]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3526,7 +3526,7 @@ C.5.2.  Ticket 3 - Two tiny nits
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 63]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 63]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3582,7 +3582,7 @@ C.7.2.  Ticket 72 - Remove absolute requirement for p= tag in DMARC
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 64]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 64]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3638,7 +3638,7 @@ C.10.2.  Ticket 52 - Remove strict alignment (and adkim and aspf tags)
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 65]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 65]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3694,7 +3694,7 @@ C.12.1.  Ticket 86 - A-R results for DMARC
 
 
 
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 66]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 66]
 
 Internet-Draft                  DMARCbis                      April 2021
 
@@ -3727,6 +3727,15 @@ C.14.1.  Ticket 108 - Changes to DMARCbis for PSD
       (https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/
       (https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/))
 
+C.15.  April 22, 2021
+
+C.15.1.  Ticket 104 - Update the Security Considerations section 11.3 on
+         DNS
+
+   *  Updated text.  Diffs are here - https://github.com/ietf-wg-dmarc/
+      draft-ietf-dmarc-dmarcbis/pull/31/files (https://github.com/ietf-
+      wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files)
+
 Acknowledgements
 
    DMARC and the draft version of this document submitted to the
@@ -3738,6 +3747,14 @@ Acknowledgements
    LinkedIn, Microsoft, Netease, PayPal, ReturnPath, The Trusted Domain
    Project, and Yahoo!.  Although the contributors and supporters are
    too numerous to mention, notable individual contributions were made
+
+
+
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 67]
+
+Internet-Draft                  DMARCbis                      April 2021
+
+
    by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
    Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
    The contributors would also like to recognize the invaluable input
@@ -3747,13 +3764,6 @@ Acknowledgements
    Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
    J.  Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine, S.
    Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J.  Turnbull.
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 67]
-
-Internet-Draft                  DMARCbis                      April 2021
-
 
    _Ticket 108_
 
@@ -3796,15 +3806,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 24 October 2021               [Page 68]
+Herr (ed) & Levine (ed)  Expires 25 October 2021               [Page 68]
 ```

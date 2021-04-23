@@ -1705,6 +1705,7 @@ Submitter or Reported-Domain fields, including the possibility of
 false data from compromised but known Mail Receivers.</t>
 </li>
 </ul>
+<t><em>Ticket 104</em></t>
 </section>
 
 <section anchor="dns-security"><name>DNS Security</name>
@@ -2775,6 +2776,16 @@ in tracker</li>
 <li>Incorporating requests for changes to DMARCbis made in text of
 &quot;Experimental DMARC Extension for Public Suffix Domains&quot;
 (<eref target="https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/">https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/</eref>)</li>
+</ul>
+</section>
+</section>
+
+<section anchor="april-22-2021"><name>April 22, 2021</name>
+
+<section anchor="ticket-104-update-the-security-considerations-section-11-3-on-dns"><name>Ticket 104 - Update the Security Considerations section 11.3 on DNS</name>
+
+<ul>
+<li>Updated text. Diffs are here - <eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files</eref></li>
 </ul>
 </section>
 </section>
