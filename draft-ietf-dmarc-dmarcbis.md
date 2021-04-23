@@ -1763,15 +1763,20 @@ various attacks, including but not limited to:
 ##  DNS Security {#dns-security}
 
 The DMARC mechanism and its underlying technologies (SPF, DKIM)
-depend on the security of the DNS.  To reduce the risk of subversion
-of the DMARC mechanism due to DNS-based exploits, serious
-consideration should be given to the deployment of DNSSEC in parallel
-with the deployment of DMARC by both Domain Owners and Mail
-Receivers.
+depend on the security of the DNS.  If hostile parties can snoop on DNS
+traffic, they can get an idea of who is sending mail.
+If they can block outgoing or reply DNS messages, they can prevent systems
+from discovering senders' DMARC policies, causing recipients to assume p=none by
+default/
+If they can send forged response packets, they can make aligned mail
+appear unaligned or vice-versa.
 
-Publication of data using DNSSEC is relevant to Domain Owners and
-third-party Report Receivers.  DNSSEC-aware resolution is relevant to
-Mail Receivers and Report Receivers.
+None of these threats are unique to DMARC, and they can be addressed using
+a variety of techniques.
+Signing DNS records with DNSSEC [@RFC4033] enables recipients to detect and
+discard forged responses.
+DNS over TLS [@RFC7858] or DNS over HTTPS [@RFC8484] can mitigate snooping
+and forged responses.
 
 ##  Display Name Attacks {#display-name-attacks}
 
