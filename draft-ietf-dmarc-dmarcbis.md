@@ -1760,6 +1760,8 @@ various attacks, including but not limited to:
    Submitter or Reported-Domain fields, including the possibility of
    false data from compromised but known Mail Receivers.
 
+_Ticket 104_
+
 ##  DNS Security {#dns-security}
 
 The DMARC mechanism and its underlying technologies (SPF, DKIM)
@@ -2713,6 +2715,10 @@ _Ticket 109_
 * Incorporating requests for changes to DMARCbis made in text of
   "Experimental DMARC Extension for Public Suffix Domains"
   (https://datatracker.ietf.org/doc/draft-ietf-dmarc-psd/)
+
+## April 22, 2021
+### Ticket 104 - Update the Security Considerations section 11.3 on DNS
+* Updated text. Diffs are here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files
 
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
