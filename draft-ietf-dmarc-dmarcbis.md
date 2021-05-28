@@ -798,24 +798,6 @@ MUST be supported.
     than "afrf" developed for failure reports, and so this tag
     should not be used.
 
-_Ticket 50_
-
-ri (do not use):
-:   Interval requested between aggregate reports (plain-text 32-bit
-unsigned integer; OPTIONAL; default is 86400).  This tag SHOULD NOT
-be used in a DMARC record. See the note at the end for more information.
-Indicates a request to Receivers to generate aggregate reports separated
-by no more than the requested number of seconds.  DMARC implementations
-MUST be able to provide daily reports and SHOULD be able to
-provide hourly reports when requested.  However, anything other
-than a daily report is understood to be accommodated on a best-
-effort basis.
-
-    Note: In March, 2021, a survey of nearly 74,000 DMARC policy records showed
-    that fewer than 2% were publishing an ri tag with a non-default value, with
-    most of those set to a value of 3600. There was no evidence that any of these
-    requests for something more frequent than once daily were being honored.
-
 _Ticket 53_
 
 rua:
@@ -907,7 +889,6 @@ _Ticket 7, 47, and 52_
                     dmarc-srequest /
                     dmarc-auri /
                     dmarc-furi /
-                    dmarc-ainterval /
                     dmarc-fo /
                     dmarc-rfmt 
                     ; components other than dmarc-version and
@@ -930,9 +911,6 @@ _Ticket 7, 47, and 52_
                     dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
 _Ticket 52_
-
-
-  dmarc-ainterval = "ri" *WSP "=" *WSP 1*DIGIT
 
   dmarc-fo        = "fo" *WSP "=" *WSP
                     ( "0" / "1" / "d" / "s" )
@@ -1684,7 +1662,7 @@ _Ticket 52_
 | p        | RFC 7489  | current  | Requested handling policy                |
 | pct      | RFC 7489  | historic | Sampling rate                            |
 | rf       | RFC 7489  | current  | Failure reporting format(s)              |
-| ri       | RFC 7489  | current  | Aggregate Reporting interval             |
+| ri       | RFC 7489  | historic | Aggregate Reporting interval             |
 | rua      | RFC 7489  | current  | Reporting URI(s) for aggregate data      |
 | ruf      | RFC 7489  | current  | Reporting URI(s) for failure data        |
 | sp       | RFC 7489  | current  | Requested handling policy for subdomains |
