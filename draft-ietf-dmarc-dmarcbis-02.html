@@ -1114,7 +1114,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 10 December 2021</td>
+<td class="center">Expires 13 December 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1130,12 +1130,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-06-08" class="published">8 June 2021</time>
+<time datetime="2021-06-11" class="published">11 June 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-12-10">10 December 2021</time></dd>
+<dd class="expires"><time datetime="2021-12-13">13 December 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1182,7 +1182,7 @@ incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 December 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 December 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2547,30 +2547,21 @@ methods and their implications.<a href="#section-6.3-4.10.2.6" class="pilcrow">�
 <dd id="section-6.3-4.12">
             <p id="section-6.3-4.12.1">(plain-text integer between 0 and 100, inclusive; OPTIONAL;
 default is 100). For the RFC5322.From domain to which the DMARC
-record applies, the 'pct' tag is the percentage of messages
-producing a DMARC result of 'fail' to which the Domain Owner wishes
+record applies, the "pct" tag is the percentage of messages
+producing a DMARC result of "fail" to which the Domain Owner wishes
 its preferred handling policy be applied.  However, this MUST NOT be
 applied to the DMARC-generated reports, all of which must be sent and
 received unhindered.<a href="#section-6.3-4.12.1" class="pilcrow">¶</a></p>
-<p id="section-6.3-4.12.2">The purpose of the "pct" tag is to allow Domain Owners to enact
-a slow rollout enforcement of the DMARC mechanism.  The prospect
-of "all or nothing" is recognized as preventing many organizations
-from experimenting with strong authentication-based mechanisms.  See
-<a href="#message-sampling" class="xref">Section 6.7.4</a> for details.  Note that random selection based on
-this percentage, such as the following pseudocode, is adequate:<a href="#section-6.3-4.12.2" class="pilcrow">¶</a></p>
+<p id="section-6.3-4.12.2">The prospect of "all or nothing" is recognized as preventing many organizations
+from experimenting with strong authentication-based mechanisms. The intent
+of the "pct" tag is to give Domain Owners a method to enact a slow rollout
+of enforcement of the DMARC mechanism, but as is discussed in <a href="#message-sampling" class="xref">Section 6.7.4</a>
+the tag is at best a rough approximation of such a method.<a href="#section-6.3-4.12.2" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
-</dl>
-<div class="artwork art-text alignLeft" id="section-6.3-5">
-<pre>      if (random mod 100) &lt; pct then
-         selected = true
-      else
-         selected = false
-</pre><a href="#section-6.3-5" class="pilcrow">¶</a>
-</div>
-<dl class="dlParallel" id="section-6.3-6">
-          <dt id="section-6.3-6.1">rua:</dt>
-<dd id="section-6.3-6.2">Addresses to which aggregate feedback is to be sent (comma-
+<dt id="section-6.3-4.13">rua:</dt>
+<dd id="section-6.3-4.14">
+            <p id="section-6.3-4.14.1">Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>
 discusses considerations that apply when the domain name of a URI differs
 from that of the domain advertising the policy.<br>
@@ -2580,11 +2571,12 @@ MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate aggregate feedback reports.  URIs
 not supported by Mail Receivers MUST be ignored.  The aggregate
-feedback report format is described in the DMARC reporting documents.<a href="#section-6.3-6.2" class="pilcrow">¶</a>
+feedback report format is described in the DMARC reporting documents.<a href="#section-6.3-4.14.1" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-6.3">ruf:</dt>
-<dd id="section-6.3-6.4">Addresses to which message-specific failure information is to
+<dt id="section-6.3-4.15">ruf:</dt>
+<dd id="section-6.3-4.16">
+            <p id="section-6.3-4.16.1">Addresses to which message-specific failure information is to
 be reported (comma-separated plain-text list of DMARC URIs;
 OPTIONAL).  If present, the Domain Owner or PSO is requesting Mail
 Receivers to send detailed failure reports about messages that
@@ -2596,11 +2588,12 @@ from that of the domain advertising the policy.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
 send a DMARC report via electronic mail.  If not provided, Mail
 Receivers MUST NOT generate failure reports.  See <a href="#external-report-addresses" class="xref">Section 11.5</a> for
-additional considerations.<a href="#section-6.3-6.4" class="pilcrow">¶</a>
+additional considerations.<a href="#section-6.3-4.16.1" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-6.5">sp:</dt>
-<dd id="section-6.3-6.6">Domain Owner Assessment Policy for all subdomains (plain-text;
+<dt id="section-6.3-4.17">sp:</dt>
+<dd id="section-6.3-4.18">
+            <p id="section-6.3-4.18.1">Domain Owner Assessment Policy for all subdomains (plain-text;
 OPTIONAL). Indicates the severity of concern the Domain Owner or PSO has
 for mail using an existing subdomain of the domain queried but not
 passing DMARC validation.  It applies only to subdomains of
@@ -2610,28 +2603,29 @@ tag is absent and the "np" tag is either absent or not applicable,
 the policy specified by the "p" tag MUST be applied for subdomains.
 Note that "sp" will be ignored for DMARC records published on
 subdomains of Organizational Domains due to the effect of the
-DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.7.3</a>.<a href="#section-6.3-6.6" class="pilcrow">¶</a>
+DMARC policy discovery mechanism described in <a href="#policy-discovery" class="xref">Section 6.7.3</a>.<a href="#section-6.3-4.18.1" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
-<dt id="section-6.3-6.7">v:</dt>
-<dd id="section-6.3-6.8">Version (plain-text; REQUIRED).  Identifies the record retrieved
+<dt id="section-6.3-4.19">v:</dt>
+<dd id="section-6.3-4.20">
+            <p id="section-6.3-4.20.1">Version (plain-text; REQUIRED).  Identifies the record retrieved
 as a DMARC record.  It MUST have the value of "DMARC1".  The value
 of this tag MUST match precisely; if it does not or it is absent,
 the entire retrieved record MUST be ignored.  It MUST be the first
-tag in the list.<a href="#section-6.3-6.8" class="pilcrow">¶</a>
+tag in the list.<a href="#section-6.3-4.20.1" class="pilcrow">¶</a></p>
 </dd>
 <dd class="break"></dd>
 </dl>
-<p id="section-6.3-7">A DMARC policy record MUST comply with the formal specification found
+<p id="section-6.3-5">A DMARC policy record MUST comply with the formal specification found
 in <a href="#formal-definition" class="xref">Section 6.4</a> in that the "v" tag MUST be present and MUST
 appear first.  Unknown tags MUST be ignored.  Syntax errors
 in the remainder of the record SHOULD be discarded in favor of
-default values (if any) or ignored outright.<a href="#section-6.3-7" class="pilcrow">¶</a></p>
-<p id="section-6.3-8">Note that given the rules of the previous paragraph, addition of a
+default values (if any) or ignored outright.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
+<p id="section-6.3-6">Note that given the rules of the previous paragraph, addition of a
 new tag into the registered list of tags does not itself require a
 new version of DMARC to be generated (with a corresponding change to
 the "v" tag's value), but a change to any existing tags does require
-a new version of DMARC.<a href="#section-6.3-8" class="pilcrow">¶</a></p>
+a new version of DMARC.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-definition">
@@ -3005,26 +2999,157 @@ Organizational Domain has declined to do so.<a href="#section-6.7.3.1-2" class="
           <h4 id="name-message-sampling">
 <a href="#section-6.7.4" class="section-number selfRef">6.7.4. </a><a href="#name-message-sampling" class="section-name selfRef">Message Sampling</a>
           </h4>
-<p id="section-6.7.4-1">If the "pct" tag is present in the policy record, the Mail Receiver
-MUST NOT enact the requested policy ("p" tag or "sp" tag") on more
-than the stated percent of the totality of affected messages.
-However, regardless of whether or not the "pct" tag is present, the
-Mail Receiver MUST include all relevant message data in any reports
-produced.<a href="#section-6.7.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.7.4-2">If email is subject to the DMARC policy of "quarantine", the Mail
+<p id="section-6.7.4-1">The "pct" tag is intended as a method for Domain Owners to use in a slow
+rollout of enforcement of the DMARC mechanism. It is designed to allow
+the Domain Owner to request that only some mail using its domain as the
+RFC5322.From domain and producing DMARC "fail" results be subject to its
+strictest requested policy. This section will discuss the idea behind its
+implementation and the shortcomings inherent in its usage.<a href="#section-6.7.4-1" class="pilcrow">¶</a></p>
+<div id="intended-implementation-of-the-pct-tag">
+<section id="section-6.7.4.1">
+            <h5 id="name-intended-implementation-of-">
+<a href="#section-6.7.4.1" class="section-number selfRef">6.7.4.1. </a><a href="#name-intended-implementation-of-" class="section-name selfRef">Intended Implementation of the "pct" Tag</a>
+            </h5>
+<p id="section-6.7.4.1-1">The intended implementation of the "pct" tag by a mail-receiving organization
+can be stated as follows:<a href="#section-6.7.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.1-2">If the "pct" tag is present in the policy record, the Mail Receiver MUST
+NOT enact the requested policy ("p" tag or "sp" tag") on more than a close
+approximation of the stated percent of the totality of affected messages.<br>
+Such a close approximation might be achieved by implementation of the
+following or similar pseudocode:<a href="#section-6.7.4.1-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.7.4.1-3">
+<pre>      if (random mod 100) &lt; pct then
+         selected = true
+      else
+         selected = false
+</pre><a href="#section-6.7.4.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-6.7.4.1-4">With this pseudocode or other methods in place for determining whether
+or not the message is part of the percentage of messages subject to
+the express DMARC policy, the following rules apply:<a href="#section-6.7.4.1-4" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-6.7.4.1-5.1">
+                <p id="section-6.7.4.1-5.1.1">If email is subject to the DMARC policy of "quarantine", the Mail
 Receiver SHOULD quarantine the message.  If the email is not subject
 to the "quarantine" policy (due to the "pct" tag), the Mail Receiver
-SHOULD apply local message classification as normal.<a href="#section-6.7.4-2" class="pilcrow">¶</a></p>
-<p id="section-6.7.4-3">If email is subject to the DMARC policy of "reject", the Mail
-Receiver SHOULD reject the message (see Section 9.3).  If the email
-is not subject to the "reject" policy (due to the "pct" tag), the
-Mail Receiver SHOULD treat the email as though the "quarantine"
-policy applies.  This behavior allows Domain Owners to experiment
-with progressively stronger policies without relaxing existing
-policy.<a href="#section-6.7.4-3" class="pilcrow">¶</a></p>
-<p id="section-6.7.4-4">Mail Receivers implement "pct" via statistical mechanisms that
-achieve a close approximation to the requested percentage and provide
-a representative sample across a reporting period.<a href="#section-6.7.4-4" class="pilcrow">¶</a></p>
+SHOULD apply local message classification as normal.<a href="#section-6.7.4.1-5.1.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-6.7.4.1-5.2">
+                <p id="section-6.7.4.1-5.2.1">If email is subject to the DMARC policy of "reject", the Mail
+Receiver SHOULD reject the message (see <a href="#rejecting-messages" class="xref">Section 9.3</a>).  If
+the email is not subject to the "reject" policy (due to the "pct" tag),
+the Mail Receiver SHOULD treat the email as though the "quarantine"
+policy applies.<a href="#section-6.7.4.1-5.2.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+<p id="section-6.7.4.1-6">However, regardless of whether or not the "pct" tag is present, the Mail
+Receiver MUST include all relevant message data in any reports produced.<a href="#section-6.7.4.1-6" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.1-7">The described behavior here is meant to allow Domain Owners to
+experiment with progressively stronger policies without relaxing
+existing policy. However, the use of the phrase "close approximation
+of the stated percent" along with the pseudocode sample hint at the
+shortcomings inherent in implementing this tag.<a href="#section-6.7.4.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="shortcomings-of-the-pct-tag">
+<section id="section-6.7.4.2">
+            <h5 id="name-shortcomings-of-the-pct-tag">
+<a href="#section-6.7.4.2" class="section-number selfRef">6.7.4.2. </a><a href="#name-shortcomings-of-the-pct-tag" class="section-name selfRef">Shortcomings of the "pct" Tag</a>
+            </h5>
+<p id="section-6.7.4.2-1">Put simply, the "pct" tag will only work exactly as intended if its
+value is either "0" or "100". For any other value, the produced results
+will vary, sometimes greatly, from the intended value, and the size of
+the variance is likely to be different from day to day.<a href="#section-6.7.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.2-2">The "pct" tag is a request to take a sample of a larger population and
+apply different rules to it. The population is made up of all messages
+that produce DMARC "fail" results for that domain in a given day, and
+the sample size is the percentage of that population represented by
+the value of the "pct" tag. It is trivial to perform this sampling to
+the exact number specified if the population size is known, but the
+nature of email is such that the population size cannot be known until
+all messages have been collected and evaluated that day. Email traffic
+tends to flow in spurts, not at a constant level throughout the day,
+and so a volume seen during any time slice cannot be extrapolated
+across a 24 hour period. Waiting until the end of the day to decide
+which messages to either quarantine or reject goes against all best
+practices and exposes the mail-receiving organization to vectors of
+abuse, and so we must approximate the population and sample sizes on
+the fly.<a href="#section-6.7.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.2-3">The pseudocode shown above is an example of that approximation, relying
+on a random number generator to effectively produce a number between 0
+and 99, inclusive. If that number is less than the value of the "pct"
+tag, then a message producing a DMARC "fail" result will be subject to
+the DMARC policy in question; if not, it will be subject to the lesser
+policy. Over time and given enough iterations of the pseudocode, this
+should produce a roughly uniform distribution of all values across the
+range. However, mathematics teaches us that this roughly uniform
+distribution cannot be guaranteed to produce the desired result.<a href="#section-6.7.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.2-4">This kind of sampling is known in mathematics as a Binomial Distribution,
+and it can be expressed by the following function, known as a probability
+mass function (PMF):<a href="#section-6.7.4.2-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.7.4.2-5">
+<pre>              n!         x          n-x
+  f(x) = ----------- *  p  * (1 - p)
+         (n-x)! * x!
+</pre><a href="#section-6.7.4.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-6.7.4.2-6">In English, the PMF is a way to calculate the probability that x items
+from a sample of n items will have the desired result when p is the
+probability that any one item will have the desired result.<a href="#section-6.7.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.2-7">For example, for a DMARC policy record with pct=20, we let p = 0.2,
+and to calculate the probability that 1 out of every 5 messages will
+be assigned the requested policy, we have:<a href="#section-6.7.4.2-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.7.4.2-8">
+<pre>        5!           1            5-1
+   ----------- *  0.2  * (1 - 0.2)     =
+   (5-1)! * 1!
+
+
+     120            4
+     --- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 41%
+      24
+
+</pre><a href="#section-6.7.4.2-8" class="pilcrow">¶</a>
+</div>
+<p id="section-6.7.4.2-9">The above demonstrates that for every five messages producing a DMARC "fail"
+result, there is only a 41% chance that just one of the five will have the
+requested policy applied to it. The table below shows the percent probability
+for all possible results:<a href="#section-6.7.4.2-9" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6.7.4.2-10">
+<pre>     -----------------------------------
+     | X  | Percent chance that X of 5 |
+     |    |  will have policy applied  |
+     -----------------------------------
+     | 0  |        32.768%             |
+     -----------------------------------
+     | 1  |        40.96%              |
+     -----------------------------------
+     | 2  |        20.48%              |
+     -----------------------------------
+     | 3  |         5.12%              |
+     -----------------------------------
+     | 4  |         0.64%              |
+     -----------------------------------
+     | 5  |         &lt; 0.1%             |
+     -----------------------------------
+</pre><a href="#section-6.7.4.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-6.7.4.2-11">It should be clear here that application of the pct tag is quite likely
+to not be done at the desired level. The only exceptions to this are the
+following values:<a href="#section-6.7.4.2-11" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-6.7.4.2-12.1">"100" - The default, in which every message that produces a DMARC "fail"
+result will be subject to application of the specified policy.<a href="#section-6.7.4.2-12.1" class="pilcrow">¶</a>
+</li>
+<li id="section-6.7.4.2-12.2">"0" - A request that zero percent of messages producing a DMARC "fail"
+result have the specified policy applied. While this is seemingly a
+non-sensical request, this value has been given special meaning by some
+mailbox providers when combined with certain "p=" values to alter DMARC
+processing and/or reporting for the domain publishing such a policy.<a href="#section-6.7.4.2-12.2" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
 </section>
 </div>
 <div id="store-results-of-dmarc-processing">

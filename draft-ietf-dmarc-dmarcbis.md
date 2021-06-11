@@ -742,7 +742,7 @@ pct:
 :   (plain-text integer between 0 and 100, inclusive; OPTIONAL;
     default is 100). For the RFC5322.From domain to which the DMARC 
     record applies, the "pct" tag is the percentage of messages 
-    producing a DMARC result of 'fail' to which the Domain Owner wishes 
+    producing a DMARC result of "fail" to which the Domain Owner wishes 
     its preferred handling policy be applied.  However, this MUST NOT be 
     applied to the DMARC-generated reports, all of which must be sent and 
     received unhindered.  
@@ -751,7 +751,7 @@ pct:
     from experimenting with strong authentication-based mechanisms. The intent
     of the "pct" tag is to give Domain Owners a method to enact a slow rollout
     of enforcement of the DMARC mechanism, but as is discussed in (#message-sampling)
-    the tag is at best a very rough approximation of such a method.
+    the tag is at best a rough approximation of such a method.
 
 rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
@@ -1115,11 +1115,11 @@ Organizational Domain has declined to do so.
 ### Message Sampling {#message-sampling}
 
 The "pct" tag is intended as a method for Domain Owners to use in a slow
-rollout of enforcement of the DMARC mechanism, allowing the Domain Owner
-to request that only some mail using its domain as the RFC5322.From domain
-and producing DMARC "fail" results be subject to its strictest requested
-policy. This section will discuss the idea behind its implementation and
-the shortcomings inherent in its usage.
+rollout of enforcement of the DMARC mechanism. It is designed to allow
+the Domain Owner to request that only some mail using its domain as the 
+RFC5322.From domain and producing DMARC "fail" results be subject to its 
+strictest requested policy. This section will discuss the idea behind its 
+implementation and the shortcomings inherent in its usage.
 
 #### Intended Implementation of the "pct" Tag
 The intended implementation of the "pct" tag by a mail-receiving organization
@@ -1129,7 +1129,7 @@ If the "pct" tag is present in the policy record, the Mail Receiver MUST
 NOT enact the requested policy ("p" tag or "sp" tag") on more than a close 
 approximation of the stated percent of the totality of affected messages.  
 Such a close approximation might be achieved by implementation of the 
-following or similar pseucode:
+following or similar pseudocode:
 
 ~~~
       if (random mod 100) < pct then 
@@ -1138,70 +1138,127 @@ following or similar pseucode:
          selected = false
 ~~~
 
-However, regardless of whether or not the "pct" tag is present, the Mail 
-Receiver MUST include all relevant message data in any reports produced.
+With this pseudocode or other methods in place for determining whether
+or not the message is part of the percentage of messages subject to 
+the express DMARC policy, the following rules apply:
 
-If email is subject to the DMARC policy of "quarantine", the Mail
+* If email is subject to the DMARC policy of "quarantine", the Mail
 Receiver SHOULD quarantine the message.  If the email is not subject
 to the "quarantine" policy (due to the "pct" tag), the Mail Receiver
 SHOULD apply local message classification as normal.
 
-If email is subject to the DMARC policy of "reject", the Mail
+* If email is subject to the DMARC policy of "reject", the Mail
 Receiver SHOULD reject the message (see (#rejecting-messages)).  If 
 the email is not subject to the "reject" policy (due to the "pct" tag),
 the Mail Receiver SHOULD treat the email as though the "quarantine"
 policy applies.  
 
-The described behavior here is meant to allows Domain Owners to 
+However, regardless of whether or not the "pct" tag is present, the Mail 
+Receiver MUST include all relevant message data in any reports produced.
+
+The described behavior here is meant to allow Domain Owners to 
 experiment with progressively stronger policies without relaxing 
 existing policy. However, the use of the phrase "close approximation
 of the stated percent" along with the pseudocode sample hint at the
-shortcomings inherent in implemeting this tag.
+shortcomings inherent in implementing this tag.
 
 #### Shortcomings of the "pct" Tag
 Put simply, the "pct" tag will only work exactly as intended if its 
 value is either "0" or "100". For any other value, the produced results 
-will vary, sometimes greatly, from the intended value. This variance will 
-tend to be larger if either the value of "pct" is low or the number of 
-messages producing a DMARC "fail" result is low, and the variances will 
-be inconsistent from day to day. The reasons for this lie both in the 
-nature of mail flow and in the mathematical concept of sample distribution 
-vs. population distribution.
+will vary, sometimes greatly, from the intended value, and the size of
+the variance is likely to be different from day to day. 
 
-In mathematical terms, the "pct" tag is a request to take a sample of a
-larger population and apply different rules to it. The population is 
-made up of all messages that produce DMARC "fail" results for that domain
-in a given day, and the sample size is the percentage of that population
-represented by the value of the "pct" tag. It is trivial to perform this
-sampling to the exact number specified if the population size is known,
-but the nature of email is such that the population size cannot be known
-until all messages have been collected and evaluated that day. Waiting
-until the end of the day to decide which messages to either quarantine or
-reject goes against all best practices and exposes the mail-receiving
-organization to vectors of abuse, and so we must approximate the population
-and sample sizes on the fly.
+The "pct" tag is a request to take a sample of a larger population and 
+apply different rules to it. The population is made up of all messages 
+that produce DMARC "fail" results for that domain in a given day, and 
+the sample size is the percentage of that population represented by 
+the value of the "pct" tag. It is trivial to perform this sampling to 
+the exact number specified if the population size is known, but the 
+nature of email is such that the population size cannot be known until 
+all messages have been collected and evaluated that day. Email traffic 
+tends to flow in spurts, not at a constant level throughout the day, 
+and so a volume seen during any time slice cannot be extrapolated 
+across a 24 hour period. Waiting until the end of the day to decide 
+which messages to either quarantine or reject goes against all best 
+practices and exposes the mail-receiving organization to vectors of 
+abuse, and so we must approximate the population and sample sizes on 
+the fly.
 
-The simple pseudocode shown above is an example of that approximation,
-relying on a random number generator to effectively produce a number 
-between 0 and 99, inclusive. If that number is less than the value of
-the "pct" tag, then the message in question will be subject to the
-DMARC policy in question; if not, it will be subject to the lesser policy. In
-this way, the range of possible numbers produced by the pseudocode is a
-stand-in for the population of messages producing a DMARC "fail" result, 
-and the value produced by each iteration of the pseudocode is a sample of 
-that population.  Over time and given enough iterations of the pseudocode, 
-this should produce a roughly equal distribution of all values across the 
-range, which means that for large population sizes, the sample size to which 
-the policy will be applied should be close to the requested percentage. It 
-is when the population size is small that the model breaks down.
+The pseudocode shown above is an example of that approximation, relying 
+on a random number generator to effectively produce a number between 0 
+and 99, inclusive. If that number is less than the value of the "pct" 
+tag, then a message producing a DMARC "fail" result will be subject to 
+the DMARC policy in question; if not, it will be subject to the lesser 
+policy. Over time and given enough iterations of the pseudocode, this 
+should produce a roughly uniform distribution of all values across the 
+range. However, mathematics teaches us that this roughly uniform 
+distribution cannot be guaranteed to produce the desired result.
 
-To illustrate, let there be a DMARC policy record published with a pct
-tag for which the value is "10", meaning the Domain Owner requests that
-the strictest policy in its record be applied to 10% of the messages using
-its domain that produce a DMARC "fail" result. In order for a given message
-to be chosen for strict policy application, the pseudocode must produce a number
-between 0 and 9, meaning that for every message that is a candidate for the 
-strictest policy, there is a 90% chance that it won't be chosen.
+This kind of sampling is known in mathematics as a Binomial Distribution,
+and it can be expressed by the following function, known as a probability
+mass function (PMF):
+
+~~~
+              n!         x          n-x
+  f(x) = ----------- *  p  * (1 - p)
+         (n-x)! * x!
+~~~
+
+In English, the PMF is a way to calculate the probability that x items
+from a sample of n items will have the desired result when p is the
+probability that any one item will have the desired result.
+
+For example, for a DMARC policy record with pct=20, we let p = 0.2,
+and to calculate the probability that 1 out of every 5 messages will
+be assigned the requested policy, we have:
+
+~~~
+        5!           1            5-1
+   ----------- *  0.2  * (1 - 0.2)     =
+   (5-1)! * 1!
+
+
+     120            4
+     --- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 41%
+      24
+         
+~~~
+
+The above demonstrates that for every five messages producing a DMARC "fail" 
+result, there is only a 41% chance that just one of the five will have the
+requested policy applied to it. The table below shows the percent probability
+for all possible results:
+
+~~~
+     -----------------------------------
+     | X  | Percent chance that X of 5 |
+     |    |  will have policy applied  |
+     -----------------------------------
+     | 0  |        32.768%             |
+     -----------------------------------
+     | 1  |        40.96%              |
+     -----------------------------------
+     | 2  |        20.48%              |
+     -----------------------------------
+     | 3  |         5.12%              |
+     -----------------------------------
+     | 4  |         0.64%              |
+     -----------------------------------
+     | 5  |         < 0.1%             |
+     -----------------------------------
+~~~
+
+It should be clear here that application of the pct tag is quite likely
+to not be done at the desired level. The only exceptions to this are the
+following values:
+
+* "100" - The default, in which every message that produces a DMARC "fail"
+  result will be subject to application of the specified policy.
+* "0" - A request that zero percent of messages producing a DMARC "fail" 
+  result have the specified policy applied. While this is seemingly a
+  non-sensical request, this value has been given special meaning by some
+  mailbox providers when combined with certain "p=" values to alter DMARC
+  processing and/or reporting for the domain publishing such a policy.
 
 ### Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
