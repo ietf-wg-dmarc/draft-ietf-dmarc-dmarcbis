@@ -2740,6 +2740,10 @@ come to an understanding of how its domain is being misused.
 ### Ticket 104 - Update the Security Considerations section 11.3 on DNS
 * Updated text. Diffs are here - https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files
 
+## June 16, 2021
+### Publication of draft-ietf-dmarc-dmarcbis-02
+* Includes final resolution for tickets 4, 47, 50, 52, 53, 54, and 82
+
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 

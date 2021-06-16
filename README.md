@@ -250,7 +250,9 @@ Internet-Draft                  DMARCbis                       June 2021
      C.15. April 22, 2021  . . . . . . . . . . . . . . . . . . . . .  68
        C.15.1.  Ticket 104 - Update the Security Considerations
                section 11.3 on DNS . . . . . . . . . . . . . . . . .  68
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  68
+     C.16. June 16, 2021 . . . . . . . . . . . . . . . . . . . . . .  68
+       C.16.1.  Publication of draft-ietf-dmarc-dmarcbis-02  . . . .  68
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  69
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  69
 
 1.  Introduction
@@ -273,8 +275,6 @@ Internet-Draft                  DMARCbis                       June 2021
 
    *  Level of concern for mail that fails authentication checks
 
-   *  Desire for reports about email use of the domain name
-
 
 
 
@@ -282,6 +282,8 @@ Herr (ed) & Levine (ed) Expires 18 December 2021                [Page 5]
 
 Internet-Draft                  DMARCbis                       June 2021
 
+
+   *  Desire for reports about email use of the domain name
 
    DMARC can cover non-existent sub-domains, below the "Organizational
    Domain", as well as domains at the top of the name hierarchy,
@@ -326,8 +328,6 @@ Internet-Draft                  DMARCbis                       June 2021
    due consideration before deployment, particularly with configurations
    that can cause mail to be rejected.  These are discussed in
    Section 9.
-
-
 
 
 
@@ -3792,6 +3792,25 @@ C.15.1.  Ticket 104 - Update the Security Considerations section 11.3 on
       draft-ietf-dmarc-dmarcbis/pull/31/files (https://github.com/ietf-
       wg-dmarc/draft-ietf-dmarc-dmarcbis/pull/31/files)
 
+C.16.  June 16, 2021
+
+C.16.1.  Publication of draft-ietf-dmarc-dmarcbis-02
+
+   *  Includes final resolution for tickets 4, 47, 50, 52, 53, 54, and
+      82
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 18 December 2021               [Page 68]
+
+Internet-Draft                  DMARCbis                       June 2021
+
+
 Acknowledgements
 
    DMARC and the draft version of this document submitted to the
@@ -3803,14 +3822,6 @@ Acknowledgements
    LinkedIn, Microsoft, Netease, PayPal, ReturnPath, The Trusted Domain
    Project, and Yahoo!.  Although the contributors and supporters are
    too numerous to mention, notable individual contributions were made
-
-
-
-Herr (ed) & Levine (ed) Expires 18 December 2021               [Page 68]
-
-Internet-Draft                  DMARCbis                       June 2021
-
-
    by J.  Trent Adams, Michael Adkins, Monica Chew, Dave Crocker, Tim
    Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
    The contributors would also like to recognize the invaluable input
@@ -3833,17 +3844,6 @@ Authors' Addresses
    Standcore LLC
 
    Email: standards@standore.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 
