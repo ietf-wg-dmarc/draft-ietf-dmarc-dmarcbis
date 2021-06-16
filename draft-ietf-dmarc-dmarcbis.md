@@ -75,11 +75,13 @@ Domain", as well as domains at the top of the name hierarchy,
 controlled by Public Suffix Operators (PSOs).
 
 As with SPF and DKIM, DMARC classes results as "pass" or "fail". A
-pass from either SPF or DKIM is required. Also the passed domain must
-be "aligned" with the RFC5322.From domain.  Domains are said to be 
-"in alignment" if they have the same Organizational Domain, which is
-at the top of the domain hierarchy, while having the same administrative
-authority as the RFC5322.From domain.
+pass from either SPF or DKIM is required. Depending on the stated 
+DMARC policy, the passed domain must be "aligned" with the RFC5322.From 
+domain in one of two modes - "relaxed" or "strict".  Domains are said 
+to be "in relaxed alignment" if they have the same Organizational Domain, 
+which is at the top of the domain hierarchy, while having the same 
+administrative authority as the RFC5322.From domain, while domains are
+"in strict alignment" if and only if they are identical.
 
 A DMARC pass indicates only that the RFC5322.From domain has been
 authenticated for that message. Of course, authentication does not
@@ -341,33 +343,52 @@ domain, including domains used by a mailing list or even a bad actor.
 Therefore, merely bearing a valid signature is not enough to infer
 authenticity of the Author Domain.
 
-To illustrate, if a validated DKIM signature successfully verifies
-with a "d=" domain of "example.com", and the RFC5322.From address is
-"alerts@news.example.com", the DKIM "d=" domain and the RFC5322.From
-domain are considered to be "in alignment".  However, a DKIM
-signature bearing a value of "d=com" would never allow an "in
-alignment" result, as "com" should appear on all public suffix lists
-(see (#public-suffix-lists)) and therefore cannot be an
-Organizational Domain.
+DMARC permits Identifier Alignment based on the result of a DKIM
+authentication to be strict or relaxed. (Note that these terms are
+not related to DKIM's "simple" and "relaxed" canonicalization modes.)
+
+In relaxed mode, the Organizational Domains of both the DKIM-authenticated
+signing domain (taken from the value of the d= tag in the signature)
+and that of the RFC5322.From domain must be equal if the identifiers
+are to be considered to be aligned. In strict mode, only an exact match
+between both the Fully Qualified Domain Names (FQDNs) is considered
+to produce Identifier Alignment.
+
+To illustrate, in relaxed mode, if a validated DKIM signature 
+successfully verifies with a "d=" domain of "example.com", and the 
+RFC5322.From address is "alerts@news.example.com", the DKIM "d=" 
+domain and the RFC5322.From domain are considered to be "in alignment".
+In strict mode, this test would fail because the d= domain does not
+exactly match the RFC5322.From domain.
+
+However, a DKIM signature bearing a value of "d=com" would never allow 
+an "in alignment" result, as "com" should appear on all public suffix 
+lists (see (#public-suffix-lists)) and therefore cannot be an Organizational 
+Domain.
 
 Note that a single email can contain multiple DKIM signatures, and it
-is considered to be a DMARC "pass" if any DKIM signature is aligned
-and verifies.
+is considered to produce a DMARC "pass" result if any DKIM signature 
+is aligned and verifies.
 
 ###  SPF-Authenticated Identifiers {#spf-identifiers}
 
 DMARC permits Identifier Alignment based on the result of an SPF
-authentication. As with DKIM, Identifier Alignement is determined
-based on whether or not two domain's Organizational Domains are the
-same.
+authentication. As with DKIM, Identifier Alignement can be either 
+strict or relaxed.
 
-For example, if a message passes an SPF check with an
+In relaxed mode, the Organizational Domains of the SPF-authenticated 
+domain and RFC5322.From domain must be equal if the identifiers are
+to be considered to be aligned. In strict mode, the two FQDNs must
+match exactly in order from them to be considered to be aligned.
+
+For example, in relaxed mode, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
 portion of the RFC5322.From header field contains
 "payments@example.com", the Authenticated RFC5321.MailFrom domain
 identifier and the RFC5322.From domain are considered to be "in
 alignment" because they have the same Organizational Domain
-("example.com").
+("example.com"). In strict mode, this test would fail because the
+two domains are not identical.
 
 The reader should note that SPF alignment checks in DMARC rely solely 
 on the RFC5321.MailFrom domain. This differs from section 2.3 of
@@ -757,12 +778,11 @@ rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  [@!DMARC-Aggregate-Reporting]
 discusses considerations that apply when the domain name of a URI differs 
-from that of the domain advertising the policy.  
-See (#external-report-addresses) for additional 
-considerations.  Any valid URI can be specified.  A Mail Receiver 
-MUST implement support for a "mailto:" URI, i.e., the ability to 
-send a DMARC report via electronic mail.  If not provided, Mail 
-Receivers MUST NOT generate aggregate feedback reports.  URIs 
+from that of the domain advertising the policy.  See (#external-report-addresses) 
+for additional considerations.  Any valid URI can be specified.  
+A Mail Receiver MUST implement support for a "mailto:" URI, i.e., the 
+ability to send a DMARC report via electronic mail.  If not provided, 
+Mail Receivers MUST NOT generate aggregate feedback reports.  URIs 
 not supported by Mail Receivers MUST be ignored.  The aggregate 
 feedback report format is described in the DMARC reporting documents.
 
@@ -821,16 +841,17 @@ follows:
 [FIXTHIS: Reference to [RFC3986] in code block]
 
 ~~~
-  dmarc-uri       = URI [ "!" 1*DIGIT [ "k" / "m" / "g" / "t" ] ]
+  dmarc-uri       = URI 
                     ; "URI" is imported from [RFC3986]; commas (ASCII
                     ; 0x2C) and exclamation points (ASCII 0x21)
-                    ; MUST be encoded; the numeric portion MUST fit
-                    ; within an unsigned 64-bit integer
+                    ; MUST be encoded
 
   dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
 
   dmarc-tag       = dmarc-request /
                     dmarc-srequest /
+                    dmarc-adkim /
+                    dmarc-aspf /
                     dmarc-auri /
                     dmarc-furi /
                     dmarc-fo /
@@ -847,6 +868,10 @@ follows:
 
   dmarc-srequest  = "sp" *WSP "=" *WSP
                     ( "none" / "quarantine" / "reject" )
+
+  dmarc-adkim     = "adkim" *WSP "=" *WSP ( "r" / "s" )
+
+  dmarc-aspf      = "aspf" *WSP "=" *WSP ( "r" / "s" )
 
   dmarc-auri      = "rua" *WSP "=" *WSP
                     dmarc-uri *(*WSP "," *WSP dmarc-uri)
@@ -1128,8 +1153,8 @@ can be stated as follows:
 If the "pct" tag is present in the policy record, the Mail Receiver MUST 
 NOT enact the requested policy ("p" tag or "sp" tag") on more than a close 
 approximation of the stated percent of the totality of affected messages.  
-Such a close approximation might be achieved by implementation of the 
-following or similar pseudocode:
+Such a close approximation might be achieved by use of the following or 
+similar pseudocode:
 
 ~~~
       if (random mod 100) < pct then 
@@ -1185,18 +1210,22 @@ abuse, and so we must approximate the population and sample sizes on
 the fly.
 
 The pseudocode shown above is an example of that approximation, relying 
-on a random number generator to effectively produce a number between 0 
-and 99, inclusive. If that number is less than the value of the "pct" 
+on a random number generator to effectively produce a whole number between 
+0 and 99, inclusive. If that number is less than the value of the "pct" 
 tag, then a message producing a DMARC "fail" result will be subject to 
 the DMARC policy in question; if not, it will be subject to the lesser 
 policy. Over time and given enough iterations of the pseudocode, this 
 should produce a roughly uniform distribution of all values across the 
-range. However, mathematics teaches us that this roughly uniform 
-distribution cannot be guaranteed to produce the desired result.
+range, which we will refer to going forward as "the pool".  However, 
+mathematics teaches us that the pool cannot be guaranteed to produce 
+the desired result.
 
-This kind of sampling is known in mathematics as a Binomial Distribution,
-and it can be expressed by the following function, known as a probability
-mass function (PMF):
+The sampling done to honor the "pct" tag is known in mathematics as a 
+Binomial Distribution, where a number of independent samples of the pool
+are taken, with each one having the same probability of producing a number
+that is less than the value of the "pct" tag. A Binomial Distribution is
+expressed by the following function, known as a probability mass 
+function (PMF):
 
 ~~~
               n!         x          n-x
@@ -1218,16 +1247,18 @@ be assigned the requested policy, we have:
    (5-1)! * 1!
 
 
-     120            4
-     --- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 41%
+      120       1     4
+     ----- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 0.4096 
       24
+
+     0.4096 * 100 = 40.96%
          
 ~~~
 
 The above demonstrates that for every five messages producing a DMARC "fail" 
-result, there is only a 41% chance that just one of the five will have the
-requested policy applied to it. The table below shows the percent probability
-for all possible results:
+result, there is a slightly less than 41% chance that just one of the five 
+will have the requested policy applied to it. The table below shows the 
+percent probability for all possible results:
 
 ~~~
      -----------------------------------
@@ -1503,7 +1534,8 @@ containing "foo@example.com" that can pass both authentication and
 the DMARC check against "example.com".
 
 The Organizational Domain administrator should be careful not to
-delegate control of subdomains if this is an issue.
+delegate control of subdomains if this is an issue, and to consider
+using the "strict" Identifier Alignment option if appropriate.
 
 ##  Interoperability Issues {#interoperability-issues}
 
@@ -1700,8 +1732,8 @@ The initial set of entries in this registry is as follows:
 {align="left"}
 | Tag Name | Reference | Status   | Description                              |
 |:---------|:----------|:---------|:-----------------------------------------|
-| adkim    | RFC 7489  | historic | DKIM alignment mode                      |
-| aspf     | RFC 7489  | historic | SPF alignment mode                       |
+| adkim    | RFC 7489  | current  | DKIM alignment mode                      |
+| aspf     | RFC 7489  | current  | SPF alignment mode                       |
 | fo       | RFC 7489  | current  | Failure reporting options                |
 | p        | RFC 7489  | current  | Requested handling policy                |
 | pct      | RFC 7489  | current  | Sampling rate                            |
@@ -2110,7 +2142,7 @@ Example 1: SPF in alignment:
 
 In this case, the RFC5321.MailFrom parameter and the RFC5322.From 
 header field have identical DNS domains.  Thus, the identifiers are in
-alignment.
+strict alignment.
 
 Example 2: SPF in alignment (parent):
 
@@ -2125,7 +2157,7 @@ Example 2: SPF in alignment (parent):
 
 In this case, the RFC5322.From header parameter includes a DNS
 domain that is a parent of the RFC5321.MailFrom domain.  Thus, the
-identifiers are in alignment.
+identifiers are in relaxed alignment.
 
 Example 3: SPF not in alignment:
 
@@ -2158,7 +2190,7 @@ Example 1: DKIM in alignment:
 ~~~
 
 In this case, the DKIM "d=" parameter and the RFC5322.From header field have
-identical DNS domains.  Thus, the identifiers are in alignment.
+identical DNS domains.  Thus, the identifiers are in strict alignment.
 
 Example 2: DKIM in alignment (parent):
 
@@ -2172,7 +2204,7 @@ Example 2: DKIM in alignment (parent):
 
 In this case, the DKIM signature's "d=" parameter includes a DNS
 domain that is a parent of the RFC5322.From domain.  Thus, the
-identifiers are in alignment.
+identifiers are in relaxed alignment.
 
 Example 3: DKIM not in alignment:
 
@@ -2221,6 +2253,9 @@ indicating that:
 *  Aggregate feedback reports should be sent via email to the address
    "dmarc-feedback@example.com"
    ("rua=mailto:dmarc-feedback@example.com")
+
+*  All messages from this Organizational Domain are subject to this
+   policy (no "pct" tag present, so the default of 100% applies).
 
 The DMARC policy record might look like this when retrieved using a
 common command-line tool:
@@ -2358,7 +2393,7 @@ create an entry like the following in the appropriate zone file
 Mediators and other third parties should refer to the DMARC reporting documents
 for the full details of this mechanism.
 
-###  Subdomain and Multiple Aggregate Report URIs {#subdomain-and-multiple-aggregate-report-uris}
+###  Subdomain, Sampling, and Multiple Aggregate Report URIs {#subdomain-sampling-and-multiple-aggregate-report-uris}
 
 The Domain Owner has implemented SPF and DKIM in a subdomain used for
 pre-production testing of messaging services.  It now wishes to express
@@ -2391,6 +2426,10 @@ indicating that:
    ("rua=mailto:dmarc-feedback@example.com,
      mailto:tld-test@thirdparty.example.net")
 
+*  The Domain Owner desires that only 25% of messages using this
+   Organizational Domain that fail authentication are subject to 
+   this policy ("pct=25")
+
 The DMARC policy record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
 line but is wrapped here for publication):
@@ -2398,7 +2437,7 @@ line but is wrapped here for publication):
 ~~~
   % dig +short TXT _dmarc.test.example.com
   "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
-   mailto:tld-test@thirdparty.example.net"
+   mailto:tld-test@thirdparty.example.net pct=25"
 ~~~
 
 To publish such a record, the DNS administrator for the Domain Owner
@@ -2410,7 +2449,8 @@ file:
 
   _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
                     "rua=mailto:dmarc-feedback@example.com,"
-                    "mailto:tld-test@thirdparty.example.net" )
+                    "mailto:tld-test@thirdparty.example.net;"
+                    "pct=25" )
 ~~~
 
 Once enough time has passed to allow for collecting enough reports to
@@ -2472,7 +2512,8 @@ returning a reply to the DATA command.
 
 Given a DMARC record and the set of Authenticated Identifiers, the
 Mail Receiver checks to see if the Authenticated Identifiers align
-with the Author Domain.
+with the Author Domain (taking into consideration any strict versus
+relaxed options found in the DMARC record).
 
 For example, the following sample data is considered to be from a
 piece of email originating from the Domain Owner of "example.com":
@@ -2482,7 +2523,8 @@ piece of email originating from the Domain Owner of "example.com":
   SPF-authenticated Identifier: mail.example.com
   DKIM-authenticated Identifier: example.com
   DMARC record:
-    "v=DMARC1; p=reject; rua=mailto:dmarc-feedback@example.com"
+    "v=DMARC1; p=reject; aspf=r; 
+     rua=mailto:dmarc-feedback@example.com"
 ~~~
 
 In the above sample, both the SPF-authenticated Identifier and the

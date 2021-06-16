@@ -1114,7 +1114,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 13 December 2021</td>
+<td class="center">Expires 18 December 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1130,12 +1130,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-06-11" class="published">11 June 2021</time>
+<time datetime="2021-06-16" class="published">16 June 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-12-13">13 December 2021</time></dd>
+<dd class="expires"><time datetime="2021-12-18">18 December 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1182,7 +1182,7 @@ incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 December 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 December 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1511,7 +1511,7 @@ incoming mail.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
                     <p id="section-toc.1-1.15.2.2.2.3.1"><a href="#section-b.2.3" class="xref">B.2.3</a>.  <a href="#name-per-message-failure-reports" class="xref">Per-Message Failure Reports Directed to Third Party</a><a href="#section-toc.1-1.15.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.15.2.2.2.4">
-                    <p id="section-toc.1-1.15.2.2.2.4.1"><a href="#section-b.2.4" class="xref">B.2.4</a>.  <a href="#name-subdomain-and-multiple-aggr" class="xref">Subdomain and Multiple Aggregate Report URIs</a><a href="#section-toc.1-1.15.2.2.2.4.1" class="pilcrow">¶</a></p>
+                    <p id="section-toc.1-1.15.2.2.2.4.1"><a href="#section-b.2.4" class="xref">B.2.4</a>.  <a href="#name-subdomain-sampling-and-mult" class="xref">Subdomain, Sampling, and Multiple Aggregate Report URIs</a><a href="#section-toc.1-1.15.2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -1725,11 +1725,13 @@ publish a DNS record indicating their RFC5322.From field:<a href="#section-1-2" 
 Domain", as well as domains at the top of the name hierarchy,
 controlled by Public Suffix Operators (PSOs).<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">As with SPF and DKIM, DMARC classes results as "pass" or "fail". A
-pass from either SPF or DKIM is required. Also the passed domain must
-be "aligned" with the RFC5322.From domain.  Domains are said to be
-"in alignment" if they have the same Organizational Domain, which is
-at the top of the domain hierarchy, while having the same administrative
-authority as the RFC5322.From domain.<a href="#section-1-5" class="pilcrow">¶</a></p>
+pass from either SPF or DKIM is required. Depending on the stated
+DMARC policy, the passed domain must be "aligned" with the RFC5322.From
+domain in one of two modes - "relaxed" or "strict".  Domains are said
+to be "in relaxed alignment" if they have the same Organizational Domain,
+which is at the top of the domain hierarchy, while having the same
+administrative authority as the RFC5322.From domain, while domains are
+"in strict alignment" if and only if they are identical.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">A DMARC pass indicates only that the RFC5322.From domain has been
 authenticated for that message. Of course, authentication does not
 carry an explicit or implicit value assertion about that message or
@@ -2074,17 +2076,28 @@ authentication because a message can bear a valid signature from any
 domain, including domains used by a mailing list or even a bad actor.
 Therefore, merely bearing a valid signature is not enough to infer
 authenticity of the Author Domain.<a href="#section-3.14.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.14.1-2">To illustrate, if a validated DKIM signature successfully verifies
-with a "d=" domain of "example.com", and the RFC5322.From address is
-"alerts@news.example.com", the DKIM "d=" domain and the RFC5322.From
-domain are considered to be "in alignment".  However, a DKIM
-signature bearing a value of "d=com" would never allow an "in
-alignment" result, as "com" should appear on all public suffix lists
-(see <a href="#public-suffix-lists" class="xref">Appendix A.6.1</a>) and therefore cannot be an
-Organizational Domain.<a href="#section-3.14.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.14.1-3">Note that a single email can contain multiple DKIM signatures, and it
-is considered to be a DMARC "pass" if any DKIM signature is aligned
-and verifies.<a href="#section-3.14.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-2">DMARC permits Identifier Alignment based on the result of a DKIM
+authentication to be strict or relaxed. (Note that these terms are
+not related to DKIM's "simple" and "relaxed" canonicalization modes.)<a href="#section-3.14.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-3">In relaxed mode, the Organizational Domains of both the DKIM-authenticated
+signing domain (taken from the value of the d= tag in the signature)
+and that of the RFC5322.From domain must be equal if the identifiers
+are to be considered to be aligned. In strict mode, only an exact match
+between both the Fully Qualified Domain Names (FQDNs) is considered
+to produce Identifier Alignment.<a href="#section-3.14.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-4">To illustrate, in relaxed mode, if a validated DKIM signature
+successfully verifies with a "d=" domain of "example.com", and the
+RFC5322.From address is "alerts@news.example.com", the DKIM "d="
+domain and the RFC5322.From domain are considered to be "in alignment".
+In strict mode, this test would fail because the d= domain does not
+exactly match the RFC5322.From domain.<a href="#section-3.14.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-5">However, a DKIM signature bearing a value of "d=com" would never allow
+an "in alignment" result, as "com" should appear on all public suffix
+lists (see <a href="#public-suffix-lists" class="xref">Appendix A.6.1</a>) and therefore cannot be an Organizational
+Domain.<a href="#section-3.14.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.14.1-6">Note that a single email can contain multiple DKIM signatures, and it
+is considered to produce a DMARC "pass" result if any DKIM signature
+is aligned and verifies.<a href="#section-3.14.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="spf-identifiers">
@@ -2093,20 +2106,24 @@ and verifies.<a href="#section-3.14.1-3" class="pilcrow">¶</a></p>
 <a href="#section-3.14.2" class="section-number selfRef">3.14.2. </a><a href="#name-spf-authenticated-identifie" class="section-name selfRef">SPF-Authenticated Identifiers</a>
           </h4>
 <p id="section-3.14.2-1">DMARC permits Identifier Alignment based on the result of an SPF
-authentication. As with DKIM, Identifier Alignement is determined
-based on whether or not two domain's Organizational Domains are the
-same.<a href="#section-3.14.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.14.2-2">For example, if a message passes an SPF check with an
+authentication. As with DKIM, Identifier Alignement can be either
+strict or relaxed.<a href="#section-3.14.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-2">In relaxed mode, the Organizational Domains of the SPF-authenticated
+domain and RFC5322.From domain must be equal if the identifiers are
+to be considered to be aligned. In strict mode, the two FQDNs must
+match exactly in order from them to be considered to be aligned.<a href="#section-3.14.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-3">For example, in relaxed mode, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
 portion of the RFC5322.From header field contains
 "payments@example.com", the Authenticated RFC5321.MailFrom domain
 identifier and the RFC5322.From domain are considered to be "in
 alignment" because they have the same Organizational Domain
-("example.com").<a href="#section-3.14.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.14.2-3">The reader should note that SPF alignment checks in DMARC rely solely
+("example.com"). In strict mode, this test would fail because the
+two domains are not identical.<a href="#section-3.14.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.14.2-4">The reader should note that SPF alignment checks in DMARC rely solely
 on the RFC5321.MailFrom domain. This differs from section 2.3 of
 <span>[<a href="#RFC7208" class="xref">RFC7208</a>]</span>, which recommends that SPF checks be done on not only the
-"MAIL FROM" but also on a separate check of the "HELO" identity.<a href="#section-3.14.2-3" class="pilcrow">¶</a></p>
+"MAIL FROM" but also on a separate check of the "HELO" identity.<a href="#section-3.14.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="alignment-and-extension-technologies">
@@ -2564,12 +2581,11 @@ the tag is at best a rough approximation of such a method.<a href="#section-6.3-
             <p id="section-6.3-4.14.1">Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>
 discusses considerations that apply when the domain name of a URI differs
-from that of the domain advertising the policy.<br>
-See <a href="#external-report-addresses" class="xref">Section 11.5</a> for additional
-considerations.  Any valid URI can be specified.  A Mail Receiver
-MUST implement support for a "mailto:" URI, i.e., the ability to
-send a DMARC report via electronic mail.  If not provided, Mail
-Receivers MUST NOT generate aggregate feedback reports.  URIs
+from that of the domain advertising the policy.  See <a href="#external-report-addresses" class="xref">Section 11.5</a>
+for additional considerations.  Any valid URI can be specified.<br>
+A Mail Receiver MUST implement support for a "mailto:" URI, i.e., the
+ability to send a DMARC report via electronic mail.  If not provided,
+Mail Receivers MUST NOT generate aggregate feedback reports.  URIs
 not supported by Mail Receivers MUST be ignored.  The aggregate
 feedback report format is described in the DMARC reporting documents.<a href="#section-6.3-4.14.1" class="pilcrow">¶</a></p>
 </dd>
@@ -2637,16 +2653,17 @@ a new version of DMARC.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
 follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 <p id="section-6.4-2">[FIXTHIS: Reference to [RFC3986] in code block]<a href="#section-6.4-2" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.4-3">
-<pre>  dmarc-uri       = URI [ "!" 1*DIGIT [ "k" / "m" / "g" / "t" ] ]
+<pre>  dmarc-uri       = URI
                     ; "URI" is imported from [RFC3986]; commas (ASCII
                     ; 0x2C) and exclamation points (ASCII 0x21)
-                    ; MUST be encoded; the numeric portion MUST fit
-                    ; within an unsigned 64-bit integer
+                    ; MUST be encoded
 
   dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
 
   dmarc-tag       = dmarc-request /
                     dmarc-srequest /
+                    dmarc-adkim /
+                    dmarc-aspf /
                     dmarc-auri /
                     dmarc-furi /
                     dmarc-fo /
@@ -2663,6 +2680,10 @@ follows:<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 
   dmarc-srequest  = "sp" *WSP "=" *WSP
                     ( "none" / "quarantine" / "reject" )
+
+  dmarc-adkim     = "adkim" *WSP "=" *WSP ( "r" / "s" )
+
+  dmarc-aspf      = "aspf" *WSP "=" *WSP ( "r" / "s" )
 
   dmarc-auri      = "rua" *WSP "=" *WSP
                     dmarc-uri *(*WSP "," *WSP dmarc-uri)
@@ -3015,8 +3036,8 @@ can be stated as follows:<a href="#section-6.7.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.7.4.1-2">If the "pct" tag is present in the policy record, the Mail Receiver MUST
 NOT enact the requested policy ("p" tag or "sp" tag") on more than a close
 approximation of the stated percent of the totality of affected messages.<br>
-Such a close approximation might be achieved by implementation of the
-following or similar pseudocode:<a href="#section-6.7.4.1-2" class="pilcrow">¶</a></p>
+Such a close approximation might be achieved by use of the following or
+similar pseudocode:<a href="#section-6.7.4.1-2" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.7.4.1-3">
 <pre>      if (random mod 100) &lt; pct then
          selected = true
@@ -3076,17 +3097,21 @@ practices and exposes the mail-receiving organization to vectors of
 abuse, and so we must approximate the population and sample sizes on
 the fly.<a href="#section-6.7.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-6.7.4.2-3">The pseudocode shown above is an example of that approximation, relying
-on a random number generator to effectively produce a number between 0
-and 99, inclusive. If that number is less than the value of the "pct"
+on a random number generator to effectively produce a whole number between
+0 and 99, inclusive. If that number is less than the value of the "pct"
 tag, then a message producing a DMARC "fail" result will be subject to
 the DMARC policy in question; if not, it will be subject to the lesser
 policy. Over time and given enough iterations of the pseudocode, this
 should produce a roughly uniform distribution of all values across the
-range. However, mathematics teaches us that this roughly uniform
-distribution cannot be guaranteed to produce the desired result.<a href="#section-6.7.4.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.7.4.2-4">This kind of sampling is known in mathematics as a Binomial Distribution,
-and it can be expressed by the following function, known as a probability
-mass function (PMF):<a href="#section-6.7.4.2-4" class="pilcrow">¶</a></p>
+range, which we will refer to going forward as "the pool".  However,
+mathematics teaches us that the pool cannot be guaranteed to produce
+the desired result.<a href="#section-6.7.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.7.4.2-4">The sampling done to honor the "pct" tag is known in mathematics as a
+Binomial Distribution, where a number of independent samples of the pool
+are taken, with each one having the same probability of producing a number
+that is less than the value of the "pct" tag. A Binomial Distribution is
+expressed by the following function, known as a probability mass
+function (PMF):<a href="#section-6.7.4.2-4" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.7.4.2-5">
 <pre>              n!         x          n-x
   f(x) = ----------- *  p  * (1 - p)
@@ -3105,16 +3130,18 @@ be assigned the requested policy, we have:<a href="#section-6.7.4.2-7" class="pi
    (5-1)! * 1!
 
 
-     120            4
-     --- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 41%
+      120       1     4
+     ----- * 0.2 * 0.8  = 5 * 0.2 * 0.4096 = 0.4096
       24
+
+     0.4096 * 100 = 40.96%
 
 </pre><a href="#section-6.7.4.2-8" class="pilcrow">¶</a>
 </div>
 <p id="section-6.7.4.2-9">The above demonstrates that for every five messages producing a DMARC "fail"
-result, there is only a 41% chance that just one of the five will have the
-requested policy applied to it. The table below shows the percent probability
-for all possible results:<a href="#section-6.7.4.2-9" class="pilcrow">¶</a></p>
+result, there is a slightly less than 41% chance that just one of the five
+will have the requested policy applied to it. The table below shows the
+percent probability for all possible results:<a href="#section-6.7.4.2-9" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-6.7.4.2-10">
 <pre>     -----------------------------------
      | X  | Percent chance that X of 5 |
@@ -3431,7 +3458,8 @@ email on behalf of the Organizational Domain.<a href="#section-9.4-1" class="pil
 containing "foo@example.com" that can pass both authentication and
 the DMARC check against "example.com".<a href="#section-9.4-2" class="pilcrow">¶</a></p>
 <p id="section-9.4-3">The Organizational Domain administrator should be careful not to
-delegate control of subdomains if this is an issue.<a href="#section-9.4-3" class="pilcrow">¶</a></p>
+delegate control of subdomains if this is an issue, and to consider
+using the "strict" Identifier Alignment option if appropriate.<a href="#section-9.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="interoperability-issues">
@@ -3625,13 +3653,13 @@ when processed by implementations conforming to prior specifications.<a href="#s
             <tr>
               <td class="text-left" rowspan="1" colspan="1">adkim</td>
               <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">historic</td>
+              <td class="text-left" rowspan="1" colspan="1">current</td>
               <td class="text-left" rowspan="1" colspan="1">DKIM alignment mode</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">aspf</td>
               <td class="text-left" rowspan="1" colspan="1">RFC 7489</td>
-              <td class="text-left" rowspan="1" colspan="1">historic</td>
+              <td class="text-left" rowspan="1" colspan="1">current</td>
               <td class="text-left" rowspan="1" colspan="1">SPF alignment mode</td>
             </tr>
             <tr>
@@ -4325,7 +4353,7 @@ checks.<a href="#section-b.1-1" class="pilcrow">¶</a></p>
 </div>
 <p id="section-b.1.1-4">In this case, the RFC5321.MailFrom parameter and the RFC5322.From
 header field have identical DNS domains.  Thus, the identifiers are in
-alignment.<a href="#section-b.1.1-4" class="pilcrow">¶</a></p>
+strict alignment.<a href="#section-b.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-b.1.1-5">Example 2: SPF in alignment (parent):<a href="#section-b.1.1-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1.1-6">
 <pre>     MAIL FROM: &lt;sender@child.example.com&gt;
@@ -4338,7 +4366,7 @@ alignment.<a href="#section-b.1.1-4" class="pilcrow">¶</a></p>
 </div>
 <p id="section-b.1.1-7">In this case, the RFC5322.From header parameter includes a DNS
 domain that is a parent of the RFC5321.MailFrom domain.  Thus, the
-identifiers are in alignment.<a href="#section-b.1.1-7" class="pilcrow">¶</a></p>
+identifiers are in relaxed alignment.<a href="#section-b.1.1-7" class="pilcrow">¶</a></p>
 <p id="section-b.1.1-8">Example 3: SPF not in alignment:<a href="#section-b.1.1-8" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1.1-9">
 <pre>     MAIL FROM: &lt;sender@example.net&gt;
@@ -4371,7 +4399,7 @@ Alignment cannot exist with a DKIM signature that does not verify.<a href="#sect
 </pre><a href="#section-b.1.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-b.1.2-4">In this case, the DKIM "d=" parameter and the RFC5322.From header field have
-identical DNS domains.  Thus, the identifiers are in alignment.<a href="#section-b.1.2-4" class="pilcrow">¶</a></p>
+identical DNS domains.  Thus, the identifiers are in strict alignment.<a href="#section-b.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-b.1.2-5">Example 2: DKIM in alignment (parent):<a href="#section-b.1.2-5" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1.2-6">
 <pre>     DKIM-Signature: v=1; ...; d=example.com; ...
@@ -4383,7 +4411,7 @@ identical DNS domains.  Thus, the identifiers are in alignment.<a href="#section
 </div>
 <p id="section-b.1.2-7">In this case, the DKIM signature's "d=" parameter includes a DNS
 domain that is a parent of the RFC5322.From domain.  Thus, the
-identifiers are in alignment.<a href="#section-b.1.2-7" class="pilcrow">¶</a></p>
+identifiers are in relaxed alignment.<a href="#section-b.1.2-7" class="pilcrow">¶</a></p>
 <p id="section-b.1.2-8">Example 3: DKIM not in alignment:<a href="#section-b.1.2-8" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.1.2-9">
 <pre>     DKIM-Signature: v=1; ...; d=sample.net; ...
@@ -4445,6 +4473,10 @@ of this DMARC policy record ("p=none")<a href="#section-b.2.1-4.2.1" class="pilc
               <p id="section-b.2.1-4.3.1">Aggregate feedback reports should be sent via email to the address
 "dmarc-feedback@example.com"
 ("rua=mailto:dmarc-feedback@example.com")<a href="#section-b.2.1-4.3.1" class="pilcrow">¶</a></p>
+</li>
+<li id="section-b.2.1-4.4">
+              <p id="section-b.2.1-4.4.1">All messages from this Organizational Domain are subject to this
+policy (no "pct" tag present, so the default of 100% applies).<a href="#section-b.2.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 <p id="section-b.2.1-5">The DMARC policy record might look like this when retrieved using a
@@ -4586,10 +4618,10 @@ create an entry like the following in the appropriate zone file
 for the full details of this mechanism.<a href="#section-b.2.3-14" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="subdomain-and-multiple-aggregate-report-uris">
+<div id="subdomain-sampling-and-multiple-aggregate-report-uris">
 <section id="section-b.2.4">
-          <h3 id="name-subdomain-and-multiple-aggr">
-<a href="#section-b.2.4" class="section-number selfRef">B.2.4. </a><a href="#name-subdomain-and-multiple-aggr" class="section-name selfRef">Subdomain and Multiple Aggregate Report URIs</a>
+          <h3 id="name-subdomain-sampling-and-mult">
+<a href="#section-b.2.4" class="section-number selfRef">B.2.4. </a><a href="#name-subdomain-sampling-and-mult" class="section-name selfRef">Subdomain, Sampling, and Multiple Aggregate Report URIs</a>
           </h3>
 <p id="section-b.2.4-1">The Domain Owner has implemented SPF and DKIM in a subdomain used for
 pre-production testing of messaging services.  It now wishes to express
@@ -4624,6 +4656,11 @@ addresses "dmarc-feedback@example.com" and
 ("rua=mailto:dmarc-feedback@example.com,
  mailto:tld-test@thirdparty.example.net")<a href="#section-b.2.4-4.4.1" class="pilcrow">¶</a></p>
 </li>
+<li id="section-b.2.4-4.5">
+              <p id="section-b.2.4-4.5.1">The Domain Owner desires that only 25% of messages using this
+Organizational Domain that fail authentication are subject to
+this policy ("pct=25")<a href="#section-b.2.4-4.5.1" class="pilcrow">¶</a></p>
+</li>
 </ul>
 <p id="section-b.2.4-5">The DMARC policy record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
@@ -4631,7 +4668,7 @@ line but is wrapped here for publication):<a href="#section-b.2.4-5" class="pilc
 <div class="artwork art-text alignLeft" id="section-b.2.4-6">
 <pre>  % dig +short TXT _dmarc.test.example.com
   "v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
-   mailto:tld-test@thirdparty.example.net"
+   mailto:tld-test@thirdparty.example.net pct=25"
 </pre><a href="#section-b.2.4-6" class="pilcrow">¶</a>
 </div>
 <p id="section-b.2.4-7">To publish such a record, the DNS administrator for the Domain Owner
@@ -4642,7 +4679,8 @@ file:<a href="#section-b.2.4-7" class="pilcrow">¶</a></p>
 
   _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
                     "rua=mailto:dmarc-feedback@example.com,"
-                    "mailto:tld-test@thirdparty.example.net" )
+                    "mailto:tld-test@thirdparty.example.net;"
+                    "pct=25" )
 </pre><a href="#section-b.2.4-8" class="pilcrow">¶</a>
 </div>
 <p id="section-b.2.4-9">Once enough time has passed to allow for collecting enough reports to
@@ -4713,7 +4751,8 @@ Receiver should continue with DMARC-specific processing before
 returning a reply to the DATA command.<a href="#section-b.4-4" class="pilcrow">¶</a></p>
 <p id="section-b.4-5">Given a DMARC record and the set of Authenticated Identifiers, the
 Mail Receiver checks to see if the Authenticated Identifiers align
-with the Author Domain.<a href="#section-b.4-5" class="pilcrow">¶</a></p>
+with the Author Domain (taking into consideration any strict versus
+relaxed options found in the DMARC record).<a href="#section-b.4-5" class="pilcrow">¶</a></p>
 <p id="section-b.4-6">For example, the following sample data is considered to be from a
 piece of email originating from the Domain Owner of "example.com":<a href="#section-b.4-6" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-b.4-7">
@@ -4721,7 +4760,8 @@ piece of email originating from the Domain Owner of "example.com":<a href="#sect
   SPF-authenticated Identifier: mail.example.com
   DKIM-authenticated Identifier: example.com
   DMARC record:
-    "v=DMARC1; p=reject; rua=mailto:dmarc-feedback@example.com"
+    "v=DMARC1; p=reject; aspf=r;
+     rua=mailto:dmarc-feedback@example.com"
 </pre><a href="#section-b.4-7" class="pilcrow">¶</a>
 </div>
 <p id="section-b.4-8">In the above sample, both the SPF-authenticated Identifier and the
