@@ -2072,13 +2072,28 @@ as it required no special processing on the part of the message receiver, while
 the value of &quot;0&quot; took on unintended significance as a value used by some
 intermediaries and mailbox providers as an indicator to deviate from
 standard handling of the message, usually by rewriting the RFC5322.From
-header.</t>
-<t>These custom actions proved too valuable to the email community to
-remove their availability from this version of the protocol, but at the
-same time it didn't make sense to support a tag named &quot;pct&quot; that had only
-two valid values. This version of the DMARC protocol therefore introduces
-the &quot;t&quot; tag as shorthand for &quot;testing&quot;, with the valid values of &quot;y&quot; and &quot;n&quot;,
-which should be analogous to the &quot;pct&quot; tag values &quot;0&quot; and &quot;100&quot;, respectively.</t>
+header in an effort to avoid DMARC failures downstream.</t>
+<t>These custom actions when the pct= tag was set to &quot;0&quot; proved valuable to the
+email community. In particular, header rewriting by an intermediary meant
+that a Domain Owner's aggregate reports could reveal to the Domain Owner
+how much of its traffic was routing through intermediaries that don't rewrite
+the RFC5322.From header. It required work on the part of the Domain Owner to
+compare aggregate reports from before and after the p= value was changed
+and pct= was included in the DMARC policy record with a value of &quot;0&quot;, but
+the data was there. Consequently, knowing how much mail was subject to
+possible DMARC failure due to lack of RFC5322.From header rewriting by
+intermediaries could assist the Domain Owner in choosing whether or not
+to proceed from an applied policy of p=none to p=quarantine or p=reject.
+Armed with this knowledge, the Domain Owner could make an informed decision
+regarding subjecting its mail traffic to possible DMARC failures based on
+the Domain Owner's tolerance for such things.</t>
+<t>Because of the value provided by &quot;pct=0&quot; to Domain Owners, it was logical
+to keep this functionality in the protocol; at the same time it didn't make
+sense to support a tag named &quot;pct&quot; that had only two valid values. This version
+of the DMARC protocol therefore introduces the &quot;t&quot; tag as shorthand for &quot;testing&quot;,
+with the valid values of &quot;y&quot; and &quot;n&quot;, which are meant to be analogous in their
+application by mailbox providers and intermediaries to the &quot;pct&quot; tag values
+&quot;0&quot; and &quot;100&quot;, respectively.</t>
 </section>
 </section>
 
