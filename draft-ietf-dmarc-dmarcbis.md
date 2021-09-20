@@ -1235,54 +1235,6 @@ domains is desirable and useful, just as it is for org-level DMARC
 operators.  See Section 4 of [@!RFC9091] for discussion of
 Privacy Considerations for PSD DMARC
 
-#  Minimum Implementations
-
-Domain owners, mediators, and mail receivers can all claim to
-implement DMARC, but what that means will depend on their role in the
-transmission of mail. To remove any ambiguity from the claims, this
-document specifies the following minimum criteria that must be met
-for each agent to rightly claim to be "implementing DMARC".
-
-Domain Owner: To implement DMARC, a Domain Owner MUST configure its
-domain to convey its concern that unauthenticated mail be rejected 
-or at least treated with suspicion. Furthermore, the Domain Owner MUST
-actively solicit aggregate feedback reports regarding mail using its
-domain. This means that it MUST publish a policy record that:
-
-* Has a p tag with a value of 'quarantine' or 'reject'
-* Has a rua tag with at least one valid URI
-* If applicable, has an sp tag with a value of 'quarantine' or
-  'reject'
-* If desired, has an np tag with a value of 'quarantine' or
-  'reject'
-
-While 'none' is a syntactically valid value for both p, sp, and np
-tags, the practical value of any of those tags being 'none' means 
-that the Domain Owner is still gathering information about mail 
-flows for the domain or sub-domains. It is not yet ready to commit
-to conveying a severity of concern for unauthenticated email using
-its domain.
-
-Mediator: To implement DMARC, a mediator MUST do the following before 
-passing the message to the next hop or rejecting it as appropriate:
-
-* Perform DMARC verification checks on inbound mail
-* Perform verification on any authentication checks recorded by
-  previous mediators.
-* Record the results of its authentication checks in message 
-  headers for consumption by later hosts.
-
-Mail Receiver: To implement DMARC, a mail receiver MUST do the
-following:
-
-* Perform DMARC verification checks on inbound mail
-* Perform verification checks on any authentication check results 
-  recorded by mediators that handled the message prior to its
-  reaching the Mail Receiver.
-* Send aggregate reports to Domain Owners at least every 24 hours
-  when a minimum of 100 messages with that domain in the RFC5322.From
-  header field have been seen during the reporting period
-
 #   Other Topics {#other-topics}
 
 This section discusses some topics regarding choices made in the
