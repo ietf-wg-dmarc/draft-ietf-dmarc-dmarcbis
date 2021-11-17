@@ -394,37 +394,59 @@ domain can be verified.
 
 ##  Determining The Organizational Domain {#determining-the-organizational-domain}
 
-The Organizational Domain is determined using the following
-algorithm:
+The Organizational Domain for a subject DNS domain name is defined as
+the domain that is found in the DNS hierarchy one level below the PSD 
+in the subject DNS domain name.  The Organizational Domain is determined 
+using the following algorithm, similar to the one described in (#policy-discovery)
 
-1.  Acquire a "public suffix" list, i.e., a list of DNS domain names
-    reserved for registrations.  Some country Top-Level Domains
-    (TLDs) make specific registration requirements, e.g., the United
-    Kingdom places company registrations under ".co.uk"; other TLDs
-    such as ".com" appear in the IANA registry of top-level DNS
-    domains.  A public suffix list is the union of all of these.
-    (#public-suffix-lists) contains some discussion about obtaining a public
-    suffix list.
+1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one 
+    found in the RFC5322.From domain in the message.  A possibly empty set 
+    of records is returned.
 
-2.  Break the subject DNS domain name into a set of "n" ordered
+2.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded.
+
+3.  If the set is now empty, or the set contains one valid DMARC record that
+    does not include a psd tag with a value of 'y', then determine the target for 
+    additional queries, using steps 4 through 8 below.
+
+4.  Break the subject DNS domain name into a set of "n" ordered
     labels.  Number these labels from right to left; e.g., for
     "example.com", "com" would be label 1 and "example" would be
     label 2.
 
-3.  Search the public suffix list for the name that matches the
-    largest number of labels found in the subject DNS domain.  Let
-    that number be "x".
+5.  Count the number of labels found in the subject DNS domain. Let that 
+    number be "x". If x < 5, remove the left-most (highest-numbered)
+    label from the subject domain. If x >= 5, remove the left-most 
+    (highest-numbered) labels from the subject domain until 4 labels remain. 
+    The resulting DNS domain name is the new target for subsequent lookups.
 
-4.  Construct a new DNS domain name using the name that matched from
-    the public suffix list and prefixing to it the "x+1"th label from
-    the subject domain.  This new name is the Organizational Domain.
+6.  Query the DNS for a DMARC TXT record at the DNS domain matching this 
+    new target in place of the RFC5322.From domain in the message.  A possibly 
+    empty set of records is returned.
 
-Thus, since "com" is an IANA-registered TLD, a subject domain of
-"a.b.c.d.example.com" would have an Organizational Domain of
-"example.com".
+7.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded.
 
-The process of determining a suffix is currently a heuristic one.  No
-list is guaranteed to be accurate or current.
+8.  If the set is now empty, or the set contains one valid DMARC record that
+    does not include a psd tag with the value of 'y', then determine the 
+    target for additional queries by removing a single label from the target
+    domain as described in step 5 and repeating steps 6 and 7 until 
+    there are no more labels remaining or a record containing a psd tag with
+    a value of 'y' is found.
+
+9.  Once a valid DMARC record containing a psd tag with a value of 'y' has 
+    been found, the Organizational Domain for the DNS domain matching the
+    one found in the RFC5322.From domain can be declared to be the target
+    domain queried for in the step prior to the query that found the PSD 
+    domain.
+
+For example, given the RFC5322.From domain "a.mail.example.com", a series 
+of DNS queries for DMARC records would be executed starting with 
+"_dmarc.a.mail.example.com" and finishing with "_dmarc.com". The "_dmarc.com"
+record would contain a psd tag with a value of 'y', and so the Organizational
+Domain for this RFC5322.From domain would be determined to be "example.com",
+the domain of the DMARC query executed prior to the query for "_dmarc.com".
 
 #  Overview {#overview}
 
@@ -750,6 +772,20 @@ p:
         (#rejecting-messages) for some discussion of SMTP rejection
         methods and their implications.
 
+psd:
+:   A flag indicating whether the domain is a PSD. (plain-text; OPTIONAL;
+    default is 'n'). Possible values are:
+
+    y:
+    :   Domains on the PSL that publish DMARC policy records SHOULD include 
+    this tag with a value of 'y' to indicate that the domain is a PSD. This 
+    information will be used during policy discovery to determine how to 
+    apply any DMARC policy records that are discovered during the tree walk.
+
+    n:
+    :   The default, indicating that the DMARC policy record is published
+    for a domain that is not a PSD.
+
 rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
 separated plain-text list of DMARC URIs; OPTIONAL).  Section 3 of [@!DMARC-Aggregate-Reporting]
@@ -1064,9 +1100,9 @@ similar to the method used for SPF records.  This method, and the
 important differences between DMARC and SPF mechanisms, are discussed
 below.
 
-To balance the conflicting requirements of supporting wildcarding,
-allowing subdomain policy overrides, and limiting DNS query load, the
-following DNS lookup scheme is employed:
+To balance the conflicting requirements of supporting wildcarding and
+allowing subdomain policy overrides, the following DNS lookup scheme 
+is employed:
 
 1.  Mail Receivers MUST query the DNS for a DMARC TXT record at the
     DNS domain matching the one found in the RFC5322.From domain in
@@ -1075,33 +1111,38 @@ following DNS lookup scheme is employed:
 2.  Records that do not start with a "v=" tag that identifies the
     current version of DMARC are discarded.
 
-3.  If the set is now empty, the Mail Receiver MUST query the DNS for
-    a DMARC TXT record at the DNS domain matching the Organizational
-    Domain in place of the RFC5322.From domain in the message (if
-    different).  This record can contain policy to be asserted for
-    subdomains of the Organizational Domain.  A possibly empty set of
-    records is returned.
+3.  If the set is now empty, the Mail Receiver determines the target
+    for additional queries, using steps 4 through 8 below.
 
-4.  Records that do not start with a "v=" tag that identifies the
+4.  Break the subject DNS domain name into a set of "n" ordered labels.
+    Number these lables from right to left; e.g., for "example.com",
+    "com" would be label 1 and "example" would be label 2.
+
+5.  Count the number of labels found in the subject DNS domain. Let that 
+    number be "x". If x < 5, remove the left-most (highest-numbered)
+    label from the subject domain. If x >= 5, remove the left-most 
+    (highest-numbered) labels from the subject domain until 4 labels remain. 
+    The resulting DNS domain name is the new target for subsequent lookups.
+
+6.  The Mail Receiver MUST query the DNS for a DMARC TXT record at
+    the DNS domain matching this new target in place of the RFC5322.From
+    domain in the message. This record can contain policy to be asserted
+    for subdomains of the target. A possibly empty set of records is
+    returned.
+
+7.  Records that do not start with a "v=" tag that identifies the
     current version of DMARC are discarded.
 
-5.  If the set is now empty and the longest PSD (#longest-psd) of the
-    Organizational Domain is one that the receiver has determined is
-    acceptable for PSD DMARC (based on the data in one of the DMARC
-    PSD Registry Examples decribed in Appendix B of [@!RFC9091])
-    the Mail Receiver MUST query the DNS for a DMARC TXT record at 
-    the DNS domain matching the longest PSD in place of the RFC5322.From 
-    domain in the message (if different).  A possibly empty set of records 
-    is returned.
+8.  If the set is now empty, the Mail Receiver determines the target
+    for additional queries by removing a single label from the target
+    domain as described in step 5 and repeating steps 6 and 7 until 
+    there are no more labels remaining.
 
-6.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-7.  If the remaining set contains multiple records or no records,
+9.  If the remaining set contains multiple records or no records,
     policy discovery terminates and DMARC processing is not applied
     to this message.
 
-8.  If a retrieved policy record does not contain a valid "p" tag, or
+10. If a retrieved policy record does not contain a valid "p" tag, or
     contains an "sp" tag that is not valid, then:
 
     1.  if a "rua" tag is present and contains at least one

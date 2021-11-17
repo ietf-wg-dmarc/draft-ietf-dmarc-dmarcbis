@@ -6,7 +6,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489 (if approved)                             J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 24 March 2022                                 20 September 2021
+Expires: 21 May 2022                                    17 November 2021
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 March 2022.
+   This Internet-Draft will expire on 21 May 2022.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 1]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 1]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -94,165 +94,165 @@ Table of Contents
        3.14.2.  SPF-Authenticated Identifiers  . . . . . . . . . . .  12
        3.14.3.  Alignment and Extension Technologies . . . . . . . .  13
      3.15. Determining The Organizational Domain . . . . . . . . . .  13
-   4.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   4.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
      4.1.  Authentication Mechanisms . . . . . . . . . . . . . . . .  14
      4.2.  Key Concepts  . . . . . . . . . . . . . . . . . . . . . .  14
      4.3.  Flow Diagram  . . . . . . . . . . . . . . . . . . . . . .  15
-   5.  Use of RFC5322.From . . . . . . . . . . . . . . . . . . . . .  16
+   5.  Use of RFC5322.From . . . . . . . . . . . . . . . . . . . . .  17
    6.  Policy  . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     6.1.  DMARC Policy Record . . . . . . . . . . . . . . . . . . .  17
-     6.2.  DMARC URIs  . . . . . . . . . . . . . . . . . . . . . . .  18
-     6.3.  General Record Format . . . . . . . . . . . . . . . . . .  18
-     6.4.  Formal Definition . . . . . . . . . . . . . . . . . . . .  22
-     6.5.  Domain Owner Actions  . . . . . . . . . . . . . . . . . .  23
-       6.5.1.  Publish an SPF Policy for an Aligned Domain . . . . .  23
+     6.1.  DMARC Policy Record . . . . . . . . . . . . . . . . . . .  18
+     6.2.  DMARC URIs  . . . . . . . . . . . . . . . . . . . . . . .  19
+     6.3.  General Record Format . . . . . . . . . . . . . . . . . .  19
+     6.4.  Formal Definition . . . . . . . . . . . . . . . . . . . .  23
+     6.5.  Domain Owner Actions  . . . . . . . . . . . . . . . . . .  24
+       6.5.1.  Publish an SPF Policy for an Aligned Domain . . . . .  24
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 2]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 2]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
        6.5.2.  Configure Sending System for DKIM Signing Using an
                Aligned Domain  . . . . . . . . . . . . . . . . . . .  24
-       6.5.3.  Setup a Mailbox to Receive Aggregate Reports  . . . .  24
-       6.5.4.  Publish a DMARC Policy for the Author Domain  . . . .  24
+       6.5.3.  Setup a Mailbox to Receive Aggregate Reports  . . . .  25
+       6.5.4.  Publish a DMARC Policy for the Author Domain  . . . .  25
        6.5.5.  Collect and Analyze Reports and Adjust
                Authentication  . . . . . . . . . . . . . . . . . . .  25
-       6.5.6.  Decide If and When to Update DMARC Policy . . . . . .  25
-     6.6.  PSO Actions . . . . . . . . . . . . . . . . . . . . . . .  25
-     6.7.  Mail Receiver Actions . . . . . . . . . . . . . . . . . .  25
-       6.7.1.  Extract Author Domain . . . . . . . . . . . . . . . .  25
-       6.7.2.  Determine Handling Policy . . . . . . . . . . . . . .  26
-       6.7.3.  Policy Discovery  . . . . . . . . . . . . . . . . . .  27
-       6.7.4.  Store Results of DMARC Processing . . . . . . . . . .  29
-       6.7.5.  Send Aggregate Reports  . . . . . . . . . . . . . . .  29
-     6.8.  Policy Enforcement Considerations . . . . . . . . . . . .  30
-   7.  DMARC Feedback  . . . . . . . . . . . . . . . . . . . . . . .  31
-   8.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  31
-     8.1.  Issues Specific to SPF  . . . . . . . . . . . . . . . . .  31
-     8.2.  DNS Load and Caching  . . . . . . . . . . . . . . . . . .  32
-     8.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  32
-     8.4.  Identifier Alignment Considerations . . . . . . . . . . .  33
-     8.5.  Interoperability Issues . . . . . . . . . . . . . . . . .  33
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
-     9.1.  Authentication-Results Method Registry Update . . . . . .  34
-     9.2.  Authentication-Results Result Registry Update . . . . . .  35
-     9.3.  Feedback Report Header Fields Registry Update . . . . . .  36
-     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  36
-     9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  38
+       6.5.6.  Decide If and When to Update DMARC Policy . . . . . .  26
+     6.6.  PSO Actions . . . . . . . . . . . . . . . . . . . . . . .  26
+     6.7.  Mail Receiver Actions . . . . . . . . . . . . . . . . . .  26
+       6.7.1.  Extract Author Domain . . . . . . . . . . . . . . . .  26
+       6.7.2.  Determine Handling Policy . . . . . . . . . . . . . .  27
+       6.7.3.  Policy Discovery  . . . . . . . . . . . . . . . . . .  28
+       6.7.4.  Store Results of DMARC Processing . . . . . . . . . .  30
+       6.7.5.  Send Aggregate Reports  . . . . . . . . . . . . . . .  30
+     6.8.  Policy Enforcement Considerations . . . . . . . . . . . .  31
+   7.  DMARC Feedback  . . . . . . . . . . . . . . . . . . . . . . .  32
+   8.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  32
+     8.1.  Issues Specific to SPF  . . . . . . . . . . . . . . . . .  32
+     8.2.  DNS Load and Caching  . . . . . . . . . . . . . . . . . .  33
+     8.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  33
+     8.4.  Identifier Alignment Considerations . . . . . . . . . . .  34
+     8.5.  Interoperability Issues . . . . . . . . . . . . . . . . .  34
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  35
+     9.1.  Authentication-Results Method Registry Update . . . . . .  35
+     9.2.  Authentication-Results Result Registry Update . . . . . .  36
+     9.3.  Feedback Report Header Fields Registry Update . . . . . .  37
+     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  37
+     9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  39
      9.6.  Underscored and Globally Scoped DNS Node Names
-           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  38
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .  38
-     10.1.  Authentication Methods . . . . . . . . . . . . . . . . .  39
-     10.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  39
-     10.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  39
-     10.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  40
-     10.5.  External Reporting Addresses . . . . . . . . . . . . . .  41
-     10.6.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  41
-   11. Normative References  . . . . . . . . . . . . . . . . . . . .  41
-   12. Informative References  . . . . . . . . . . . . . . . . . . .  43
-   Appendix A.  Technology Considerations  . . . . . . . . . . . . .  45
-     A.1.  S/MIME  . . . . . . . . . . . . . . . . . . . . . . . . .  45
-     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  45
-     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  46
-     A.4.  Domain Existence Test . . . . . . . . . . . . . . . . . .  47
-     A.5.  Issues with ADSP in Operation . . . . . . . . . . . . . .  47
-     A.6.  Organizational Domain Discovery Issues  . . . . . . . . .  48
-       A.6.1.  Public Suffix Lists . . . . . . . . . . . . . . . . .  49
-     A.7.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  49
+           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  39
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  39
+     10.1.  Authentication Methods . . . . . . . . . . . . . . . . .  40
+     10.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  40
+     10.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  40
+     10.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  41
+     10.5.  External Reporting Addresses . . . . . . . . . . . . . .  42
+     10.6.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  42
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  42
+   12. Informative References  . . . . . . . . . . . . . . . . . . .  44
+   Appendix A.  Technology Considerations  . . . . . . . . . . . . .  46
+     A.1.  S/MIME  . . . . . . . . . . . . . . . . . . . . . . . . .  46
+     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  46
+     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  47
+     A.4.  Domain Existence Test . . . . . . . . . . . . . . . . . .  48
+     A.5.  Issues with ADSP in Operation . . . . . . . . . . . . . .  48
+     A.6.  Organizational Domain Discovery Issues  . . . . . . . . .  49
+       A.6.1.  Public Suffix Lists . . . . . . . . . . . . . . . . .  50
+     A.7.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  50
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 3]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 3]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
-   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  50
-     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  50
-       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  50
-       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  51
-     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  52
-       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  52
+   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  51
+     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  51
+       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  51
+       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  52
+     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  53
+       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  53
        B.2.2.  Entire Domain, Monitoring Only, Per-Message
-               Reports . . . . . . . . . . . . . . . . . . . . . . .  53
+               Reports . . . . . . . . . . . . . . . . . . . . . . .  54
        B.2.3.  Per-Message Failure Reports Directed to Third
-               Party . . . . . . . . . . . . . . . . . . . . . . . .  54
+               Party . . . . . . . . . . . . . . . . . . . . . . . .  55
        B.2.4.  Subdomain, Testing, and Multiple Aggregate Report
-               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  56
-     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  57
-     B.4.  Processing of SMTP Time . . . . . . . . . . . . . . . . .  58
-     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  59
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  60
-     C.1.  January 5, 2021 . . . . . . . . . . . . . . . . . . . . .  60
+               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  57
+     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  58
+     B.4.  Processing of SMTP Time . . . . . . . . . . . . . . . . .  59
+     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  60
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  61
+     C.1.  January 5, 2021 . . . . . . . . . . . . . . . . . . . . .  61
        C.1.1.  Ticket 80 - DMARCbis SHould Have Clear and Concise
-               Defintion of DMARC  . . . . . . . . . . . . . . . . .  60
-     C.2.  February 4, 2021  . . . . . . . . . . . . . . . . . . . .  60
-       C.2.1.  Ticket 1 - SPF RFC 4408 vs 7208 . . . . . . . . . . .  60
-     C.3.  February 10, 2021 . . . . . . . . . . . . . . . . . . . .  61
-       C.3.1.  Ticket 84 - Remove Erroneous References to RFC3986  .  61
-     C.4.  March 1, 2021 . . . . . . . . . . . . . . . . . . . . . .  61
-       C.4.1.  Design Team Work Begins . . . . . . . . . . . . . . .  61
-     C.5.  March 8, 2021 . . . . . . . . . . . . . . . . . . . . . .  61
-       C.5.1.  Removed E.  Gustafsson as editor  . . . . . . . . . .  61
-       C.5.2.  Ticket 3 - Two tiny nits  . . . . . . . . . . . . . .  61
-       C.5.3.  Ticket 4 - Definition of "fo" parameter . . . . . . .  61
-     C.6.  March 16, 2021  . . . . . . . . . . . . . . . . . . . . .  61
-       C.6.1.  Ticket 7 - ABNF for dmarc-record is slightly wrong  .  61
-       C.6.2.  Ticket 26 - ABNF for pct allows "999" . . . . . . . .  62
-     C.7.  March 23, 2021  . . . . . . . . . . . . . . . . . . . . .  62
+               Defintion of DMARC  . . . . . . . . . . . . . . . . .  61
+     C.2.  February 4, 2021  . . . . . . . . . . . . . . . . . . . .  61
+       C.2.1.  Ticket 1 - SPF RFC 4408 vs 7208 . . . . . . . . . . .  61
+     C.3.  February 10, 2021 . . . . . . . . . . . . . . . . . . . .  62
+       C.3.1.  Ticket 84 - Remove Erroneous References to RFC3986  .  62
+     C.4.  March 1, 2021 . . . . . . . . . . . . . . . . . . . . . .  62
+       C.4.1.  Design Team Work Begins . . . . . . . . . . . . . . .  62
+     C.5.  March 8, 2021 . . . . . . . . . . . . . . . . . . . . . .  62
+       C.5.1.  Removed E.  Gustafsson as editor  . . . . . . . . . .  62
+       C.5.2.  Ticket 3 - Two tiny nits  . . . . . . . . . . . . . .  62
+       C.5.3.  Ticket 4 - Definition of "fo" parameter . . . . . . .  62
+     C.6.  March 16, 2021  . . . . . . . . . . . . . . . . . . . . .  62
+       C.6.1.  Ticket 7 - ABNF for dmarc-record is slightly wrong  .  62
+       C.6.2.  Ticket 26 - ABNF for pct allows "999" . . . . . . . .  63
+     C.7.  March 23, 2021  . . . . . . . . . . . . . . . . . . . . .  63
        C.7.1.  Ticket 75 - Using wording alternatives to
-               'disposition', 'dispose', and the like  . . . . . . .  62
+               'disposition', 'dispose', and the like  . . . . . . .  63
        C.7.2.  Ticket 72 - Remove absolute requirement for p= tag in
-               DMARC record  . . . . . . . . . . . . . . . . . . . .  62
-     C.8.  March 29, 2021  . . . . . . . . . . . . . . . . . . . . .  62
+               DMARC record  . . . . . . . . . . . . . . . . . . . .  63
+     C.8.  March 29, 2021  . . . . . . . . . . . . . . . . . . . . .  63
        C.8.1.  Ticket 54 - Remove or expand limits on number of
-               recipients per report . . . . . . . . . . . . . . . .  62
-     C.9.  April 12, 2021  . . . . . . . . . . . . . . . . . . . . .  63
-       C.9.1.  Ticket 50 - Remove ri= tag  . . . . . . . . . . . . .  63
+               recipients per report . . . . . . . . . . . . . . . .  63
+     C.9.  April 12, 2021  . . . . . . . . . . . . . . . . . . . . .  64
+       C.9.1.  Ticket 50 - Remove ri= tag  . . . . . . . . . . . . .  64
        C.9.2.  Ticket 66 - Define what it means to have implemented
-               DMARC . . . . . . . . . . . . . . . . . . . . . . . .  63
-       C.9.3.  Ticket 96 - Tweaks to Abstract and Introduction . . .  63
-     C.10. April 13, 2021  . . . . . . . . . . . . . . . . . . . . .  63
+               DMARC . . . . . . . . . . . . . . . . . . . . . . . .  64
+       C.9.3.  Ticket 96 - Tweaks to Abstract and Introduction . . .  64
+     C.10. April 13, 2021  . . . . . . . . . . . . . . . . . . . . .  64
        C.10.1.  Ticket 53 - Remove reporting message size
-               chunking  . . . . . . . . . . . . . . . . . . . . . .  63
+               chunking  . . . . . . . . . . . . . . . . . . . . . .  64
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 4]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 4]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
        C.10.2.  Ticket 52 - Remove strict alignment (and adkim and
-               aspf tags)  . . . . . . . . . . . . . . . . . . . . .  63
-       C.10.3.  Ticket 47 - Remove pct= tag  . . . . . . . . . . . .  63
-       C.10.4.  Ticket 2 - Flow of operations text in dmarc-base . .  64
-     C.11. April 14, 2021  . . . . . . . . . . . . . . . . . . . . .  64
+               aspf tags)  . . . . . . . . . . . . . . . . . . . . .  64
+       C.10.3.  Ticket 47 - Remove pct= tag  . . . . . . . . . . . .  64
+       C.10.4.  Ticket 2 - Flow of operations text in dmarc-base . .  65
+     C.11. April 14, 2021  . . . . . . . . . . . . . . . . . . . . .  65
        C.11.1.  Ticket 107 - DMARCbis should take a stand on
-               multi-valued From fields  . . . . . . . . . . . . . .  64
-       C.11.2.  Ticket 82 - Deprecate rf= and maybe fo= tag  . . . .  64
+               multi-valued From fields  . . . . . . . . . . . . . .  65
+       C.11.2.  Ticket 82 - Deprecate rf= and maybe fo= tag  . . . .  65
        C.11.3.  Ticket 85 - Proposed change to wording describing 'p'
-               tag and values  . . . . . . . . . . . . . . . . . . .  64
-     C.12. April 15, 2021  . . . . . . . . . . . . . . . . . . . . .  64
-       C.12.1.  Ticket 86 - A-R results for DMARC  . . . . . . . . .  64
+               tag and values  . . . . . . . . . . . . . . . . . . .  65
+     C.12. April 15, 2021  . . . . . . . . . . . . . . . . . . . . .  65
+       C.12.1.  Ticket 86 - A-R results for DMARC  . . . . . . . . .  65
        C.12.2.  Ticket 62 - Make aggregate reporting a normative
-               MUST  . . . . . . . . . . . . . . . . . . . . . . . .  64
-     C.13. April 19, 2021  . . . . . . . . . . . . . . . . . . . . .  64
-       C.13.1.  Ticket 109 - Sanity Check DMARCbis Document  . . . .  65
-     C.14. April 20, 2021  . . . . . . . . . . . . . . . . . . . . .  65
-       C.14.1.  Ticket 108 - Changes to DMARCbis for PSD . . . . . .  65
-     C.15. April 22, 2021  . . . . . . . . . . . . . . . . . . . . .  65
+               MUST  . . . . . . . . . . . . . . . . . . . . . . . .  65
+     C.13. April 19, 2021  . . . . . . . . . . . . . . . . . . . . .  65
+       C.13.1.  Ticket 109 - Sanity Check DMARCbis Document  . . . .  66
+     C.14. April 20, 2021  . . . . . . . . . . . . . . . . . . . . .  66
+       C.14.1.  Ticket 108 - Changes to DMARCbis for PSD . . . . . .  66
+     C.15. April 22, 2021  . . . . . . . . . . . . . . . . . . . . .  66
        C.15.1.  Ticket 104 - Update the Security Considerations
-               section 11.3 on DNS . . . . . . . . . . . . . . . . .  65
-     C.16. June 16, 2021 . . . . . . . . . . . . . . . . . . . . . .  65
-       C.16.1.  Publication of draft-ietf-dmarc-dmarcbis-02  . . . .  65
-     C.17. August 12, 2021 . . . . . . . . . . . . . . . . . . . . .  65
-       C.17.1.  Publication of draft-ietf-dmarc-dmarcbis-03  . . . .  65
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  66
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  66
+               section 11.3 on DNS . . . . . . . . . . . . . . . . .  66
+     C.16. June 16, 2021 . . . . . . . . . . . . . . . . . . . . . .  66
+       C.16.1.  Publication of draft-ietf-dmarc-dmarcbis-02  . . . .  66
+     C.17. August 12, 2021 . . . . . . . . . . . . . . . . . . . . .  66
+       C.17.1.  Publication of draft-ietf-dmarc-dmarcbis-03  . . . .  66
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  67
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  67
 
 1.  Introduction
 
@@ -277,9 +277,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 5]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 5]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  Desire for reports about email use of the domain name
@@ -333,9 +333,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 6]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 6]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 2.  Requirements
@@ -389,9 +389,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 7]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 7]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  content analysis.
@@ -445,9 +445,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 8]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 8]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Readers are encouraged to be familiar with the contents of [RFC5598].
@@ -501,9 +501,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                 [Page 9]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                  [Page 9]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 3.7.  Mail Receiver
@@ -557,9 +557,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 10]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 10]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 3.14.  More on Identifier Alignment
@@ -613,9 +613,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 11]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 11]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    In relaxed mode, the Organizational Domains of both the DKIM-
@@ -669,9 +669,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 12]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 12]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 3.14.3.  Alignment and Extension Technologies
@@ -683,52 +683,78 @@ Internet-Draft                  DMARCbis                  September 2021
 
 3.15.  Determining The Organizational Domain
 
-   The Organizational Domain is determined using the following
-   algorithm:
+   The Organizational Domain for a subject DNS domain name is defined as
+   the domain that is found in the DNS hierarchy one level below the PSD
+   in the subject DNS domain name.  The Organizational Domain is
+   determined using the following algorithm, similar to the one
+   described in Section 6.7.3
 
-   1.  Acquire a "public suffix" list, i.e., a list of DNS domain names
-       reserved for registrations.  Some country Top-Level Domains
-       (TLDs) make specific registration requirements, e.g., the United
-       Kingdom places company registrations under ".co.uk"; other TLDs
-       such as ".com" appear in the IANA registry of top-level DNS
-       domains.  A public suffix list is the union of all of these.
-       Appendix A.6.1 contains some discussion about obtaining a public
-       suffix list.
+   1.  Query the DNS for a DMARC TXT record at the DNS domain matching
+       the one found in the RFC5322.From domain in the message.  A
+       possibly empty set of records is returned.
 
-   2.  Break the subject DNS domain name into a set of "n" ordered
+   2.  Records that do not start with a "v=" tag that identifies the
+       current version of DMARC are discarded.
+
+   3.  If the set is now empty, or the set contains one valid DMARC
+       record that does not include a psd tag with a value of 'y', then
+       determine the target for additional queries, using steps 4
+       through 8 below.
+
+   4.  Break the subject DNS domain name into a set of "n" ordered
        labels.  Number these labels from right to left; e.g., for
        "example.com", "com" would be label 1 and "example" would be
        label 2.
 
-   3.  Search the public suffix list for the name that matches the
-       largest number of labels found in the subject DNS domain.  Let
-       that number be "x".
+   5.  Count the number of labels found in the subject DNS domain.  Let
+       that number be "x".  If x < 5, remove the left-most (highest-
+       numbered) label from the subject domain.  If x >= 5, remove the
+       left-most (highest-numbered) labels from the subject domain until
+       4 labels remain.  The resulting DNS domain name is the new target
+       for subsequent lookups.
 
-   4.  Construct a new DNS domain name using the name that matched from
-       the public suffix list and prefixing to it the "x+1"th label from
-       the subject domain.  This new name is the Organizational Domain.
+   6.  Query the DNS for a DMARC TXT record at the DNS domain matching
+       this new target in place of the RFC5322.From domain in the
+       message.  A possibly empty set of records is returned.
 
-   Thus, since "com" is an IANA-registered TLD, a subject domain of
-   "a.b.c.d.example.com" would have an Organizational Domain of
-   "example.com".
+   7.  Records that do not start with a "v=" tag that identifies the
+       current version of DMARC are discarded.
 
-   The process of determining a suffix is currently a heuristic one.  No
-   list is guaranteed to be accurate or current.
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 13]
+
+Internet-Draft                  DMARCbis                   November 2021
+
+
+   8.  If the set is now empty, or the set contains one valid DMARC
+       record that does not include a psd tag with the value of 'y',
+       then determine the target for additional queries by removing a
+       single label from the target domain as described in step 5 and
+       repeating steps 6 and 7 until there are no more labels remaining
+       or a record containing a psd tag with a value of 'y' is found.
+
+   9.  Once a valid DMARC record containing a psd tag with a value of
+       'y' has been found, the Organizational Domain for the DNS domain
+       matching the one found in the RFC5322.From domain can be declared
+       to be the target domain queried for in the step prior to the
+       query that found the PSD domain.
+
+   For example, given the RFC5322.From domain "a.mail.example.com", a
+   series of DNS queries for DMARC records would be executed starting
+   with "_dmarc.a.mail.example.com" and finishing with "_dmarc.com".
+   The "_dmarc.com" record would contain a psd tag with a value of 'y',
+   and so the Organizational Domain for this RFC5322.From domain would
+   be determined to be "example.com", the domain of the DMARC query
+   executed prior to the query for "_dmarc.com".
 
 4.  Overview
 
    This section provides a general overview of the design and operation
    of the DMARC environment.
-
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 13]
-
-Internet-Draft                  DMARCbis                  September 2021
-
 
 4.1.  Authentication Mechanisms
 
@@ -750,6 +776,15 @@ Internet-Draft                  DMARCbis                  September 2021
 
    DMARC policies are published by the Domain Owner or PSO, and
    retrieved by the Mail Receiver during the SMTP session, via the DNS.
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 14]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
    DMARC's verification function is based on whether the RFC5322.From
    domain is aligned with an authenticated domain name from SPF or DKIM.
@@ -778,14 +813,6 @@ Internet-Draft                  DMARCbis                  September 2021
    defined in other referenced material such as [RFC6591] and
    [DMARC-Failure-Reporting]
 
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 14]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    A message satisfies the DMARC checks if at least one of the supported
    authentication mechanisms:
 
@@ -795,6 +822,25 @@ Internet-Draft                  DMARCbis                  September 2021
        as defined in Section 3.
 
 4.3.  Flow Diagram
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 15]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
     +---------------+                             +--------------------+
     | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
@@ -833,15 +879,6 @@ Internet-Draft                  DMARCbis                  September 2021
    authentication modules.  "sMTA" is the sending MTA, and "rMTA" is the
    receiving MTA.
 
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 15]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    Put simply, when a message reaches a DMARC-aware rMTA, a DNS query
    will be initiated to determine if the author domain has published a
    DMARC policy.  If a policy is found, the rMTA will use the results of
@@ -851,6 +888,15 @@ Internet-Draft                  DMARCbis                  September 2021
 
    More details on specific actions for the parties involved can be
    found in Section 6.5 and Section 6.7.
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 16]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
 5.  Use of RFC5322.From
 
@@ -889,15 +935,6 @@ Internet-Draft                  DMARCbis                  September 2021
    operate under a slightly restricted profile of RFC5322 with respect
    to the expected syntax of this field.  See Section 6.7 for details.
 
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 16]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
 6.  Policy
 
    DMARC policies are published by Domain Owners and PSOs and can be
@@ -909,6 +946,14 @@ Internet-Draft                  DMARCbis                  September 2021
    severity of concern regarding failed authentication for email
    messages making use of their domain in the RFC5322.From header field
    as well as the provision of feedback about those messages.  Mail
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 17]
+
+Internet-Draft                  DMARCbis                   November 2021
+
+
    Receivers in turn can take into account the Domain Owner's severity
    of concern when making handling decisions about email messages that
    fail DMARC authentication checks.
@@ -944,16 +989,6 @@ Internet-Draft                  DMARCbis                  September 2021
    "_dmarc.example.com".  The DNS-located DMARC preference data will
    hereafter be called the "DMARC record".
 
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 17]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    DMARC's use of the Domain Name Service is driven by DMARC's use of
    domain names and the nature of the query it performs.  The query
    requirement matches with the DNS, for obtaining simple parametric
@@ -963,6 +998,17 @@ Internet-Draft                  DMARCbis                  September 2021
    the DNS as the query service has the benefit of reusing an extremely
    well-established operations, administration, and management
    infrastructure, rather than creating a new one.
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 18]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
    Per [RFC1035], a TXT record can comprise several "character-string"
    objects.  Where this is the case, the module performing DMARC
@@ -995,21 +1041,6 @@ Internet-Draft                  DMARCbis                  September 2021
 
    The following tags are valid DMARC tags:
 
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 18]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    adkim:  (plain-text; OPTIONAL; default is "r".)  Indicates whether
       strict or relaxed DKIM Identifier Alignment mode is required by
       the Domain Owner.  See Section 3.14.1 for details.  Valid values
@@ -1027,6 +1058,13 @@ Internet-Draft                  DMARCbis                  September 2021
       r:  relaxed mode
 
       s:  strict mode
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 19]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
    fo:  Failure reporting options (plain-text; OPTIONAL; default is "0")
       Provides requested options for generation of failure reports.
@@ -1058,14 +1096,6 @@ Internet-Draft                  DMARCbis                  September 2021
       evaluation, regardless of its alignment.  SPF-specific
       reporting is described in [@!RFC6652].
 
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 19]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    np:  Domain Owner Assessment Policy for non-existent subdomains
       (plain-text; OPTIONAL).  Indicates the severity of concern the
       Domain Owner or PSO has for mail using non-existent subdomains of
@@ -1084,6 +1114,14 @@ Internet-Draft                  DMARCbis                  September 2021
       policy records).  Indicates the severity of concern the Domain
       Owner or PSO has for mail using its domain but not passing DMARC
       verification.  Policy applies to the domain queried and to
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 20]
+
+Internet-Draft                  DMARCbis                   November 2021
+
+
       subdomains, unless subdomain policy is explicitly described using
       the "sp" or "np" tags.  This tag is mandatory for policy records
       only, but not for third-party reporting records (see
@@ -1101,6 +1139,18 @@ Internet-Draft                  DMARCbis                  September 2021
          See Section 8.3 for some discussion of SMTP rejection methods
          and their implications.
 
+   psd:  A flag indicating whether the domain is a PSD. (plain-text;
+      OPTIONAL; default is 'n').  Possible values are:
+
+      y:  Domains on the PSL that publish DMARC policy records SHOULD
+         include this tag with a value of 'y' to indicate that the
+         domain is a PSD.  This information will be used during policy
+         discovery to determine how to apply any DMARC policy records
+         that are discovered during the tree walk.
+
+      n:  The default, indicating that the DMARC policy record is
+         published for a domain that is not a PSD.
+
    rua:  Addresses to which aggregate feedback is to be sent (comma-
       separated plain-text list of DMARC URIs; OPTIONAL).  Section 3 of
       [DMARC-Aggregate-Reporting] discusses considerations that apply
@@ -1114,20 +1164,20 @@ Internet-Draft                  DMARCbis                  September 2021
       The aggregate feedback report format is described in
       [DMARC-Aggregate-Reporting]
 
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 20]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    ruf:  Addresses to which message-specific failure information is to
       be reported (comma-separated plain-text list of DMARC URIs;
       OPTIONAL).  If present, the Domain Owner or PSO is requesting Mail
       Receivers to send detailed failure reports about messages that
       fail the DMARC evaluation in specific ways (see the "fo" tag
       above).  The format of the message to be generated MUST follow the
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 21]
+
+Internet-Draft                  DMARCbis                   November 2021
+
+
       format specified for the "rf" tag.  Section 3 of
       [DMARC-Aggregate-Reporting] discusses considerations that apply
       when the domain name of a URI differs from that of the domain
@@ -1167,22 +1217,22 @@ Internet-Draft                  DMARCbis                  September 2021
       n:  The default, a request to apply the policy as specified to any
          message that produces a DMARC "fail" result.
 
-
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 21]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    v:  Version (plain-text; REQUIRED).  Identifies the record retrieved
       as a DMARC record.  It MUST have the value of "DMARC1".  The value
       of this tag MUST match precisely; if it does not or it is absent,
       the entire retrieved record MUST be ignored.  It MUST be the first
       tag in the list.
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 22]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
    A DMARC policy record MUST comply with the formal specification found
    in Section 6.4 in that the "v" tag MUST be present and MUST appear
@@ -1226,20 +1276,19 @@ Internet-Draft                  DMARCbis                  September 2021
      dmarc-sep       = *WSP %x3b *WSP
 
      dmarc-request   = "p" *WSP "=" *WSP
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 22]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
                        ( "none" / "quarantine" / "reject" )
 
      dmarc-test      = "t" *WSP "=" ( "y" / "n" )
 
      dmarc-srequest  = "sp" *WSP "=" *WSP
                        ( "none" / "quarantine" / "reject" )
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 23]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
      dmarc-nprequest  = "np" *WSP "=" *WSP
                        ( "none" / "quarantine" / "reject" )
@@ -1277,19 +1326,6 @@ Internet-Draft                  DMARCbis                  September 2021
    with the Author Domain, and then publish an SPF policy in DNS for
    that domain.
 
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 23]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
 6.5.2.  Configure Sending System for DKIM Signing Using an Aligned
         Domain
 
@@ -1300,6 +1336,15 @@ Internet-Draft                  DMARCbis                  September 2021
    Signing domain (i.e., the d= domain in the DKIM-Signature header)
    that aligns with the Author Domain and configure its system to sign
    using that domain.
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 24]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
 6.5.3.  Setup a Mailbox to Receive Aggregate Reports
 
@@ -1328,24 +1373,6 @@ Internet-Draft                  DMARCbis                  September 2021
    SHOULD start with "p=none", with the rua tag containg the mailbox
    created in the previous step.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 24]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
 6.5.5.  Collect and Analyze Reports and Adjust Authentication
 
    The reason for starting at "p=none" is to ensure that nothing's been
@@ -1357,6 +1384,23 @@ Internet-Draft                  DMARCbis                  September 2021
    its own mail streams.  Should any overlooked systems be found in the
    reports, the Domain Owner can adjust the SPF record and/or configure
    DKIM signing for those systems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 25]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
 6.5.6.  Decide If and When to Update DMARC Policy
 
@@ -1394,14 +1438,6 @@ Internet-Draft                  DMARCbis                  September 2021
    the handling of those that are forbidden under [RFC5322] or that
    contain no meaningful domains is outside the scope of this document.
 
-
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 25]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    The case of a syntactically valid multi-valued RFC5322.From header
    field presents a particular challenge.  When a single RFC5322.From
    header field contains multiple addresses, it is possible that there
@@ -1413,6 +1449,14 @@ Internet-Draft                  DMARCbis                  September 2021
 
    Note that domain names that appear on a public suffix list are not
    exempt from DMARC policy application and reporting.
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 26]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
 6.7.2.  Determine Handling Policy
 
@@ -1451,13 +1495,6 @@ Internet-Draft                  DMARCbis                  September 2021
        failures, identifier mismatches) are considered to be DMARC
        mechanism check failures.
 
-
-
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 26]
-
-Internet-Draft                  DMARCbis                  September 2021
-
-
    6.  Apply policy.  Emails that fail the DMARC mechanism check are
        handled in accordance with the discovered DMARC policy of the
        Domain Owner and any local policy rules enforced by the Mail
@@ -1468,6 +1505,14 @@ Internet-Draft                  DMARCbis                  September 2021
    the case that the Domain Owner wishes a Message Receiver not to
    consider the results of that underlying authentication protocol at
    all.
+
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 27]
+
+Internet-Draft                  DMARCbis                   November 2021
+
 
    DMARC evaluation can only yield a "pass" result after one of the
    underlying authentication mechanisms passes for an aligned
@@ -1489,60 +1534,70 @@ Internet-Draft                  DMARCbis                  September 2021
    important differences between DMARC and SPF mechanisms, are discussed
    below.
 
-   To balance the conflicting requirements of supporting wildcarding,
-   allowing subdomain policy overrides, and limiting DNS query load, the
-   following DNS lookup scheme is employed:
+   To balance the conflicting requirements of supporting wildcarding and
+   allowing subdomain policy overrides, the following DNS lookup scheme
+   is employed:
 
-   1.  Mail Receivers MUST query the DNS for a DMARC TXT record at the
-       DNS domain matching the one found in the RFC5322.From domain in
-       the message.  A possibly empty set of records is returned.
+   1.   Mail Receivers MUST query the DNS for a DMARC TXT record at the
+        DNS domain matching the one found in the RFC5322.From domain in
+        the message.  A possibly empty set of records is returned.
 
-   2.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.
+   2.   Records that do not start with a "v=" tag that identifies the
+        current version of DMARC are discarded.
 
-   3.  If the set is now empty, the Mail Receiver MUST query the DNS for
-       a DMARC TXT record at the DNS domain matching the Organizational
-       Domain in place of the RFC5322.From domain in the message (if
-       different).  This record can contain policy to be asserted for
-       subdomains of the Organizational Domain.  A possibly empty set of
-       records is returned.
+   3.   If the set is now empty, the Mail Receiver determines the target
+        for additional queries, using steps 4 through 8 below.
+
+   4.   Break the subject DNS domain name into a set of "n" ordered
+        labels.  Number these lables from right to left; e.g., for
+        "example.com", "com" would be label 1 and "example" would be
+        label 2.
+
+   5.   Count the number of labels found in the subject DNS domain.  Let
+        that number be "x".  If x < 5, remove the left-most (highest-
+        numbered) label from the subject domain.  If x >= 5, remove the
+        left-most (highest-numbered) labels from the subject domain
+        until 4 labels remain.  The resulting DNS domain name is the new
+        target for subsequent lookups.
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 27]
+
+
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 28]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
-   4.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.
+   6.   The Mail Receiver MUST query the DNS for a DMARC TXT record at
+        the DNS domain matching this new target in place of the
+        RFC5322.From domain in the message.  This record can contain
+        policy to be asserted for subdomains of the target.  A possibly
+        empty set of records is returned.
 
-   5.  If the set is now empty and the longest PSD Section 3.6 of the
-       Organizational Domain is one that the receiver has determined is
-       acceptable for PSD DMARC (based on the data in one of the DMARC
-       PSD Registry Examples decribed in Appendix B of [RFC9091]) the
-       Mail Receiver MUST query the DNS for a DMARC TXT record at the
-       DNS domain matching the longest PSD in place of the RFC5322.From
-       domain in the message (if different).  A possibly empty set of
-       records is returned.
+   7.   Records that do not start with a "v=" tag that identifies the
+        current version of DMARC are discarded.
 
-   6.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.
+   8.   If the set is now empty, the Mail Receiver determines the target
+        for additional queries by removing a single label from the
+        target domain as described in step 5 and repeating steps 6 and 7
+        until there are no more labels remaining.
 
-   7.  If the remaining set contains multiple records or no records,
-       policy discovery terminates and DMARC processing is not applied
-       to this message.
+   9.   If the remaining set contains multiple records or no records,
+        policy discovery terminates and DMARC processing is not applied
+        to this message.
 
-   8.  If a retrieved policy record does not contain a valid "p" tag, or
-       contains an "sp" tag that is not valid, then:
+   10.  If a retrieved policy record does not contain a valid "p" tag,
+        or contains an "sp" tag that is not valid, then:
 
-       1.  if a "rua" tag is present and contains at least one
-           syntactically valid reporting URI, the Mail Receiver SHOULD
-           act as if a record containing a valid "v" tag and "p=none"
-           was retrieved, and continue processing;
+        1.  if a "rua" tag is present and contains at least one
+            syntactically valid reporting URI, the Mail Receiver SHOULD
+            act as if a record containing a valid "v" tag and "p=none"
+            was retrieved, and continue processing;
 
-       2.  otherwise, the Mail Receiver applies no DMARC processing to
-           this message.
+        2.  otherwise, the Mail Receiver applies no DMARC processing to
+            this message.
 
    If the set produced by the mechanism above contains no DMARC policy
    record (i.e., any indication that there is no such record as opposed
@@ -1565,9 +1620,10 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 28]
+
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 29]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 6.7.3.1.  Longest PSD Example
@@ -1621,9 +1677,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 29]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 30]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 6.8.  Policy Enforcement Considerations
@@ -1677,9 +1733,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 30]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 31]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Mail Receivers MUST also implement reporting instructions of DMARC,
@@ -1733,9 +1789,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 31]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 32]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 8.2.  DNS Load and Caching
@@ -1789,9 +1845,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 32]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 33]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Similarly, the text portion of the SMTP reply may be important to
@@ -1845,9 +1901,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 33]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 34]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Additional DMARC constraints occur when a message is processed by
@@ -1901,9 +1957,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 34]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 35]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 9.2.  Authentication-Results Result Registry Update
@@ -1957,9 +2013,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 35]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 36]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    |           |           |           |(added)| error occurred |      |
@@ -2013,9 +2069,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 36]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 37]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    specification adequately describes the new tag and clearly presents
@@ -2069,9 +2125,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 37]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 38]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 9.5.  DMARC Report Format Registry
@@ -2125,9 +2181,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 38]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 39]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 10.1.  Authentication Methods
@@ -2181,9 +2237,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 39]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 40]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  DNS over TLS [RFC7858] or DNS over HTTPS [RFC8484] can mitigate
@@ -2237,9 +2293,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 40]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 41]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 10.5.  External Reporting Addresses
@@ -2293,9 +2349,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 41]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 42]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    [DMARC-Failure-Reporting]
@@ -2349,9 +2405,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 42]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 43]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    [RFC6591]  Fontana, H., "Authentication Failure Reporting Using the
@@ -2405,9 +2461,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 43]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 44]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    [RFC3464]  Moore, K. and G. Vaudreuil, "An Extensible Message Format
@@ -2461,9 +2517,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 44]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 45]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    [RFC8601]  Kucherawy, M., "Message Header Field for Indicating
@@ -2517,9 +2573,9 @@ A.2.  Method Exclusion
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 45]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 46]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Specifically, consider a Domain Owner that has deployed one of the
@@ -2573,9 +2629,9 @@ A.3.  Sender Header Field
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 46]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 47]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    3.  Allowing multiple ways to discover policy introduces unacceptable
@@ -2629,9 +2685,9 @@ A.5.  Issues with ADSP in Operation
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 47]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 48]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    5.  ADSP has no support for a slow rollout, i.e., no way to configure
@@ -2685,9 +2741,9 @@ A.6.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 48]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 49]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 A.6.1.  Public Suffix Lists
@@ -2741,9 +2797,9 @@ A.7.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 49]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 50]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    These custom actions when the pct= tag was set to "0" proved valuable
@@ -2797,9 +2853,9 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 50]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 51]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
         MAIL FROM: <sender@example.com>
@@ -2853,9 +2909,9 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 51]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 52]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
         DKIM-Signature: v=1; ...; d=example.com; ...
@@ -2909,9 +2965,9 @@ B.2.1.  Entire Domain, Monitoring Only
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 52]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 53]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  Confirm that its legitimate messages are authenticating correctly
@@ -2965,9 +3021,9 @@ B.2.2.  Entire Domain, Monitoring Only, Per-Message Reports
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 53]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 54]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Not all Receivers will honor such a request, but the Domain Owner
@@ -3021,9 +3077,9 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 54]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 55]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    The DMARC policy record might look like this when retrieved using a
@@ -3077,9 +3133,9 @@ Internet-Draft                  DMARCbis                  September 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 55]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 56]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    Mediators and other third parties should refer to Section 3 of
@@ -3133,9 +3189,9 @@ B.2.4.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 56]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 57]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
      % dig +short TXT _dmarc.test.example.com
@@ -3189,9 +3245,9 @@ B.3.  Mail Receiver Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 57]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 58]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 B.4.  Processing of SMTP Time
@@ -3245,9 +3301,9 @@ B.4.  Processing of SMTP Time
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 58]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 59]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    If no Authenticated Identifiers align with the Author Domain, then
@@ -3301,9 +3357,9 @@ B.5.  Utilization of Aggregate Feedback: Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 59]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 60]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    directly correct the problem or understand where authentication-
@@ -3357,9 +3413,9 @@ C.2.1.  Ticket 1 - SPF RFC 4408 vs 7208
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 60]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 61]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 C.3.  February 10, 2021
@@ -3413,9 +3469,9 @@ C.6.1.  Ticket 7 - ABNF for dmarc-record is slightly wrong
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 61]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 62]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  New text documented here - https://trac.ietf.org/trac/dmarc/
@@ -3469,9 +3525,9 @@ C.8.1.  Ticket 54 - Remove or expand limits on number of recipients per
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 62]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 63]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 C.9.  April 12, 2021
@@ -3525,9 +3581,9 @@ C.10.3.  Ticket 47 - Remove pct= tag
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 63]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 64]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
    *  Data demonstrating lack of use of feature entered into ticket -
@@ -3581,9 +3637,9 @@ C.13.  April 19, 2021
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 64]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 65]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 C.13.1.  Ticket 109 - Sanity Check DMARCbis Document
@@ -3637,9 +3693,9 @@ C.17.1.  Publication of draft-ietf-dmarc-dmarcbis-03
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 65]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 66]
 
-Internet-Draft                  DMARCbis                  September 2021
+Internet-Draft                  DMARCbis                   November 2021
 
 
 Acknowledgements
@@ -3693,4 +3749,4 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed)   Expires 24 March 2022                [Page 66]
+Herr (ed) & Levine (ed)    Expires 21 May 2022                 [Page 67]
