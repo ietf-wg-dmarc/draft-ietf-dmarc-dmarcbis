@@ -41,7 +41,7 @@ Reporting, and Conformance (DMARC) protocol.
 
 DMARC permits the owner of an email author's domain name to enable
 verification of the domain's use, to indicate the Domain Owner's or
-Public Suffix Operator's severity of concern regarding failed 
+Public Suffix Operator's message handling preference regarding failed 
 verification, and to request reports about use of the domain name. 
 Mail receiving organizations can use this information when evaluating 
 handling choices for incoming mail.
@@ -59,37 +59,31 @@ https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis
 Abusive email often includes unauthorized and deceptive use of a
 domain name in the RFC5322.From header field. The domain typically
 belongs to an organization expected to be known to - and presumably
-trusted by - the recipient. The Sender Policy Framework (SPF) ([@!RFC7208])
-and DomainKeys Identified Mail (DKIM) ([@!RFC6376]) protocols provide 
+trusted by - the recipient. The Sender Policy Framework (SPF) [@!RFC7208]
+and DomainKeys Identified Mail (DKIM) [@!RFC6376] protocols provide 
 domain-level authentication but are not directly associated with the 
-RFC5322.From domain. DMARC leverages them, so that Domain Owners 
-publish a DNS record indicating their RFC5322.From field:
+RFC5322.From domain. DMARC leverages them, and provides a method for 
+Domain Owners to publish a DNS record describing the email authentication
+policies for the RFC5322.From domain and to request a specific handling
+for messages using that domain that fail authentication checks.
 
-* Email authentication policies
-* Level of concern for mail that fails authentication checks
-* Desire for reports about email use of the domain name
-
-DMARC can cover non-existent sub-domains, below the "Organizational 
-Domain", as well as domains at the top of the name hierarchy, 
-controlled by Public Suffix Operators (PSOs).
-
-As with SPF and DKIM, DMARC classes results as "pass" or "fail". A
-pass from either SPF or DKIM is required. Depending on the stated 
-DMARC policy, the passed domain must be "aligned" with the RFC5322.From 
-domain in one of two modes - "relaxed" or "strict".  Domains are said 
-to be "in relaxed alignment" if they have the same Organizational Domain, 
-which is at the top of the domain hierarchy, while having the same 
-administrative authority as the RFC5322.From domain, while domains are
-"in strict alignment" if and only if they are identical.
+As with SPF and DKIM, DMARC classes results as "pass" or "fail". In order
+to get a DMARC result of "pass", a pass from either SPF or DKIM is required. 
+In addition, the passed domain must be "aligned" with the RFC5322.From domain 
+in one of two modes - "relaxed" or "strict". The mode is expressed in the 
+domain's DMARC policy record. Domains are said to be "in relaxed alignment" 
+if they have the same "Organizational Domain", which is the domain at the 
+top of the domain hierarchy for the RFC5322.From domain while having the 
+same administrative authority as the RFC5322.From domain. Domains are "in 
+strict alignment" if and only if they are identical.
 
 A DMARC pass indicates only that the RFC5322.From domain has been
-authenticated for that message; authentication does not carry an 
+authenticated for that message. Authentication does not carry an 
 explicit or implicit value assertion about that message or about 
-the Domain Owner. Indeed, a mail-receiving organization that performs 
-DMARC verification can choose to follow the Domain Owner's requested 
-disposition for authentication failures, and to inform the Domain 
-Owner of the mail handling decision for that message. It also might 
-choose different actions.
+the Domain Owner. Furthermore, a mail-receiving organization that performs 
+DMARC verification can choose to honor the Domain Owner's requested 
+message handling for authentication failures, but it is under no
+obligation to do so; it might choose different actions entirely.
 
 For a mail-receiving organization supporting DMARC, a message that
 passes verification is part of a message stream that is reliably
@@ -100,11 +94,20 @@ in the RFC5322.From field.  A message that fails this verification
 is not necessarily associated with the Domain Owner's domain and its 
 reputation.
 
+DMARC policy records can also cover non-existent sub-domains, below the 
+"Organizational Domain", as well as domains at the top of the name hierarchy, 
+controlled by Public Suffix Operators (PSOs).
+
 DMARC, in the associated [@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting]
 documents, also specifies a reporting framework. Using it, a mail-receiving
 domain can generate regular reports about messages that claim to be from
 a domain publishing DMARC policies, sending those reports to the address(es) 
-specified by the Domain Owner.
+specified by the Domain Owner in the latter's DMARC policy record. Domain
+Owners can use these reports, especially the aggregate reports, to identify
+not only sources of mail attempting to fraudulently use their domain, but also
+(and perhaps more importantly) gaps in their own authentication practices. However,
+as with honoring the Domain Owner's stated mail handling preference, a mail-receiving
+organization supporting DMARC is under no obligation to send requested reports.
 
 Use of DMARC creates some interoperability challenges that require due 
 consideration before deployment, particularly with configurations that
@@ -120,9 +123,9 @@ documented as out of scope.
 
 DMARC has the following high-level goals:
 
-*  Allow Domain Owners and PSOs to assert their severity of concern for
-   authentication failures for messages purporting to have
-   authorship within the domain.
+*  Allow Domain Owners and PSOs to assert their desired message handling 
+   for authentication failures for messages purporting to have authorship 
+   within the domain.
 
 *  Allow Domain Owners and PSOs to verify their authentication deployment.
 
@@ -139,25 +142,25 @@ DMARC has the following high-level goals:
 Several topics and issues are specifically out of scope for this
 work.  These include the following:
 
-*  different treatment of messages that are not authenticated versus
+*  Different treatment of messages that are not authenticated versus
    those that fail authentication;
 
-*  evaluation of anything other than RFC5322.From header field;
+*  Evaluation of anything other than RFC5322.From header field;
 
-*  multiple reporting formats;
+*  Multiple reporting formats;
 
-*  publishing policy other than via the DNS;
+*  Publishing policy other than via the DNS;
 
-*  reporting or otherwise evaluating other than the last-hop IP
+*  Reporting or otherwise evaluating other than the last-hop IP
    address;
 
-*  attacks in the From: header field, also known as "display name"
+*  Attacks in the From: header field, also known as "display name"
    attacks;
 
-*  authentication of entities other than domains, since DMARC is
+*  Authentication of entities other than domains, since DMARC is
    built upon SPF and DKIM, which authenticate domains; and
 
-*  content analysis.
+*  Content analysis.
 
 ##  Scalability {#scalability}
 
@@ -200,7 +203,7 @@ This section defines terms used in the rest of the document.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in BCP 14 [@!RFC2119] [@RFC8174]
+document are to be interpreted as described in BCP 14 [@!RFC2119] and [@RFC8174]
 when, and only when, they appear in all capitals, as shown here.
 
 Readers are encouraged to be familiar with the contents of
@@ -213,17 +216,21 @@ another role.  This document does not address the distinctions among
 such roles; the reader is encouraged to become familiar with that
 material before continuing.
 
-## Authenticated Identifiers {#authenticated-identifiers}
+## Defintions {#definitions}
+
+The following sections define terms used in this document.
+
+### Authenticated Identifiers {#authenticated-identifiers}
 
 Domain-level identifiers that are verified using authentication technologies
 are referred to as "Authenticated Identifiers".  See (#authenication-mechanisms)
 for details about the supported mechanisms.
 
-## Author Domain {#author-domain}
+### Author Domain {#author-domain}
 
 The domain name of the apparent author, as extracted from the From: header field.
 
-## Domain Owner {#domain-owner}
+### Domain Owner {#domain-owner}
 
 An entity or organization that owns a DNS domain.  The
 term "owns" here indicates that the entity or organization being
@@ -236,60 +243,58 @@ Management Domain as defined in [@RFC5598].  It can also refer
 to delegates, such as Report Receivers, when those are outside of
 their immediate management domain.
 
-## Identifier Alignment {#identifier-alignment}
+### Identifier Alignment {#identifier-alignment}
 
 When the domain in the address in the From: header field has the 
 same Organizational Domain as a domain verified by SPF or DKIM 
 (or both), it has Identifier Alignment. (see below)
 
-## Longest PSD {#longest-psd}
+### Longest PSD {#longest-psd}
 
 The term Longest PSD is defined in [@!RFC9091].
 
-## Mail Receiver {#mail-receiver}
+### Mail Receiver {#mail-receiver}
 
 The entity or organization that receives and processes email.  
 Mail Receivers operate one or more Internet-facing Mail Transport 
 Agents (MTAs).
 
-## Non-existent Domains {#non-existent-domains}
+### Non-existent Domains {#non-existent-domains}
 
 For DMARC purposes, a non-existent domain is a domain for which there
 is an NXDOMAIN or NODATA response for A, AAAA, and MX records.  This
 is a broader definition than that in [@RFC8020].
 
-## Organizational Domain {#organizational-domain}
+### Organizational Domain {#organizational-domain}
 
-The domain that was registered with a domain name registrar.  In 
-the absence of more accurate methods, heuristics are used to determine 
-this, since it is not always the case that the registered domain name 
-is simply a top-level DNS domain plus one component (e.g., "example.com",
-where "com" is a top-level domain).  The Organizational Domain is 
-determined by applying the algorithm found in 
+The Organizational Domain is typically a domain that was registered with 
+a domain name registrar.  More formally, it is a Public Suffix Domain
+plus one label. The Organizational Domain for the domain in the 
+RFC5322.From domain is determined by applying the algorithm found in 
 (#determining-the-organizational-domain).
 
-## Public Suffix Domain (PSD) {#public-suffix-domain}
+### Public Suffix Domain (PSD) {#public-suffix-domain}
 
 The term Public Suffix Domain is defined in [@!RFC9091].
 
-## Public Suffix Operator (PSO) {#public-suffix-operator}
+### Public Suffix Operator (PSO) {#public-suffix-operator}
 
 The term Public Suffix Operator is defined in [@!RFC9091].
 
-## PSO Controlled Domain Names {#pso-controlled-domain-names}
+### PSO Controlled Domain Names {#pso-controlled-domain-names}
 
 The term PSO Controlled Domain Names is defined in [@!RFC9091].
 
-## Report Receiver {#report-receiver}
+### Report Receiver {#report-receiver}
 
-An operator that receives reports from another operator
-implementing the reporting mechanisms described in this document 
-and/or the documents [@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting].
-Such an operator might be receiving reports about messages related
-to a domain for which it is the Domain Owner or PSO, or reports about
-messages related to another operator's domain.  This term applies
-collectively to the system components that receive and process these
-reports and the organizations that operate them.
+An operator that receives reports from another operator implementing the 
+reporting mechanisms described in this document and/or the documents 
+[@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting]. Such an 
+operator might be receiving reports about messages related to a domain 
+for which it is the Domain Owner or PSO, or reports about messages related 
+to another operator's domain.  This term applies collectively to the 
+system components that receive and process these reports and the organizations 
+that operate them.
 
 ##  More on Identifier Alignment {#more-on-identifier-alignment}
 
@@ -352,9 +357,8 @@ In strict mode, this test would fail because the d= domain does not
 exactly match the RFC5322.From domain.
 
 However, a DKIM signature bearing a value of "d=com" would never allow 
-an "in alignment" result, as "com" should appear on all public suffix 
-lists (see (#public-suffix-lists)) and therefore cannot be an Organizational 
-Domain.
+an "in alignment" result, as "com" should be identified as a PSD and 
+therefore cannot be an Organizational Domain.
 
 Note that a single email can contain multiple DKIM signatures, and it
 is considered to produce a DMARC "pass" result if any DKIM signature 
@@ -602,11 +606,11 @@ used by Mail Receivers to inform their message handling decisions.
 
 A Domain Owner or PSO advertises DMARC participation of one or more of its
 domains by adding a DNS TXT record (described in (#dmarc-policy-record)) to
-those domains.  In doing so, Domain Owners and PSOs indicate their severity of
-concern regarding failed authentication for email messages making use
+those domains.  In doing so, Domain Owners and PSOs indicate their handling
+preference regarding failed authentication for email messages making use
 of their domain in the RFC5322.From header field as well as the provision
 of feedback about those messages. Mail Receivers in turn can take into
-account the Domain Owner's severity of concern when making handling 
+account the Domain Owner's stated preference when making handling 
 decisions about email messages that fail DMARC authentication checks.
 
 A Domain Owner or PSO may choose not to participate in DMARC evaluation by
@@ -735,9 +739,9 @@ The valid values and their meanings are:
 
 np:
 :   Domain Owner Assessment Policy for non-existent subdomains
-    (plain-text; OPTIONAL).  Indicates the severity of concern the 
-    Domain Owner or PSO has for mail using non-existent subdomains of the
-    domain queried. It applies only to non-existent subdomains of
+    (plain-text; OPTIONAL).  Indicates the message handling preference 
+    that the Domain Owner or PSO has for mail using non-existent subdomains 
+    of the domain queried. It applies only to non-existent subdomains of
     the domain queried and not to either existing subdomains or 
     the domain itself.  Its syntax is identical to that of the "p" 
     tag defined below.  If the "np" tag is absent, the policy 
@@ -750,8 +754,8 @@ np:
 
 p: 
 :   Domain Owner Assessment Policy (plain-text; RECOMMENDED for policy
-    records). Indicates the severity of concern the Domain Owner or PSO
-    has for mail using its domain but not passing DMARC verification.
+    records). Indicates the message handling preference the Domain Owner or 
+    PSO has for mail using its domain but not passing DMARC verification.
     Policy applies to the domain queried and to subdomains, unless
     subdomain policy is explicitly described using the "sp" or "np" tags.
     This tag is mandatory for policy records only, but not for third-party
@@ -815,9 +819,9 @@ additional considerations.
 
 sp:
 :   Domain Owner Assessment Policy for all subdomains (plain-text;
-OPTIONAL). Indicates the severity of concern the Domain Owner or PSO has
-for mail using an existing subdomain of the domain queried but not
-passing DMARC verification.  It applies only to subdomains of
+OPTIONAL). Indicates the message handling preference the Domain Owner 
+or PSO has for mail using an existing subdomain of the domain queried 
+but not passing DMARC verification.  It applies only to subdomains of
 the domain queried and not to the domain itself.  Its syntax is
 identical to that of the "p" tag defined above.  If both the "sp"
 tag is absent and the "np" tag is either absent or not applicable, 
@@ -1196,8 +1200,8 @@ mailstreams making use of its domain in email, to include not only
 illegitimate uses but also, and perhaps more importantly, all 
 legitimate uses. Domain Owners can use aggregate reports to ensure
 that all legitimate uses of their domain for sending email are 
-properly authenticated, and once they are, increase the severity of
-concern expressed in the p= tag in their DMARC policy records from
+properly authenticated, and once they are, express a stricter message
+handling preference in the p= tag in their DMARC policy records from
 none to quarantine to reject, if appropriate. In turn, DMARC policy
 records with p= tag values of 'quarantine' or 'reject' are higher
 value signals to Mail Receivers, ones that can assist Mail Receivers
@@ -2198,7 +2202,7 @@ for the full details of this mechanism.
 
 The Domain Owner has implemented SPF and DKIM in a subdomain used for
 pre-production testing of messaging services.  It now wishes to express
-a severity of concern for messages from this subdomain that fail to 
+a handling preference for messages from this subdomain that fail to 
 authenticate to indicate to participating receivers that use of this
 domain is not valid.
 
