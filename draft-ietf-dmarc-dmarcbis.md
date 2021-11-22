@@ -223,7 +223,7 @@ The following sections define terms used in this document.
 ### Authenticated Identifiers {#authenticated-identifiers}
 
 Domain-level identifiers that are verified using authentication technologies
-are referred to as "Authenticated Identifiers".  See (#authenication-mechanisms)
+are referred to as "Authenticated Identifiers".  See (#authentication-mechanisms)
 for details about the supported mechanisms.
 
 ### Author Domain {#author-domain}
@@ -268,7 +268,7 @@ is a broader definition than that in [@RFC8020].
 ### Organizational Domain {#organizational-domain}
 
 The Organizational Domain is typically a domain that was registered with 
-a domain name registrar.  More formally, it is a Public Suffix Domain
+a domain name registrar.  More formally, it is any Public Suffix Domain
 plus one label. The Organizational Domain for the domain in the 
 RFC5322.From domain is determined by applying the algorithm found in 
 (#determining-the-organizational-domain).
@@ -296,7 +296,158 @@ to another operator's domain.  This term applies collectively to the
 system components that receive and process these reports and the organizations 
 that operate them.
 
-##  More on Identifier Alignment {#more-on-identifier-alignment}
+#  Overview and Key Concepts {#overview-and-key-concepts}
+
+This section provides a general overview of the design and operation
+of the DMARC environment.
+
+DMARC permits a Domain Owner or PSO to enable verification of a domain's 
+use in an email message, to indicate the Domain Owner's or PSO's message 
+handling preference regarding failed verification, and to request reports 
+about use of the domain name.  All information about a Domain Owner's or
+PSO's DMARC policy is published and retrieved via the DNS.
+
+DMARC's verification function is based on whether the RFC5322.From 
+domain is aligned with a domain name used in a supported authentication
+mechanism. (#authentication-mechanisms) When a DMARC policy exists 
+for the domain name found in the RFC5322.From header field, and that 
+domain name is not verified through an aligned supported authentication 
+mechanism, the handling of that message can be affected based on the 
+DMARC policy when delivered to a participating receiver.
+
+A message satisfies the DMARC checks if at least one of the supported
+authentication mechanisms:
+
+1.  produces a "pass" result, and
+
+2.  produces that result based on an identifier that is in alignment,
+    as described in (#identifier-alignment-explained).
+
+It is important to note that the authentication mechanisms employed
+by DMARC authenticate only a DNS domain and do not authenticate the
+local-part of any email address identifier found in a message, nor do
+they validate the legitimacy of message content.
+
+DMARC's feedback component involves the collection of information
+about received messages claiming to be from the Author Domain
+for periodic aggregate reports to the Domain Owner or PSO.  The 
+parameters and format for such reports are discussed in 
+[@!DMARC-Aggregate-Reporting]
+
+A DMARC-enabled Mail Receiver might also generate per-message reports
+that contain information related to individual messages that fail 
+authentication checks. Per-message failure reports are a useful source of
+information when debugging deployments (if messages can be determined
+to be legitimate even though failing authentication) or in analyzing
+attacks.  The capability for such services is enabled by DMARC but
+defined in other referenced material such as [@!RFC6591] and 
+[@!DMARC-Failure-Reporting]
+
+##   Use of RFC5322.From {#use-of-rfc5322-from}
+
+One of the most obvious points of security scrutiny for DMARC is the
+choice to focus on an identifier, namely the RFC5322.From address,
+which is part of a body of data that has been trivially forged
+throughout the history of email. This field is the one used by end
+users to identify the source of the message, and so it has always
+been a prime target for abuse through such forgery and other means.
+
+Several points suggest that it is the most correct and safest thing
+to do in this context:
+
+*  Of all the identifiers that are part of the message itself, this
+   is the only one guaranteed to be present.
+
+*  It seems the best choice of an identifier on which to focus, as
+   most MUAs display some or all of the contents of that field in a
+   manner strongly suggesting those data as reflective of the true
+   originator of the message.
+
+*  Many high-profile email sources, such as email service providers, 
+   require that the sending agent have authenticated before email 
+   can be generated.  Thus, for these mailboxes, the mechanism 
+   described in this document provides recipient end users with strong 
+   evidence that the message was indeed originated by the agent they 
+   associate with that mailbox, if the end user knows that these 
+   various protections have been provided.
+
+The absence of a single, properly formed RFC5322.From header field renders
+the message invalid.  Handling of such a message is outside of the
+scope of this specification.
+
+Since the sorts of mail typically protected by DMARC participants
+tend to only have single Authors, DMARC participants generally
+operate under a slightly restricted profile of RFC5322 with respect
+to the expected syntax of this field.  See (#mail-receiver-actions) 
+for details.
+
+##  Authentication Mechanisms {#authentication-mechanisms}
+
+The following mechanisms for determining Authenticated Identifiers
+are supported in this version of DMARC:
+
+*  DKIM, [@!RFC6376], which provides a domain-level identifier in the content of
+   the "d=" tag of a verified DKIM-Signature header field.
+
+*  SPF, [@!RFC7208], which can authenticate both the domain found in 
+   an [@!RFC5321] HELO/EHLO command (the HELO identity) and the domain 
+   found in an SMTP MAIL command (the MAIL FROM identity). As noted earlier,
+   however, DMARC relies solely on SPF authentication of the domain found in
+   SMTP MAIL FROM command. Section 2.4 of [@!RFC7208] describes MAIL FROM 
+   processing for cases in which the MAIL command has a null path.
+
+##  Flow Diagram {#flow-diagram}
+
+~~~ ascii-art
+ +---------------+                             +--------------------+
+ | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
+ +---------------+                        .    +--------------------+
+     |                                    .               ^
+     V                                    V               .
+ +-----------+     +--------+       +----------+          v
+ |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
+ |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
+ +-----------+     +--------+       +----------+  *  | Verifier |
+     |                                    ^       *  +----------+
+     |                                    *       *
+     V                                    v       *
+  +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
+  | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
+  +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
+                                         |           +----------+
+                                         |                ^
+                                         V                .
+                                  +-----------+           .
+                    +---------+   |    MDA    |           v
+                    |  User   |<--| Filtering |      +-----------+
+                    | Mailbox |   |  Engine   |      |   DKIM    |
+                    +---------+   +-----------+      |  Signing  |
+                                                     | Domain(s) |
+                                                     +-----------+
+
+  MSA = Mail Submission Agent
+  MDA = Mail Delivery Agent
+~~~
+
+The above diagram shows a simple flow of messages through a 
+DMARC-aware system.  Solid lines denote the actual message flow, 
+dotted lines involve DNS queries used to retrieve message policy
+related to the supported message authentication schemes, and asterisk
+lines indicate data exchange between message-handling modules and
+message authentication modules.  "sMTA" is the sending MTA, and "rMTA"
+is the receiving MTA.
+
+Put simply, when a message reaches a DMARC-aware rMTA, a DNS query 
+will be initiated to determine if a DMARC policy exists that applies
+to the author domain. If a policy is found, the rMTA will use the results
+of SPF and DKIM verification checks to determine the ultimate DMARC 
+authentication status. The DMARC status can then factor into the 
+message handling decision made by the recipient's mail sytsem.
+
+More details on specific actions for the parties involved can be 
+found in (#domain-owner-actions) and (#mail-receiver-actions).
+
+##  Identifier Alignment Explained {#identifier-alignment-explained}
 
 Email authentication technologies authenticate various (and
 disparate) aspects of an individual message.  For example, DKIM [@!RFC6376]
@@ -309,12 +460,7 @@ are typically not visible to the end user.
 DMARC authenticates use of the RFC5322.From domain by requiring that
 it have the same Organizational Domain as (i.e., be aligned with) an
 Authenticated Identifier. Domain names in this context are to be compared 
-in a case-insensitive manner, per [@!RFC4343]. The RFC5322.From domain 
-was selected as the central identity of the DMARC mechanism because it 
-is a required message header field and therefore guaranteed to be present 
-in compliant messages, and most Mail User Agents (MUAs) represent the
-RFC5322.From header field as the originator of the message and render
-some or all of this header field's content to end users.
+in a case-insensitive manner, per [@!RFC4343]. 
 
 It is important to note that Identifier Alignment cannot occur with a
 message that is not valid per [@!RFC5322], particularly one with a
@@ -398,10 +544,14 @@ domain can be verified.
 
 ##  Determining The Organizational Domain {#determining-the-organizational-domain}
 
-The Organizational Domain for a subject DNS domain name is defined as
-the domain that is found in the DNS hierarchy one level below the PSD 
-in the subject DNS domain name.  The Organizational Domain is determined 
-using the following algorithm, similar to the one described in (#policy-discovery)
+The DMARC protocol defines a method for a Public Suffix Domain to identify
+itself as such using a tag in its published DMARC policy record. An Organizational
+Domain is any subdomain of a PSD that includes exactly one more label than
+the PSD in its name.
+
+For any email message, the Organizational Domain of the RFC5322.From domain
+is determined using the following algorithm, similar to the one described 
+in (#policy-discovery)
 
 1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one 
     found in the RFC5322.From domain in the message.  A possibly empty set 
@@ -416,8 +566,8 @@ using the following algorithm, similar to the one described in (#policy-discover
 
 4.  Break the subject DNS domain name into a set of "n" ordered
     labels.  Number these labels from right to left; e.g., for
-    "example.com", "com" would be label 1 and "example" would be
-    label 2.
+    "a.mail.example.com", "com" would be label 1 and "example" would be
+    label 2 and so forth.
 
 5.  Count the number of labels found in the subject DNS domain. Let that 
     number be "x". If x < 5, remove the left-most (highest-numbered)
@@ -451,153 +601,6 @@ of DNS queries for DMARC records would be executed starting with
 record would contain a psd tag with a value of 'y', and so the Organizational
 Domain for this RFC5322.From domain would be determined to be "example.com",
 the domain of the DMARC query executed prior to the query for "_dmarc.com".
-
-#  Overview {#overview}
-
-This section provides a general overview of the design and operation
-of the DMARC environment.
-
-##  Authentication Mechanisms {#authenication-mechanisms}
-
-The following mechanisms for determining Authenticated Identifiers
-are supported in this version of DMARC:
-
-*  DKIM, [@!RFC6376], which provides a domain-level identifier in the content of
-   the "d=" tag of a verified DKIM-Signature header field.
-
-*  SPF, [@!RFC7208], which can authenticate both the domain found in 
-   an [@!RFC5321] HELO/EHLO command (the HELO identity) and the domain 
-   found in an SMTP MAIL command (the MAIL FROM identity). As noted earlier,
-   however, DMARC relies solely on SPF authentication of the domain found in
-   SMTP MAIL FROM command. Section 2.4 of [@!RFC7208] describes MAIL FROM 
-   processing for cases in which the MAIL command has a null path.
-
-##  Key Concepts {#key-concepts}
-
-DMARC policies are published by the Domain Owner or PSO, and retrieved by
-the Mail Receiver during the SMTP session, via the DNS.
-
-DMARC's verification function is based on whether the RFC5322.From 
-domain is aligned with an authenticated domain name from SPF or DKIM.  
-When a DMARC policy is published for the domain name found in the 
-RFC5322.From header field, and that domain name is not verified 
-through SPF or DKIM, the handling of that message can be affected 
-by that DMARC policy when delivered to a participating receiver.
-
-It is important to note that the authentication mechanisms employed
-by DMARC authenticate only a DNS domain and do not authenticate the
-local-part of any email address identifier found in a message, nor do
-they validate the legitimacy of message content.
-
-DMARC's feedback component involves the collection of information
-about received messages claiming to be from the Author Domain
-for periodic aggregate reports to the Domain Owner or PSO.  The 
-parameters and format for such reports are discussed in [@!DMARC-Aggregate-Reporting]
-
-A DMARC-enabled Mail Receiver might also generate per-message reports
-that contain information related to individual messages that fail SPF
-and/or DKIM.  Per-message failure reports are a useful source of
-information when debugging deployments (if messages can be determined
-to be legitimate even though failing authentication) or in analyzing
-attacks.  The capability for such services is enabled by DMARC but
-defined in other referenced material such as [@!RFC6591] and [@!DMARC-Failure-Reporting]
-
-A message satisfies the DMARC checks if at least one of the supported
-authentication mechanisms:
-
-1.  produces a "pass" result, and
-
-2.  produces that result based on an identifier that is in alignment,
-    as defined in (#terminology).
-
-##  Flow Diagram {#flow-diagram}
-
-~~~ ascii-art
- +---------------+                             +--------------------+
- | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
- +---------------+                        .    +--------------------+
-     |                                    .               ^
-     V                                    V               .
- +-----------+     +--------+       +----------+          v
- |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
- |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
- +-----------+     +--------+       +----------+  *  | Verifier |
-     |                                    ^       *  +----------+
-     |                                    *       *
-     V                                    v       *
-  +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
-  | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
-  +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
-                                         |           +----------+
-                                         |                ^
-                                         V                .
-                                  +-----------+           .
-                    +---------+   |    MDA    |           v
-                    |  User   |<--| Filtering |      +-----------+
-                    | Mailbox |   |  Engine   |      |   DKIM    |
-                    +---------+   +-----------+      |  Signing  |
-                                                     | Domain(s) |
-                                                     +-----------+
-
-  MSA = Mail Submission Agent
-  MDA = Mail Delivery Agent
-~~~
-
-The above diagram shows a simple flow of messages through a DMARC-
-aware system.  Solid lines denote the actual message flow, dotted
-lines involve DNS queries used to retrieve message policy related to
-the supported message authentication schemes, and asterisk lines
-indicate data exchange between message-handling modules and message
-authentication modules.  "sMTA" is the sending MTA, and "rMTA" is the
-receiving MTA.
-
-Put simply, when a message reaches a DMARC-aware rMTA, a DNS query 
-will be initiated to determine if the author domain has published
-a DMARC policy. If a policy is found, the rMTA will use the results
-of SPF and DKIM verification checks to determine the ultimate DMARC 
-authentication status. The DMARC status can then factor into the 
-message handling decision made by the recipient's mail sytsem.
-
-More details on specific actions for the parties involved can be 
-found in (#domain-owner-actions) and (#mail-receiver-actions).
-
-#   Use of RFC5322.From {#use-of-rfc5322-from}
-
-One of the most obvious points of security scrutiny for DMARC is the
-choice to focus on an identifier, namely the RFC5322.From address,
-which is part of a body of data that has been trivially forged
-throughout the history of email. This field is the one used by end
-users to identify the source of the message, and so it has always
-been a prime target for abuse through such forgery and other means.
-
-Several points suggest that it is the most correct and safest thing
-to do in this context:
-
-*  Of all the identifiers that are part of the message itself, this
-   is the only one guaranteed to be present.
-
-*  It seems the best choice of an identifier on which to focus, as
-   most MUAs display some or all of the contents of that field in a
-   manner strongly suggesting those data as reflective of the true
-   originator of the message.
-
-*  Many high-profile email sources, such as email service providers, 
-   require that the sending agent have authenticated before email 
-   can be generated.  Thus, for these mailboxes, the mechanism 
-   described in this document provides recipient end users with strong 
-   evidence that the message was indeed originated by the agent they 
-   associate with that mailbox, if the end user knows that these 
-   various protections have been provided.
-
-The absence of a single, properly formed RFC5322.From header field renders
-the message invalid.  Handling of such a message is outside of the
-scope of this specification.
-
-Since the sorts of mail typically protected by DMARC participants
-tend to only have single Authors, DMARC participants generally
-operate under a slightly restricted profile of RFC5322 with respect
-to the expected syntax of this field.  See (#mail-receiver-actions) 
-for details.
 
 #   Policy {#policy}
 
