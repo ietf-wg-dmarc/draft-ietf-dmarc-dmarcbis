@@ -246,8 +246,8 @@ their immediate management domain.
 ### Identifier Alignment {#identifier-alignment}
 
 When the domain in the address in the From: header field has the 
-same Organizational Domain as a domain verified by SPF or DKIM 
-(or both), it has Identifier Alignment. (see below)
+same Organizational Domain as a domain verified by an authenticated
+identifier, it has Identifier Alignment. (see below)
 
 ### Longest PSD {#longest-psd}
 
@@ -300,6 +300,8 @@ that operate them.
 
 This section provides a general overview of the design and operation
 of the DMARC environment.
+
+## DMARC Basics
 
 DMARC permits a Domain Owner or PSO to enable verification of a domain's 
 use in an email message, to indicate the Domain Owner's or PSO's message 
@@ -447,6 +449,93 @@ message handling decision made by the recipient's mail sytsem.
 More details on specific actions for the parties involved can be 
 found in (#domain-owner-actions) and (#mail-receiver-actions).
 
+##  DNS Tree Walk {#dns-tree-walk}
+
+While the DMARC protocol defines a method for communicating information 
+through publishing records in DNS, it is not necessarily true that a 
+DMARC policy record for a given domain will be found in DNS at the same
+level as the name label for the domain in question. Instead, some domains
+will inherit their DNS policy records from parent domains one level or more
+above them in the DNS hierarchy, and these records can only be discovered 
+through a technique described here, one known colloquially as a "DNS Tree Walk".
+
+The process for a DNS Tree Walk will always start at the point in
+the DNS hierarchy that matches the domain in the RFC5322.From header of
+the message, and will always end at the Public Suffix Domain that terminates
+the RFC5322.From domain. To prevent possible abuse of the DNS, a 
+shortcut is built into the process so that RFC5322.From domains that have 
+more than five labels do not result in more than five DNS queries.
+
+The generic steps for a DNS Tree Walk are as follows:
+
+1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one 
+    found in the RFC5322.From domain in the message.  A possibly empty set 
+    of records is returned.
+
+2.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded.
+
+3.  If the set is now empty, or the set contains one valid DMARC record that
+    does not contain the information sought, then determine the target for
+    additional queries, using steps 4 through 8 below.
+
+4.  Break the subject DNS domain name into a set of "n" ordered
+    labels.  Number these labels from right to left; e.g., for
+    "a.mail.example.com", "com" would be label 1, "example" would be
+    label 2, "mail.example.com" would be label 3, and so forth.
+
+5.  Count the number of labels found in the subject DNS domain. Let that 
+    number be "x". If x < 5, remove the left-most (highest-numbered)
+    label from the subject domain. If x >= 5, remove the left-most 
+    (highest-numbered) labels from the subject domain until 4 labels remain. 
+    The resulting DNS domain name is the new target for subsequent lookups.
+
+6.  Query the DNS for a DMARC TXT record at the DNS domain matching this 
+    new target in place of the RFC5322.From domain in the message.  A possibly 
+    empty set of records is returned.
+
+7.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded.
+
+8.  If the set is now empty, or the set contains one valid DMARC record that
+    does not contain the information sought, then determine the target for 
+    additional queries by removing a single label from the target domain as 
+    described in step 5 and repeating steps 6 and 7 until there are no more 
+    labels remaining or a valid DMARC record containing the information sought 
+    has been retrieved.
+
+To illustrate, for a message with the arbitrary RFC5322.From domain of 
+"a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following 
+five queries, in order:
+
+* _dmarc.a.b.c.d.e.mail.example.com
+* _dmarc.e.mail.example.com
+* _dmarc.mail.example.com
+* _dmarc.example.com
+* _dmarc.com
+
+##  Determining the Organizational Domain {#determining-the-organizational-domain}
+
+The DMARC protocol defines a method for a Public Suffix Domain to identify
+itself as such using a tag in its published DMARC policy record. An Organizational
+Domain is any subdomain of a PSD that includes exactly one more label than
+the PSD in its name.
+
+For any email message, the Organizational Domain of the RFC5322.From domain
+is determined by performing a DNS Tree Walk as described in (#dns-tree-walk).
+The target of the search is a valid DMARC record that contains a psd tag with
+a value of 'y'. Once such a record has been found, the Organizational Domain 
+for the DNS domain matching the one found in the RFC5322.From domain can be 
+declared to be the target domain queried for in the step just prior to the 
+query that found the PSD domain.
+
+For example, given the RFC5322.From domain "a.mail.example.com", a series 
+of DNS queries for DMARC records would be executed starting with 
+"\_dmarc.a.mail.example.com" and finishing with "\_dmarc.com". The "\_dmarc.com"
+record would contain a psd tag with a value of 'y', and so the Organizational
+Domain for this RFC5322.From domain would be determined to be "example.com",
+the domain of the DMARC query executed prior to the query for "\_dmarc.com".
+
 ##  Identifier Alignment Explained {#identifier-alignment-explained}
 
 Email authentication technologies authenticate various (and
@@ -457,10 +546,13 @@ RFC5321.MailFrom (MAIL FROM) portion of an SMTP [@!RFC5321] conversation or the
 RFC5321.EHLO/HELO domain, or both.  These may be different domains, and they 
 are typically not visible to the end user. 
 
-DMARC authenticates use of the RFC5322.From domain by requiring that
-it have the same Organizational Domain as (i.e., be aligned with) an
-Authenticated Identifier. Domain names in this context are to be compared 
-in a case-insensitive manner, per [@!RFC4343]. 
+DMARC authenticates use of the RFC5322.From domain by requiring either
+that it have the same Organizational Domain as an Authenticated Identifier
+(a condition known as "relaxed alignment") or that it be identical to the
+domain of the Authenticated Identifier (a condition known as "strict 
+alignment"). The choice of relaxed or strict alignment is left to the domain 
+owner and is expressed in the domain's DMARC policy record.  Domain names 
+in this context are to be compared in a case-insensitive manner, per [@!RFC4343]. 
 
 It is important to note that Identifier Alignment cannot occur with a
 message that is not valid per [@!RFC5322], particularly one with a
@@ -542,66 +634,6 @@ authentication mechanisms, the extensions will need to allow for
 domain identifier extraction so that alignment with the RFC5322.From
 domain can be verified.
 
-##  Determining The Organizational Domain {#determining-the-organizational-domain}
-
-The DMARC protocol defines a method for a Public Suffix Domain to identify
-itself as such using a tag in its published DMARC policy record. An Organizational
-Domain is any subdomain of a PSD that includes exactly one more label than
-the PSD in its name.
-
-For any email message, the Organizational Domain of the RFC5322.From domain
-is determined using the following algorithm, similar to the one described 
-in (#policy-discovery)
-
-1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one 
-    found in the RFC5322.From domain in the message.  A possibly empty set 
-    of records is returned.
-
-2.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-3.  If the set is now empty, or the set contains one valid DMARC record that
-    does not include a psd tag with a value of 'y', then determine the target for 
-    additional queries, using steps 4 through 8 below.
-
-4.  Break the subject DNS domain name into a set of "n" ordered
-    labels.  Number these labels from right to left; e.g., for
-    "a.mail.example.com", "com" would be label 1 and "example" would be
-    label 2 and so forth.
-
-5.  Count the number of labels found in the subject DNS domain. Let that 
-    number be "x". If x < 5, remove the left-most (highest-numbered)
-    label from the subject domain. If x >= 5, remove the left-most 
-    (highest-numbered) labels from the subject domain until 4 labels remain. 
-    The resulting DNS domain name is the new target for subsequent lookups.
-
-6.  Query the DNS for a DMARC TXT record at the DNS domain matching this 
-    new target in place of the RFC5322.From domain in the message.  A possibly 
-    empty set of records is returned.
-
-7.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-8.  If the set is now empty, or the set contains one valid DMARC record that
-    does not include a psd tag with the value of 'y', then determine the 
-    target for additional queries by removing a single label from the target
-    domain as described in step 5 and repeating steps 6 and 7 until 
-    there are no more labels remaining or a record containing a psd tag with
-    a value of 'y' is found.
-
-9.  Once a valid DMARC record containing a psd tag with a value of 'y' has 
-    been found, the Organizational Domain for the DNS domain matching the
-    one found in the RFC5322.From domain can be declared to be the target
-    domain queried for in the step prior to the query that found the PSD 
-    domain.
-
-For example, given the RFC5322.From domain "a.mail.example.com", a series 
-of DNS queries for DMARC records would be executed starting with 
-"_dmarc.a.mail.example.com" and finishing with "_dmarc.com". The "_dmarc.com"
-record would contain a psd tag with a value of 'y', and so the Organizational
-Domain for this RFC5322.From domain would be determined to be "example.com",
-the domain of the DMARC query executed prior to the query for "_dmarc.com".
-
 #   Policy {#policy}
 
 DMARC policies are published by Domain Owners and PSOs and can be
@@ -624,10 +656,10 @@ of the overall DMARC result for a given Author Domain, then the
 Domain Owner does not publish an SPF policy record that can produce
 an SPF pass result.
 
-A Mail Receiver implementing the DMARC mechanism SHOULD make a
-best-effort attempt to adhere to the Domain Owner's or PSO's published DMARC
-Domain Owner Assessment Policy when a message fails the DMARC test.  
-Since email streams can be complicated (due to forwarding, existing RFC5322.From
+A Mail Receiver implementing the DMARC mechanism SHOULD make a best-effort
+attempt to adhere to the Domain Owner's or PSO's published DMARC Domain
+Owner Assessment Policy when a message fails the DMARC test. Since email
+streams can be complicated (due to forwarding, existing RFC5322.From
 domain-spoofing services, etc.), Mail Receivers MAY deviate from a published
 Domain Owner Assessment Policy during message processing and SHOULD
 make available the fact of and reason for the deviation to the Domain
@@ -753,7 +785,7 @@ np:
     MUST be applied for non-existent subdomains.  Note that "np" will 
     be ignored for DMARC records published on subdomains of Organizational 
     Domains and PSDs due to the effect of the DMARC policy discovery 
-    mechanism described in (#policy-discovery).
+    mechanism described in (#dmarc-policy-discovery).
 
 p: 
 :   Domain Owner Assessment Policy (plain-text; RECOMMENDED for policy
@@ -766,7 +798,7 @@ p:
     Possible values are as follows:
 
     none: 
-    :   The Domain Owner offers no expression of concern.
+    :   The Domain Owner offers no expression of preference.
 
     quarantine:
     :   The Domain Owner considers such mail to be suspicious. It
@@ -795,7 +827,7 @@ psd:
 
 rua:
 :   Addresses to which aggregate feedback is to be sent (comma-
-separated plain-text list of DMARC URIs; OPTIONAL).  Section 3 of [@!DMARC-Aggregate-Reporting]
+separated plain-text list of DMARC URIs; OPTIONAL).  [@!DMARC-Aggregate-Reporting]
 discusses considerations that apply when the domain name of a URI differs 
 from that of the domain advertising the policy.  See (#external-report-addresses) 
 for additional considerations.  Any valid URI can be specified.  
@@ -812,7 +844,7 @@ OPTIONAL).  If present, the Domain Owner or PSO is requesting Mail
 Receivers to send detailed failure reports about messages that
 fail the DMARC evaluation in specific ways (see the "fo" tag
 above).  The format of the message to be generated MUST follow the
-format specified for the "rf" tag. Section 3 of [@!DMARC-Aggregate-Reporting] discusses
+format specified for the "rf" tag. [@!DMARC-Aggregate-Reporting] discusses
 considerations that apply when the domain name of a URI differs
 from that of the domain advertising the policy.  A Mail Receiver
 MUST implement support for a "mailto:" URI, i.e., the ability to
@@ -831,7 +863,7 @@ tag is absent and the "np" tag is either absent or not applicable,
 the policy specified by the "p" tag MUST be applied for subdomains.
 Note that "sp" will be ignored for DMARC records published on
 subdomains of Organizational Domains due to the effect of the
-DMARC policy discovery mechanism described in (#policy-discovery).
+DMARC policy discovery mechanism described in (#dmarc-policy-discovery).
 
 t:
 :   DMARC policy test mode (plain-text; OPTIONAL; default is 'n'). For 
@@ -887,6 +919,7 @@ follows:
 
   dmarc-tag       = dmarc-request /
                     dmarc-test /
+                    dmarc-psd /
                     dmarc-srequest /
                     dmarc-nprequest /
                     dmarc-adkim /
@@ -906,6 +939,8 @@ follows:
                     ( "none" / "quarantine" / "reject" )
 
   dmarc-test      = "t" *WSP "=" ( "y" / "n" )
+
+  dmarc-psd       = "psd" *WSP "=" ( "y" / "n" )
 
   dmarc-srequest  = "sp" *WSP "=" *WSP
                     ( "none" / "quarantine" / "reject" )
@@ -939,6 +974,7 @@ This section describes Domain Owner actions to fully implement the
 DMARC mechanism.
 
 ### Publish an SPF Policy for an Aligned Domain
+
 Because DMARC relies on SPF [@!RFC7208] and DKIM [@!RFC6376], in
 order to take full advantage of DMARC, a Domain Owner SHOULD first 
 ensure that SPF and DKIM authentication are properly configured. 
@@ -948,6 +984,7 @@ one that aligns with the Author Domain, and then publish an SPF
 policy in DNS for that domain.
 
 ### Configure Sending System for DKIM Signing Using an Aligned Domain
+
 While it is possible to secure a DMARC pass verdict based on only
 SPF or DKIM, it is commonly accepted best practice to ensure that
 both authentication mechanisms are in place in order to guard 
@@ -957,6 +994,7 @@ header) that aligns with the Author Domain and configure its system
 to sign using that domain.
 
 ### Setup a Mailbox to Receive Aggregate Reports
+
 Proper consumption and analysis of DMARC aggregate reports is the 
 key to any successful DMARC deployment for a Domain Owner. DMARC
 aggregate reports, which are XML documents and are defined in 
@@ -976,12 +1014,14 @@ the data contained in them will go a long way to ensuring a
 successful deployment.
 
 ### Publish a DMARC Policy for the Author Domain
+
 Once SPF, DKIM, and the aggregate reports mailbox are all in place,
 it's time to publish a DMARC record. For best results, Domain Owners
 SHOULD start with "p=none", with the rua tag containg the mailbox
 created in the previous step.
 
 ### Collect and Analyze Reports and Adjust Authentication
+
 The reason for starting at "p=none" is to ensure that nothing's been
 missed in the initial SPF and DKIM deployments. In all but the most
 trivial setups, it is possible for a Domain Owner to overlook a
@@ -993,6 +1033,7 @@ reports, the Domain Owner can adjust the SPF record and/or configure
 DKIM signing for those systems.
 
 ### Decide If and When to Update DMARC Policy
+
 Once the Domain Owner is satisfied that it is properly authenticating
 all of its mail, then it is time to decide if it is appropriate to 
 change the p= value in its DMARC record to p=quarantine or p=reject.
@@ -1036,8 +1077,8 @@ identical for all of the addresses in a multi-valued RFC5322.From
 header field. Multi-valued RFC5322.From header fields with multiple
 domains MUST be exempt from DMARC checking.
 
-Note that domain names that appear on a public suffix list are not
-exempt from DMARC policy application and reporting.
+Note that Public Suffix Domains are not exempt from DMARC policy 
+application and reporting.
 
 ###  Determine Handling Policy {#determine-handling-policy}
 
@@ -1052,7 +1093,7 @@ The steps are as follows:
 
 2.  Query the DNS for a DMARC policy record.  Continue if one is
     found, or terminate DMARC evaluation otherwise.  See
-    (#policy-discovery) for details.
+    (#dmarc-policy-discovery) for details.
 
 3.  Perform DKIM signature verification checks.  A single email could
     contain multiple DKIM signatures.  The results of this step are
@@ -1076,8 +1117,8 @@ The steps are as follows:
     failures, identifier mismatches) are considered to be DMARC
     mechanism check failures.
 
-6.  Apply policy.  Emails that fail the DMARC mechanism check are
-    handled in accordance with the discovered DMARC policy of the
+6.  Apply policy, if appropriate.  Emails that fail the DMARC mechanism 
+    check are handled in accordance with the discovered DMARC policy of the
     Domain Owner and any local policy rules enforced by the Mail Receiver.
     See (#general-record-format) for details.
 
@@ -1099,68 +1140,28 @@ errors.
 Handling of messages for which SPF and/or DKIM evaluation encounter a
 permanent DNS error is left to the discretion of the Mail Receiver.
 
-###  Policy Discovery {#policy-discovery}
+####  DMARC Policy Discovery {#dmarc-policy-discovery}
 
-As stated above, the DMARC mechanism uses DNS TXT records to
-advertise policy.  Policy discovery is accomplished via a method
-similar to the method used for SPF records.  This method, and the
-important differences between DMARC and SPF mechanisms, are discussed
-below.
+Discovery of the applicable DMARC policy for any domain is accomplished 
+via a DNS Tree Walk as described in (#dns-tree-walk).  The target of this
+tree walk is a valid DMARC policy record, and the following rules should
+be applied to records that are found in this manner:
 
-To balance the conflicting requirements of supporting wildcarding and
-allowing subdomain policy overrides, the following DNS lookup scheme 
-is employed:
+1.  If the tree walk ends in the discovery of multiple records or no 
+    records, DMARC processing is not applied to this message.
 
-1.  Mail Receivers MUST query the DNS for a DMARC TXT record at the
-    DNS domain matching the one found in the RFC5322.From domain in
-    the message.  A possibly empty set of records is returned.
-
-2.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-3.  If the set is now empty, the Mail Receiver determines the target
-    for additional queries, using steps 4 through 8 below.
-
-4.  Break the subject DNS domain name into a set of "n" ordered labels.
-    Number these lables from right to left; e.g., for "example.com",
-    "com" would be label 1 and "example" would be label 2.
-
-5.  Count the number of labels found in the subject DNS domain. Let that 
-    number be "x". If x < 5, remove the left-most (highest-numbered)
-    label from the subject domain. If x >= 5, remove the left-most 
-    (highest-numbered) labels from the subject domain until 4 labels remain. 
-    The resulting DNS domain name is the new target for subsequent lookups.
-
-6.  The Mail Receiver MUST query the DNS for a DMARC TXT record at
-    the DNS domain matching this new target in place of the RFC5322.From
-    domain in the message. This record can contain policy to be asserted
-    for subdomains of the target. A possibly empty set of records is
-    returned.
-
-7.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-8.  If the set is now empty, the Mail Receiver determines the target
-    for additional queries by removing a single label from the target
-    domain as described in step 5 and repeating steps 6 and 7 until 
-    there are no more labels remaining.
-
-9.  If the remaining set contains multiple records or no records,
-    policy discovery terminates and DMARC processing is not applied
-    to this message.
-
-10. If a retrieved policy record does not contain a valid "p" tag, or
+2.  If a retrieved policy record does not contain a valid "p" tag, or
     contains an "sp" tag that is not valid, then:
 
-    1.  if a "rua" tag is present and contains at least one
+    *   If a "rua" tag is present and contains at least one
         syntactically valid reporting URI, the Mail Receiver SHOULD
         act as if a record containing a valid "v" tag and "p=none"
         was retrieved, and continue processing;
 
-    2.  otherwise, the Mail Receiver applies no DMARC processing to
+    *   Otherwise, the Mail Receiver applies no DMARC processing to
         this message.
 
-If the set produced by the mechanism above contains no DMARC policy
+If the set produced by the DNS Tree Walk contains no DMARC policy
 record (i.e., any indication that there is no such record as opposed
 to a transient DNS error), Mail Receivers SHOULD NOT apply the DMARC
 mechanism to the message.
@@ -1173,15 +1174,6 @@ message being temporarily rejected (i.e., an SMTP 4yx reply), which
 invites the sending MTA to try again after the condition has possibly
 cleared, allowing a definite DMARC conclusion to be reached ("fail
 closed").
-
-#### Longest PSD Example {#longest-psd-example}
-
-As an example of step 5 above, for a message with the Organizational
-Domain of "example.compute.cloudcompany.com.example", the query for
-PSD DMARC would use "compute.cloudcompany.com.example" as the longest 
-PSD. The receiver would check to see if that PSD is listed in the DMARC 
-PSD Registry, and if so, perform the policy lookup at 
-"_dmarc.compute.cloudcompany.com.example".
 
 Note: Because the PSD policy query comes after the Organizational
 Domain policy query, PSD policy is not used for Organizational
@@ -1212,7 +1204,7 @@ with handling decisions for a message in ways that p= tag values of
 'none' cannot. 
 
 In order to ensure maximum usefulness for DMARC across the email
-ecosystem, then, Mail Receivers MUST generate and send aggregate
+ecosystem, then, Mail Receivers SHOULD generate and send aggregate
 reports with a frequency of at least once every 24 hours.
 
 ##  Policy Enforcement Considerations {#policy-enforcement-considerations}
@@ -1361,13 +1353,13 @@ caused the rejection.
 In the latter case, when doing an SMTP rejection, providing a clear
 hint can be useful in resolving issues.  A receiver might indicate in
 plain text the reason for the rejection by using the word "DMARC"
-somewhere in the reply text.  Many systems are able to scan the SMTP
-reply text to determine the nature of the rejection.  Thus, providing
-a machine-detectable reason for rejection allows the problems causing
-rejections to be properly addressed by automated systems.  For
-example:
+somewhere in the reply text. For example:  
 
     550 5.7.1 Email rejected per DMARC policy for example.com
+
+Many systems are able to scan the SMTP reply text to determine the nature 
+of the rejection.  Thus, providing a machine-detectable reason for rejection 
+allows the problems causing rejections to be properly addressed by automated systems.  
 
 If a Mail Receiver elects to defer delivery due to inability to
 retrieve or apply DMARC policy, this is best done with a 4xy SMTP
@@ -1488,20 +1480,22 @@ when processed by implementations conforming to prior specifications.
 The initial set of entries in this registry is as follows:
 
 {align="left"}
-| Tag Name | Reference | Status   | Description                              |
-|:---------|:----------|:---------|:-----------------------------------------|
-| adkim    | RFC 7489  | current  | DKIM alignment mode                      |
-| aspf     | RFC 7489  | current  | SPF alignment mode                       |
-| fo       | RFC 7489  | current  | Failure reporting options                |
-| p        | RFC 7489  | current  | Requested handling policy                |
-| pct      | RFC 7489  | historic | Sampling rate                            |
-| rf       | RFC 7489  | historic | Failure reporting format(s)              |
-| ri       | RFC 7489  | historic | Aggregate Reporting interval             |
-| rua      | RFC 7489  | current  | Reporting URI(s) for aggregate data      |
-| ruf      | RFC 7489  | current  | Reporting URI(s) for failure data        |
-| sp       | RFC 7489  | current  | Requested handling policy for subdomains |
-| t        | RFC 7489  | current  | Test mode for the specified policy       |
-| v        | RFC 7489  | current  | Specification version                    |
+| Tag Name | Reference | Status   | Description                                                            |
+|:---------|:----------|:---------|:-----------------------------------------------------------------------|
+| adkim    | RFC 7489  | current  | DKIM alignment mode                                                    |
+| aspf     | RFC 7489  | current  | SPF alignment mode                                                     |
+| fo       | RFC 7489  | current  | Failure reporting options                                              |
+| np       | RFC 7489  | current  | Requested handling policy for non-existent subdomains                  |
+| p        | RFC 7489  | current  | Requested handling policy                                              |
+| pct      | RFC 7489  | historic | Sampling rate                                                          |
+| psd      | RFC 7489  | current  | Indicates whether policy record is published by a Public Suffix Domain |
+| rf       | RFC 7489  | historic | Failure reporting format(s)                                            |
+| ri       | RFC 7489  | historic | Aggregate Reporting interval                                           |
+| rua      | RFC 7489  | current  | Reporting URI(s) for aggregate data                                    |
+| ruf      | RFC 7489  | current  | Reporting URI(s) for failure data                                      |
+| sp       | RFC 7489  | current  | Requested handling policy for subdomains                               |
+| t        | RFC 7489  | current  | Test mode for the specified policy                                     |
+| v        | RFC 7489  | current  | Specification version                                                  |
 Table: "DMARC Tag Registry"
 
 ##  DMARC Report Format Registry {#dmarc-report-format-registry}
