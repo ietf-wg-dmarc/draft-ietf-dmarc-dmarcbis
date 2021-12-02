@@ -217,7 +217,7 @@ another role.  This document does not address the distinctions among
 such roles; the reader is encouraged to become familiar with that
 material before continuing.
 
-## Defintions {#definitions}
+## Definitions {#definitions}
 
 The following sections define terms used in this document.
 
