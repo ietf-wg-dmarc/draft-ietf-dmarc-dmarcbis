@@ -243,15 +243,33 @@ RFC5322.From domain is determined by applying the algorithm found in
 </section>
 
 <section anchor="public-suffix-domain"><name>Public Suffix Domain (PSD)</name>
-<t>The term Public Suffix Domain is defined in <xref target="RFC9091"></xref>.</t>
+<t>The global Internet Domain Name System (DNS) is documented in
+   numerous RFCs.  It defines a tree of names starting with root, ".",
+   immediately below which are Top-Level Domain names such as ".com" and
+   ".us".  The domain name structure consists of a tree of names, each
+   of which is made of a sequence of words ("labels") separated by
+   period characters.  The root of the tree is simply called ".".  The
+   Internet community at large, through processes and policies external
+   to this work, selects points in this tree at which to register domain
+   names "owned" by independent organizations.  Real-world examples are
+   ".com", ".org", ".us", and ".gov.uk".  Names at which such
+   registrations occur are called "Public Suffix Domains (PSDs)", and a
+   registration consists of a label selected by the registrant to which
+   a desirable PSD is appended.  For example, "ietf.org" is a registered
+   domain name, and ".org" is its PSD.</t>
 </section>
 
 <section anchor="public-suffix-operator"><name>Public Suffix Operator (PSO)</name>
-<t>The term Public Suffix Operator is defined in <xref target="RFC9091"></xref>.</t>
+<t>A Public Suffix Operator is an organization that manages operations
+   within a PSD, particularly the DNS records published for names at and
+   under that domain name.</t>
 </section>
 
 <section anchor="pso-controlled-domain-names"><name>PSO Controlled Domain Names</name>
-<t>The term PSO Controlled Domain Names is defined in <xref target="RFC9091"></xref>.</t>
+<t>PSO-Controlled Domain Names are names in the DNS that are managed by
+   a PSO and are not available for use as Organizational Domains.  PSO-
+   Controlled Domain Names may have one (e.g., ".com") or more (e.g.,
+   ".co.uk") name components, depending on PSD policy.</t>
 </section>
 
 <section anchor="report-receiver"><name>Report Receiver</name>
@@ -764,7 +782,7 @@ information will be used during policy discovery to determine how to
 apply any DMARC policy records that are discovered during the tree walk.</dd>
 <dt>n:</dt>
 <dd>The default, indicating that the DMARC policy record is published for a
-domain that is not a PSD.</dd>
+domain that is not a PSD.  There is no need to put psd=n in a DMARC record.</dd>
 </dl></dd>
 <dt>rua:</dt>
 <dd><t>Addresses to which aggregate feedback is to be sent (comma-separated plain-text
@@ -982,11 +1000,10 @@ on its needs.</t>
 </section>
 
 <section anchor="pso-actions"><name>PSO Actions</name>
-<t>In addition to the DMARC Domain Owner actions, PSOs that require use
-of DMARC and participate in PSD DMARC ought to make that information
-availablle to Mail Receivers. <xref target="RFC9091"></xref> is an experimental
-method for doing so, and the experiment is described in Appendix B
-of that document.</t>
+<t>In addition to the DMARC Domain Owner actions, if a PSO publishes
+a DMARC record it MUST include the psd tag (See
+<xref target="general-record-format"></xref>) with a value of 'y' ('psd=y').
+</t>
 </section>
 
 <section anchor="mail-receiver-actions"><name>Mail Receiver Actions</name>
