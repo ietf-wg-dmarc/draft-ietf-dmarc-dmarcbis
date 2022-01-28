@@ -607,7 +607,7 @@ strict or relaxed.
 In relaxed mode, the Organizational Domains of the SPF-authenticated 
 domain and RFC5322.From domain must be equal if the identifiers are
 to be considered to be aligned. In strict mode, the two FQDNs must
-match exactly in order from them to be considered to be aligned.
+match exactly in order for them to be considered to be aligned.
 
 For example, in relaxed mode, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
@@ -956,7 +956,7 @@ follows:
 
 ##  Domain Owner Actions {#domain-owner-actions}
 
-This section describes Domain Owner actions to fully implement the
+This section describes Domain Owner actions to implement the
 DMARC mechanism.
 
 ### Publish an SPF Policy for an Aligned Domain
@@ -1017,9 +1017,10 @@ trivial setups, it is possible for a Domain Owner to overlook a
 server here or be unaware of a third party sending agreeement there.
 Starting at "p=none", therefore, takes advantage of DMARC's aggregate
 reporting function, with the Domain Owner using the reports to audit
-its own mail streams. Should any overlooked systems be found in the
-reports, the Domain Owner can adjust the SPF record and/or configure
-DKIM signing for those systems.
+its own mail streams. Should any authentication failures for systems
+under the Domain Owner's control be found in the reports, in cases
+where the failures are caused by local misconfiguration or omission
+the Domain Owner can take steps to address such failures.
 
 ### Decide If and When to Update DMARC Policy
 
