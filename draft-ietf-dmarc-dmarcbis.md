@@ -241,7 +241,7 @@ service providers working on behalf of non-technical clients, to
 individuals responsible for maintaining personal domains.  This
 specification uses this term as analogous to an Administrative
 Management Domain as defined in [@RFC5598].  It can also refer
-to delegates, such as Report Receivers, when those are outside of
+to delegates, such as Report Consumers, when those are outside of
 their immediate management domain.
 
 ### Identifier Alignment {#identifier-alignment}
@@ -257,9 +257,10 @@ Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).
 
 ### Non-existent Domains {#non-existent-domains}
 
-For DMARC purposes, a non-existent domain is a domain for which there
-is an NXDOMAIN or NODATA response for A, AAAA, and MX records.  This
-is a broader definition than that in [@RFC8020].
+For DMARC purposes, a non-existent domain is consistent with the meaning
+of the term as described in [@RFC8020]. That is, if the response code received
+for a query for a domain name is NXDOMAIN, then the domain name and all the
+names under it do not exist.
 
 ### Organizational Domain {#organizational-domain}
 
@@ -299,7 +300,7 @@ a PSO and are not available for use as Organizational Domains.  PSO-
 Controlled Domain Names may have one (e.g., ".com") or more (e.g.,
 ".co.uk") name components, depending on PSD policy.
 
-### Report Receiver {#report-receiver}
+### Report Consumer {#report-consumer}
 
 An operator that receives reports from another operator implementing the
 reporting mechanisms described in this document and/or the documents
@@ -329,7 +330,7 @@ mechanism, as described in (#authentication-mechanisms). When a DMARC policy
 exists for the domain name found in the RFC5322.From header field, and that
 domain name is not verified through an aligned supported authentication
 mechanism, the handling of that message can be affected based on the
-DMARC policy when delivered to a participating receiver.
+DMARC policy when delivered to a participating Mail Receiver.
 
 A message satisfies the DMARC checks if at least one of the supported
 authentication mechanisms:
@@ -518,13 +519,9 @@ The generic steps for a DNS Tree Walk are as follows:
     labels remaining or a valid DMARC record containing the information sought
     has been retrieved.
 
-For determining the organizational domain used for determining relaxed alignment,
-the same process is followed, except in the reverse order. Starting at the top of
-the DNS tree with a single label, query the DNS for a DMARC TXT record until a
-DMARC record not containing a psd tag with a value of 'y' is found, the domain
-to query is the RFC5322.From domain, or the number of labels exceeds 4. If an
-appropriate DMARC record was found, that domain is the Organizational Domain,
-otherwise the RFC5322.From domain is the Organizational Domain.
+For determining the Organizational Domain used for determining relaxed alignment,
+the same process is followed, except in the reverse order. See 
+{#determining-the-organizational-domain} for further details.
 
 To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
@@ -538,29 +535,26 @@ five queries, in order to locate the policy domain:
 
 ##  Determining the Organizational Domain {#determining-the-organizational-domain}
 
-The DMARC protocol defines a method for a Public Suffix Domain to identify
-itself as such using a tag in its published DMARC policy record. An Organizational
-Domain is any subdomain of a PSD that includes exactly one more label than
-the PSD in its name.
-
 For any email message, the Organizational Domain of the RFC5322.From domain
 is determined by performing a DNS Tree Walk in the reverse order described
 in (#dns-tree-walk). The target of the search is a valid DMARC record that
 contains a psd tag with a value of 'y'. Once such a record has been found,
-the Organizational Domain for the DNS domain matching the one found in the
-RFC5322.From domain can be declared to be the target domain queried for in
-the next step just after the query that found the PSD domain. If the first
-DMARC record returned does not contain a psd tag with a value of 'y', that
-domain is the Organizational Domain. If the maxmimum depth of the reverse
-DNS Tree Walk is reached without a DMARC record being located, the
-RFC5322.From domain is the Organziational Domain.
+the Organizational Domain is the target domain that would be queried in the
+next step in this reverse tree walk.  If the first DMARC record returned does 
+not contain a psd tag with a value of 'y', that domain is the Organizational 
+Domain. If the maxmimum depth of the reverse DNS Tree Walk is reached without
+a DMARC record being located, the RFC5322.From domain is the Organziational Domain.
 
 For example, given the RFC5322.From domain "a.mail.example.com", a series
 of DNS queries for DMARC records would be executed starting with "\_dmarc.com"
-and potentially finishing with "\_dmarc.a.mail.example.com". The "\_dmarc.com"
-record would contain a psd tag with a value of 'y', and so the Organizational
-Domain for this RFC5322.From domain would be determined to be "example.com",
-the domain of the DMARC query executed after the query for "\_dmarc.com".
+and potentially finishing with "\_dmarc.a.mail.example.com". If the "\_dmarc.com"
+record contains a psd tag with a value of 'y', then the Organizational Domain for 
+this RFC5322.From domain would be determined to be "example.com", the domain of 
+the DMARC query executed after the query for "\_dmarc.com".
+
+Note: If no applicable DMARC policy is discovered for the RFC5322.From domain
+during the first tree walk, then there is no need to search for an Organizational
+Domain, as the DMARC mechanism does not apply to the message in question.
 
 ##  Identifier Alignment Explained {#identifier-alignment-explained}
 
@@ -737,8 +731,7 @@ key records defined in DKIM [@!RFC6376].
 
 (#iana-considerations) creates a registry for known DMARC tags and
 registers the initial set defined in this document.  Only tags defined
-in this document or in later extensions, and thus added to that registry,
-are to be processed; unknown tags MUST be ignored.
+in that registry are to be processed; unknown tags MUST be ignored.
 
 The following tags are valid DMARC tags:
 
@@ -815,7 +808,9 @@ p:
     PSO has for mail using its domain but not passing DMARC verification.
     Policy applies to the domain queried and to subdomains, unless
     subdomain policy is explicitly described using the "sp" or "np" tags.
-    This tag is mandatory for policy records only, but not for third-party
+    If this tag is not present in an otherwise syntactically valid DMARC
+    record, then the record is treated as if it included "p=none" (see
+    (#dmarc-policy-discovery)). This tag is not applicable for third-party
     reporting records (see [@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting])
     Possible values are as follows:
 
@@ -837,9 +832,10 @@ psd:
 
     y:
     : Domains on the PSL that publish DMARC policy records SHOULD include
-      this tag with a value of 'y' to indicate that the domain is a PSD. This
-      information will be used during policy discovery to determine how to
-      apply any DMARC policy records that are discovered during the tree walk.
+      this tag with a value of 'y' to indicate that the domain is a PSD. If
+      a record containing this tag with a value of 'y' is found during policy
+      discovery, this information will be used to determine the Organizational
+      Domain applicable to the message in question.
 
     n:
     : The default, indicating that the DMARC policy record is published for a
@@ -1008,9 +1004,7 @@ SPF or DKIM, it is commonly accepted best practice to ensure that
 both authentication mechanisms are in place in order to guard
 against failure of just one of them. The Domain Owner SHOULD choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
-header) that aligns with the Author Domain and configure its system
-to sign using that domain, to include publishing a corresponding DKIM
-public key in DNS.
+header) that aligns with the Author Domain.
 
 ### Setup a Mailbox to Receive Aggregate Reports
 
@@ -1039,7 +1033,7 @@ it's time to publish a DMARC record. For best results, Domain Owners
 SHOULD start with "p=none", with the rua tag containg a URI that
 references the mailbox created in the previous step.
 
-### Collect and Analyze Reports and Adjust Authentication
+### Collect and Analyze Reports 
 
 The reason for starting at "p=none" is to ensure that nothing's been
 missed in the initial SPF and DKIM deployments. In all but the most
@@ -1047,10 +1041,7 @@ trivial setups, it is possible for a Domain Owner to overlook a
 server here or be unaware of a third party sending agreeement there.
 Starting at "p=none", therefore, takes advantage of DMARC's aggregate
 reporting function, with the Domain Owner using the reports to audit
-its own mail streams. Should any authentication failures for systems
-under the Domain Owner's control be found in the reports, in cases
-where the failures are caused by local misconfiguration or omission
-the Domain Owner can take steps to address such failures.
+its own mail streams' authentication configurations. 
 
 ### Decide If and When to Update DMARC Policy
 
@@ -1067,7 +1058,7 @@ on its needs.
 
 In addition to the DMARC Domain Owner actions, if a PSO publishes a
 DMARC record it MUST include the psd tag (see (#general-record-format))
-with a value of 'y' ('psd=y').
+with a value of 'y' ("psd=y").
 
 ##  Mail Receiver Actions {#mail-receiver-actions}
 
@@ -1140,19 +1131,13 @@ The steps are as follows:
     Domain Owner and any local policy rules enforced by the Mail Receiver.
     See (#general-record-format) for details.
 
-Heuristics applied in the absence of use by a Domain Owner of either
-SPF or DKIM (e.g., [@Best-Guess-SPF]) SHOULD NOT be used, as it may be
-the case that the Domain Owner wishes a Message Receiver not to
-consider the results of that underlying authentication protocol at
-all.
-
 DMARC evaluation can only yield a "pass" result after one of the
 underlying authentication mechanisms passes for an aligned
 identifier.  If neither passes and one or both of them fail due to a
-temporary error, the Receiver evaluating the message is unable to
+temporary error, the Mail Receiver evaluating the message is unable to
 conclude that the DMARC mechanism had a permanent failure; they
 therefore cannot apply the advertised DMARC policy.  When otherwise
-appropriate, Receivers MAY send feedback reports regarding temporary
+appropriate, Mail Receivers MAY send feedback reports regarding temporary
 errors.
 
 Handling of messages for which SPF and/or DKIM evaluation encounter a
@@ -1307,7 +1292,7 @@ ranges.  Domain Owners are strongly encouraged to carefully review
 their SPF records to understand which networks are authorized to send
 on behalf of the Domain Owner before publishing a DMARC record.
 
-Some receiver architectures might implement SPF in advance of any
+Some Mail Receiver architectures might implement SPF in advance of any
 DMARC operations.  This means that a "-" prefix on a sender's SPF
 mechanism, such as "-all", could cause that rejection to go into
 effect early in handling, causing message rejection before any DMARC
@@ -1369,8 +1354,8 @@ a legitimate client to determine the source of some local issue that
 caused the rejection.
 
 In the latter case, when doing an SMTP rejection, providing a clear
-hint can be useful in resolving issues.  A receiver might indicate in
-plain text the reason for the rejection by using the word "DMARC"
+hint can be useful in resolving issues.  A Mail Receiver might indicate 
+in plain text the reason for the rejection by using the word "DMARC"
 somewhere in the reply text. For example:
 
     550 5.7.1 Email rejected per DMARC policy for example.com
@@ -1728,7 +1713,7 @@ increase in the accuracy of the overall mechanism.
 ##  Method Exclusion {#method-exclusion}
 
 It was suggested that DMARC include a mechanism by which a Domain
-Owner could tell Message Receivers not to attempt verification by one
+Owner could tell Mail Receivers not to attempt verification by one
 of the supported methods (e.g., "check DKIM, but not SPF").
 
 Specifically, consider a Domain Owner that has deployed one of the
@@ -1785,22 +1770,14 @@ support for doing so, for the following reasons:
 
 ##  Domain Existence Test {#domain-existence-test}
 
-A common practice among MTA operators, and indeed one documented in
-[@RFC5617], is a test to determine domain existence prior to any more
-expensive processing.  This is typically done by querying the DNS for
-MX, A, or AAAA resource records for the name being evaluated and
-assuming that the domain is nonexistent if it could be determined
-that no such records were published for that domain name.
+A previous version of this protocol used the test specified in 
+[@RFC5321] to determine a domain's existence. This test requires up 
+to three DNS lookups for the MX, A, and AAAA RRs for the name in 
+question.
 
-The original pre-standardization version of this protocol included a
-mandatory check of this nature.  It was ultimately removed, as the
-method's error rate was too high without substantial manual tuning
-and heuristic work.  There are indeed use cases this work needs to
-address where such a method would return a negative result about a
-domain for which reporting is desired, such as a registered domain
-name that never sends legitimate mail and thus has none of these
-records present in the DNS. The addition of the "np=" tag in this
-version of the protocol is one way to address these use cases.
+This version of the protocol relies solely on the test for existence
+as defined in [@RFC8020]. If a query for name returns NXDOMAIN, then 
+it does not exist.
 
 ##  Issues with ADSP in Operation {#issues-with-adsp-in-operation}
 
@@ -1817,7 +1794,7 @@ direction of DMARC:
     with no ADSP record.
 
 2.  Nonexistent subdomains are explicitly out of scope in ADSP.
-    There is nothing in ADSP that states receivers should simply
+    There is nothing in ADSP that states Mail Receivers should simply
     reject mail from NXDOMAINs regardless of ADSP policy (which of
     course allows spammers to trivially bypass ADSP by sending email
     from nonexistent subdomains).
@@ -1829,11 +1806,11 @@ direction of DMARC:
     DKIM.
 
 5.  ADSP has no support for a slow rollout, i.e., no way to configure
-    a percentage of email on which the receiver should apply the
+    a percentage of email on which the Mail Receiver should apply the
     policy.  This is important for large-volume senders.
 
 6.  ADSP has no explicit support for an intermediate phase where the
-    receiver quarantines (e.g., sends to the recipient's "spam"
+    Mail Receiver quarantines (e.g., sends to the recipient's "spam"
     folder) rather than rejects the email.
 
 7.  The binding between the "From" header domain and DKIM is too
@@ -1911,7 +1888,7 @@ Operational experience showed that the pct tag was usually not accurately
 applied, unless the value specified was either "0" or "100" (the default),
 and the inaccuracies with other values varied widely from implementation to
 implementation. The default value was easily implemented, as it required no
-special processing on the part of the message receiver, while the value
+special processing on the part of the Mail Receiver, while the value
 of "0" took on unintended significance as a value used by some intermediaries
 and mailbox providers as an indicator to deviate from standard handling of
 the message, usually by rewriting the RFC5322.From header in an effort to
@@ -2061,7 +2038,7 @@ Domain.
 
 The owner of the domain "example.com" has deployed SPF and DKIM on
 its messaging infrastructure.  The owner wishes to begin using DMARC
-with a policy that will solicit aggregate feedback from receivers
+with a policy that will solicit aggregate feedback from Mail Receivers
 without affecting how the messages are processed, in order to:
 
 *  Confirm that its legitimate messages are authenticating correctly
@@ -2077,7 +2054,7 @@ indicating that:
 
 *  The version of DMARC being used is "DMARC1" ("v=DMARC1;")
 
-*  Receivers should not alter how they treat these messages because
+*  Mail Receivers should not alter how they treat these messages because
    of this DMARC policy record ("p=none")
 
 *  Aggregate feedback reports should be sent via email to the address
@@ -2228,13 +2205,13 @@ for the full details of this mechanism.
 The Domain Owner has implemented SPF and DKIM in a subdomain used for
 pre-production testing of messaging services.  It now wishes to express
 a handling preference for messages from this subdomain that fail to
-authenticate to indicate to participating receivers that use of this
+authenticate to indicate to participating Mail Receivers that use of this
 domain is not valid.
 
 As a first step, it will express that it considers to be suspicious
 messages using this subdomain that fail authentication. The goal here
 will be to enable examination of messages sent to mailboxes hosted by
-participating receivers as method for troubleshooting any existing
+participating Mail Receivers as method for troubleshooting any existing
 authentication issues.  Aggregate feedback reports will be sent to
 a mailbox within the Organizational Domain, and to a mailbox at a third
 party selected and authorized to receive same by the Domain Owner.
@@ -2247,7 +2224,7 @@ indicating that:
 *  It is applied only to this subdomain (record is published at
    "\_dmarc.test.example.com" and not "\_dmarc.example.com")
 
-*  Receivers are advised that the Domain Owner considers messages
+*  Mail Receivers are advised that the Domain Owner considers messages
    that fail to authenticate to be suspicious ("p=quarantine")
 
 *  Aggregate feedback reports should be sent via email to the
@@ -2291,7 +2268,7 @@ the subdomain is properly authenticating and passing DMARC checks, then
 the Domain Owner can update the policy record to indicate that it considers
 authentication failures to be a clear indication that use of the subdomain
 is not valid. It would do this by altering the DNS record to advise
-receivers of its position on such messages ("p=reject") and removing the
+Mail Receivers of its position on such messages ("p=reject") and removing the
 testing flag ("t=y").
 
 After alteration, the DMARC policy record might look like this when retrieved
@@ -2322,7 +2299,7 @@ file:
 A Mail Receiver that wants to use DMARC should already be checking
 SPF and DKIM, and possess the ability to collect relevant information
 from various email-processing stages to provide feedback to Domain
-Owners (possibly via Report Receivers).
+Owners (possibly via Report Consumers).
 
 ###  SMTP Session Example {#smtp-session-example}
 
@@ -2450,14 +2427,6 @@ Additional contributions within the IETF context were made by Kurt
 Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
 J. Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine,
 S. Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J. Turnbull.
-
-<reference anchor='Best-Guess-SPF' target='http://www.openspf.org/FAQ/Best_guess_record'>
-  <front>
-   <title>Sender Policy Framework: Best guess record (FAQ entry)</title>
-   <author initials='S.' surname='Kitterman' fullname='S. Kitterman'></author>
-   <date year='2010' month='May'></date>
-  </front>
-</reference>
 
 <reference anchor='DMARC-Aggregate-Reporting' target='https://datatracker.ietf.org/doc/draft-ietf-dmarc-aggregate-reporting/'>
   <front>
