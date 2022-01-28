@@ -243,15 +243,33 @@ RFC5322.From domain is determined by applying the algorithm found in
 </section>
 
 <section anchor="public-suffix-domain"><name>Public Suffix Domain (PSD)</name>
-<t>The term Public Suffix Domain is defined in <xref target="RFC9091"></xref>.</t>
+<t>The global Internet Domain Name System (DNS) is documented in
+numerous RFCs.  It defines a tree of names starting with root, &quot;.&quot;,
+immediately below which are Top-Level Domain names such as &quot;.com&quot; and
+&quot;.us&quot;.  The domain name structure consists of a tree of names, each
+of which is made of a sequence of words (&quot;labels&quot;) separated by
+period characters.  The root of the tree is simply called &quot;.&quot;.  The
+Internet community at large, through processes and policies external
+to this work, selects points in this tree at which to register domain
+names &quot;owned&quot; by independent organizations.  Real-world examples of
+these points are &quot;.com&quot;, &quot;.org&quot;, &quot;.us&quot;, and &quot;.gov.uk&quot;.  Names at which
+such registrations occur are called &quot;Public Suffix Domains (PSDs)&quot;, and
+a registration consists of a label selected by the registrant to which
+a desirable PSD is appended.  For example, &quot;ietf.org&quot; is a registered
+domain name, and &quot;.org&quot; is its PSD.</t>
 </section>
 
 <section anchor="public-suffix-operator"><name>Public Suffix Operator (PSO)</name>
-<t>The term Public Suffix Operator is defined in <xref target="RFC9091"></xref>.</t>
+<t>A Public Suffix Operator is an organization that manages operations
+within a PSD, particularly the DNS records published for names at and
+under that domain name.</t>
 </section>
 
 <section anchor="pso-controlled-domain-names"><name>PSO Controlled Domain Names</name>
-<t>The term PSO Controlled Domain Names is defined in <xref target="RFC9091"></xref>.</t>
+<t>PSO-Controlled Domain Names are names in the DNS that are managed by
+a PSO and are not available for use as Organizational Domains.  PSO-
+Controlled Domain Names may have one (e.g., &quot;.com&quot;) or more (e.g.,
+&quot;.co.uk&quot;) name components, depending on PSD policy.</t>
 </section>
 
 <section anchor="report-receiver"><name>Report Receiver</name>
@@ -472,9 +490,16 @@ labels remaining or a valid DMARC record containing the information sought
 has been retrieved.</t>
 </li>
 </ol>
+<t>For determining the organizational domain used for determining relaxed alignment,
+the same process is followed, except in the reverse order. Starting at the top of
+the DNS tree with a single label, query the DNS for a DMARC TXT record until a
+DMARC record not containing a psd tag with a value of 'y' is found, the domain
+to query is the RFC5322.From domain, or the number of labels exceeds 4. If an
+appropriate DMARC record was found, that domain is the Organizational Domain,
+otherwise the RFC5322.From domain is the Organizational Domain.</t>
 <t>To illustrate, for a message with the arbitrary RFC5322.From domain of
 &quot;a.b.c.d.e.mail.example.com&quot;, a full DNS Tree Walk would require the following
-five queries, in order:</t>
+five queries, in order to locate the policy domain:</t>
 
 <ul>
 <li>_dmarc.a.b.c.d.e.mail.example.com</li>
@@ -491,18 +516,22 @@ itself as such using a tag in its published DMARC policy record. An Organization
 Domain is any subdomain of a PSD that includes exactly one more label than
 the PSD in its name.</t>
 <t>For any email message, the Organizational Domain of the RFC5322.From domain
-is determined by performing a DNS Tree Walk as described in <xref target="dns-tree-walk"></xref>.
-The target of the search is a valid DMARC record that contains a psd tag.  Once
-such a record has been found, the Organizational Domain for the DNS domain
-matching the one found in the RFC5322.From domain can be declared to be the
-target domain queried for in the step just prior to the query that found the
-PSD domain.</t>
+is determined by performing a DNS Tree Walk in the reverse order described
+in <xref target="dns-tree-walk"></xref>. The target of the search is a valid DMARC record that
+contains a psd tag with a value of 'y'. Once such a record has been found,
+the Organizational Domain for the DNS domain matching the one found in the
+RFC5322.From domain can be declared to be the target domain queried for in
+the next step just after the query that found the PSD domain. If the first
+DMARC record returned does not contain a psd tag with a value of 'y', that
+domain is the Organizational Domain. If the maxmimum depth of the reverse
+DNS Tree Walk is reached without a DMARC record being located, the
+RFC5322.From domain is the Organziational Domain.</t>
 <t>For example, given the RFC5322.From domain &quot;a.mail.example.com&quot;, a series
-of DNS queries for DMARC records would be executed starting with
-&quot;_dmarc.a.mail.example.com&quot; and finishing with &quot;_dmarc.com&quot;. The &quot;_dmarc.com&quot;
-record would contain a psd tag, and so the Organizational Domain for this RFC5322.From
-domain would be determined to be &quot;example.com&quot;, the domain of the DMARC query
-executed prior to the query for &quot;_dmarc.com&quot;.</t>
+of DNS queries for DMARC records would be executed starting with &quot;_dmarc.com&quot;
+and potentially finishing with &quot;_dmarc.a.mail.example.com&quot;. The &quot;_dmarc.com&quot;
+record would contain a psd tag with a value of 'y', and so the Organizational
+Domain for this RFC5322.From domain would be determined to be &quot;example.com&quot;,
+the domain of the DMARC query executed after the query for &quot;_dmarc.com&quot;.</t>
 </section>
 
 <section anchor="identifier-alignment-explained"><name>Identifier Alignment Explained</name>
@@ -753,11 +782,19 @@ that the use of the domain name is not valid. See <xref target="rejecting-messag
 for some discussion of SMTP rejection methods and their implications.</dd>
 </dl></dd>
 <dt>psd:</dt>
-<dd><t>A standalone flag indicating that the domain is a PSD. (plain-text; OPTIONAL)
-This flag has no valid values associated with it; its presence in a DMARC
-record means that the domain is a PSD, while its absence means that the domain
-is not a PSD.</t>
-</dd>
+<dd><t>A flag indicating whether the domain is a PSD. (plain-text; OPTIONAL;
+default is 'n'). Possible values are:</t>
+
+<dl>
+<dt>y:</dt>
+<dd>Domains on the PSL that publish DMARC policy records SHOULD include
+this tag with a value of 'y' to indicate that the domain is a PSD. This
+information will be used during policy discovery to determine how to
+apply any DMARC policy records that are discovered during the tree walk.</dd>
+<dt>n:</dt>
+<dd>The default, indicating that the DMARC policy record is published for a
+domain that is not a PSD. There is no need to put psd=n in a DMARC record.</dd>
+</dl></dd>
 <dt>rua:</dt>
 <dd><t>Addresses to which aggregate feedback is to be sent (comma-separated plain-text
 list of DMARC URIs; OPTIONAL).  <xref target="DMARC-Aggregate-Reporting"></xref> discusses considerations
@@ -796,15 +833,24 @@ subdomains of Organizational Domains due to the effect of the
 DMARC policy discovery mechanism described in <xref target="dmarc-policy-discovery"></xref>.</t>
 </dd>
 <dt>t:</dt>
-<dd><t>A standalone flag indicating that the Domain Owner is testing the published
-policy. (plain-text; OPTIONAL). This flag has no valid values. If the &quot;t&quot;
-flag is present in a DMARC policy record, it is a request that the actor
-performing the DMARC verification check to not apply the policy, but instead
-apply any special handling rules it might have in place, such as rewriting the
-RFC5322.From header. If the flas is absent, it is a request to have the
-published policy applied as specified to any message that produces a DMARC
-&quot;fail&quot; result. This parameter does not affect the generation of DMARC reports.</t>
-</dd>
+<dd><t>DMARC policy test mode (plain-text; OPTIONAL; default is 'n'). For
+the RFC5322.From domain to which the DMARC record applies, the &quot;t&quot;
+tag serves as a signal to the actor performing DMARC verification checks
+as to whether or not the domain owner wishes the assessment policy
+declared in the &quot;p=&quot;, &quot;sp=&quot;, and/or &quot;np=&quot; tags to actually be applied. This
+parameter does not affect the generation of DMARC reports.  Possible values
+are as follows:</t>
+
+<dl>
+<dt>y:</dt>
+<dd>A request that the actor performing the DMARC verification check not
+apply the policy, but instead apply any special handling rules it might have
+in place, such as rewriting the RFC5322.From header.  The domain owner is
+currently testing its specified DMARC assessment policy.</dd>
+<dt>n:</dt>
+<dd>The default, a request to apply the policy as specified to any
+message that produces a DMARC &quot;fail&quot; result.</dd>
+</dl></dd>
 <dt>v:</dt>
 <dd><t>Version (plain-text; REQUIRED).  Identifies the record retrieved
 as a DMARC record.  It MUST have the value of &quot;DMARC1&quot;.  The value
@@ -829,7 +875,7 @@ a new version of DMARC.</t>
 <t>The formal definition of the DMARC format, using <xref target="RFC5234"></xref>, is as
 follows:</t>
 
-<artwork>  dmarc-uri       = URI 
+<artwork>  dmarc-uri       = URI
                     ; &quot;URI&quot; is imported from [RFC3986]; commas (ASCII
                     ; 0x2C) and exclamation points (ASCII 0x21)
                     ; MUST be encoded
@@ -846,7 +892,7 @@ follows:</t>
                     dmarc-auri /
                     dmarc-furi /
                     dmarc-fo /
-                    dmarc-rfmt 
+                    dmarc-rfmt
                     ; components other than dmarc-version and
                     ; dmarc-request may appear in any order
 
@@ -857,9 +903,9 @@ follows:</t>
   dmarc-request   = &quot;p&quot; *WSP &quot;=&quot; *WSP
                     ( &quot;none&quot; / &quot;quarantine&quot; / &quot;reject&quot; )
 
-  dmarc-test      = &quot;t&quot;
+  dmarc-test      = &quot;t&quot; *WSP &quot;=&quot; ( &quot;y&quot; / &quot;n&quot; )
 
-  dmarc-psd       = &quot;psd&quot;
+  dmarc-psd       = &quot;psd&quot; *WSP &quot;=&quot; ( &quot;y&quot; / &quot;n&quot; )
 
   dmarc-sprequest = &quot;sp&quot; *WSP &quot;=&quot; *WSP
                     ( &quot;none&quot; / &quot;quarantine&quot; / &quot;reject&quot; )
@@ -878,7 +924,7 @@ follows:</t>
                     dmarc-uri *(*WSP &quot;,&quot; *WSP dmarc-uri)
 
   dmarc-fo        = &quot;fo&quot; *WSP &quot;=&quot; *WSP
-                    ( &quot;0&quot; / &quot;1&quot; / ( &quot;d&quot; / &quot;s&quot; / &quot;d:s&quot; / &quot;s:d&quot; ) ) 
+                    ( &quot;0&quot; / &quot;1&quot; / ( &quot;d&quot; / &quot;s&quot; / &quot;d:s&quot; / &quot;s:d&quot; ) )
 
   dmarc-rfmt      = &quot;rf&quot;  *WSP &quot;=&quot; *WSP Keyword *(*WSP &quot;:&quot; Keyword)
                     ; registered reporting formats only
@@ -966,11 +1012,9 @@ on its needs.</t>
 </section>
 
 <section anchor="pso-actions"><name>PSO Actions</name>
-<t>In addition to the DMARC Domain Owner actions, PSOs that require use
-of DMARC and participate in PSD DMARC ought to make that information
-availablle to Mail Receivers. <xref target="RFC9091"></xref> is an experimental
-method for doing so, and the experiment is described in Appendix B
-of that document.</t>
+<t>In addition to the DMARC Domain Owner actions, if a PSO publishes a
+DMARC record it MUST include the psd tag (see <xref target="general-record-format"></xref>)
+with a value of 'y' ('psd=y').</t>
 </section>
 
 <section anchor="mail-receiver-actions"><name>Mail Receiver Actions</name>
@@ -1516,7 +1560,7 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">psd</td>
 <td align="left">RFC 7489</td>
 <td align="left">current</td>
-<td align="left">If present, the domain is a Public Suffix Domain</td>
+<td align="left">Indicates whether policy record is published by a Public Suffix Domain</td>
 </tr>
 
 <tr>
@@ -1558,7 +1602,7 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">t</td>
 <td align="left">RFC 7489</td>
 <td align="left">current</td>
-<td align="left">If present, the specified policy is being tested by the Domain Owner</td>
+<td align="left">Test mode for the specified policy</td>
 </tr>
 
 <tr>
@@ -2068,11 +2112,10 @@ the Domain Owner's tolerance for such things.</t>
 <t>Because of the value provided by &quot;pct=0&quot; to Domain Owners, it was logical
 to keep this functionality in the protocol; at the same time it didn't make
 sense to support a tag named &quot;pct&quot; that had only two valid values. This version
-of the DMARC protocol therefore introduces the &quot;t&quot; tag as shorthand for &quot;testing&quot;.
-The tag has no valid values associated with it. Rather, its presence or absence
-in a DMARC policy record is meant to be analogous in their application by
-mailbox providers and intermediaries to the &quot;pct&quot; tag values &quot;0&quot; and &quot;100&quot;,
-respectively.</t>
+of the DMARC protocol therefore introduces the &quot;t&quot; tag as shorthand for &quot;testing&quot;,
+with the valid values of &quot;y&quot; and &quot;n&quot;, which are meant to be analogous in their
+application by mailbox providers and intermediaries to the &quot;pct&quot; tag values
+&quot;0&quot; and &quot;100&quot;, respectively.</t>
 </section>
 </section>
 
@@ -2203,7 +2246,7 @@ of this DMARC policy record (&quot;p=none&quot;)</t>
 (&quot;rua=mailto:dmarc-feedback@example.com&quot;)</t>
 </li>
 <li><t>All messages from this Organizational Domain are subject to this
-policy (no &quot;t&quot; tag present).</t>
+policy (no &quot;t&quot; tag present, so the default of &quot;n&quot; applies).</t>
 </li>
 </ul>
 <t>The DMARC policy record might look like this when retrieved using a
@@ -2364,7 +2407,7 @@ addresses &quot;dmarc-feedback@example.com&quot; and
 verification check apply any special handling rules it might have
 in place, such as rewriting the RFC53322.From header; the Domain
 Owner is testing its setup at this point, and so does not want
-the handling policy to be applied. (&quot;t&quot;)</t>
+the handling policy to be applied. (&quot;t=y&quot;)</t>
 </li>
 </ul>
 <t>The DMARC policy record might look like this when retrieved using a
@@ -2373,7 +2416,7 @@ line but is wrapped here for publication):</t>
 
 <artwork>  % dig +short TXT _dmarc.test.example.com
   &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
-   mailto:tld-test@thirdparty.example.net; t&quot;
+   mailto:tld-test@thirdparty.example.net; t=y&quot;
 </artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
@@ -2384,7 +2427,7 @@ file:</t>
   _dmarc IN  TXT  ( &quot;v=DMARC1; p=quarantine; &quot;
                     &quot;rua=mailto:dmarc-feedback@example.com,&quot;
                     &quot;mailto:tld-test@thirdparty.example.net;&quot;
-                    &quot;t&quot; )
+                    &quot;t=y&quot; )
 </artwork>
 <t>Once enough time has passed to allow for collecting enough reports to
 give the Domain Owner confidence that all legitimate email sent using
@@ -2393,7 +2436,7 @@ the Domain Owner can update the policy record to indicate that it considers
 authentication failures to be a clear indication that use of the subdomain
 is not valid. It would do this by altering the DNS record to advise
 receivers of its position on such messages (&quot;p=reject&quot;) and removing the
-testing flag (&quot;t&quot;).</t>
+testing flag (&quot;t=y&quot;).</t>
 <t>After alteration, the DMARC policy record might look like this when retrieved
 using a common command-line tool (the output shown would appear on a single
 line but is wrapped here for publication):</t>
@@ -2450,7 +2493,7 @@ piece of email originating from the Domain Owner of &quot;example.com&quot;:</t>
   SPF-authenticated Identifier: mail.example.com
   DKIM-authenticated Identifier: example.com
   DMARC record:
-    &quot;v=DMARC1; p=reject; aspf=r; 
+    &quot;v=DMARC1; p=reject; aspf=r;
      rua=mailto:dmarc-feedback@example.com&quot;
 </artwork>
 <t>In the above sample, both the SPF-authenticated Identifier and the
