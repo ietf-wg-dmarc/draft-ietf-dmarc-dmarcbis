@@ -476,8 +476,8 @@ through a technique described here, one known colloquially as a "DNS Tree Walk".
 
 The process for a DNS Tree Walk will always start at the point in
 the DNS hierarchy that matches the domain in the RFC5322.From header of
-the message, and will always end at the Public Suffix Domain that terminates
-the RFC5322.From domain. To prevent possible abuse of the DNS, a
+the message, and will always end no later than the Public Suffix Domain that
+terminates the RFC5322.From domain. To prevent possible abuse of the DNS, a
 shortcut is built into the process so that RFC5322.From domains that have
 more than five labels do not result in more than five DNS queries.
 
@@ -521,7 +521,7 @@ The generic steps for a DNS Tree Walk are as follows:
 
 For determining the Organizational Domain used for determining relaxed alignment,
 the same process is followed, except in the reverse order. See 
-{#determining-the-organizational-domain} for further details.
+(#determining-the-organizational-domain) for further details.
 
 To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
@@ -1015,7 +1015,7 @@ aggregate reports, which are XML documents and are defined in
 Owner, showing sources of mail using the Author Domain. Depending
 on how mature the Domain Owner's DMARC rollout is, some of these
 sources could be legitimate ones that were overlooked during the
-intial deployment of SPF and/or DKIM.
+initial deployment of SPF and/or DKIM.
 
 Because the aggregate reports are XML documents, it is recommended
 that they be machine-parsed, so setting up a mailbox involves more
@@ -1776,8 +1776,8 @@ to three DNS lookups for the MX, A, and AAAA RRs for the name in
 question.
 
 This version of the protocol relies solely on the test for existence
-as defined in [@RFC8020]. If a query for name returns NXDOMAIN, then 
-it does not exist.
+as defined in [@RFC8020]. If a query for a name returns NXDOMAIN, then 
+the name does not exist.
 
 ##  Issues with ADSP in Operation {#issues-with-adsp-in-operation}
 
@@ -2129,11 +2129,10 @@ might create an entry like the following in the appropriate zone file
 ###  Per-Message Failure Reports Directed to Third Party {#per-message-failure-reports-directed-to-third-party}
 
 The Domain Owner from the previous example is maintaining the same
-policy but now wishes to have a third party receive and process the
-per-message failure reports.  Again, not all Mail Receivers will honor
-this request, but those that do may implement additional checks to
-verify that the third party wishes to receive the failure reports
-for this domain.
+policy but now wishes to have a third party serve as a Report Consumer.
+Again, not all Mail Receivers will honor this request, but those that 
+do may implement additional checks to verify that the third party wishes 
+to receive the failure reports for this domain.
 
 The Domain Owner needs to alter its policy record from (#entire-domain-monitoring-only-per-message-reports)
 as follows:
@@ -2168,11 +2167,11 @@ Because the address used in the "ruf" tag is outside the
 Organizational Domain in which this record is published, conforming
 Mail Receivers will implement additional checks as described in Section 3 of
 [@!DMARC-Aggregate-Reporting].  In order to pass these additional
-checks, the third party will need to publish an additional DNS record
-as follows:
+checks, the Report Consumer's Domain Owner will need to publish an additional
+DNS record as follows:
 
 *  Given the DMARC record published by the Domain Owner at
-   "\_dmarc.example.com", the DNS administrator for the third party
+   "\_dmarc.example.com", the DNS administrator for the Report Consumer
    will need to publish a TXT resource record at
    "example.com.\_report.\_dmarc.thirdparty.example.net" with the value
    "v=DMARC1;".
@@ -2213,8 +2212,8 @@ messages using this subdomain that fail authentication. The goal here
 will be to enable examination of messages sent to mailboxes hosted by
 participating Mail Receivers as method for troubleshooting any existing
 authentication issues.  Aggregate feedback reports will be sent to
-a mailbox within the Organizational Domain, and to a mailbox at a third
-party selected and authorized to receive same by the Domain Owner.
+a mailbox within the Organizational Domain, and to a mailbox at a Report
+Consumer selected and authorized to receive same by the Domain Owner.
 
 The Domain Owner will accomplish this by constructing a policy record
 indicating that:

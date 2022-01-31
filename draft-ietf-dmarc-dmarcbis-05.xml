@@ -447,8 +447,8 @@ above them in the DNS hierarchy, and these records can only be discovered
 through a technique described here, one known colloquially as a &quot;DNS Tree Walk&quot;.</t>
 <t>The process for a DNS Tree Walk will always start at the point in
 the DNS hierarchy that matches the domain in the RFC5322.From header of
-the message, and will always end at the Public Suffix Domain that terminates
-the RFC5322.From domain. To prevent possible abuse of the DNS, a
+the message, and will always end no later than the Public Suffix Domain that
+terminates the RFC5322.From domain. To prevent possible abuse of the DNS, a
 shortcut is built into the process so that RFC5322.From domains that have
 more than five labels do not result in more than five DNS queries.</t>
 <t>The generic steps for a DNS Tree Walk are as follows:</t>
@@ -493,7 +493,7 @@ has been retrieved.</t>
 </ol>
 <t>For determining the Organizational Domain used for determining relaxed alignment,
 the same process is followed, except in the reverse order. See
-{#determining-the-organizational-domain} for further details.</t>
+<xref target="determining-the-organizational-domain"></xref> for further details.</t>
 <t>To illustrate, for a message with the arbitrary RFC5322.From domain of
 &quot;a.b.c.d.e.mail.example.com&quot;, a full DNS Tree Walk would require the following
 five queries, in order to locate the policy domain:</t>
@@ -962,7 +962,7 @@ aggregate reports, which are XML documents and are defined in
 Owner, showing sources of mail using the Author Domain. Depending
 on how mature the Domain Owner's DMARC rollout is, some of these
 sources could be legitimate ones that were overlooked during the
-intial deployment of SPF and/or DKIM.</t>
+initial deployment of SPF and/or DKIM.</t>
 <t>Because the aggregate reports are XML documents, it is recommended
 that they be machine-parsed, so setting up a mailbox involves more
 than just the physical creation of that mailbox. Many third-party
@@ -1950,8 +1950,8 @@ policy is to be applied and when.</t>
 to three DNS lookups for the MX, A, and AAAA RRs for the name in
 question.</t>
 <t>This version of the protocol relies solely on the test for existence
-as defined in <xref target="RFC8020"></xref>. If a query for name returns NXDOMAIN, then
-it does not exist.</t>
+as defined in <xref target="RFC8020"></xref>. If a query for a name returns NXDOMAIN, then
+the name does not exist.</t>
 </section>
 
 <section anchor="issues-with-adsp-in-operation"><name>Issues with ADSP in Operation</name>
@@ -2277,11 +2277,10 @@ might create an entry like the following in the appropriate zone file
 
 <section anchor="per-message-failure-reports-directed-to-third-party"><name>Per-Message Failure Reports Directed to Third Party</name>
 <t>The Domain Owner from the previous example is maintaining the same
-policy but now wishes to have a third party receive and process the
-per-message failure reports.  Again, not all Mail Receivers will honor
-this request, but those that do may implement additional checks to
-verify that the third party wishes to receive the failure reports
-for this domain.</t>
+policy but now wishes to have a third party serve as a Report Consumer.
+Again, not all Mail Receivers will honor this request, but those that
+do may implement additional checks to verify that the third party wishes
+to receive the failure reports for this domain.</t>
 <t>The Domain Owner needs to alter its policy record from <xref target="entire-domain-monitoring-only-per-message-reports"></xref>
 as follows:</t>
 
@@ -2312,12 +2311,12 @@ might create an entry like the following in the appropriate zone file
 Organizational Domain in which this record is published, conforming
 Mail Receivers will implement additional checks as described in Section 3 of
 <xref target="DMARC-Aggregate-Reporting"></xref>.  In order to pass these additional
-checks, the third party will need to publish an additional DNS record
-as follows:</t>
+checks, the Report Consumer's Domain Owner will need to publish an additional
+DNS record as follows:</t>
 
 <ul>
 <li>Given the DMARC record published by the Domain Owner at
-&quot;_dmarc.example.com&quot;, the DNS administrator for the third party
+&quot;_dmarc.example.com&quot;, the DNS administrator for the Report Consumer
 will need to publish a TXT resource record at
 &quot;example.com._report._dmarc.thirdparty.example.net&quot; with the value
 &quot;v=DMARC1;&quot;.</li>
@@ -2353,8 +2352,8 @@ messages using this subdomain that fail authentication. The goal here
 will be to enable examination of messages sent to mailboxes hosted by
 participating Mail Receivers as method for troubleshooting any existing
 authentication issues.  Aggregate feedback reports will be sent to
-a mailbox within the Organizational Domain, and to a mailbox at a third
-party selected and authorized to receive same by the Domain Owner.</t>
+a mailbox within the Organizational Domain, and to a mailbox at a Report
+Consumer selected and authorized to receive same by the Domain Owner.</t>
 <t>The Domain Owner will accomplish this by constructing a policy record
 indicating that:</t>
 

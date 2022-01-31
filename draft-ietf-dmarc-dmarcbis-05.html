@@ -1113,7 +1113,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 1 August 2022</td>
+<td class="center">Expires 4 August 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1129,12 +1129,12 @@ dd.break {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-01-28" class="published">28 January 2022</time>
+<time datetime="2022-01-31" class="published">31 January 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-08-01">1 August 2022</time></dd>
+<dd class="expires"><time datetime="2022-08-04">4 August 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1180,7 +1180,7 @@ handling choices for incoming mail.<a href="#section-abstract-2" class="pilcrow"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 1 August 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 August 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2067,8 +2067,8 @@ above them in the DNS hierarchy, and these records can only be discovered
 through a technique described here, one known colloquially as a "DNS Tree Walk".<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.5-2">The process for a DNS Tree Walk will always start at the point in
 the DNS hierarchy that matches the domain in the RFC5322.From header of
-the message, and will always end at the Public Suffix Domain that terminates
-the RFC5322.From domain. To prevent possible abuse of the DNS, a
+the message, and will always end no later than the Public Suffix Domain that
+terminates the RFC5322.From domain. To prevent possible abuse of the DNS, a
 shortcut is built into the process so that RFC5322.From domains that have
 more than five labels do not result in more than five DNS queries.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 <p id="section-4.5-3">The generic steps for a DNS Tree Walk are as follows:<a href="#section-4.5-3" class="pilcrow">¶</a></p>
@@ -2120,7 +2120,7 @@ has been retrieved.<a href="#section-4.5-4.8.1" class="pilcrow">¶</a></p>
 </ol>
 <p id="section-4.5-5">For determining the Organizational Domain used for determining relaxed alignment,
 the same process is followed, except in the reverse order. See
-{#determining-the-organizational-domain} for further details.<a href="#section-4.5-5" class="pilcrow">¶</a></p>
+<a href="#determining-the-organizational-domain" class="xref">Section 4.6</a> for further details.<a href="#section-4.5-5" class="pilcrow">¶</a></p>
 <p id="section-4.5-6">To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
 five queries, in order to locate the policy domain:<a href="#section-4.5-6" class="pilcrow">¶</a></p>
@@ -2700,7 +2700,7 @@ aggregate reports, which are XML documents and are defined in
 Owner, showing sources of mail using the Author Domain. Depending
 on how mature the Domain Owner's DMARC rollout is, some of these
 sources could be legitimate ones that were overlooked during the
-intial deployment of SPF and/or DKIM.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
+initial deployment of SPF and/or DKIM.<a href="#section-5.5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.5.3-2">Because the aggregate reports are XML documents, it is recommended
 that they be machine-parsed, so setting up a mailbox involves more
 than just the physical creation of that mailbox. Many third-party
@@ -3945,8 +3945,8 @@ policy is to be applied and when.<a href="#section-a.3-3.3.1" class="pilcrow">¶
 to three DNS lookups for the MX, A, and AAAA RRs for the name in
 question.<a href="#section-a.4-1" class="pilcrow">¶</a></p>
 <p id="section-a.4-2">This version of the protocol relies solely on the test for existence
-as defined in <span>[<a href="#RFC8020" class="xref">RFC8020</a>]</span>. If a query for name returns NXDOMAIN, then
-it does not exist.<a href="#section-a.4-2" class="pilcrow">¶</a></p>
+as defined in <span>[<a href="#RFC8020" class="xref">RFC8020</a>]</span>. If a query for a name returns NXDOMAIN, then
+the name does not exist.<a href="#section-a.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="issues-with-adsp-in-operation">
@@ -4339,11 +4339,10 @@ might create an entry like the following in the appropriate zone file
 <a href="#section-b.2.3" class="section-number selfRef">B.2.3. </a><a href="#name-per-message-failure-reports" class="section-name selfRef">Per-Message Failure Reports Directed to Third Party</a>
           </h3>
 <p id="section-b.2.3-1">The Domain Owner from the previous example is maintaining the same
-policy but now wishes to have a third party receive and process the
-per-message failure reports.  Again, not all Mail Receivers will honor
-this request, but those that do may implement additional checks to
-verify that the third party wishes to receive the failure reports
-for this domain.<a href="#section-b.2.3-1" class="pilcrow">¶</a></p>
+policy but now wishes to have a third party serve as a Report Consumer.
+Again, not all Mail Receivers will honor this request, but those that
+do may implement additional checks to verify that the third party wishes
+to receive the failure reports for this domain.<a href="#section-b.2.3-1" class="pilcrow">¶</a></p>
 <p id="section-b.2.3-2">The Domain Owner needs to alter its policy record from <a href="#entire-domain-monitoring-only-per-message-reports" class="xref">Appendix B.2.2</a>
 as follows:<a href="#section-b.2.3-2" class="pilcrow">¶</a></p>
 <ul>
@@ -4376,11 +4375,11 @@ might create an entry like the following in the appropriate zone file
 Organizational Domain in which this record is published, conforming
 Mail Receivers will implement additional checks as described in Section 3 of
 <span>[<a href="#DMARC-Aggregate-Reporting" class="xref">DMARC-Aggregate-Reporting</a>]</span>.  In order to pass these additional
-checks, the third party will need to publish an additional DNS record
-as follows:<a href="#section-b.2.3-8" class="pilcrow">¶</a></p>
+checks, the Report Consumer's Domain Owner will need to publish an additional
+DNS record as follows:<a href="#section-b.2.3-8" class="pilcrow">¶</a></p>
 <ul>
 <li id="section-b.2.3-9.1">Given the DMARC record published by the Domain Owner at
-"_dmarc.example.com", the DNS administrator for the third party
+"_dmarc.example.com", the DNS administrator for the Report Consumer
 will need to publish a TXT resource record at
 "example.com._report._dmarc.thirdparty.example.net" with the value
 "v=DMARC1;".<a href="#section-b.2.3-9.1" class="pilcrow">¶</a>
@@ -4423,8 +4422,8 @@ messages using this subdomain that fail authentication. The goal here
 will be to enable examination of messages sent to mailboxes hosted by
 participating Mail Receivers as method for troubleshooting any existing
 authentication issues.  Aggregate feedback reports will be sent to
-a mailbox within the Organizational Domain, and to a mailbox at a third
-party selected and authorized to receive same by the Domain Owner.<a href="#section-b.2.4-2" class="pilcrow">¶</a></p>
+a mailbox within the Organizational Domain, and to a mailbox at a Report
+Consumer selected and authorized to receive same by the Domain Owner.<a href="#section-b.2.4-2" class="pilcrow">¶</a></p>
 <p id="section-b.2.4-3">The Domain Owner will accomplish this by constructing a policy record
 indicating that:<a href="#section-b.2.4-3" class="pilcrow">¶</a></p>
 <ul>
