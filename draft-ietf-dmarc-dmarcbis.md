@@ -268,7 +268,7 @@ The Organizational Domain is typically a domain that was registered with
 a domain name registrar.  More formally, it is any Public Suffix Domain
 plus one label. The Organizational Domain for the domain in the
 RFC5322.From domain is determined by applying the algorithm found in
-(#determining-the-organizational-domain).
+(#organizational-domain-discovery).
 
 ### Public Suffix Domain (PSD) {#public-suffix-domain}
 
@@ -413,149 +413,6 @@ are supported in this version of DMARC:
    SMTP MAIL FROM command. Section 2.4 of [@!RFC7208] describes MAIL FROM
    processing for cases in which the MAIL command has a null path.
 
-##  Flow Diagram {#flow-diagram}
-
-~~~ ascii-art
- +---------------+                             +--------------------+
- | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
- +---------------+                        .    +--------------------+
-     |                                    .               ^
-     V                                    V               .
- +-----------+     +--------+       +----------+          v
- |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
- |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
- +-----------+     +--------+       +----------+  *  | Verifier |
-     |                                    ^       *  +----------+
-     |                                    *       *
-     V                                    v       *
-  +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
-  | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
-  +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
-                                         |           +----------+
-                                         |                ^
-                                         V                .
-                                  +-----------+           .
-                    +---------+   |    MDA    |           v
-                    |  User   |<--| Filtering |      +-----------+
-                    | Mailbox |   |  Engine   |      |   DKIM    |
-                    +---------+   +-----------+      |  Signing  |
-                                                     | Domain(s) |
-                                                     +-----------+
-
-  MSA = Mail Submission Agent
-  MDA = Mail Delivery Agent
-~~~
-
-The above diagram shows a simple flow of messages through a
-DMARC-aware system.  Solid lines denote the actual message flow,
-dotted lines involve DNS queries used to retrieve message policy
-related to the supported message authentication schemes, and asterisk
-lines indicate data exchange between message-handling modules and
-message authentication modules.  "sMTA" is the sending MTA, and "rMTA"
-is the receiving MTA.
-
-Put simply, when a message reaches a DMARC-aware rMTA, a DNS query
-will be initiated to determine if a DMARC policy exists that applies
-to the author domain. If a policy is found, the rMTA will use the results
-of SPF and DKIM verification checks to determine the ultimate DMARC
-authentication status. The DMARC status can then factor into the
-message handling decision made by the recipient's mail sytsem.
-
-More details on specific actions for the parties involved can be
-found in (#domain-owner-actions) and (#mail-receiver-actions).
-
-##  DNS Tree Walk {#dns-tree-walk}
-
-While the DMARC protocol defines a method for communicating information
-through the publishing of records in DNS, it is not necessarily true that a
-DMARC policy record for a given domain will be found in DNS at the same
-level as the name label for the domain in question. Instead, some domains
-will inherit their DNS policy records from parent domains one level or more
-above them in the DNS hierarchy, and these records can only be discovered
-through a technique described here, one known colloquially as a "DNS Tree Walk".
-
-The process for a DNS Tree Walk will always start at the point in
-the DNS hierarchy that matches the domain in the RFC5322.From header of
-the message, and will always end no later than the Public Suffix Domain that
-terminates the RFC5322.From domain. To prevent possible abuse of the DNS, a
-shortcut is built into the process so that RFC5322.From domains that have
-more than five labels do not result in more than five DNS queries.
-
-The generic steps for a DNS Tree Walk are as follows:
-
-1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one
-    found in the RFC5322.From domain in the message.  A possibly empty set
-    of records is returned.
-
-2.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-3.  If the set is now empty, or the set contains one valid DMARC record that
-    does not contain the information sought, then determine the target for
-    additional queries, using steps 4 through 8 below.
-
-4.  Break the subject DNS domain name into a set of "n" ordered
-    labels.  Number these labels from right to left; e.g., for
-    "a.mail.example.com", "com" would be label 1, "example" would be
-    label 2, "mail.example.com" would be label 3, and so forth.
-
-5.  Count the number of labels found in the subject DNS domain. Let that
-    number be "x". If x < 5, remove the left-most (highest-numbered)
-    label from the subject domain. If x >= 5, remove the left-most
-    (highest-numbered) labels from the subject domain until 4 labels remain.
-    The resulting DNS domain name is the new target for subsequent lookups.
-
-6.  Query the DNS for a DMARC TXT record at the DNS domain matching this
-    new target in place of the RFC5322.From domain in the message.  A possibly
-    empty set of records is returned.
-
-7.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded.
-
-8.  If the set is now empty, or the set contains one valid DMARC record that
-    does not contain the information sought, then determine the target for
-    additional queries by removing a single label from the target domain as
-    described in step 5 and repeating steps 6 and 7 until there are no more
-    labels remaining or a valid DMARC record containing the information sought
-    has been retrieved.
-
-For determining the Organizational Domain used for determining relaxed alignment,
-the same process is followed, except in the reverse order. See 
-(#determining-the-organizational-domain) for further details.
-
-To illustrate, for a message with the arbitrary RFC5322.From domain of
-"a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
-five queries, in order to locate the policy domain:
-
-* _dmarc.a.b.c.d.e.mail.example.com
-* _dmarc.e.mail.example.com
-* _dmarc.mail.example.com
-* _dmarc.example.com
-* _dmarc.com
-
-##  Determining the Organizational Domain {#determining-the-organizational-domain}
-
-For any email message, the Organizational Domain of the RFC5322.From domain
-is determined by performing a DNS Tree Walk in the reverse order described
-in (#dns-tree-walk). The target of the search is a valid DMARC record that
-contains a psd tag with a value of 'y'. Once such a record has been found,
-the Organizational Domain is the target domain that would be queried in the
-next step in this reverse tree walk.  If the first DMARC record returned does 
-not contain a psd tag with a value of 'y', that domain is the Organizational 
-Domain. If the maxmimum depth of the reverse DNS Tree Walk is reached without
-a DMARC record being located, the RFC5322.From domain is the Organziational Domain.
-
-For example, given the RFC5322.From domain "a.mail.example.com", a series
-of DNS queries for DMARC records would be executed starting with "\_dmarc.com"
-and potentially finishing with "\_dmarc.a.mail.example.com". If the "\_dmarc.com"
-record contains a psd tag with a value of 'y', then the Organizational Domain for 
-this RFC5322.From domain would be determined to be "example.com", the domain of 
-the DMARC query executed after the query for "\_dmarc.com".
-
-Note: If no applicable DMARC policy is discovered for the RFC5322.From domain
-during the first tree walk, then there is no need to search for an Organizational
-Domain, as the DMARC mechanism does not apply to the message in question.
-
 ##  Identifier Alignment Explained {#identifier-alignment-explained}
 
 Email authentication technologies authenticate various (and
@@ -653,6 +510,240 @@ If in the future DMARC is extended to include the use of other
 authentication mechanisms, the extensions will need to allow for
 domain identifier extraction so that alignment with the RFC5322.From
 domain can be verified.
+
+##  Flow Diagram {#flow-diagram}
+
+~~~ ascii-art
+ +---------------+                             +--------------------+
+ | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
+ +---------------+                        .    +--------------------+
+     |                                    .               ^
+     V                                    V               .
+ +-----------+     +--------+       +----------+          v
+ |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
+ |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
+ +-----------+     +--------+       +----------+  *  | Verifier |
+     |                                    ^       *  +----------+
+     |                                    *       *
+     V                                    v       *
+  +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
+  | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
+  +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
+                                         |           +----------+
+                                         |                ^
+                                         V                .
+                                  +-----------+           .
+                    +---------+   |    MDA    |           v
+                    |  User   |<--| Filtering |      +-----------+
+                    | Mailbox |   |  Engine   |      |   DKIM    |
+                    +---------+   +-----------+      |  Signing  |
+                                                     | Domain(s) |
+                                                     +-----------+
+
+  MSA = Mail Submission Agent
+  MDA = Mail Delivery Agent
+~~~
+
+The above diagram shows a simple flow of messages through a
+DMARC-aware system.  Solid lines denote the actual message flow,
+dotted lines involve DNS queries used to retrieve message policy
+related to the supported message authentication schemes, and asterisk
+lines indicate data exchange between message-handling modules and
+message authentication modules.  "sMTA" is the sending MTA, and "rMTA"
+is the receiving MTA.
+
+Put simply, when a message reaches a DMARC-aware rMTA, a DNS query
+will be initiated to determine if a DMARC policy exists that applies
+to the author domain. If a policy is found, the rMTA will use the results
+of SPF and DKIM verification checks to determine the ultimate DMARC
+authentication status. The DMARC status can then factor into the
+message handling decision made by the recipient's mail sytsem.
+
+More details on specific actions for the parties involved can be
+found in (#domain-owner-actions) and (#mail-receiver-actions).
+
+##  DNS Tree Walk {#dns-tree-walk}
+
+The DMARC protocol defines a method for communicating information
+through the publishing of records in DNS.  Both the content of the
+records and their location in the DNS hierarchy are used for two
+purposes: policy discovery (see (#dmarc-policy-discovery)) and Organizational 
+Domain determination (see (#organizational-domain-discovery)).  
+
+The relevant DMARC record for these purposes is not necessarily the DMARC 
+policy record found in DNS at the same level as the name label for 
+the domain in question.  Instead, some domains will inherit their 
+DMARC policy records from parent domains one level or more above 
+them in the DNS hierarchy.  Similarly, the Organizational Domain 
+may be found at a higher level in the DNS hierarchy.  
+
+These records are discovered through the technique described here, 
+known colloquially as the "DNS Tree Walk". The target of any DNS Tree
+Walk is a valid DMARC policy record, but the rules defining required 
+content for that record depend on the reason for performing the Tree 
+Walk. 
+
+To prevent possible abuse of the DNS, a shortcut is built into the
+process so that domains that have more than five labels do not result
+in more than five DNS queries.
+
+The generic steps for a DNS Tree Walk are as follows:
+
+1.  Query the DNS for a DMARC TXT record at the DNS domain matching the one
+    found in the domain(s) described above.  A possibly empty set of records 
+    is returned.
+
+2.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded. If multiple DMARC records are
+    returned, they are all discarded. 
+
+3.  If the set is now empty, then determine the target for additional queries, 
+    using steps 4 through 8 below.
+
+4.  Break the subject DNS domain name into a set of "n" ordered
+    labels.  Number these labels from right to left; e.g., for
+    "a.mail.example.com", "com" would be label 1, "example" would be
+    label 2, "mail.example.com" would be label 3, and so forth.
+
+5.  Count the number of labels found in the subject DNS domain. Let that
+    number be "x". If x < 5, remove the left-most (highest-numbered)
+    label from the subject domain. If x >= 5, remove the left-most
+    (highest-numbered) labels from the subject domain until 4 labels remain.
+    The resulting DNS domain name is the new target for subsequent lookups.
+
+6.  Query the DNS for a DMARC TXT record at the DNS domain matching this
+    new target in place of the RFC5322.From domain in the message.  A possibly
+    empty set of records is returned.
+
+7.  Records that do not start with a "v=" tag that identifies the
+    current version of DMARC are discarded. If multiple DMARC records are
+    returned, they are all discarded.
+
+8.  If the set is now empty, determine the target for additional queries by 
+    removing a single label from the target domain as described in step 5 and 
+    repeating steps 6 and 7 until there are no more labels remaining.
+
+To illustrate, for a message with the arbitrary RFC5322.From domain of
+"a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
+five queries, in order to locate the policy or Organizational Domain:
+
+* _dmarc.a.b.c.d.e.mail.example.com
+* _dmarc.e.mail.example.com
+* _dmarc.mail.example.com
+* _dmarc.example.com
+* _dmarc.com
+
+##  DMARC Policy Discovery {#dmarc-policy-discovery}
+
+For policy discovery, a DNS Tree Walk starts at the point in the DNS 
+hierarchy that matches the domain in the RFC5322.From header of the 
+message. The DMARC policy to be applied to the message will be the record
+found at one of these three locations:
+
+* The RFC5322.From domain
+* The Organizational Domain (as determined by a separate DNS Tree Walk) of
+  the RFC5322.From domain
+* The Public Suffix Domain of the RFC5322.From domain
+
+If a retrieved policy record does not contain a valid "p" tag, or contains 
+an "sp" tag that is not valid, then:
+
+*   If a "rua" tag is present and contains at least one
+    syntactically valid reporting URI, the Mail Receiver SHOULD
+    act as if a record containing a valid "v" tag and "p=none"
+    was retrieved, and continue processing;
+
+*   Otherwise, the Mail Receiver applies no DMARC processing to
+    this message.
+
+If the set produced by the DNS Tree Walk contains no DMARC policy
+record (i.e., any indication that there is no such record as opposed
+to a transient DNS error), Mail Receivers MUST NOT apply the DMARC
+mechanism to the message.
+
+Handling of DNS errors when querying for the DMARC policy record is
+left to the discretion of the Mail Receiver.  For example, to ensure
+minimal disruption of mail flow, transient errors could result in
+delivery of the message ("fail open"), or they could result in the
+message being temporarily rejected (i.e., an SMTP 4yx reply), which
+invites the sending MTA to try again after the condition has possibly
+cleared, allowing a definite DMARC conclusion to be reached ("fail
+closed").
+
+Note: PSD policy is not used for Organizational Domains that have
+published a DMARC policy.  Specifically, this is not a mechanism to
+provide feedback addresses (rua/ruf) when an Organizational Domain has
+declined to do so.
+ 
+##  Organizational Domain Discovery {#organizational-domain-discovery}
+
+For Organizational Domain discovery, it may be necessary to perform
+multiple DNS Tree Walks in order to determine if any two domains are in
+alignment. This means that a DNS Tree Walk to discover an Organizational
+Domain might start at any of the following locations:
+
+* The domain in the RFC5322.From header of the message.
+* The RFC5321.MailFrom domain if there is an SPF pass result for the
+  message.
+* Any DKIM d= domain if there is a DKIM pass result for the message for that
+  domain.
+
+Note: There is no need to perform Tree Walk searches for Organizational Domains
+under any of the following conditions:
+
+* No applicable DMARC policy is discovered for the RFC5322.From domain during the 
+  first tree walk. In this case, the DMARC mechanism does not apply to the message 
+  in question. 
+* There is no SPF pass result and no DKIM pass result for the message. In this 
+  case, there can be no DMARC pass result, and so the Organizational Domain of
+  any domain is not required to be discoverd.
+* The record for the RFC5322.From domain indicates strict alignment. In this
+  case, a simple string compare between the RFC5322.From domain and the 
+  RFC5321.MailFrom domain (if SPF authenticated), and/or the DKIM d= domain 
+  (if present and authenticated) is all that is required.
+
+To discover the Organizational Domain for a domain, perform the DNS Tree Walk 
+described in (#dns-tree-walk) as needed for any of the domains in question.
+
+Select the Organizational Domain from the domains for which valid
+DMARC records were retrieved in the following sequence:
+       
+1. If a valid DMARC record explicitly contains the psd= tag set to 'n' (psd=n), 
+   this is the Organizational Domain and the selection process is complete.
+          
+2. From the DMARC records that contain the psd= tag set to 'y' (psd=y), select
+   the record for the domain with the largest number of labels that is also not
+   the starting point for this Tree Walk, if such domain exists. The Organizational
+   Domain is the domain one label below this one in the DNS hierarchy, and the 
+   selection process is complete.
+   
+3. From the DMARC records that do not contain the psd= tag set to 'y' (psd=y), 
+   select the record for the domain with the smallest number of labels.  This 
+   is the Organizational Domain and the selection process is complete.
+
+If this process does not determine the Organizational Domain, then
+the initial target domain is the Organizational Domain.
+
+For example, given the starting domain "a.mail.example.com", a search
+for the Organizational Domain would require a series of DNS queries for DMARC 
+records starting with "\_dmarc.a.mail.example.com" and finishing with "\_dmarc.com".
+If there are DMARC records for "\_dmarc.mail.example.com" and 
+"\_dmarc.example.com", but not for "\_dmarc.a.mail.example.com" or
+"\_dmarc.com", then the Organizational Domain for this domain would be
+"example.com".
+
+As another example, given the starting domain "a.mail.example.com", if a
+search for the Organizational Domain only yields a DMARC record at "\_dmarc.com"
+and that record contains the tag psd=y, then the Organizational Domain for
+this domain would be "example.com".
+
+Note: Since 'n' is the default value for the psd tag, it might be argued 
+that all DMARC policy records that do not contain psd=y then necessarily
+contain psd=n. To be clear, step 1 from the above three-step sequence of 
+determining the Organizational Domain refers only to those DMARC policy 
+records that actually contain the tag-value pair 'psd=n', to cover the 
+very unusual case of a parent PSD publishing a DMARC record without the 
+requisite 'psd=y' tag.
 
 #   Policy {#policy}
 
@@ -839,7 +930,9 @@ psd:
 
     n:
     : The default, indicating that the DMARC policy record is published for a
-      domain that is not a PSD. There is no need to put psd=n in a DMARC record.
+      domain that is not a PSD. There is no need to put psd=n in a DMARC record,
+      except in the very unusual case of a parent PSD publishing a DMARC record
+      without the requisite psd=y tag.
 
 rua:
 :  Addresses to which aggregate feedback is to be sent (comma-separated plain-text
@@ -1142,47 +1235,6 @@ errors.
 
 Handling of messages for which SPF and/or DKIM evaluation encounter a
 permanent DNS error is left to the discretion of the Mail Receiver.
-
-####  DMARC Policy Discovery {#dmarc-policy-discovery}
-
-Discovery of the applicable DMARC policy for any domain is accomplished
-via a DNS Tree Walk as described in (#dns-tree-walk).  The target of this
-tree walk is a valid DMARC policy record, and the following rules should
-be applied to records that are found in this manner:
-
-1.  If the tree walk ends in the discovery of multiple records or no
-    records, DMARC processing is not applied to this message.
-
-2.  If a retrieved policy record does not contain a valid "p" tag, or
-    contains an "sp" tag that is not valid, then:
-
-    *   If a "rua" tag is present and contains at least one
-        syntactically valid reporting URI, the Mail Receiver SHOULD
-        act as if a record containing a valid "v" tag and "p=none"
-        was retrieved, and continue processing;
-
-    *   Otherwise, the Mail Receiver applies no DMARC processing to
-        this message.
-
-If the set produced by the DNS Tree Walk contains no DMARC policy
-record (i.e., any indication that there is no such record as opposed
-to a transient DNS error), Mail Receivers SHOULD NOT apply the DMARC
-mechanism to the message.
-
-Handling of DNS errors when querying for the DMARC policy record is
-left to the discretion of the Mail Receiver.  For example, to ensure
-minimal disruption of mail flow, transient errors could result in
-delivery of the message ("fail open"), or they could result in the
-message being temporarily rejected (i.e., an SMTP 4yx reply), which
-invites the sending MTA to try again after the condition has possibly
-cleared, allowing a definite DMARC conclusion to be reached ("fail
-closed").
-
-Note: Because the PSD policy query comes after the Organizational
-Domain policy query, PSD policy is not used for Organizational
-domains that have published a DMARC policy.  Specifically, this is
-not a mechanism to provide feedback addresses (rua/ruf) when an
-Organizational Domain has declined to do so.
 
 ### Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
