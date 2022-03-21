@@ -7,7 +7,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489 (if approved)                             J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 18 September 2022                                 17 March 2022
+Expires: 22 September 2022                                 21 March 2022
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2022.
+   This Internet-Draft will expire on 22 September 2022.
 
 Copyright Notice
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 1]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 1]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -101,7 +101,7 @@ Table of Contents
      4.5.  Flow Diagram  . . . . . . . . . . . . . . . . . . . . . .  14
      4.6.  DNS Tree Walk . . . . . . . . . . . . . . . . . . . . . .  16
      4.7.  DMARC Policy Discovery  . . . . . . . . . . . . . . . . .  17
-     4.8.  Determining the Organizational Domain . . . . . . . . . .  18
+     4.8.  Organizational Domain Discovery . . . . . . . . . . . . .  18
    5.  Policy  . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
      5.1.  DMARC Policy Record . . . . . . . . . . . . . . . . . . .  21
      5.2.  DMARC URIs  . . . . . . . . . . . . . . . . . . . . . . .  21
@@ -110,7 +110,7 @@ Table of Contents
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 2]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 2]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -166,7 +166,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 3]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 3]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -222,7 +222,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 4]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 4]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -278,7 +278,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 5]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 5]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -334,7 +334,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 6]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 6]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -390,7 +390,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 7]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 7]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -446,7 +446,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 8]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 8]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -502,7 +502,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022               [Page 9]
+Herr (ed) & Levine (ed) Expires 22 September 2022               [Page 9]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -558,7 +558,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 10]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 10]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -614,7 +614,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 11]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 11]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -670,7 +670,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 12]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 12]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -726,7 +726,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 13]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 13]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -782,7 +782,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 14]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 14]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -838,7 +838,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 15]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 15]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -875,30 +875,33 @@ Internet-Draft                  DMARCbis                      March 2022
        set of records is returned.
 
    2.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.  If a valid DMARC record
-       is returned and it contains the required information, the Tree
-       Walk is complete.
+       current version of DMARC are discarded.  If multiple DMARC
+       records are returned, they are all discarded.
 
-   3.  If the set is now empty, or the set contains more than one DMARC
-       record, then determine the target for additional queries, using
-       steps 4 through 8 below.
+   3.  If the set is now empty, then determine the target for additional
+       queries, using steps 4 through 8 below.
 
    4.  Break the subject DNS domain name into a set of "n" ordered
        labels.  Number these labels from right to left; e.g., for
        "a.mail.example.com", "com" would be label 1, "example" would be
        label 2, "mail.example.com" would be label 3, and so forth.
 
-   5.  Count the number of labels found in the subject DNS domain.  Let
-       that number be "x".  If x < 5, remove the left-most (highest-
-       numbered) label from the subject domain.  If x >= 5, remove the
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 16]
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 16]
 
 Internet-Draft                  DMARCbis                      March 2022
 
 
+   5.  Count the number of labels found in the subject DNS domain.  Let
+       that number be "x".  If x < 5, remove the left-most (highest-
+       numbered) label from the subject domain.  If x >= 5, remove the
        left-most (highest-numbered) labels from the subject domain until
        4 labels remain.  The resulting DNS domain name is the new target
        for subsequent lookups.
@@ -908,15 +911,13 @@ Internet-Draft                  DMARCbis                      March 2022
        message.  A possibly empty set of records is returned.
 
    7.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.  If a valid DMARC record
-       is returned and it contains the required information, the Tree
-       Walk is complete.
+       current version of DMARC are discarded.  If multiple DMARC
+       records are returned, they are all discarded.
 
-   8.  If the set is now empty, or the set contains more than one DMARC
-       record, then determine the target for additional queries by
-       removing a single label from the target domain as described in
-       step 5 and repeating steps 6 and 7 until there are no more labels
-       remaining.
+   8.  If the set is now empty, determine the target for additional
+       queries by removing a single label from the target domain as
+       described in step 5 and repeating steps 6 and 7 until there are
+       no more labels remaining.
 
    To illustrate, for a message with the arbitrary RFC5322.From domain
    of "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require
@@ -949,8 +950,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 17]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 17]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -985,47 +985,50 @@ Internet-Draft                  DMARCbis                      March 2022
    provide feedback addresses (rua/ruf) when an Organizational Domain
    has declined to do so.
 
-4.8.  Determining the Organizational Domain
+4.8.  Organizational Domain Discovery
 
-   For Organizational Domain determination, it may be necessary to
-   perform multiple DNS Tree Walks in order to determine if any two
-   domains are in alignment.  This means that a DNS Tree Walk to
-   determine an Organizational Domain might start at any of the
-   following locations:
+   For Organizational Domain discovery, it may be necessary to perform
+   multiple DNS Tree Walks in order to determine if any two domains are
+   in alignment.  This means that a DNS Tree Walk to discover an
+   Organizational Domain might start at any of the following locations:
 
-   *  The domain in the RFC5322.From header of the message
+   *  The domain in the RFC5322.From header of the message.
 
    *  The RFC5321.MailFrom domain if there is an SPF pass result for the
-      message and if this domain is different from the RFC5322.From
-      domain and the DMARC policy does not specify strict alignment for
-      SPF
+      message.
+
+   *  Any DKIM d= domain if there is a DKIM pass result for the message
+      for that domain.
+
+   Note: There is no need to perform Tree Walk searches for
+   Organizational Domains under any of the following conditions:
 
 
 
 
-
-
-
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 18]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 18]
 
 Internet-Draft                  DMARCbis                      March 2022
 
 
-   *  Any DKIM d= domain if there is a DKIM pass result for the message
-      for that domain and if that domain is different from the
-      RFC5322.From domain and the DMARC policy does not specify strict
-      alignment for DKIM.
+   *  No applicable DMARC policy is discovered for the RFC5322.From
+      domain during the first tree walk.  In this case, the DMARC
+      mechanism does not apply to the message in question.
 
-   Note: If no applicable DMARC policy is discovered for the
-   RFC5322.From domain during the first tree walk, then there is no need
-   to search for Organizational Domains, as the DMARC mechanism does not
-   apply to the message in question.  Also, if there is no SPF pass
-   result and no DKIM pass result for the message, there is no need to
-   search for Organizational Domains, because there can be no DMARC pass
-   result.
+   *  There is no SPF pass result and no DKIM pass result for the
+      message.  In this case, there can be no DMARC pass result, and so
+      the Organizational Domain of any domain is not required to be
+      discoverd.
 
-   To determine the Organizational Domain, perform the DNS Tree Walk
-   described in Section 4.6 for each of these domains, as needed.
+   *  The record for the RFC5322.From domain indicates strict alignment.
+      In this case, a simple string compare between the RFC5322.From
+      domain and the RFC5321.MailFrom domain (if SPF authenticated),
+      and/or the DKIM d= domain (if present and authenticated) is all
+      that is required.
+
+   To discover the Organizational Domain for a domain, perform the DNS
+   Tree Walk described in Section 4.6 as needed for any of the domains
+   in question.
 
    Select the Organizational Domain from the domains for which valid
    DMARC records were retrieved in the following sequence:
@@ -1059,10 +1062,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-
-
-
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 19]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 19]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1118,7 +1118,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 20]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 20]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1174,7 +1174,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 21]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 21]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1230,7 +1230,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 22]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 22]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1286,7 +1286,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 23]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 23]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1342,7 +1342,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 24]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 24]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1398,7 +1398,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 25]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 25]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1454,7 +1454,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 26]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 26]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1510,7 +1510,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 27]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 27]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1566,7 +1566,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 28]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 28]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1622,7 +1622,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 29]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 29]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1678,7 +1678,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 30]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 30]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1734,7 +1734,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 31]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 31]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1790,7 +1790,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 32]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 32]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1846,7 +1846,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 33]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 33]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1902,7 +1902,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 34]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 34]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -1958,7 +1958,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 35]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 35]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2014,7 +2014,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 36]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 36]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2070,7 +2070,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 37]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 37]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2126,7 +2126,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 38]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 38]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2182,7 +2182,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 39]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 39]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2238,7 +2238,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 40]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 40]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2294,7 +2294,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 41]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 41]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2350,7 +2350,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 42]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 42]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2406,7 +2406,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 43]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 43]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2462,7 +2462,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 44]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 44]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2518,7 +2518,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 45]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 45]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2574,7 +2574,7 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 46]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 46]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2630,7 +2630,7 @@ A.2.  Method Exclusion
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 47]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 47]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2686,7 +2686,7 @@ A.4.  Domain Existence Test
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 48]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 48]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2742,7 +2742,7 @@ A.6.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 49]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 49]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2798,7 +2798,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 50]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 50]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2854,7 +2854,7 @@ A.7.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 51]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 51]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2910,7 +2910,7 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 52]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 52]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -2966,7 +2966,7 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 53]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 53]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3022,7 +3022,7 @@ B.2.1.  Entire Domain, Monitoring Only
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 54]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 54]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3078,7 +3078,7 @@ B.2.2.  Entire Domain, Monitoring Only, Per-Message Reports
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 55]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 55]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3134,7 +3134,7 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 56]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 56]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3190,7 +3190,7 @@ B.2.4.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 57]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 57]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3246,7 +3246,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 58]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 58]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3302,7 +3302,7 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 59]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 59]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3358,7 +3358,7 @@ Internet-Draft                  DMARCbis                      March 2022
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 60]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 60]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3414,7 +3414,7 @@ Acknowledgements
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 61]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 61]
 
 Internet-Draft                  DMARCbis                      March 2022
 
@@ -3470,5 +3470,5 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed) Expires 18 September 2022              [Page 62]
+Herr (ed) & Levine (ed) Expires 22 September 2022              [Page 62]
 ```

@@ -268,7 +268,7 @@ The Organizational Domain is typically a domain that was registered with
 a domain name registrar.  More formally, it is any Public Suffix Domain
 plus one label. The Organizational Domain for the domain in the
 RFC5322.From domain is determined by applying the algorithm found in
-(#determining-the-organizational-domain).
+(#organizational-domain-discovery).
 
 ### Public Suffix Domain (PSD) {#public-suffix-domain}
 
@@ -568,7 +568,7 @@ The DMARC protocol defines a method for communicating information
 through the publishing of records in DNS.  Both the content of the
 records and their location in the DNS hierarchy are used for two
 purposes: policy discovery (see (#dmarc-policy-discovery)) and Organizational 
-Domain determination (see (#determining-the-organizational-domain)).  
+Domain determination (see (#organizational-domain-discovery)).  
 
 The relevant DMARC record for these purposes is not necessarily the DMARC 
 policy record found in DNS at the same level as the name label for 
@@ -594,13 +594,11 @@ The generic steps for a DNS Tree Walk are as follows:
     is returned.
 
 2.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded. If a valid DMARC record
-    is returned and it contains the required information, the Tree Walk is
-    complete.
+    current version of DMARC are discarded. If multiple DMARC records are
+    returned, they are all discarded. 
 
-3.  If the set is now empty, or the set contains more than one DMARC record,
-    then determine the target for additional queries, using steps 4 through 8 
-    below.
+3.  If the set is now empty, then determine the target for additional queries, 
+    using steps 4 through 8 below.
 
 4.  Break the subject DNS domain name into a set of "n" ordered
     labels.  Number these labels from right to left; e.g., for
@@ -618,14 +616,12 @@ The generic steps for a DNS Tree Walk are as follows:
     empty set of records is returned.
 
 7.  Records that do not start with a "v=" tag that identifies the
-    current version of DMARC are discarded. If a valid DMARC record
-    is returned and it contains the required information, the Tree Walk is
-    complete.
+    current version of DMARC are discarded. If multiple DMARC records are
+    returned, they are all discarded.
 
-8.  If the set is now empty, or the set contains more than one DMARC record,
-    then determine the target for additional queries by removing a single 
-    label from the target domain as described in step 5 and repeating steps 
-    6 and 7 until there are no more labels remaining.
+8.  If the set is now empty, determine the target for additional queries by 
+    removing a single label from the target domain as described in step 5 and 
+    repeating steps 6 and 7 until there are no more labels remaining.
 
 To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
@@ -679,30 +675,35 @@ published a DMARC policy.  Specifically, this is not a mechanism to
 provide feedback addresses (rua/ruf) when an Organizational Domain has
 declined to do so.
  
-##  Determining the Organizational Domain {#determining-the-organizational-domain}
+##  Organizational Domain Discovery {#organizational-domain-discovery}
 
-For Organizational Domain determination, it may be necessary to perform
+For Organizational Domain discovery, it may be necessary to perform
 multiple DNS Tree Walks in order to determine if any two domains are in
-alignment. This means that a DNS Tree Walk to determine an Organizational
+alignment. This means that a DNS Tree Walk to discover an Organizational
 Domain might start at any of the following locations:
 
-* The domain in the RFC5322.From header of the message
+* The domain in the RFC5322.From header of the message.
 * The RFC5321.MailFrom domain if there is an SPF pass result for the
-  message and if this domain is different from the RFC5322.From domain and the
-  DMARC policy does not specify strict alignment for SPF
+  message.
 * Any DKIM d= domain if there is a DKIM pass result for the message for that
-  domain and if that domain is different from the RFC5322.From domain and the 
-  DMARC policy does not specify strict alignment for DKIM.
+  domain.
 
-Note: If no applicable DMARC policy is discovered for the RFC5322.From domain 
-during the first tree walk, then there is no need to search for Organizational 
-Domains, as the DMARC mechanism does not apply to the message in question. Also,
-if there is no SPF pass result and no DKIM pass result for the message, there 
-is no need to search for Organizational Domains, because there can be no DMARC
-pass result.
+Note: There is no need to perform Tree Walk searches for Organizational Domains
+under any of the following conditions:
 
-To determine the Organizational Domain, perform the DNS Tree Walk described 
-in (#dns-tree-walk) for each of these domains, as needed.
+* No applicable DMARC policy is discovered for the RFC5322.From domain during the 
+  first tree walk. In this case, the DMARC mechanism does not apply to the message 
+  in question. 
+* There is no SPF pass result and no DKIM pass result for the message. In this 
+  case, there can be no DMARC pass result, and so the Organizational Domain of
+  any domain is not required to be discoverd.
+* The record for the RFC5322.From domain indicates strict alignment. In this
+  case, a simple string compare between the RFC5322.From domain and the 
+  RFC5321.MailFrom domain (if SPF authenticated), and/or the DKIM d= domain 
+  (if present and authenticated) is all that is required.
+
+To discover the Organizational Domain for a domain, perform the DNS Tree Walk 
+described in (#dns-tree-walk) as needed for any of the domains in question.
 
 Select the Organizational Domain from the domains for which valid
 DMARC records were retrieved in the following sequence:
@@ -740,8 +741,9 @@ Note: Since 'n' is the default value for the psd tag, it might be argued
 that all DMARC policy records that do not contain psd=y then necessarily
 contain psd=n. To be clear, step 1 from the above three-step sequence of 
 determining the Organizational Domain refers only to those DMARC policy 
-records that actually contain the tag-value pair 'psd=n', to cover the very unusual 
-case of a parent PSD publishing a DMARC record without the requisite 'psd=y' tag.
+records that actually contain the tag-value pair 'psd=n', to cover the 
+very unusual case of a parent PSD publishing a DMARC record without the 
+requisite 'psd=y' tag.
 
 #   Policy {#policy}
 
