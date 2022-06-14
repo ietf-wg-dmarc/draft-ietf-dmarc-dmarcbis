@@ -1028,58 +1028,47 @@ follows:
                     ; 0x2C) and exclamation points (ASCII 0x21)
                     ; MUST be encoded
 
-  dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
+  dmarc-record    = dmarc-version *(*WSP ";" *WSP dmarc-tag) *WSP *";"
 
-  dmarc-tag       = dmarc-request /
-                    dmarc-test /
-                    dmarc-psd /
-                    dmarc-sprequest /
-                    dmarc-nprequest /
-                    dmarc-adkim /
-                    dmarc-aspf /
-                    dmarc-auri /
-                    dmarc-furi /
-                    dmarc-fo /
-                    dmarc-rfmt
-                    ; components other than dmarc-version and
-                    ; dmarc-request may appear in any order
+  dmarc-tag       = 1*ALPHA *WSP '=' *WSP 1*dmarc-value
+
+  dmarc-value     = %x20-3a | %x3c-7e ; any printing chars but semicolon
 
   dmarc-version   = "v" *WSP "=" *WSP %x44 %x4d %x41 %x52 %x43 %x31
 
-  dmarc-sep       = *WSP %x3b *WSP
+  ; specialized syntax of DMARC values
+  dmarc-request   = ( "none" / "quarantine" / "reject" )
 
-  dmarc-request   = "p" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
+  dmarc-yorn      = ( "y" / "n" )
 
-  dmarc-test      = "t" *WSP "=" ( "y" / "n" )
+  dmarc-rors      = ( "r" / "s" )
 
-  dmarc-psd       = "psd" *WSP "=" ( "y" / "n" )
+  dmarc-urilist   = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-sprequest = "sp" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
+  dmarc-fo        = ( "0" / "1" / ( "d" / "s" / "d:s" / "s:d" ) )
 
-  dmarc-nprequest  = "np" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
-
-  dmarc-adkim     = "adkim" *WSP "=" *WSP ( "r" / "s" )
-
-  dmarc-aspf      = "aspf" *WSP "=" *WSP ( "r" / "s" )
-
-  dmarc-auri      = "rua" *WSP "=" *WSP
-                    dmarc-uri *(*WSP "," *WSP dmarc-uri)
-
-  dmarc-furi      = "ruf" *WSP "=" *WSP
-                    dmarc-uri *(*WSP "," *WSP dmarc-uri)
-
-  dmarc-fo        = "fo" *WSP "=" *WSP
-                    ( "0" / "1" / ( "d" / "s" / "d:s" / "s:d" ) )
-
-  dmarc-rfmt      = "rf"  *WSP "=" *WSP Keyword *(*WSP ":" Keyword)
-                    ; registered reporting formats only
+  dmarc-rfmt      = Keyword *(*WSP ":" Keyword) ; registered reporting formats only
 
 ~~~
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
+
+In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
+The ABNF rule for each dmarc-value is specified in the following table:
+
+Tag Name|Value Rule
+--------|----------
+p       |dmarc-request
+t       |dmarc-yorn
+psd     |dmarc-yorn
+np      |dmarc-request
+sp      |dmarc-request
+adkim   |dmarc-rors
+aspf    |dmarc-rors
+rua     |dmarc-urilist
+ruf     |dmarc-urilist
+fo      |dmarc-fo
+rf      |dmarc-rfmt
 
 ##  Domain Owner Actions {#domain-owner-actions}
 
