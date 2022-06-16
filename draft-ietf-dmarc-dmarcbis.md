@@ -557,7 +557,7 @@ will be initiated to determine if a DMARC policy exists that applies
 to the author domain. If a policy is found, the rMTA will use the results
 of SPF and DKIM verification checks to determine the ultimate DMARC
 authentication status. The DMARC status can then factor into the
-message handling decision made by the recipient's mail sytsem.
+message handling decision made by the recipient's mail system.
 
 More details on specific actions for the parties involved can be
 found in (#domain-owner-actions) and (#mail-receiver-actions).
@@ -603,7 +603,7 @@ The generic steps for a DNS Tree Walk are as follows:
 4.  Break the subject DNS domain name into a set of "n" ordered
     labels.  Number these labels from right to left; e.g., for
     "a.mail.example.com", "com" would be label 1, "example" would be
-    label 2, "mail.example.com" would be label 3, and so forth.
+    label 2, "mail" would be label 3, and so forth.
 
 5.  Count the number of labels found in the subject DNS domain. Let that
     number be "x". If x < 5, remove the left-most (highest-numbered)
@@ -699,16 +699,13 @@ Domain might start at any of the following locations:
 Note: There is no need to perform Tree Walk searches for Organizational Domains
 under any of the following conditions:
 
-* The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF authenticated), 
-  and/or the DKIM d= domain (if present and authenticated) are all the same and
-  that domain has a DMARC record. In this case, this common domain is treated as
-  the Organizational Domain.
-* No applicable DMARC policy is discovered for the RFC5322.From domain during the 
-  first tree walk. In this case, the DMARC mechanism does not apply to the message 
-  in question. 
-* There is no SPF pass result and no DKIM pass result for the message. In this 
-  case, there can be no DMARC pass result, and so the Organizational Domain of
-  any domain is not required to be discovered.
+* The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF 
+  authenticated), and/or the DKIM d= domain (if present and authenticated) 
+  are all the same and that domain has a DMARC record. In this case, this 
+  common domain is treated as the Organizational Domain.
+* No applicable DMARC policy is discovered for the RFC5322.From domain during 
+  the first tree walk. In this case, the DMARC mechanism does not apply to 
+  the message in question. 
 * The record for the RFC5322.From domain indicates strict alignment. In this
   case, a simple string compare between the RFC5322.From domain and the 
   RFC5321.MailFrom domain (if SPF authenticated), and/or the DKIM d= domain 
@@ -1019,8 +1016,8 @@ a new version of DMARC.
 
 ##  Formal Definition {#formal-definition}
 
-The formal definition of the DMARC format, using [@!RFC5234], is as
-follows:
+The formal definition of the DMARC format, using [@!RFC5234] and [@!RFC7405], 
+is as follows:
 
 ~~~
   dmarc-uri       = URI
@@ -1028,58 +1025,54 @@ follows:
                     ; 0x2C) and exclamation points (ASCII 0x21)
                     ; MUST be encoded
 
-  dmarc-record    = dmarc-version dmarc-sep *(dmarc-tag dmarc-sep)
+  dmarc-sep       = *WSP ";" *WSP
 
-  dmarc-tag       = dmarc-request /
-                    dmarc-test /
-                    dmarc-psd /
-                    dmarc-sprequest /
-                    dmarc-nprequest /
-                    dmarc-adkim /
-                    dmarc-aspf /
-                    dmarc-auri /
-                    dmarc-furi /
-                    dmarc-fo /
-                    dmarc-rfmt
-                    ; components other than dmarc-version and
-                    ; dmarc-request may appear in any order
+  equals          = *WSP "=" *WSP
 
-  dmarc-version   = "v" *WSP "=" *WSP %x44 %x4d %x41 %x52 %x43 %x31
+  dmarc-record    = dmarc-version *(dmarc-sep dmarc-tag) [dmarc-sep]
 
-  dmarc-sep       = *WSP %x3b *WSP
+  dmarc-tag       = 1*ALPHA equals 1*dmarc-value
 
-  dmarc-request   = "p" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
+  ; any printing characters but semicolon
+  dmarc-value     = %x20-3A | %x3C-7E 
 
-  dmarc-test      = "t" *WSP "=" ( "y" / "n" )
+  dmarc-version   = "v" equals %s"DMARC1" ; case sensitive
 
-  dmarc-psd       = "psd" *WSP "=" ( "y" / "n" )
+  ; specialized syntax of DMARC values
+  dmarc-request   = ( "none" / "quarantine" / "reject" )
 
-  dmarc-sprequest = "sp" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
+  dmarc-yorn      = ( "y" / "n" )
 
-  dmarc-nprequest  = "np" *WSP "=" *WSP
-                    ( "none" / "quarantine" / "reject" )
+  dmarc-rors      = ( "r" / "s" )
 
-  dmarc-adkim     = "adkim" *WSP "=" *WSP ( "r" / "s" )
+  dmarc-urilist   = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-aspf      = "aspf" *WSP "=" *WSP ( "r" / "s" )
+  dmarc-fo        = ( "0" / "1" / ( "d" / "s" / "d:s" / "s:d" ) )
 
-  dmarc-auri      = "rua" *WSP "=" *WSP
-                    dmarc-uri *(*WSP "," *WSP dmarc-uri)
-
-  dmarc-furi      = "ruf" *WSP "=" *WSP
-                    dmarc-uri *(*WSP "," *WSP dmarc-uri)
-
-  dmarc-fo        = "fo" *WSP "=" *WSP
-                    ( "0" / "1" / ( "d" / "s" / "d:s" / "s:d" ) )
-
-  dmarc-rfmt      = "rf"  *WSP "=" *WSP Keyword *(*WSP ":" Keyword)
-                    ; registered reporting formats only
-
+  ; registered reporting formats only
+  dmarc-rfmt      = Keyword *(*WSP ":" Keyword) 
 ~~~
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
+
+In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
+The ABNF rule for each dmarc-value is specified in the following table:
+
+{align="left"}
+Tag Name|Value Rule
+--------|----------
+p       |dmarc-request
+t       |dmarc-yorn
+psd     |dmarc-yorn
+np      |dmarc-request
+sp      |dmarc-request
+adkim   |dmarc-rors
+aspf    |dmarc-rors
+rua     |dmarc-urilist
+ruf     |dmarc-urilist
+fo      |dmarc-fo
+rf      |dmarc-rfmt
+Table: "Tag Names and Values"
 
 ##  Domain Owner Actions {#domain-owner-actions}
 
@@ -1732,6 +1725,28 @@ avoided.
 In particular, a message that was originally encrypted or otherwise
 secured might appear in a report that is not sent securely, which
 could reveal private information.
+
+## Determination of the Organizational Domain For Relaxed Alignment {#determine-org-domain-relaxed}
+
+DMARC evaluation for relaxed alignment is highly sensitive to errors in the
+determination of the organizational domain if the RFC5322.From domain does not
+have a published policy.  If an incorrectly selected organizational domain is
+a parent of the correct organizational domain, then relaxed alignment could
+potentially allow a malicious sender to obtain DMARC PASS.  This potential
+exists for both the legacy [@!RFC7489] and current methods for determining the 
+organizational domain, the latter described in (#organizational-domain-discovery).
+
+This issue is completely avoided by use of strict alignment and publishing
+DMARC records for all domains/sub-domains used as RFC5322.From domain in an
+organization's email.
+
+For cases where strict alignment is not appropriate, this issue can be
+mitigated by periodically checking the DMARC records, if any, of PSDs above
+the organization's domains in the DNS tree and (for legacy [@!RFC7489] checking
+that appropriate PSL entries remain present).  If a PSD domain publishes a
+DMARC record without the appropriate psd=y tag, organizational domain owners
+can add psd=n to their organizational domain's DMARC record so that the PSD
+record will not be incorrectly evaluated to be the organizational domain
 
 {backmatter}
 
