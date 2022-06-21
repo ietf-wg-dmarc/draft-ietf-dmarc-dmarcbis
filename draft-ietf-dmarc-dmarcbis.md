@@ -1039,18 +1039,18 @@ is as follows:
   dmarc-version   = "v" equals %s"DMARC1" ; case sensitive
 
   ; specialized syntax of DMARC values
-  dmarc-request   = ( "none" / "quarantine" / "reject" )
+  dmarc-request   = "none" / "quarantine" / "reject"
 
-  dmarc-yorn      = ( "y" / "n" )
+  dmarc-yorn      = "y" / "n"
 
-  dmarc-rors      = ( "r" / "s" )
+  dmarc-psd       = "y" / "n" / "u"
+
+  dmarc-rors      = "r" / "s"
 
   dmarc-urilist   = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo        = ( "0" / "1" / ( "d" / "s" / "d:s" / "s:d" ) )
+  dmarc-fo        = "0" / "1" / "d" / "s" / "d:s" / "s:d"
 
-  ; registered reporting formats only
-  dmarc-rfmt      = Keyword *(*WSP ":" Keyword) 
 ~~~
 
 "Keyword" is imported from Section 4.1.2 of [@!RFC5321].
@@ -1063,7 +1063,7 @@ Tag Name|Value Rule
 --------|----------
 p       |dmarc-request
 t       |dmarc-yorn
-psd     |dmarc-yorn
+psd     |dmarc-psd
 np      |dmarc-request
 sp      |dmarc-request
 adkim   |dmarc-rors
@@ -1071,7 +1071,6 @@ aspf    |dmarc-rors
 rua     |dmarc-urilist
 ruf     |dmarc-urilist
 fo      |dmarc-fo
-rf      |dmarc-rfmt
 Table: "Tag Names and Values"
 
 ##  Domain Owner Actions {#domain-owner-actions}
