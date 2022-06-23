@@ -1332,6 +1332,104 @@ domains is desirable and useful, just as it is for org-level DMARC
 operators.  See Section 4 of [@!RFC9091] for discussion of
 Privacy Considerations for PSD DMARC
 
+#   Changes from RFC 7489 {#rfc7849-changes}
+
+This document is intended to render obsolete [@!RFC7489]. As one might guess,
+that means that there are significant differences between RFC 7489 and this 
+document. This section will summarize thos changes.
+
+##  IETF Category
+
+RFC 7489 was not an Internet Standards Track specification; it was instead 
+published in the Informational Category. This document, by contrast, is intended
+to be Internet Standards Track.
+
+## Changes to Terminology and Definitions
+
+The following changes were made to the Terminology and Defintions section.
+
+### Terms Added
+
+These terms were added:
+
+*   Non-existent Domains
+*   Public Suffix Domain (PSD)
+*   Public Suffix Operator (PSO)
+*   PSO Controlled Domain Names
+
+### Definitions Updated
+
+These definitions were updated:
+
+*   Organizational Domain
+*   Report Receiver (renamed to Report Consumer)
+
+##  Policy Discovery and Organizational Domain Determination
+
+The algorithms for DMARC policy discovery and for determining the Organizational Domain
+have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
+by a technique called a "DNS Tree Walk", and the methodology for the DNS Tree Walk is explained
+in detail in this document.
+
+##  Reporting
+
+Discussion of both aggregate and failure reporting have been moved to separate docuemnts
+dedicated to the topics.
+
+##  Tags
+
+Several tags have been added to the "General Record Format" section of this document since
+RFC 7489 was published, and at the same time several others were removed.
+
+### Tags Added:
+
+* np - Policy for non-existent domains
+* psd - Flag indicating whether a domain is a Public Suffix Domain
+* t - Replacement for some pct tag functionality. See (#removal-of-the-pct-tag) for further discussion
+
+### Tags Removed:
+
+* pct - Tag requesting application of DMARC policy to only a percentage of messages
+* rf - Tag specifying requested format of failure reports
+* ri - Tag specifying requested interval between aggregate reports
+
+##  Domain Owner Actions
+
+This section has been expanded upon from RFC 7489.
+
+##  Report Generator Recommendations
+
+In the cases where a DMARC policy record specifies multiple destinations for either aggregate
+reports or failure reports, RFC 7489 stated:
+
+~~~
+  Receivers MAY impose a limit on the number of URIs to which they
+  will send reports but MUST support the ability to send to at least
+  two.
+~~~
+
+This document in (#dmarc-uris) says:
+
+~~~
+  A report SHOULD be sent to each listed URI provided in the DMARC 
+  record.
+~~~
+
+##  Domain Existence Test {#domain-existence-test}
+
+RFC 7489 used the test specified in [@RFC5321] to determine a domain's existence. 
+This test requires up to three DNS lookups for the MX, A, and AAAA RRs for the 
+name in question.
+
+This version of the protocol relies solely on the test for existence
+as defined in [@RFC8020]. If a query for a name returns NXDOMAIN, then 
+the name does not exist.
+
+##  General Editing and Formatting
+
+A great deal of the content from RFC 7489 was preserved in this document, but much
+of it was subject to either minor editing, re-ordering of sections, and/or both.
+
 #   Other Topics {#other-topics}
 
 This section discusses some topics regarding choices made in the
@@ -1843,17 +1941,6 @@ support for doing so, for the following reasons:
 3.  Allowing multiple ways to discover policy introduces unacceptable
     ambiguity into the DMARC evaluation algorithm in terms of which
     policy is to be applied and when.
-
-##  Domain Existence Test {#domain-existence-test}
-
-A previous version of this protocol used the test specified in 
-[@RFC5321] to determine a domain's existence. This test requires up 
-to three DNS lookups for the MX, A, and AAAA RRs for the name in 
-question.
-
-This version of the protocol relies solely on the test for existence
-as defined in [@RFC8020]. If a query for a name returns NXDOMAIN, then 
-the name does not exist.
 
 ##  Issues with ADSP in Operation {#issues-with-adsp-in-operation}
 
