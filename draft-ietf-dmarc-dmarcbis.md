@@ -596,6 +596,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2.  Records that do not start with a "v=" tag that identifies the
     current version of DMARC are discarded. If multiple DMARC records are
     returned, they are all discarded. 
+    If a single record remains and it contains a "psd=n" tag, stop.
 
 3.  Determine the target for additional queries (if needed; see the note in
     (#organizational-domain-discovery)), using steps 4 through 8 below.
@@ -618,10 +619,11 @@ The generic steps for a DNS Tree Walk are as follows:
 7.  Records that do not start with a "v=" tag that identifies the
     current version of DMARC are discarded. If multiple DMARC records are
     returned for a single target, they are all discarded.
+    If a single record remains and it contains a "psd=n" or "psd=y" tag, stop.
 
 8.  Determine the target for additional queries by removing a single label 
     from the target domain as described in step 5 and repeating steps 6 and 
-    7 until there are no more labels remaining.
+    7 until the process stops or there are no more labels remaining.
 
 To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
@@ -654,7 +656,7 @@ if the RFC5322.From domain does not exist.  In the absence of applicable sp= or 
 tags, the p= tag policy is used for subdomains.
 
 If a retrieved policy record does not contain a valid "p" tag, or contains
-an "sp" tag that is not valid, then:
+an "sp" or "np" tag that is not valid, then:
 
 *   If a "rua" tag is present and contains at least one
     syntactically valid reporting URI, the Mail Receiver SHOULD
@@ -720,13 +722,13 @@ DMARC records were retrieved from the longest to the shortest:
 1. If a valid DMARC record contains the psd= tag set to 'n' (psd=n), this is the 
    Organizational Domain and the selection process is complete.
           
-2. If a valid DMARC record contains the psd= tag set to 'y' (psd=y), the Organizational
+2. If a valid DMARC record, other than the one for the domain where the tree
+   walk started, contains the psd= tag set to 'y' (psd=y), the Organizational
    Domain is the domain one label below this one in the DNS hierarchy, and the 
    selection process is complete.
    
-3. If the selection process completes and all records contain (either explicitly or
-   implicitly, since this is the default) the psd= tag set to 'u' (psd=u), select
-   the record for the domain with the fewest number of labels. This is the Organizational
+3. Otherwise select the record
+   for the domain with the fewest number of labels. This is the Organizational
    Domain and the selection process is complete.
 
 If this process does not determine the Organizational Domain, then the initial target 
