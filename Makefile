@@ -1,7 +1,7 @@
 #
 # built using mmark 2.
 
-VERSION = 11
+VERSION = 12
 DOCNAME = draft-ietf-dmarc-dmarcbis
 
 all: $(DOCNAME)-$(VERSION).txt $(DOCNAME)-$(VERSION).html

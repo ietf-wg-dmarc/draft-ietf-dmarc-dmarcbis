@@ -1303,10 +1303,10 @@ message body in exchange for the enhanced protection DMARC provides.
 
 DMARC-compliant Mail Receivers typically disregard any mail-handling
 directive discovered as part of an authentication mechanism (e.g.,
-Author Domain Signing Practices (ADSP), SPF) where a DMARC record is
-also discovered that specifies a policy other than "none".  Deviating
-from this practice introduces inconsistency among DMARC operators in
-terms of handling of the message.  However, such deviation is not
+Author Domain Signing Practices (ADSP) [@RFC5617], SPF) where a DMARC 
+record is also discovered that specifies a policy other than "none". 
+Deviating from this practice introduces inconsistency among DMARC operators 
+in terms of handling of the message.  However, such deviation is not
 proscribed.
 
 To enable Domain Owners to receive DMARC feedback without impacting
@@ -1416,16 +1416,6 @@ This document in (#dmarc-uris) says:
   A report SHOULD be sent to each listed URI provided in the DMARC 
   record.
 ~~~
-
-##  Domain Existence Test {#domain-existence-test}
-
-RFC 7489 used the test specified in [@RFC5321] to determine a domain's existence. 
-This test requires up to three DNS lookups for the MX, A, and AAAA RRs for the 
-name in question.
-
-This version of the protocol relies solely on the test for existence
-as defined in [@RFC8020]. If a query for a name returns NXDOMAIN, then 
-the name does not exist.
 
 ##  General Editing and Formatting
 
@@ -1943,6 +1933,30 @@ support for doing so, for the following reasons:
 3.  Allowing multiple ways to discover policy introduces unacceptable
     ambiguity into the DMARC evaluation algorithm in terms of which
     policy is to be applied and when.
+
+##  Domain Existence Test {#domain-existence-test}
+
+The presence of the "np" tag in this specification seemingly implies that 
+there should be an agreed-upon standard for determining a domain's existence.
+
+Since the DMARC protocol is one that applies to email, one might think that
+the definition of resolvable in [@RFC5321] applies. That is, names must resolve 
+to MX Resource Records (RRs), A RRs, or AAAA RRs in order to be deemed resolvable
+and therefore exist in the DNS. This is also consistent with the process documented
+in [@RFC5617] (ADSP), and is a common practice among MTA operators to determine
+whether or not to accept a mail message before performing other more expensive
+processing.
+
+The DMARC protocol makes no such requirement for the existence of specific DNS
+RRs in order for a domain to exist; instead, if any RR exists for a domain, then
+the domain exists. To use the terminology from [@RFC2308], an "NXDOMAIN" response
+(rcode "Name Error") to a DNS query means that the domain name does not exist, 
+while a "NODATA" response (rcode "NOERROR") means that the given resource record
+type queried for does not exist, but the domain name does.
+
+Furthermore, in keeping with [@RFC8020], if a query for a name returns NXDOMAIN, 
+then not only does the name not exist, every name below it in the DNS hierarchy
+also does not exist.
 
 ##  Issues with ADSP in Operation {#issues-with-adsp-in-operation}
 
