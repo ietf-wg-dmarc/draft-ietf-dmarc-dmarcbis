@@ -1939,8 +1939,8 @@ support for doing so, for the following reasons:
 The presence of the "np" tag in this specification seemingly implies that 
 there should be an agreed-upon standard for determining a domain's existence.
 
-Since the DMARC protocol is one that applies to email, one might think that
-the definition of resolvable in [@RFC5321] applies. That is, names must resolve 
+Since the DMARC protocol is one focused on email, one might think that the 
+definition of resolvable in [@RFC5321] applies. That is, names must resolve
 to MX Resource Records (RRs), A RRs, or AAAA RRs in order to be deemed resolvable
 and therefore exist in the DNS. This is also consistent with the process documented
 in [@RFC5617] (ADSP), and is a common practice among MTA operators to determine

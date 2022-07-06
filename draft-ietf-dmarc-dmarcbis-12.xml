@@ -2164,8 +2164,8 @@ policy is to be applied and when.</t>
 <section anchor="domain-existence-test"><name>Domain Existence Test</name>
 <t>The presence of the &quot;np&quot; tag in this specification seemingly implies that
 there should be an agreed-upon standard for determining a domain's existence.</t>
-<t>Since the DMARC protocol is one that applies to email, one might think that
-the definition of resolvable in <xref target="RFC5321"></xref> applies. That is, names must resolve
+<t>Since the DMARC protocol is one focused on email, one might think that the
+definition of resolvable in <xref target="RFC5321"></xref> applies. That is, names must resolve
 to MX Resource Records (RRs), A RRs, or AAAA RRs in order to be deemed resolvable
 and therefore exist in the DNS. This is also consistent with the process documented
 in <xref target="RFC5617"></xref> (ADSP), and is a common practice among MTA operators to determine
