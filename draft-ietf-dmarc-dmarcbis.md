@@ -69,7 +69,7 @@ for messages using that domain that fail authentication checks.
 
 As with SPF and DKIM, DMARC classes results as "pass" or "fail". In order
 to get a DMARC result of "pass", a pass from either SPF or DKIM is required.
-In addition, the passed domain must be "aligned" with the RFC5322.From domain
+In addition, the passed domain can be "aligned" with the RFC5322.From domain
 in one of two modes - "relaxed" or "strict". The mode is expressed in the
 domain's DMARC policy record. Domains are said to be "in relaxed alignment"
 if they have the same "Organizational Domain", which is the domain at the
@@ -456,10 +456,11 @@ DMARC permits Identifier Alignment based on the result of a DKIM
 authentication to be strict or relaxed. (Note that these terms are
 not related to DKIM's "simple" and "relaxed" canonicalization modes.)
 
-In relaxed mode, the Organizational Domains of both the DKIM-authenticated
+In relaxed mode, the identifiers are considered to be aligned
+if the Organizational Domains of both the DKIM-authenticated
 signing domain (taken from the value of the d= tag in the signature)
-and that of the RFC5322.From domain must be equal if the identifiers
-are to be considered to be aligned. In strict mode, only an exact match
+and that of the RFC5322.From domain are equal.  
+In strict mode, only an exact match
 between both Fully Qualified Domain Names (FQDNs) is considered to produce
 Identifier Alignment.
 
@@ -472,7 +473,7 @@ In strict mode, this test would fail because the d= domain does not
 exactly match the RFC5322.From domain.
 
 However, a DKIM signature bearing a value of "d=com" would never allow
-an "in alignment" result, as "com" should be identified as a PSD and
+an "in alignment" result, as "com" does not have a DMARC record
 therefore cannot be an Organizational Domain.
 
 Note that a single email can contain multiple DKIM signatures, and it
@@ -485,10 +486,11 @@ DMARC permits Identifier Alignment based on the result of an SPF
 authentication. As with DKIM, Identifier Alignement can be either
 strict or relaxed.
 
-In relaxed mode, the Organizational Domains of the SPF-authenticated
-domain and RFC5322.From domain must be equal if the identifiers are
-to be considered to be aligned. In strict mode, the two FQDNs must
-match exactly in order for them to be considered to be aligned.
+In relaxed mode, the identifiers are considered to be aligned if
+the Organizational Domains of the SPF-authenticated
+domain and RFC5322.From domain are equal. 
+In strict mode, only an exact match between the two FQDNs
+is considered to produce Identifier Alignment.
 
 For example, in relaxed mode, if a message passes an SPF check with an
 RFC5321.MailFrom domain of "cbg.bounces.example.com", and the address
@@ -499,7 +501,7 @@ alignment" because they have the same Organizational Domain
 ("example.com"). In strict mode, this test would fail because the
 two domains are not identical.
 
-The reader should note that SPF alignment checks in DMARC rely solely
+Note that SPF alignment checks in DMARC rely solely
 on the RFC5321.MailFrom domain. This differs from section 2.3 of
 [@!RFC7208], which recommends that SPF checks be done on not only the
 "MAIL FROM" but also on a separate check of the "HELO" identity.
@@ -659,8 +661,8 @@ If a retrieved policy record does not contain a valid "p" tag, or contains
 an "sp" or "np" tag that is not valid, then:
 
 *   If a "rua" tag is present and contains at least one
-    syntactically valid reporting URI, the Mail Receiver SHOULD
-    act as if a record containing a valid "v" tag and "p=none"
+    syntactically valid reporting URI, the Mail Receiver MUST
+    act as if a record containing "p=none"
     was retrieved, and continue processing;
 
 *   Otherwise, the Mail Receiver applies no DMARC processing to
@@ -924,7 +926,7 @@ psd:
     default is 'u'). Possible values are:
 
     y:
-    : PSOs MUSTinclude this tag with a value of 'y' to indicate that the domain 
+    : PSOs include this tag with a value of 'y' to indicate that the domain 
       is a PSD. If a record containing this tag with a value of 'y' is found during 
       policy discovery, this information will be used to determine the Organizational
       Domain and policy domain applicable to the message in question.
@@ -957,8 +959,7 @@ ruf:
    (comma-separated plain-text list of DMARC URIs; OPTIONAL).  If present, the Domain
    Owner or PSO is requesting Mail Receivers to send detailed failure reports about
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above).
-   The format of the message to be generated MUST follow the format specified for the
-   "rf" tag. [@!DMARC-Aggregate-Reporting] discusses considerations that apply when
+   [@!DMARC-Aggregate-Reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
    A Mail Receiver MUST implement support for a "mailto:" URI, i.e., the ability to
    send a DMARC report via electronic mail.  If the tag is not provided, Mail Receivers
@@ -1007,7 +1008,7 @@ v:
 A DMARC policy record MUST comply with the formal specification found
 in (#formal-definition) in that the "v" tag MUST be present and MUST
 appear first.  Unknown tags MUST be ignored.  Syntax errors
-in the remainder of the record SHOULD be discarded in favor of
+in the remainder of the record MUST be discarded in favor of
 default values (if any) or ignored outright.
 
 Note that given the rules of the previous paragraph, addition of a
@@ -1164,8 +1165,8 @@ This section describes receiver actions in the DMARC environment.
 ###  Extract Author Domain {#extract-author-domain}
 
 The domain in the RFC5322.From header field is extracted as the domain
-to be evaluated by DMARC.  If the domain is encoded with UTF-8, the
-domain name must be converted to an A-label, as described in Section
+to be evaluated by DMARC.  If the domain is a U-label, the
+domain name MUST be converted to an A-label, as described in Section
 2.3 of [@!RFC5890], for further processing.
 
 In order to be processed by DMARC, a message typically needs to
@@ -1282,9 +1283,7 @@ is "reject".  Mail Receivers need to make a best effort not to increase
 the likelihood of accepting abusive mail if they choose not to honor
 the published Domain Owner Assessment Policy.  At a minimum, addition
 of the Authentication-Results header field (see [@RFC8601]) is
-RECOMMENDED when delivery of failing mail is done.  When this is
-done, the DNS domain name thus recorded MUST be encoded as an
-A-label.
+RECOMMENDED when delivery of failing mail is done.
 
 Mail Receivers are only obligated to report reject or quarantine
 policy actions in aggregate feedback reports that are due to published
@@ -1310,13 +1309,13 @@ in terms of handling of the message.  However, such deviation is not
 proscribed.
 
 To enable Domain Owners to receive DMARC feedback without impacting
-existing mail processing, discovered policies of "p=none" SHOULD NOT
+existing mail processing, discovered policies of "p=none" MUST NOT
 modify existing mail handling processes.
 
 Mail Receivers MUST also implement reporting instructions of DMARC,
 even in the absence of a request for DKIM reporting [@!RFC6651] or
 SPF reporting [@!RFC6652].  Furthermore, the presence of such requests
-SHOULD NOT affect DMARC reporting.
+MUST NOT affect DMARC reporting.
 
 #   DMARC Feedback {#dmarc-feedback}
 
@@ -1449,9 +1448,9 @@ DMARC policies are communicated using the DNS and therefore inherit a
 number of considerations related to DNS caching.  The inherent
 conflict between freshness and the impact of caching on the reduction
 of DNS-lookup overhead should be considered from the Mail Receiver's
-point of view.  Should Domain Owners or PSOs publish a DNS record with a very
-short TTL, Mail Receivers can be provoked through the injection of
-large volumes of messages to overwhelm the publisher's DNS.
+point of view.  If Domain Owners or PSOs publish a DNS record with a very
+short TTL,  the injection of large volumes of messages could cause
+Receivers to overwhelm the publisher's DNS.
 Although this is not a concern specific to DMARC, the implications of
 a very short TTL should be considered when publishing DMARC policies.
 
@@ -1609,12 +1608,12 @@ Reporting, and Conformance (DMARC) Parameters" has been created.
 Within it, a new sub-registry called the "DMARC Tag Registry" has
 been created.
 
-Names of DMARC tags must be registered with IANA in this new
+Names of DMARC tags are registered with IANA in this new
 sub-registry.  New entries are assigned only for values that have
 been documented in a manner that satisfies the terms of Specification
-Required, per [@RFC8126].  Each registration must include
+Required, per [@RFC8126].  Each registration includes
 the tag name; the specification that defines it; a brief description;
-and its status, which must be one of "current", "experimental", or
+and its status, which is one of "current", "experimental", or
 "historic".  The Designated Expert needs to confirm that the provided
 specification adequately describes the new tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
@@ -1651,11 +1650,11 @@ Also within "Domain-based Message Authentication, Reporting, and
 Conformance (DMARC) Parameters", a new sub-registry called "DMARC
 Report Format Registry" has been created.
 
-Names of DMARC failure reporting formats must be registered with IANA
+Names of DMARC failure reporting formats are registered with IANA
 in this registry.  New entries are assigned only for values that
 satisfy the definition of Specification Required, per
 [@RFC8126].  In addition to a reference to a permanent
-specification, each registration must include the format name; a
+specification, each registration includes the format name; a
 brief description; and its status, which must be one of "current",
 "experimental", or "historic".  The Designated Expert needs to
 confirm that the provided specification adequately describes the
@@ -1937,11 +1936,11 @@ support for doing so, for the following reasons:
 ##  Domain Existence Test {#domain-existence-test}
 
 The presence of the "np" tag in this specification seemingly implies that 
-there should be an agreed-upon standard for determining a domain's existence.
+there would be an agreed-upon standard for determining a domain's existence.
 
 Since the DMARC protocol is one focused on email, one might think that the 
-definition of resolvable in [@RFC5321] applies. That is, names must resolve
-to MX Resource Records (RRs), A RRs, or AAAA RRs in order to be deemed resolvable
+definition of resolvable in [@RFC5321] applies. That is, only names that resolve
+to MX Resource Records (RRs), A RRs, or AAAA RRs are deemed resolvable
 and therefore exist in the DNS. This is also consistent with the process documented
 in [@RFC5617] (ADSP), and is a common practice among MTA operators to determine
 whether or not to accept a mail message before performing other more expensive
@@ -2236,7 +2235,7 @@ indicating that:
 *  Mail Receivers should not alter how they treat these messages because
    of this DMARC policy record ("p=none")
 
-*  Aggregate feedback reports should be sent via email to the address
+*  Aggregate feedback reports are sent via email to the address
    "dmarc-feedback@example.com"
    ("rua=mailto:dmarc-feedback@example.com")
 
@@ -2279,7 +2278,7 @@ format ([@!RFC6591]) meets the Domain Owner's needs in this scenario.
 The Domain Owner accomplishes this by adding the following to its
 policy record from (#entire-domain-monitoring-only):
 
-*  Per-message failure reports should be sent via email to the
+*  Per-message failure reports are sent via email to the
    address "auth-reports@example.com"
    ("ruf=mailto:auth-reports@example.com")
 
@@ -2316,7 +2315,7 @@ to receive the failure reports for this domain.
 The Domain Owner needs to alter its policy record from (#entire-domain-monitoring-only-per-message-reports)
 as follows:
 
-*  Per-message failure reports should be sent via email to the
+*  Per-message failure reports are sent via email to the
    address "auth-reports@thirdparty.example.net"
    ("ruf=mailto:auth-reports@thirdparty.example.net")
 
@@ -2405,7 +2404,7 @@ indicating that:
 *  Mail Receivers are advised that the Domain Owner considers messages
    that fail to authenticate to be suspicious ("p=quarantine")
 
-*  Aggregate feedback reports should be sent via email to the
+*  Aggregate feedback reports are sent via email to the
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net"
    ("rua=mailto:dmarc-feedback@example.com,
