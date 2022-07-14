@@ -1374,7 +1374,7 @@ in detail in this document.
 
 ##  Reporting
 
-Discussion of both aggregate and failure reporting have been moved to separate docuemnts
+Discussion of both aggregate and failure reporting have been moved to separate documents
 dedicated to the topics.
 
 ##  Tags
