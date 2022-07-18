@@ -718,7 +718,8 @@ under any of the following conditions:
 To discover the Organizational Domain for a domain, perform the DNS Tree Walk 
 described in (#dns-tree-walk) as needed for any of the domains in question.
 
-Select the Organizational Domain from the domains for which valid
+For each Tree Walk that retrieved valid DMARC records,
+select the Organizational Domain from the domains for which valid
 DMARC records were retrieved from the longest to the shortest:
        
 1. If a valid DMARC record contains the psd= tag set to 'n' (psd=n), this is the 
