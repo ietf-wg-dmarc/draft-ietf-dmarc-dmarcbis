@@ -5,9 +5,9 @@
 
 DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
-Obsoletes: 7489 (if approved)                             J. Levine (ed)
+Obsoletes: 7489, 9091 (if approved)                       J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 15 January 2023                                    14 July 2022
+Expires: 20 January 2023                                    19 July 2022
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 January 2023.
+   This Internet-Draft will expire on 20 January 2023.
 
 Copyright Notice
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 1]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 1]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -73,7 +73,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Requirements  . . . . . . . . . . . . . . . . . . . . . . . .   6
      2.1.  High-Level Goals  . . . . . . . . . . . . . . . . . . . .   6
-     2.2.  Anti-Phishing . . . . . . . . . . . . . . . . . . . . . .   6
+     2.2.  Anti-Phishing . . . . . . . . . . . . . . . . . . . . . .   7
      2.3.  Scalability . . . . . . . . . . . . . . . . . . . . . . .   7
      2.4.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   7
    3.  Terminology and Definitions . . . . . . . . . . . . . . . . .   8
@@ -110,7 +110,7 @@ Table of Contents
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 2]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 2]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -166,7 +166,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 3]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 3]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -201,9 +201,13 @@ Internet-Draft                  DMARCbis                       July 2022
                URIs  . . . . . . . . . . . . . . . . . . . . . . . .  61
      B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  63
        B.3.1.  SMTP Session Example  . . . . . . . . . . . . . . . .  63
-     B.4.  Utilization of Aggregate Feedback: Example  . . . . . . .  65
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  65
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  66
+     B.4.  Organizational and Policy Domain Tree Walk Examples . . .  65
+       B.4.1.  Simple Organizational and Policy Example  . . . . . .  65
+       B.4.2.  Deep Tree Walk Example  . . . . . . . . . . . . . . .  66
+       B.4.3.  Example with a PSD DMARC Record . . . . . . . . . . .  66
+     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  67
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  68
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  68
 
 1.  Introduction
 
@@ -215,18 +219,18 @@ Internet-Draft                  DMARCbis                       July 2022
    Abusive email often includes unauthorized and deceptive use of a
    domain name in the RFC5322.From header field.  The domain typically
    belongs to an organization expected to be known to - and presumably
-   trusted by - the recipient.  The Sender Policy Framework (SPF)
-   [RFC7208] and DomainKeys Identified Mail (DKIM) [RFC6376] protocols
-   provide domain-level authentication but are not directly associated
-   with the RFC5322.From domain.  DMARC leverages these two protocols,
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 4]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 4]
 
 Internet-Draft                  DMARCbis                       July 2022
 
 
+   trusted by - the recipient.  The Sender Policy Framework (SPF)
+   [RFC7208] and DomainKeys Identified Mail (DKIM) [RFC6376] protocols
+   provide domain-level authentication but are not directly associated
+   with the RFC5322.From domain.  DMARC leverages these two protocols,
    providing a method for Domain Owners to publish a DNS record
    describing the email authentication policies for the RFC5322.From
    domain and to request specific handling for messages using that
@@ -271,18 +275,18 @@ Internet-Draft                  DMARCbis                       July 2022
    reports about messages that claim to be from a domain publishing
    DMARC policies, sending those reports to the address(es) specified by
    the Domain Owner in the latter's DMARC policy record.  Domain Owners
-   can use these reports, especially the aggregate reports, to identify
-   not only sources of mail attempting to fraudulently use their domain,
-   but also (and perhaps more importantly) gaps in their own
-   authentication practices.  However, as with honoring the Domain
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 5]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 5]
 
 Internet-Draft                  DMARCbis                       July 2022
 
 
+   can use these reports, especially the aggregate reports, to identify
+   not only sources of mail attempting to fraudulently use their domain,
+   but also (and perhaps more importantly) gaps in their own
+   authentication practices.  However, as with honoring the Domain
    Owner's stated mail handling preference, a mail-receiving
    organization supporting DMARC is under no obligation to send
    requested reports, although it is recommended that they do send
@@ -318,6 +322,23 @@ Internet-Draft                  DMARCbis                       July 2022
 
    *  Work at Internet scale.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 6]
+
+Internet-Draft                  DMARCbis                       July 2022
+
+
 2.2.  Anti-Phishing
 
    DMARC is designed to prevent bad actors from sending mail that claims
@@ -328,16 +349,6 @@ Internet-Draft                  DMARCbis                       July 2022
    be the legitimate service requesting the information).  Thus, DMARC
    is significantly informed by ongoing efforts to enact large-scale,
    Internet-wide anti-phishing measures.
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 6]
-
-Internet-Draft                  DMARCbis                       July 2022
-
 
    Although DMARC can only be used to combat specific forms of exact-
    domain spoofing directly, the DMARC mechanism has been found to be
@@ -375,6 +386,15 @@ Internet-Draft                  DMARCbis                       July 2022
 
    *  Publishing policy other than via the DNS;
 
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 7]
+
+Internet-Draft                  DMARCbis                       July 2022
+
+
    *  Reporting or otherwise evaluating other than the last-hop IP
       address;
 
@@ -385,15 +405,6 @@ Internet-Draft                  DMARCbis                       July 2022
       built upon SPF and DKIM, which authenticate domains; and
 
    *  Content analysis.
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 7]
-
-Internet-Draft                  DMARCbis                       July 2022
-
 
 3.  Terminology and Definitions
 
@@ -435,18 +446,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 8]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 8]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -502,7 +502,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023                [Page 9]
+Herr (ed) & Levine (ed)  Expires 20 January 2023                [Page 9]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -558,7 +558,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 10]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 10]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -614,7 +614,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 11]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 11]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -670,7 +670,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 12]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 12]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -726,7 +726,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 13]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 13]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -782,7 +782,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 14]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 14]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -838,7 +838,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 15]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 15]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -894,7 +894,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 16]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 16]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -950,7 +950,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 17]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 17]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1006,7 +1006,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 18]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 18]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1054,15 +1054,15 @@ Internet-Draft                  DMARCbis                       July 2022
    Tree Walk described in Section 4.6 as needed for any of the domains
    in question.
 
-   Select the Organizational Domain from the domains for which valid
-   DMARC records were retrieved from the longest to the shortest:
+   For each Tree Walk that retrieved valid DMARC records, select the
+   Organizational Domain from the domains for which valid DMARC records
+   were retrieved from the longest to the shortest:
 
 
 
 
 
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 19]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 19]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1118,7 +1118,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 20]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 20]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1174,7 +1174,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 21]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 21]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1230,7 +1230,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 22]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 22]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1286,7 +1286,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 23]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 23]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1342,7 +1342,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 24]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 24]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1398,7 +1398,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 25]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 25]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1454,7 +1454,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 26]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 26]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1510,7 +1510,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 27]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 27]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1566,7 +1566,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 28]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 28]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1622,7 +1622,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 29]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 29]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1678,7 +1678,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 30]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 30]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1734,7 +1734,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 31]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 31]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1790,7 +1790,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 32]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 32]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1846,7 +1846,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 33]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 33]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -1868,6 +1868,9 @@ Internet-Draft                  DMARCbis                       July 2022
    the Public Suffix List (PSL) has been replaced by a technique called
    a "DNS Tree Walk", and the methodology for the DNS Tree Walk is
    explained in detail in this document.
+
+   The DNS Tree Walk also incorporates PSD policy discovery, which was
+   introduced in [RFC9091].
 
 7.4.  Reporting
 
@@ -1896,16 +1899,15 @@ Internet-Draft                  DMARCbis                       July 2022
 
    *  rf - Tag specifying requested format of failure reports
 
-   *  ri - Tag specifying requested interval between aggregate reports
 
 
 
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 34]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 34]
 
 Internet-Draft                  DMARCbis                       July 2022
 
+
+   *  ri - Tag specifying requested interval between aggregate reports
 
 7.6.  Domain Owner Actions
 
@@ -1956,9 +1958,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 35]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 35]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2014,7 +2014,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 36]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 36]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2070,7 +2070,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 37]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 37]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2126,7 +2126,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 38]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 38]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2182,7 +2182,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 39]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 39]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2238,7 +2238,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 40]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 40]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2294,7 +2294,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 41]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 41]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2350,7 +2350,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 42]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 42]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2406,7 +2406,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 43]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 43]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2462,7 +2462,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 44]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 44]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2518,7 +2518,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 45]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 45]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2574,7 +2574,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 46]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 46]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2630,7 +2630,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 47]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 47]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2686,7 +2686,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 48]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 48]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2742,7 +2742,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 49]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 49]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2798,7 +2798,7 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 50]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 50]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2854,7 +2854,7 @@ A.3.  Sender Header Field
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 51]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 51]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2910,7 +2910,7 @@ A.4.  Domain Existence Test
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 52]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 52]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -2966,7 +2966,7 @@ A.6.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 53]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 53]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3022,7 +3022,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 54]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 54]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3078,7 +3078,7 @@ A.7.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 55]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 55]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3134,7 +3134,7 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 56]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 56]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3190,7 +3190,7 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 57]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 57]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3246,7 +3246,7 @@ B.2.1.  Entire Domain, Monitoring Only
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 58]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 58]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3302,7 +3302,7 @@ B.2.2.  Entire Domain, Monitoring Only, Per-Message Reports
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 59]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 59]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3358,7 +3358,7 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 60]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 60]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3414,7 +3414,7 @@ B.2.4.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 61]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 61]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3470,7 +3470,7 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 62]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 62]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3526,7 +3526,7 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 63]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 63]
 
 Internet-Draft                  DMARCbis                       July 2022
 
@@ -3582,12 +3582,147 @@ Internet-Draft                  DMARCbis                       July 2022
 
 
 
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 64]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 64]
 
 Internet-Draft                  DMARCbis                       July 2022
 
 
-B.4.  Utilization of Aggregate Feedback: Example
+B.4.  Organizational and Policy Domain Tree Walk Examples
+
+   If a 5322.From domain has no DMARC record, a receiver uses a tree
+   walk to find the policy domain.  If the policy in a policy domain
+   allows relaxed alignment and the SPF or DKIM domains are different
+   from 5322.From domain, a receiver uses a tree walk to discover the
+   respective Organizational domains.
+
+B.4.1.  Simple Organizational and Policy Example
+
+   A mail receiver receives an email with:
+
+   5322.From domain  example.com
+
+   5321.MailFrom domain  example.com
+
+   DKIM signature d=  signing.example.com
+
+   In this example, _dmarc.example.com and _dmarc.signing.example.com
+   both have DMARC records while _dmarc.com does not.  If SPF or DKIM
+   yield pass results, they still have to be aligned to support a DMARC
+   pass.  Since not all domains are the same, if the alignment is
+   relaxed then the tree walk is performed to determine the
+   organizational domain for each:
+
+   For the 5322.From domain, query _dmarc.example.com and _dmarc.com;
+   example.com is the last element of the DNS tree with a DMARC record,
+   so it is the organizational domain for example.com.
+
+   For the 5321.MailFrom, the Organizational domain already found for
+   example.com is example.com, so SPF is aligned.
+
+   For the DKIM d= domain, query _dmarc.signing.example.com,
+   _dmarc.example.com, and _dmarc.com.  Both signing.example.com and
+   example.com have DMARC records, but example.com is the highest
+   element in the tree with a DMARC record, so example.com is the
+   organizational domain.  Since this is also the organizational domain
+   for 5322.From, DKIM is aligned for relaxed alignment.
+
+   Since both SPF and DKIM are aligned, they can be used to determine if
+   the message has a DMARC pass result.  If the result is not pass, then
+   the policy domain's DMARC record is used to determine the appropriate
+   policy.  In this case, since the 5322.From domain has a DMARC record,
+   that is the policy domain.
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 65]
+
+Internet-Draft                  DMARCbis                       July 2022
+
+
+B.4.2.  Deep Tree Walk Example
+
+   A mail receiver receives an email with:
+
+   5322.From domain  a.b.c.d.e.f.g.h.i.j.k.example.com
+
+   5322.MailFrom domain  example.com
+
+   DKIM signature d=  signing.example.com
+
+   Both _dmarc.example.com and _dmarc.signing.example.com have DMARC
+   records, while_dmarc.com does not.  If SPF or DKIM yield pass
+   results, they still have to be aligned to support a DMARC pass.
+   Since not all domains are the same, if the alignment is relaxed then
+   the tree walk is performed to determine the organizational domain for
+   each:
+
+   For the 5322.From domain, query
+   _dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com, skip to
+   _dmarc.j.k.example.com, then query _dmarc.k.example.com,
+   _dmarc.example.com, and _dmarc.com.  None of
+   a.b.c.d.e.f.g.h.i.j.k.example.com, j.k.example.com, or k.example.com
+   have a DMARC record.  Since example.com is the last element of the
+   DNS tree with a DMARC record, it is the organizational domain for
+   example.com.
+
+   For the 5322.MailFrom domain, the Organizational domain already found
+   for example.com is example. com.  SPF is aligned.
+
+   For the DKIM d= domain, query _dmarc.signing.example.com,
+   _dmarc.example.com, and _dmarc.com.  Both signing.example.com and
+   example.com have DMARC records, but example.com is the highest
+   element in the tree with a DMARC record, so example.com is the
+   organizational domain.  Since this is also the organizational domain
+   for 5322.From, DKIM is aligned for relaxed alignment.
+
+   Since both SPF and DKIM are aligned, they can be used to determine if
+   the message has a DMARC pass result.  If the results for both are not
+   pass, then the policy domain's DMARC record is used to determine the
+   appropriate policy.  In this case, the 5322.From domain does not have
+   a DMARC record, so the policy domain is the highest element in the
+   DNS tree with a DMARC record, example.com.
+
+B.4.3.  Example with a PSD DMARC Record
+
+   In rare cases, a PSD publishes a DMARC record with a psd tag, which
+   the tree walk must take into account.
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 66]
+
+Internet-Draft                  DMARCbis                       July 2022
+
+
+   A mail receiver receives an email with:
+
+   5322.From domain  notyourbank.example
+
+   5322.MailFrom domain  notyourbank.example
+
+   DKIM signature d=  notyourbank.example
+
+   In this example, _dmarc.notyourbank.example does not have a DMARC
+   record, and _dmarc.example has a DMARC record which includes the
+   psd=y tag.  Since all three domains are the same, they are aligned
+   (strict or relaxed).
+
+   Since both SPF and DKIM are aligned, they can be used to determine if
+   the message has a DMARC pass result.  If the result is not pass, then
+   the policy domain's DMARC record is used to determine the appropriate
+   policy.  In this case, the 5322.From domain does not have a DMARC
+   record, so the policy domain is the highest element in the DNS tree
+   with a DMARC record, example.
+
+   The three identities are identical, so they are aligned
+   automatically, and no tree walk is needed to determine alignment.
+
+B.5.  Utilization of Aggregate Feedback: Example
 
    Aggregate feedback is consumed by Domain Owners to verify their
    understanding of how a given domain is being processed by the Mail
@@ -3612,6 +3747,14 @@ B.4.  Utilization of Aggregate Feedback: Example
    Data on email that fails all underlying authentication checks
    provides baseline visibility on how the Domain Owner's domain is
    being received at the Mail Receiver.  Based on this visibility, the
+
+
+
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 67]
+
+Internet-Draft                  DMARCbis                       July 2022
+
+
    Domain Owner can begin deployment of authentication technologies
    across uncovered email sources, if the mail that is failing the
    checks was generated by or on behalf of the Domain Owner.  Data
@@ -3633,15 +3776,6 @@ Acknowledgements
    Draegen, Steve Jones, Franck Martin, Brett McDowell, and Paul Midgen.
    The contributors would also like to recognize the invaluable input
    and guidance that was provided early on by J.D.  Falk.
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 65]
-
-Internet-Draft                  DMARCbis                       July 2022
-
 
    Additional contributions within the IETF context were made by Kurt
    Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
@@ -3672,27 +3806,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed)  Expires 15 January 2023               [Page 66]
+Herr (ed) & Levine (ed)  Expires 20 January 2023               [Page 68]
 ```

@@ -1113,7 +1113,7 @@ dd.break {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 15 January 2023</td>
+<td class="center">Expires 20 January 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1126,15 +1126,15 @@ dd.break {
 <dd class="internet-draft">draft-ietf-dmarc-dmarcbis-13</dd>
 <dt class="label-obsoletes">Obsoletes:</dt>
 <dd class="obsoletes">
-<a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a> (if approved)</dd>
+<a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-07-14" class="published">14 July 2022</time>
+<time datetime="2022-07-19" class="published">19 July 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-01-15">15 January 2023</time></dd>
+<dd class="expires"><time datetime="2023-01-20">20 January 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1180,7 +1180,7 @@ handling choices for incoming mail.<a href="#section-abstract-2" class="pilcrow"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 January 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1567,7 +1567,21 @@ handling choices for incoming mail.<a href="#section-abstract-2" class="pilcrow"
 </ul>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.14.2.4">
-                <p id="section-toc.1-1.14.2.4.1"><a href="#section-b.4" class="xref">B.4</a>.  <a href="#name-utilization-of-aggregate-fe" class="xref">Utilization of Aggregate Feedback: Example</a><a href="#section-toc.1-1.14.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.14.2.4.1"><a href="#section-b.4" class="xref">B.4</a>.  <a href="#name-organizational-and-policy-d" class="xref">Organizational and Policy Domain Tree Walk Examples</a><a href="#section-toc.1-1.14.2.4.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.4.2.1">
+                    <p id="section-toc.1-1.14.2.4.2.1.1"><a href="#section-b.4.1" class="xref">B.4.1</a>.  <a href="#name-simple-organizational-and-p" class="xref">Simple Organizational and Policy Example</a><a href="#section-toc.1-1.14.2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.4.2.2">
+                    <p id="section-toc.1-1.14.2.4.2.2.1"><a href="#section-b.4.2" class="xref">B.4.2</a>.  <a href="#name-deep-tree-walk-example" class="xref">Deep Tree Walk Example</a><a href="#section-toc.1-1.14.2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.4.2.3">
+                    <p id="section-toc.1-1.14.2.4.2.3.1"><a href="#section-b.4.3" class="xref">B.4.3</a>.  <a href="#name-example-with-a-psd-dmarc-re" class="xref">Example with a PSD DMARC Record</a><a href="#section-toc.1-1.14.2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14.2.5">
+                <p id="section-toc.1-1.14.2.5.1"><a href="#section-b.5" class="xref">B.5</a>.  <a href="#name-utilization-of-aggregate-fe" class="xref">Utilization of Aggregate Feedback: Example</a><a href="#section-toc.1-1.14.2.5.1" class="pilcrow">¶</a></p>
 </li>
 </ul>
 </li>
@@ -2393,7 +2407,8 @@ RFC5321.MailFrom domain (if SPF authenticated), and/or the DKIM d= domain
 </ul>
 <p id="section-4.8-5">To discover the Organizational Domain for a domain, perform the DNS Tree Walk
 described in <a href="#dns-tree-walk" class="xref">Section 4.6</a> as needed for any of the domains in question.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
-<p id="section-4.8-6">Select the Organizational Domain from the domains for which valid
+<p id="section-4.8-6">For each Tree Walk that retrieved valid DMARC records,
+select the Organizational Domain from the domains for which valid
 DMARC records were retrieved from the longest to the shortest:<a href="#section-4.8-6" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.8-7">
           <li id="section-4.8-7.1">
@@ -3231,6 +3246,7 @@ to be Internet Standards Track.<a href="#section-7.1-1" class="pilcrow">¶</a></
 have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
 by a technique called a "DNS Tree Walk", and the methodology for the DNS Tree Walk is explained
 in detail in this document.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in <span>[<a href="#RFC9091" class="xref">RFC9091</a>]</span>.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="reporting">
@@ -4946,20 +4962,155 @@ the policy record.<a href="#section-b.3.1-12" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="utilization-of-aggregate-feedback-example">
+<div id="treewalk-example">
 <section id="section-b.4">
-        <h2 id="name-utilization-of-aggregate-fe">
-<a href="#section-b.4" class="section-number selfRef">B.4. </a><a href="#name-utilization-of-aggregate-fe" class="section-name selfRef">Utilization of Aggregate Feedback: Example</a>
+        <h2 id="name-organizational-and-policy-d">
+<a href="#section-b.4" class="section-number selfRef">B.4. </a><a href="#name-organizational-and-policy-d" class="section-name selfRef">Organizational and Policy Domain Tree Walk Examples</a>
         </h2>
-<p id="section-b.4-1">Aggregate feedback is consumed by Domain Owners to verify their
+<p id="section-b.4-1">If a 5322.From domain has no DMARC record, a receiver uses a tree walk to
+find the policy domain.
+If the policy in a policy domain allows relaxed alignment and the SPF or DKIM domains are
+different from 5322.From domain, a receiver uses a tree walk to discover
+the respective Organizational domains.<a href="#section-b.4-1" class="pilcrow">¶</a></p>
+<div id="simple-organizational-and-policy-example">
+<section id="section-b.4.1">
+          <h3 id="name-simple-organizational-and-p">
+<a href="#section-b.4.1" class="section-number selfRef">B.4.1. </a><a href="#name-simple-organizational-and-p" class="section-name selfRef">Simple Organizational and Policy Example</a>
+          </h3>
+<p id="section-b.4.1-1">A mail receiver receives an email with:<a href="#section-b.4.1-1" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-b.4.1-2">
+            <dt id="section-b.4.1-2.1">5322.From domain</dt>
+<dd id="section-b.4.1-2.2">example.com<a href="#section-b.4.1-2.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.1-2.3">5321.MailFrom domain</dt>
+<dd id="section-b.4.1-2.4">example.com<a href="#section-b.4.1-2.4" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.1-2.5">DKIM signature d=</dt>
+<dd id="section-b.4.1-2.6">signing.example.com<a href="#section-b.4.1-2.6" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
+<p id="section-b.4.1-3">In this example, _dmarc.example.com and _dmarc.signing.example.com both
+have DMARC records while _dmarc.com does not.  If SPF or DKIM yield pass results,
+they still have to be aligned to support a DMARC pass.  Since not all domains
+are the same, if the alignment is relaxed then the tree walk is performed to
+determine the organizational domain for each:<a href="#section-b.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-b.4.1-4">For the 5322.From domain, query _dmarc.example.com and _dmarc.com; example.com is the last
+element of the DNS tree with a DMARC record, so it is the organizational
+domain for example.com.<a href="#section-b.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-b.4.1-5">For the 5321.MailFrom, the Organizational domain already found for example.com is
+example.com, so SPF is aligned.<a href="#section-b.4.1-5" class="pilcrow">¶</a></p>
+<p id="section-b.4.1-6">For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
+_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
+example.com is the highest element in the tree with a DMARC record, so
+example.com is the organizational domain.  Since this is also the
+organizational domain for 5322.From, DKIM is aligned for relaxed alignment.<a href="#section-b.4.1-6" class="pilcrow">¶</a></p>
+<p id="section-b.4.1-7">Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the result is not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, since the 5322.From domain has a DMARC record, that is the policy
+domain.<a href="#section-b.4.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="deep-tree-walk-example">
+<section id="section-b.4.2">
+          <h3 id="name-deep-tree-walk-example">
+<a href="#section-b.4.2" class="section-number selfRef">B.4.2. </a><a href="#name-deep-tree-walk-example" class="section-name selfRef">Deep Tree Walk Example</a>
+          </h3>
+<p id="section-b.4.2-1">A mail receiver receives an email with:<a href="#section-b.4.2-1" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-b.4.2-2">
+            <dt id="section-b.4.2-2.1">5322.From domain</dt>
+<dd id="section-b.4.2-2.2">a.b.c.d.e.f.g.h.i.j.k.example.com<a href="#section-b.4.2-2.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.2-2.3">5322.MailFrom domain</dt>
+<dd id="section-b.4.2-2.4">example.com<a href="#section-b.4.2-2.4" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.2-2.5">DKIM signature d=</dt>
+<dd id="section-b.4.2-2.6">signing.example.com<a href="#section-b.4.2-2.6" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
+<p id="section-b.4.2-3">Both _dmarc.example.com and
+<em>dmarc.signing.example.com have DMARC records, while</em>dmarc.com does not.
+If SPF or DKIM yield pass results, they still have to be aligned to support a
+DMARC pass.  Since not all domains are the same, if the alignment is relaxed
+then the tree walk is performed to determine the organizational domain for
+each:<a href="#section-b.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-b.4.2-4">For the 5322.From domain, query _dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com, skip to
+_dmarc.j.k.example.com, then query _dmarc.k.example.com, _dmarc.example.com,
+and _dmarc.com.  None of a.b.c.d.e.f.g.h.i.j.k.example.com, j.k.example.com,
+or k.example.com have a DMARC record.
+Since example.com is the last element of the
+DNS tree with a DMARC record, it is the organizational domain for
+example.com.<a href="#section-b.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-b.4.2-5">For the 5322.MailFrom domain, the Organizational domain already found
+for example.com is example. com.  SPF is aligned.<a href="#section-b.4.2-5" class="pilcrow">¶</a></p>
+<p id="section-b.4.2-6">For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
+_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
+example.com is the highest element in the tree with a DMARC record, so
+example.com is the organizational domain.  Since this is also the
+organizational domain for 5322.From, DKIM is aligned for relaxed alignment.<a href="#section-b.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-b.4.2-7">Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the results for both are not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, the 5322.From domain does not have a DMARC record, so the policy domain
+is the highest element in the DNS tree with a DMARC record, example.com.<a href="#section-b.4.2-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="example-with-a-psd-dmarc-record">
+<section id="section-b.4.3">
+          <h3 id="name-example-with-a-psd-dmarc-re">
+<a href="#section-b.4.3" class="section-number selfRef">B.4.3. </a><a href="#name-example-with-a-psd-dmarc-re" class="section-name selfRef">Example with a PSD DMARC Record</a>
+          </h3>
+<p id="section-b.4.3-1">In rare cases, a PSD publishes a DMARC record with a psd tag, which the tree
+walk must take into account.<a href="#section-b.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-b.4.3-2">A mail receiver receives an email with:<a href="#section-b.4.3-2" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-b.4.3-3">
+            <dt id="section-b.4.3-3.1">5322.From domain</dt>
+<dd id="section-b.4.3-3.2">notyourbank.example<a href="#section-b.4.3-3.2" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.3-3.3">5322.MailFrom domain</dt>
+<dd id="section-b.4.3-3.4">notyourbank.example<a href="#section-b.4.3-3.4" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+<dt id="section-b.4.3-3.5">DKIM signature d=</dt>
+<dd id="section-b.4.3-3.6">notyourbank.example<a href="#section-b.4.3-3.6" class="pilcrow">¶</a>
+</dd>
+<dd class="break"></dd>
+</dl>
+<p id="section-b.4.3-4">In this example, _dmarc.notyourbank.example does not have a DMARC record,
+and _dmarc.example has a DMARC record which includes the psd=y tag.
+Since all three domains are the same, they are aligned (strict or relaxed).<a href="#section-b.4.3-4" class="pilcrow">¶</a></p>
+<p id="section-b.4.3-5">Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the result is not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, the 5322.From domain does not have a DMARC record, so the policy domain
+is the highest element in the DNS tree with a DMARC record, example.<a href="#section-b.4.3-5" class="pilcrow">¶</a></p>
+<p id="section-b.4.3-6">The three identities are identical, so they are aligned automatically,
+and no tree walk is needed to determine alignment.<a href="#section-b.4.3-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="utilization-of-aggregate-feedback-example">
+<section id="section-b.5">
+        <h2 id="name-utilization-of-aggregate-fe">
+<a href="#section-b.5" class="section-number selfRef">B.5. </a><a href="#name-utilization-of-aggregate-fe" class="section-name selfRef">Utilization of Aggregate Feedback: Example</a>
+        </h2>
+<p id="section-b.5-1">Aggregate feedback is consumed by Domain Owners to verify their
 understanding of how a given domain is being processed by the Mail
 Receiver.  Aggregate reporting data on emails that pass all
 DMARC-supporting authentication checks is used by Domain Owners to
 verify that their authentication practices remain accurate.  For
 example, if a third party is sending on behalf of a Domain Owner,
 the Domain Owner can use aggregate report data to verify ongoing
-authentication practices of the third party.<a href="#section-b.4-1" class="pilcrow">¶</a></p>
-<p id="section-b.4-2">Data on email that only partially passes underlying authentication
+authentication practices of the third party.<a href="#section-b.5-1" class="pilcrow">¶</a></p>
+<p id="section-b.5-2">Data on email that only partially passes underlying authentication
 checks provides visibility into problems that need to be addressed by
 the Domain Owner.  For example, if either SPF or DKIM fails to pass,
 the Domain Owner is provided with enough information to either
@@ -4968,15 +5119,15 @@ breaking changes are being introduced in the email transmission path.
 If authentication-breaking changes due to email transmission path
 cannot be directly corrected, then the Domain Owner at least
 maintains an understanding of the effect of DMARC-based policies upon
-the Domain Owner's email.<a href="#section-b.4-2" class="pilcrow">¶</a></p>
-<p id="section-b.4-3">Data on email that fails all underlying authentication checks
+the Domain Owner's email.<a href="#section-b.5-2" class="pilcrow">¶</a></p>
+<p id="section-b.5-3">Data on email that fails all underlying authentication checks
 provides baseline visibility on how the Domain Owner's domain is
 being received at the Mail Receiver.  Based on this visibility, the
 Domain Owner can begin deployment of authentication technologies
 across uncovered email sources, if the mail that is failing the checks
 was generated by or on behalf of the Domain Owner.  Data regarding
 failing authentication checks can also allow the Domain Owner to
-come to an understanding of how its domain is being misused.<a href="#section-b.4-3" class="pilcrow">¶</a></p>
+come to an understanding of how its domain is being misused.<a href="#section-b.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
