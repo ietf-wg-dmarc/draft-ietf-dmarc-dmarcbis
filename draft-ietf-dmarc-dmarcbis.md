@@ -3,7 +3,7 @@ title = "Domain-based Message Authentication, Reporting, and Conformance (DMARC)
 abbrev = "DMARCbis"
 docName = "@DOCNAME@"
 category = "std"
-obsoletes = [7489]
+obsoletes = [7489, 9091]
 ipr = "trust200902"
 area = "Application"
 workgroup = "DMARC"
@@ -569,21 +569,21 @@ found in (#domain-owner-actions) and (#mail-receiver-actions).
 The DMARC protocol defines a method for communicating information
 through the publishing of records in DNS.  Both the content of the
 records and their location in the DNS hierarchy are used for two
-purposes: policy discovery (see (#dmarc-policy-discovery)) and Organizational 
-Domain determination (see (#organizational-domain-discovery)).  
+purposes: policy discovery (see (#dmarc-policy-discovery)) and Organizational
+Domain determination (see (#organizational-domain-discovery)).
 
-The relevant DMARC record for these purposes is not necessarily the DMARC 
-policy record found in DNS at the same level as the name label for 
-the domain in question.  Instead, some domains will inherit their 
-DMARC policy records from parent domains one level or more above 
-them in the DNS hierarchy.  Similarly, the Organizational Domain 
-may be found at a higher level in the DNS hierarchy.  
+The relevant DMARC record for these purposes is not necessarily the DMARC
+policy record found in DNS at the same level as the name label for
+the domain in question.  Instead, some domains will inherit their
+DMARC policy records from parent domains one level or more above
+them in the DNS hierarchy.  Similarly, the Organizational Domain
+may be found at a higher level in the DNS hierarchy.
 
-These records are discovered through the technique described here, 
+These records are discovered through the technique described here,
 known colloquially as the "DNS Tree Walk". The target of any DNS Tree
-Walk is a valid DMARC policy record, but the rules defining required 
-content for that record depend on the reason for performing the Tree 
-Walk. 
+Walk is a valid DMARC policy record, but the rules defining required
+content for that record depend on the reason for performing the Tree
+Walk.
 
 To prevent possible abuse of the DNS, a shortcut is built into the
 process so that domains that have more than five labels do not result
@@ -718,7 +718,8 @@ under any of the following conditions:
 To discover the Organizational Domain for a domain, perform the DNS Tree Walk 
 described in (#dns-tree-walk) as needed for any of the domains in question.
 
-Select the Organizational Domain from the domains for which valid
+For each Tree Walk that retrieved valid DMARC records,
+select the Organizational Domain from the domains for which valid
 DMARC records were retrieved from the longest to the shortest:
        
 1. If a valid DMARC record contains the psd= tag set to 'n' (psd=n), this is the 
@@ -1371,6 +1372,8 @@ The algorithms for DMARC policy discovery and for determining the Organizational
 have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
 by a technique called a "DNS Tree Walk", and the methodology for the DNS Tree Walk is explained
 in detail in this document.
+
+The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in [@!RFC9091].
 
 ##  Reporting
 
@@ -2551,6 +2554,124 @@ DMARC processing.  Captured information is used to build feedback for
 Domain Owner consumption.  This is not necessary if the Domain Owner
 has not requested aggregate reports, i.e., no "rua" tag was found in
 the policy record.
+
+## Organizational and Policy Domain Tree Walk Examples {#treewalk-example}
+
+If a 5322.From domain has no DMARC record, a receiver uses a tree walk to
+find the policy domain.
+If the policy in a policy domain allows relaxed alignment and the SPF or DKIM domains are
+different from 5322.From domain, a receiver uses a tree walk to discover
+the respective Organizational domains.
+
+### Simple Organizational and Policy Example
+
+A mail receiver receives an email with:
+
+5322.From domain
+: example.com
+
+5321.MailFrom domain
+: example.com
+
+DKIM signature d=
+: signing.example.com
+
+In this example, _dmarc.example.com and _dmarc.signing.example.com both
+have DMARC records while _dmarc.com does not.  If SPF or DKIM yield pass results,
+they still have to be aligned to support a DMARC pass.  Since not all domains
+are the same, if the alignment is relaxed then the tree walk is performed to
+determine the organizational domain for each:
+
+For the 5322.From domain, query _dmarc.example.com and _dmarc.com; example.com is the last
+element of the DNS tree with a DMARC record, so it is the organizational
+domain for example.com.
+
+For the 5321.MailFrom, the Organizational domain already found for example.com is
+example.com, so SPF is aligned.
+
+For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
+_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
+example.com is the highest element in the tree with a DMARC record, so
+example.com is the organizational domain.  Since this is also the
+organizational domain for 5322.From, DKIM is aligned for relaxed alignment.
+
+Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the result is not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, since the 5322.From domain has a DMARC record, that is the policy
+domain.
+
+### Deep Tree Walk Example
+
+A mail receiver receives an email with:
+
+5322.From domain
+: a.b.c.d.e.f.g.h.i.j.k.example.com
+
+5322.MailFrom domain
+: example.com
+
+DKIM signature d=
+:  signing.example.com
+
+Both _dmarc.example.com and
+_dmarc.signing.example.com have DMARC records, while_dmarc.com does not.
+If SPF or DKIM yield pass results, they still have to be aligned to support a
+DMARC pass.  Since not all domains are the same, if the alignment is relaxed
+then the tree walk is performed to determine the organizational domain for
+each:
+
+For the 5322.From domain, query _dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com, skip to
+_dmarc.j.k.example.com, then query _dmarc.k.example.com, _dmarc.example.com,
+and _dmarc.com.  None of a.b.c.d.e.f.g.h.i.j.k.example.com, j.k.example.com,
+or k.example.com have a DMARC record.
+Since example.com is the last element of the
+DNS tree with a DMARC record, it is the organizational domain for
+example.com.
+
+For the 5322.MailFrom domain, the Organizational domain already found
+for example.com is example. com.  SPF is aligned.
+
+For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
+_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
+example.com is the highest element in the tree with a DMARC record, so
+example.com is the organizational domain.  Since this is also the
+organizational domain for 5322.From, DKIM is aligned for relaxed alignment.
+
+Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the results for both are not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, the 5322.From domain does not have a DMARC record, so the policy domain
+is the highest element in the DNS tree with a DMARC record, example.com.
+
+### Example with a PSD DMARC Record
+
+In rare cases, a PSD publishes a DMARC record with a psd tag, which the tree
+walk must take into account.
+
+A mail receiver receives an email with:
+
+ 5322.From domain
+: notyourbank.example
+
+5322.MailFrom domain
+: notyourbank.example
+
+DKIM signature d=
+: notyourbank.example
+
+In this example, _dmarc.notyourbank.example does not have a DMARC record,
+and _dmarc.example has a DMARC record which includes the psd=y tag.
+Since all three domains are the same, they are aligned (strict or relaxed).
+
+Since both SPF and DKIM are aligned, they can be used to determine if the
+message has a DMARC pass result.  If the result is not pass, then the policy
+domain's DMARC record is used to determine the appropriate policy.  In this
+case, the 5322.From domain does not have a DMARC record, so the policy domain
+is the highest element in the DNS tree with a DMARC record, example.
+
+The three identities are identical, so they are aligned automatically,
+and no tree walk is needed to determine alignment.
 
 ##  Utilization of Aggregate Feedback: Example {#utilization-of-aggregate-feedback-example}
 
