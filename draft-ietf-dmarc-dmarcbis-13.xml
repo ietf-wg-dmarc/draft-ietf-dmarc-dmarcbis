@@ -237,27 +237,17 @@ names under it do not exist.</t>
 
 <section anchor="organizational-domain"><name>Organizational Domain</name>
 <t>The Organizational Domain is typically a domain that was registered with
-a domain name registrar.  More formally, it is any Public Suffix Domain
-plus one label. The Organizational Domain for the domain in the
-RFC5322.From domain is determined by applying the algorithm found in
+a domain name registrar.  The Organizational Domain for any domain
+is determined by applying the algorithm found in
 <xref target="organizational-domain-discovery"></xref>.</t>
 </section>
 
 <section anchor="public-suffix-domain"><name>Public Suffix Domain (PSD)</name>
-<t>The global Internet Domain Name System (DNS) is documented in
-numerous RFCs.  It defines a tree of names starting with root, &quot;.&quot;,
-immediately below which are Top-Level Domain names such as &quot;.com&quot; and
-&quot;.us&quot;.  The domain name structure consists of a tree of names, each
-of which is made of a sequence of words (&quot;labels&quot;) separated by
-period characters.  The root of the tree is simply called &quot;.&quot;.  The
-Internet community at large, through processes and policies external
-to this work, selects points in this tree at which to register domain
-names &quot;owned&quot; by independent organizations.  Real-world examples of
-these points are &quot;.com&quot;, &quot;.org&quot;, &quot;.us&quot;, and &quot;.gov.uk&quot;.  Names at which
-such registrations occur are called &quot;Public Suffix Domains (PSDs)&quot;, and
-a registration consists of a label selected by the registrant to which
-a desirable PSD is appended.  For example, &quot;ietf.org&quot; is a registered
-domain name, and &quot;.org&quot; is its PSD.</t>
+<t>Some domains allow registration of subdomains that are
+&quot;owned&quot; by independent organizations.  Real-world examples of
+these points are &quot;.com&quot;, &quot;.org&quot;, &quot;.us&quot;, and &quot;.co.uk&quot;.
+These domains are called &quot;Public Suffix Domains (PSDs)&quot;.
+For example, &quot;ietf.org&quot; is a registered domain name, and &quot;.org&quot; is its PSD.</t>
 </section>
 
 <section anchor="public-suffix-operator"><name>Public Suffix Operator (PSO)</name>
@@ -268,9 +258,8 @@ under that domain name.</t>
 
 <section anchor="pso-controlled-domain-names"><name>PSO Controlled Domain Names</name>
 <t>PSO-Controlled Domain Names are names in the DNS that are managed by
-a PSO and are not available for use as Organizational Domains.  PSO-
-Controlled Domain Names may have one (e.g., &quot;.com&quot;) or more (e.g.,
-&quot;.co.uk&quot;) name components, depending on PSD policy.</t>
+a PSO.  PSO-controlled Domain Names may have one label (e.g., &quot;.com&quot;) or more (e.g.,
+&quot;.co.uk&quot;), depending on the PSD's policy.</t>
 </section>
 
 <section anchor="report-consumer"><name>Report Consumer</name>
@@ -428,7 +417,7 @@ not related to DKIM's &quot;simple&quot; and &quot;relaxed&quot; canonicalizatio
 <t>In relaxed mode, the identifiers are considered to be aligned
 if the Organizational Domains of both the DKIM-authenticated
 signing domain (taken from the value of the d= tag in the signature)
-and that of the RFC5322.From domain are equal.<br />
+and that of the RFC5322.From domain are equal.
 In strict mode, only an exact match
 between both Fully Qualified Domain Names (FQDNs) is considered to produce
 Identifier Alignment.</t>
@@ -667,11 +656,11 @@ under any of the following conditions:</t>
 
 <ul>
 <li>The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF
-authenticated), and/or the DKIM d= domain (if present and authenticated)
+authenticated), and/or the DKIM d= domain (if present and authenticated,)
 are all the same and that domain has a DMARC record. In this case, this
 common domain is treated as the Organizational Domain.</li>
 <li>No applicable DMARC policy is discovered for the RFC5322.From domain during
-the first tree walk. In this case, the DMARC mechanism does not apply to
+the tree walk for that domain. In this case, the DMARC mechanism does not apply to
 the message in question.</li>
 <li>The record for the RFC5322.From domain indicates strict alignment. In this
 case, a simple string compare between the RFC5322.From domain and the
