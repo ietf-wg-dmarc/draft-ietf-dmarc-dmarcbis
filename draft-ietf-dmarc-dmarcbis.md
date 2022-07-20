@@ -265,27 +265,17 @@ names under it do not exist.
 ### Organizational Domain {#organizational-domain}
 
 The Organizational Domain is typically a domain that was registered with
-a domain name registrar.  More formally, it is any Public Suffix Domain
-plus one label. The Organizational Domain for the domain in the
-RFC5322.From domain is determined by applying the algorithm found in
+a domain name registrar.  The Organizational Domain for any domain
+is determined by applying the algorithm found in
 (#organizational-domain-discovery).
 
 ### Public Suffix Domain (PSD) {#public-suffix-domain}
 
-The global Internet Domain Name System (DNS) is documented in
-numerous RFCs.  It defines a tree of names starting with root, ".",
-immediately below which are Top-Level Domain names such as ".com" and
-".us".  The domain name structure consists of a tree of names, each
-of which is made of a sequence of words ("labels") separated by
-period characters.  The root of the tree is simply called ".".  The
-Internet community at large, through processes and policies external
-to this work, selects points in this tree at which to register domain
-names "owned" by independent organizations.  Real-world examples of
-these points are ".com", ".org", ".us", and ".gov.uk".  Names at which
-such registrations occur are called "Public Suffix Domains (PSDs)", and
-a registration consists of a label selected by the registrant to which
-a desirable PSD is appended.  For example, "ietf.org" is a registered
-domain name, and ".org" is its PSD.
+Some domains allow registration of subdomains that are
+"owned" by independent organizations.  Real-world examples of
+these points are ".com", ".org", ".us", and ".co.uk".
+These domains are called "Public Suffix Domains (PSDs)".
+For example, "ietf.org" is a registered domain name, and ".org" is its PSD.
 
 ### Public Suffix Operator (PSO) {#public-suffix-operator}
 
@@ -296,9 +286,8 @@ under that domain name.
 ### PSO Controlled Domain Names {#pso-controlled-domain-names}
 
 PSO-Controlled Domain Names are names in the DNS that are managed by
-a PSO and are not available for use as Organizational Domains.  PSO-
-Controlled Domain Names may have one (e.g., ".com") or more (e.g.,
-".co.uk") name components, depending on PSD policy.
+a PSO.  PSO-controlled Domain Names may have one label (e.g., ".com") or more (e.g.,
+".co.uk"), depending on the PSD's policy.
 
 ### Report Consumer {#report-consumer}
 
@@ -459,7 +448,7 @@ not related to DKIM's "simple" and "relaxed" canonicalization modes.)
 In relaxed mode, the identifiers are considered to be aligned
 if the Organizational Domains of both the DKIM-authenticated
 signing domain (taken from the value of the d= tag in the signature)
-and that of the RFC5322.From domain are equal.  
+and that of the RFC5322.From domain are equal.
 In strict mode, only an exact match
 between both Fully Qualified Domain Names (FQDNs) is considered to produce
 Identifier Alignment.
@@ -704,11 +693,11 @@ Note: There is no need to perform Tree Walk searches for Organizational Domains
 under any of the following conditions:
 
 * The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF 
-  authenticated), and/or the DKIM d= domain (if present and authenticated) 
+  authenticated), and/or the DKIM d= domain (if present and authenticated,) 
   are all the same and that domain has a DMARC record. In this case, this 
   common domain is treated as the Organizational Domain.
 * No applicable DMARC policy is discovered for the RFC5322.From domain during 
-  the first tree walk. In this case, the DMARC mechanism does not apply to 
+  the tree walk for that domain. In this case, the DMARC mechanism does not apply to 
   the message in question. 
 * The record for the RFC5322.From domain indicates strict alignment. In this
   case, a simple string compare between the RFC5322.From domain and the 
