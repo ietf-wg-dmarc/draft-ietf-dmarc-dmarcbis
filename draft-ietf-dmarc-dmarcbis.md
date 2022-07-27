@@ -2546,92 +2546,96 @@ the policy record.
 
 ## Organizational and Policy Domain Tree Walk Examples {#treewalk-example}
 
-If a 5322.From domain has no DMARC record, a receiver uses a tree walk to
-find the policy domain.
-If the policy in a policy domain allows relaxed alignment and the SPF or DKIM domains are
-different from 5322.From domain, a receiver uses a tree walk to discover
-the respective Organizational domains.
+If an RFC5322.From domain has no DMARC record, a receiver uses a tree walk 
+to find the policy domain.
+
+If the policy in a policy domain allows relaxed alignment and the SPF or 
+DKIM domains are different from the RFC5322.From domain, a receiver uses 
+a tree walk to discover the respective Organizational domains.
 
 ### Simple Organizational and Policy Example
 
 A mail receiver receives an email with:
 
-5322.From domain
+RFC5322.From domain
 : example.com
 
-5321.MailFrom domain
+RFC5321.MailFrom domain
 : example.com
 
 DKIM signature d=
 : signing.example.com
 
-In this example, _dmarc.example.com and _dmarc.signing.example.com both
-have DMARC records while _dmarc.com does not.  If SPF or DKIM yield pass results,
-they still have to be aligned to support a DMARC pass.  Since not all domains
-are the same, if the alignment is relaxed then the tree walk is performed to
-determine the organizational domain for each:
+In this example, \_dmarc.example.com and \_dmarc.signing.example.com both
+have DMARC records while \_dmarc.com does not.  If SPF or DKIM yield pass 
+results, they still have to be aligned to support a DMARC pass.  Since 
+not all domains are the same, if the alignment is relaxed then the tree 
+walk is performed to determine the organizational domain for each:
 
-For the 5322.From domain, query _dmarc.example.com and _dmarc.com; example.com is the last
-element of the DNS tree with a DMARC record, so it is the organizational
-domain for example.com.
+For the RFC5322.From domain, query \_dmarc.example.com and \_dmarc.com; 
+example.com is the last element of the DNS tree with a DMARC record, so 
+it is the organizational domain for example.com.
 
-For the 5321.MailFrom, the Organizational domain already found for example.com is
-example.com, so SPF is aligned.
+For the RFC5321.MailFrom domain, the Organizational domain already found for 
+example.com is example.com, so SPF is aligned.
 
-For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
-_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
-example.com is the highest element in the tree with a DMARC record, so
+For the DKIM d= domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
+and \_dmarc.com.  Both signing.example.com and example.com have DMARC records,
+but example.com is the highest element in the tree with a DMARC record, so
 example.com is the organizational domain.  Since this is also the
-organizational domain for 5322.From, DKIM is aligned for relaxed alignment.
+organizational domain for the RFC5322.From domain, DKIM is aligned for relaxed
+alignment.
 
 Since both SPF and DKIM are aligned, they can be used to determine if the
 message has a DMARC pass result.  If the result is not pass, then the policy
 domain's DMARC record is used to determine the appropriate policy.  In this
-case, since the 5322.From domain has a DMARC record, that is the policy
+case, since the RFC5322.From domain has a DMARC record, that is the policy
 domain.
 
 ### Deep Tree Walk Example
 
 A mail receiver receives an email with:
 
-5322.From domain
+RFC5322.From domain
 : a.b.c.d.e.f.g.h.i.j.k.example.com
 
-5322.MailFrom domain
+RFC5321.MailFrom domain
 : example.com
 
 DKIM signature d=
 :  signing.example.com
 
-Both _dmarc.example.com and
-_dmarc.signing.example.com have DMARC records, while_dmarc.com does not.
-If SPF or DKIM yield pass results, they still have to be aligned to support a
-DMARC pass.  Since not all domains are the same, if the alignment is relaxed
-then the tree walk is performed to determine the organizational domain for
-each:
+Both \_dmarc.example.com and \_dmarc.signing.example.com have DMARC records, 
+while \_dmarc.com does not. If SPF or DKIM yield pass results, they still have
+to be aligned to support a DMARC pass.  Since not all domains are the same, if
+the alignment is relaxed then the tree walk is performed to determine the organizational
+domain for each:
 
-For the 5322.From domain, query _dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com, skip to
-_dmarc.j.k.example.com, then query _dmarc.k.example.com, _dmarc.example.com,
-and _dmarc.com.  None of a.b.c.d.e.f.g.h.i.j.k.example.com, j.k.example.com,
-or k.example.com have a DMARC record.
-Since example.com is the last element of the
-DNS tree with a DMARC record, it is the organizational domain for
-example.com.
+For the RFC5322.From domain, query \_dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com,
+skip to \_dmarc.j.k.example.com, then query \_dmarc.k.example.com,
+ \_dmarc.example.com, and \_dmarc.com.  None of
+a.b.c.d.e.f.g.h.i.j.k.example.com, j.k.example.com, or k.example.com have 
+a DMARC record.
 
-For the 5322.MailFrom domain, the Organizational domain already found
-for example.com is example. com.  SPF is aligned.
+Since example.com is the last element of the DNS tree with a DMARC record, 
+it is the organizational domain for a.b.c.d.e.f.g.h.i.j.k.example.com.
 
-For the DKIM d= domain, query _dmarc.signing.example.com, _dmarc.example.com, and
-_dmarc.com.  Both signing.example.com and example.com have DMARC records, but
-example.com is the highest element in the tree with a DMARC record, so
+For the RFC5321.MailFrom domain, the Organizational domain already found
+for example.com is example.com.  SPF is aligned.
+
+For the DKIM d= domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
+and \_dmarc.com.  Both signing.example.com and example.com have DMARC records,
+but example.com is the highest element in the tree with a DMARC record, so
 example.com is the organizational domain.  Since this is also the
-organizational domain for 5322.From, DKIM is aligned for relaxed alignment.
+organizational domain for the RFC5322.From domain, DKIM is aligned for relaxed
+alignment.
 
 Since both SPF and DKIM are aligned, they can be used to determine if the
-message has a DMARC pass result.  If the results for both are not pass, then the policy
-domain's DMARC record is used to determine the appropriate policy.  In this
-case, the 5322.From domain does not have a DMARC record, so the policy domain
-is the highest element in the DNS tree with a DMARC record, example.com.
+message has a DMARC pass result.  If the results for both are not pass, then
+the policy domain's DMARC record is used to determine the appropriate policy. 
+In this case, the RFC5322.From domain does not have a DMARC record, so the
+policy domain is the highest element in the DNS tree with a DMARC record,
+example.com.
 
 ### Example with a PSD DMARC Record
 
@@ -2640,23 +2644,23 @@ walk must take into account.
 
 A mail receiver receives an email with:
 
- 5322.From domain
+RFC5322.From domain
 : notyourbank.example
 
-5322.MailFrom domain
+RFC321.MailFrom domain
 : notyourbank.example
 
 DKIM signature d=
 : notyourbank.example
 
-In this example, _dmarc.notyourbank.example does not have a DMARC record,
-and _dmarc.example has a DMARC record which includes the psd=y tag.
+In this example, \_dmarc.notyourbank.example does not have a DMARC record,
+and \_dmarc.example has a DMARC record which includes the psd=y tag.
 Since all three domains are the same, they are aligned (strict or relaxed).
 
 Since both SPF and DKIM are aligned, they can be used to determine if the
 message has a DMARC pass result.  If the result is not pass, then the policy
 domain's DMARC record is used to determine the appropriate policy.  In this
-case, the 5322.From domain does not have a DMARC record, so the policy domain
+case, the RFC5322.From domain does not have a DMARC record, so the policy domain
 is the highest element in the DNS tree with a DMARC record, example.
 
 The three identities are identical, so they are aligned automatically,
