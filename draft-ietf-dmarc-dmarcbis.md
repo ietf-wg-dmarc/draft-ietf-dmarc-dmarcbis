@@ -2645,26 +2645,41 @@ walk must take into account.
 A mail receiver receives an email with:
 
 RFC5322.From domain
-: notyourbank.example
+: giant.bank.example
 
-RFC321.MailFrom domain
-: notyourbank.example
+RFC5321.MailFrom domain
+: mail.giant.bank.example
 
 DKIM signature d=
-: notyourbank.example
+: mail.mega.bank.example
 
-In this example, \_dmarc.notyourbank.example does not have a DMARC record,
-and \_dmarc.example has a DMARC record which includes the psd=y tag.
-Since all three domains are the same, they are aligned (strict or relaxed).
+In this case, \_dmarc.bank.example has a DMARC record which includes the psd=y tag,
+and \_dmarc.example does not have a DMARC record.
+While \_dmarc.giant.bank.example has a DMARC record without a psd tag,
+\_dmarc.mega.bank.example and \_mail.mega.bank.example have no DMARC records.
 
-Since both SPF and DKIM are aligned, they can be used to determine if the
+Since the three domains are all different, tree walks find their organization domains
+to see which are aligned.
+
+For the RFC5322.From domain giant.bank.example, the tree walk finds the record at \_dmarc.giant.bank.example,
+then the record at \_dmarc.bank.example, and stops because of the psd=y flag.
+The organizational domain is giant.bank.example because it is the domain below the one with psd=y.
+Since the organizational domain has a DMARC record, it is also the policy domain.
+
+For the RFC5321.MailFrom domain, the tree walk finds no record at \_dmarc.mail.giant.bank.example,
+the DMARC record at \_dmarc.giant.bank.example,
+then the record at \_dmarc.bank.example, and stops because of the psd=y flag.
+Again the organizational domain is giant.bank.example because it is the domain below the one with psd=y.
+Since this is the same organizational domain as the RFC5322.From domain, SPF is aligned.
+
+For the DKIM signature domain mail.mega.bank.example, the tree walk finds no records at
+\_dmarc.mail.mega.bank.example or \_dmarc.mega.bank.example,
+then finds the record at \_dmarc.bank.example and stops because of the psd=y flag.
+The organizational domain is mega.bank.example, so DKIM is not aligned.
+
+Since SPF is aligned, it can be used to determine if the
 message has a DMARC pass result.  If the result is not pass, then the policy
-domain's DMARC record is used to determine the appropriate policy.  In this
-case, the RFC5322.From domain does not have a DMARC record, so the policy domain
-is the highest element in the DNS tree with a DMARC record, example.
-
-The three identities are identical, so they are aligned automatically,
-and no tree walk is needed to determine alignment.
+domain's DMARC record is used to determine the appropriate policy.
 
 ##  Utilization of Aggregate Feedback: Example {#utilization-of-aggregate-feedback-example}
 
