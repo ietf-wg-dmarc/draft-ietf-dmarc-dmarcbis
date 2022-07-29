@@ -1626,13 +1626,13 @@ The initial set of entries in this registry is as follows:
 | np       | RFC 7489  | current  | Requested handling policy for non-existent subdomains                  |
 | p        | RFC 7489  | current  | Requested handling policy                                              |
 | pct      | RFC 7489  | historic | Sampling rate                                                          |
-| psd      | RFC 7489  | current  | Indicates whether policy record is published by a Public Suffix Domain |
+| psd      | [this document]  | current  | Indicates whether policy record is published by a Public Suffix Domain |
 | rf       | RFC 7489  | historic | Failure reporting format(s)                                            |
 | ri       | RFC 7489  | historic | Aggregate Reporting interval                                           |
 | rua      | RFC 7489  | current  | Reporting URI(s) for aggregate data                                    |
 | ruf      | RFC 7489  | current  | Reporting URI(s) for failure data                                      |
 | sp       | RFC 7489  | current  | Requested handling policy for subdomains                               |
-| t        | RFC 7489  | current  | Test mode for the specified policy                                     |
+| t        | [this document]  | current  | Test mode for the specified policy                                     |
 | v        | RFC 7489  | current  | Specification version                                                  |
 Table: "DMARC Tag Registry"
 
