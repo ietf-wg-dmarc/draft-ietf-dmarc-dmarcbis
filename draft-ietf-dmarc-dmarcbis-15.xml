@@ -1728,7 +1728,7 @@ when processed by implementations conforming to prior specifications.</t>
 
 <tr>
 <td align="left">psd</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Indicates whether policy record is published by a Public Suffix Domain</td>
 </tr>
@@ -1770,7 +1770,7 @@ when processed by implementations conforming to prior specifications.</t>
 
 <tr>
 <td align="left">t</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Test mode for the specified policy</td>
 </tr>
