@@ -57,7 +57,7 @@ The source for this draft is maintained in GitHub at:
 https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis
 
 Abusive email often includes unauthorized and deceptive use of a
-domain name in the "From" heaader field defined in [@!RFC5322, section 3.6.2] and
+domain name in the "From" header field defined in [@!RFC5322, section 3.6.2] and
 refered to as RFC5322.From. The domain typically
 belongs to an organization expected to be known to - and presumably
 trusted by - the recipient. The Sender Policy Framework (SPF) [@!RFC7208]
@@ -99,7 +99,7 @@ DMARC policy records can also cover non-existent sub-domains, below the
 "Organizational Domain", as well as domains at the top of the name hierarchy,
 controlled by Public Suffix Operators (PSOs).
 
-DMARC, in the associated [@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting]
+DMARC, in the associated [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting] ; 
 documents, also specifies a reporting framework. Using it, a mail-receiving
 domain can generate regular reports about messages that claim to be from
 a domain publishing DMARC policies, sending those reports to the address(es)
@@ -294,7 +294,7 @@ a PSO.  PSO-controlled Domain Names may have one label (e.g., ".com") or more (e
 
 An operator that receives reports from another operator implementing the
 reporting mechanisms described in this document and/or the documents
-[@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting]. Such an
+[@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting]. Such an
 operator might be receiving reports about messages related to a domain
 for which it is the Domain Owner or PSO, or reports about messages related
 to another operator's domain.  This term applies collectively to the
@@ -339,7 +339,7 @@ DMARC's feedback component involves the collection of information
 about received messages claiming to be from the Author Domain
 for periodic aggregate reports to the Domain Owner or PSO.  The
 parameters and format for such reports are discussed in
-[@!DMARC-Aggregate-Reporting]
+[@!I-D.ietf-dmarc-aggregate-reporting]
 
 A DMARC-enabled Mail Receiver might also generate per-message reports
 that contain information related to individual messages that fail
@@ -348,7 +348,7 @@ information when debugging deployments (if messages can be determined
 to be legitimate even though failing authentication) or in analyzing
 attacks.  The capability for such services is enabled by DMARC but
 defined in other referenced material such as [@!RFC6591] and
-[@!DMARC-Failure-Reporting]
+[@!I-D.ietf-dmarc-failure-reporting]
 
 ##   Use of RFC5322.From {#use-of-rfc5322-from}
 
@@ -401,7 +401,7 @@ are supported in this version of DMARC:
    an SMTP [@!RFC5321] HELO/EHLO command (the HELO identity) and the domain
    found in an SMTP MAIL command (the MAIL FROM identity). As noted earlier,
    however, DMARC relies solely on SPF authentication of the domain found in
-   SMTP MAIL FROM command. Section 2.4 of [@!RFC7208] describes MAIL FROM
+   SMTP MAIL FROM command. [@!RFC7208, section 2.4] describes MAIL FROM
    processing for cases in which the MAIL command has a null path.
 
 ##  Identifier Alignment Explained {#identifier-alignment-explained}
@@ -493,8 +493,8 @@ alignment" because they have the same Organizational Domain
 two domains are not identical.
 
 Note that SPF alignment checks in DMARC rely solely
-on the RFC5321.MailFrom domain. This differs from section 2.3 of
-[@!RFC7208], which recommends that SPF checks be done on not only the
+on the RFC5321.MailFrom domain. This differs from 
+[@!RFC7208, section 2.3], which recommends that SPF checks be done on not only the
 "MAIL FROM" but also on a separate check of the "HELO" identity.
 
 ###  Alignment and Extension Technologies {#alignment-and-extension-technologies}
@@ -765,21 +765,8 @@ that can produce an SPF pass result.
 A Mail Receiver implementing the DMARC mechanism gets the
 Domain Owner's or PSO's published DMARC Domain Owner Assessment
 Policy and uses it as an important factor in deciding how to
-handle the message. When a message fails the DMARC test, Mail
-Receivers should make a best-effort attempt to comply with the
-published policy, but email streams can be complicated (due to
-forwarding,
-systems that send mail legitimately with the Domain Owner's
-RFC5322.From in ways that DMARC cannot 
-describe, etc.) and Mail Receivers may have other information that can
-inform their decisions.
-
-When Mail Receivers deviate from a published Domain Owner
-Assessment Policy during message processing they **SHOULD** make
-available the fact of and reason for the deviation to the Domain
-Owner via feedback reporting, specifically using the
-"PolicyOverride" feature of the aggregate report defined in
-[@!DMARC-Aggregate-Reporting].
+handle the message. Mail handling considerations based on DMARC
+policy enforcement are discussed below in (#policy-enforcement-considerations).
 
 ##  DMARC Policy Record {#dmarc-policy-record}
 
@@ -815,7 +802,7 @@ the destination for the two report types that are supported.
 
 The place such URIs are specified (see (#general-record-format)) allows
 a list of these to be provided.  The list of URIs is separated by commas
-(ASCII 0x2c).  A report SHOULD be sent to each listed URI provided in
+(ASCII 0x2c).  A report **SHOULD** be sent to each listed URI provided in
 the DMARC record.
 
 A formal definition is provided in (#formal-definition).
@@ -907,7 +894,7 @@ p:
     If this tag is not present in an otherwise syntactically valid DMARC
     record, then the record is treated as if it included "p=none" (see
     (#dmarc-policy-discovery)). This tag is not applicable for third-party
-    reporting records (see [@!DMARC-Aggregate-Reporting] and [@!DMARC-Failure-Reporting])
+    reporting records (see [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting])
     Possible values are as follows:
 
     none:
@@ -946,21 +933,21 @@ psd:
 
 rua:
 :  Addresses to which aggregate feedback is to be sent (comma-separated plain-text
-   list of DMARC URIs; **OPTIONAL**).  [@!DMARC-Aggregate-Reporting] discusses considerations
+   list of DMARC URIs; **OPTIONAL**).  [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations
    that apply when the domain name of a URI differs from that of the domain advertising
    the policy.  See (#external-report-addresses) for additional considerations. Any
    valid URI can be specified.  A Mail Receiver **MUST** implement support for a "mailto:"
    URI, i.e., the ability to send a DMARC report via electronic mail.  If the tag is not
    provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for the domain.
    URIs not supported by Mail Receivers **MUST** be ignored. The aggregate feedback report
-   format is described in [@!DMARC-Aggregate-Reporting]
+   format is described in [@!I-D.ietf-dmarc-aggregate-reporting]
 
 ruf:
 :  Addresses to which message-specific failure information is to be reported
    (comma-separated plain-text list of DMARC URIs; **OPTIONAL**).  If present, the Domain
    Owner or PSO is requesting Mail Receivers to send detailed failure reports about
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above).
-   [@!DMARC-Aggregate-Reporting] discusses considerations that apply when
+   [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
    A Mail Receiver **MUST** implement support for a "mailto:" URI, i.e., the ability to
    send a DMARC report via electronic mail.  If the tag is not provided, Mail Receivers
@@ -1057,7 +1044,7 @@ is as follows:
 
 ~~~
 
-"Keyword" is imported from Section 4.1.2 of [@!RFC5321].
+"Keyword" is imported from [@!RFC5321, Section 4.1.2].
 
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
 The ABNF rule for each dmarc-value is specified in the following table:
@@ -1085,12 +1072,12 @@ DMARC mechanism.
 ### Publish an SPF Policy for an Aligned Domain
 
 Because DMARC relies on SPF [@!RFC7208] and DKIM [@!RFC6376], in
-order to take full advantage of DMARC, a Domain Owner SHOULD first
+order to take full advantage of DMARC, a Domain Owner **SHOULD** first
 ensure that SPF and DKIM authentication are properly configured.
-As a first step the Domain Owner SHOULD choose a domain to use as the
+As a first step the Domain Owner **SHOULD** choose a domain to use as the
 RFC5321.MailFrom domain (i.e., the Return-Path domain) for its mail,
 one that aligns with the Author Domain, and then publish an SPF
-policy in DNS for that domain. The SPF record SHOULD be constructed
+policy in DNS for that domain. The SPF record **SHOULD** be constructed
 at a minimum to ensure an SPF pass verdict for all known sources of
 mail for the RFC5321.MailFrom domain.
 
@@ -1108,7 +1095,7 @@ simply relays the message on to the recipient's current "real" address.
 Many recipients use such addresses, and with SPF alone, and not DKIM,
 messages sent to such users will always produce DMARC fail.
 
-The Domain Owner SHOULD choose
+The Domain Owner **SHOULD** choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
 header) that aligns with the Author Domain.
 
@@ -1117,7 +1104,7 @@ header) that aligns with the Author Domain.
 Proper consumption and analysis of DMARC aggregate reports is the
 key to any successful DMARC deployment for a Domain Owner. DMARC
 aggregate reports, which are XML documents and are defined in
-[@!DMARC-Aggregate-Reporting], contain valuable data for the Domain
+[@!I-D.ietf-dmarc-aggregate-reporting], contain valuable data for the Domain
 Owner, showing sources of mail using the Author Domain. Depending
 on how mature the Domain Owner's DMARC rollout is, some of these
 sources could be legitimate ones that were overlooked during the
@@ -1216,13 +1203,13 @@ The steps are as follows:
 3.  Perform DKIM signature verification checks.  A single email could
     contain multiple DKIM signatures.  The results of this step are
     passed to the remainder of the algorithm, **MUST** include "pass" or
-    "fail", and if "fail", SHOULD include information about the reasons
+    "fail", and if "fail", **SHOULD** include information about the reasons
     for failure. The results **MUST** further include the value of the "d="
     and "s=" tags from each checked DKIM signature.
 
 4.  Perform SPF verification checks.  The results of this step are
     passed to the remainder of the algorithm, **MUST** include "pass" or
-    "fail", and if "fail", SHOULD include information about the reasons
+    "fail", and if "fail", **SHOULD** include information about the reasons
     for failure. The results **MUST** further include the domain name used
     to complete the SPF check.
 
@@ -1255,7 +1242,7 @@ permanent DNS error is left to the discretion of the Mail Receiver.
 The results of Mail Receiver-based DMARC processing should be stored
 for eventual presentation back to the Domain Owner in the form of
 aggregate feedback reports.  (#general-record-format) and
-[@!DMARC-Aggregate-Reporting] discuss aggregate feedback.
+[@!I-D.ietf-dmarc-aggregate-reporting] discuss aggregate feedback.
 
 ### Send Aggregate Reports {#send-aggregate-reports}
 
@@ -1273,7 +1260,7 @@ with handling decisions for a message in ways that p= tag values of
 'none' cannot.
 
 Given the above, in order to ensure maximum usefulness for DMARC across
-the email ecosystem, Mail Receivers SHOULD generate and send aggregate
+the email ecosystem, Mail Receivers **SHOULD** generate and send aggregate
 reports with a frequency of at least once every 24 hours.
 
 ##  Policy Enforcement Considerations {#policy-enforcement-considerations}
@@ -1303,12 +1290,12 @@ At a minimum, Mail Receivers **SHOULD**
 add the Authentication-Results header field (see [@!RFC8601])
 is **RECOMMENDED** when delivering failing mail.
 
-Mail Receivers should only report reject or quarantine
-policy actions in aggregate feedback reports that are due to published
-DMARC Domain Owner Assessment Policy. They need not report
-reject or quarantine actions that are the result of local policy. If
-local policy information is exposed, abusers can gain insight into the
-effectiveness and delivery rates of spam campaigns.
+When Mail Receivers deviate from a published Domain Owner
+Assessment Policy during message processing they **SHOULD** make
+available the fact of and reason for the deviation to the Domain
+Owner via feedback reporting, specifically using the
+"PolicyOverride" feature of the aggregate report defined in
+[@!I-D.ietf-dmarc-aggregate-reporting].
 
 Final handling of a message is always a matter of local policy.
 An operator that wishes to favor DMARC policy over SPF policy, for
@@ -1341,21 +1328,21 @@ Providing Domain Owners with visibility into how Mail Receivers
 implement and enforce the DMARC mechanism in the form of feedback is
 critical to establishing and maintaining accurate authentication
 deployments.  When Domain Owners can see what effect their policies
-and practices are having, they are better willing and able to use
+and practices are having, they are more willing and able to use
 quarantine and reject policies.
 
-The details of this feedback are described in [@!DMARC-Aggregate-Reporting]
+The details of this feedback are described in [@!I-D.ietf-dmarc-aggregate-reporting]
 
 Operational note for PSD DMARC: For PSOs, feedback for non-existent
 domains is desirable and useful, just as it is for org-level DMARC
-operators.  See Section 4 of [@!RFC9091] for discussion of
+operators.  See [@!RFC9091, section 4] for discussion of
 Privacy Considerations for PSD DMARC
 
 #   Changes from RFC 7489 {#rfc7849-changes}
 
 This document is intended to render obsolete [@!RFC7489]. As one might guess,
 that means that there are significant differences between RFC 7489 and this 
-document. This section will summarize thos changes.
+document. This section will summarize those changes.
 
 ##  IETF Category
 
@@ -1497,7 +1484,7 @@ This synchronous rejection is typically done in one of two ways:
 *  Full rejection, wherein the SMTP server issues a 5xy reply code as
    an indication to the SMTP client that the transaction failed; the
    SMTP client is then responsible for generating notification that
-   delivery failed (see Section 4.2.5 of [@!RFC5321]).
+   delivery failed (see [@!RFC5321, section 4.2.5]).
 
 *  A "silent discard", wherein the SMTP server returns a 2xy reply
    code implying to the client that delivery (or, at least, relay)
@@ -1803,7 +1790,7 @@ attacks, such as the following:
 To avoid abuse by bad actors, reporting addresses generally have to
 be inside the domains about which reports are requested.  In order to
 accommodate special cases such as a need to get reports about domains
-that cannot actually receive mail, Section 3 of [@!DMARC-Aggregate-Reporting] describes
+that cannot actually receive mail, [@!I-D.ietf-dmarc-aggregate-reporting, section 3] describes
 a DNS-based mechanism for verifying approved external reporting.
 
 The obvious consideration here is an increased DNS load against
@@ -2364,8 +2351,8 @@ might create an entry like the following in the appropriate zone file
 
 Because the address used in the "ruf" tag is outside the
 Organizational Domain in which this record is published, conforming
-Mail Receivers will implement additional checks as described in Section 3 of
-[@!DMARC-Aggregate-Reporting].  In order to pass these additional
+Mail Receivers will implement additional checks as described in
+[@!I-D.ietf-dmarc-aggregate-reporting, section 3].  In order to pass these additional
 checks, the Report Consumer's Domain Owner will need to publish an additional
 DNS record as follows:
 
@@ -2395,7 +2382,7 @@ create an entry like the following in the appropriate zone file
   example.com._report._dmarc   IN   TXT    "v=DMARC1;"
 ~~~
 
-Mediators and other third parties should refer to Section 3 of [@!DMARC-Aggregate-Reporting]
+Mediators and other third parties should refer to [@!I-D.ietf-dmarc-aggregate-reporting, section 3]
 for the full details of this mechanism.
 
 ###  Subdomain, Testing, and Multiple Aggregate Report URIs {#subdomain-sampling-and-multiple-aggregate-report-uris}
@@ -2762,27 +2749,4 @@ Additional contributions within the IETF context were made by Kurt
 Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
 J. Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine,
 S. Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J. Turnbull.
-
-<reference anchor='DMARC-Aggregate-Reporting' target='https://datatracker.ietf.org/doc/draft-ietf-dmarc-aggregate-reporting/'>
-  <front>
-    <title>DMARC Aggregate Reporting</title>
-    <author initials='A.' surname='Brotman' fullname='Alex Brotman' role='editor'>
-      <organization>Comcast, Inc.</organization>
-    </author>
-    <date year='2021' month='February'></date>
-  </front>
-</reference>
-
-<reference anchor='DMARC-Failure-Reporting' target='https://datatracker.ietf.org/doc/draft-ietf-dmarc-failure-reporting/'>
-  <front>
-    <title>DMARC Failure Reporting</title>
-    <author initials='S.M.' surname='Jones' fullname='Steven M. Jones' role='editor'>
-      <organization>DMARC.org</organization>
-    </author>
-    <author initials='A.' surname='Vesely' fullname='Alessandro Vesely' role='editor'>
-      <organization>Tana</organization>
-    </author>
-    <date year='2021' month='February'></date>
-  </front>
-</reference>
 
