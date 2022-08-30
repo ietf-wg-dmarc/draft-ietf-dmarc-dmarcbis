@@ -940,7 +940,7 @@ rua:
    URI, i.e., the ability to send a DMARC report via electronic mail.  If the tag is not
    provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for the domain.
    URIs not supported by Mail Receivers **MUST** be ignored. The aggregate feedback report
-   format is described in [@!I-D.ietf-dmarc-aggregate-reporting]
+   format is described in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 ruf:
 :  Addresses to which message-specific failure information is to be reported

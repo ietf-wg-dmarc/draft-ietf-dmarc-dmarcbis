@@ -889,7 +889,7 @@ valid URI can be specified.  A Mail Receiver <bcp14>MUST</bcp14> implement suppo
 URI, i.e., the ability to send a DMARC report via electronic mail.  If the tag is not
 provided, Mail Receivers <bcp14>MUST NOT</bcp14> generate aggregate feedback reports for the domain.
 URIs not supported by Mail Receivers <bcp14>MUST</bcp14> be ignored. The aggregate feedback report
-format is described in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+format is described in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref>.</t>
 </dd>
 <dt>ruf:</dt>
 <dd><t>Addresses to which message-specific failure information is to be reported

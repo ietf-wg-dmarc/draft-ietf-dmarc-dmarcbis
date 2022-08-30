@@ -1281,7 +1281,7 @@ Internet-Draft                  DMARCbis                     August 2022
       provided, Mail Receivers MUST NOT generate aggregate feedback
       reports for the domain.  URIs not supported by Mail Receivers MUST
       be ignored.  The aggregate feedback report format is described in
-      [I-D.ietf-dmarc-aggregate-reporting]
+      [I-D.ietf-dmarc-aggregate-reporting].
 
 
 
