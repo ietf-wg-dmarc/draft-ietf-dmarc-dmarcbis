@@ -1044,7 +1044,7 @@ is as follows:
 
 ~~~
 
-"Keyword" is imported from [@!RFC5321, Section 4.1.2].
+"Keyword" is imported from [@!RFC5321, section 4.1.2].
 
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
 The ABNF rule for each dmarc-value is specified in the following table:

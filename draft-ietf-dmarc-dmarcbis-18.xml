@@ -991,7 +991,7 @@ is as follows:</t>
   dmarc-fo        = &quot;0&quot; / &quot;1&quot; / &quot;d&quot; / &quot;s&quot; / &quot;d:s&quot; / &quot;s:d&quot;
 
 </artwork>
-<t>&quot;Keyword&quot; is imported from <xref target="RFC5321" sectionFormat="bare" relative="#" section="Section 4.1.2"></xref>.</t>
+<t>&quot;Keyword&quot; is imported from <xref target="RFC5321" sectionFormat="of" relative="#" section="4.1.2"></xref>.</t>
 <t>In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
 The ABNF rule for each dmarc-value is specified in the following table:</t>
 <table align="left"><name>&quot;Tag Names and Values&quot;
