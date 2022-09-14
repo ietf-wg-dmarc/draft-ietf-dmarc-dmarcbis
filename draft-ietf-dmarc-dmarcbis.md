@@ -937,8 +937,8 @@ rua:
 
 ruf:
 :  Addresses to which message-specific failure information is to be reported
-   (comma-separated plain-text list of DMARC URIs; **OPTIONAL**). If present, the Domain
-   Owner or PSO is requesting Mail Receivers to send detailed failure reports about
+   (comma-separated plain-text list of DMARC URIs; **OPTIONAL**). If present, the
+   Domain Owner is requesting Mail Receivers to send detailed failure reports about
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above).
    [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
@@ -1327,8 +1327,8 @@ The details of this feedback are described in [@!I-D.ietf-dmarc-aggregate-report
 
 Operational note for PSD DMARC: For PSOs, feedback for non-existent
 domains is desirable and useful, just as it is for org-level DMARC
-operators. See [@!RFC9091, section 4] for discussion of
-Privacy Considerations for PSD DMARC
+operators. See (#privacy-considerations) for discussion of
+Privacy Considerations for PSD DMARC.
 
 #   Changes from RFC 7489 {#rfc7849-changes}
 
@@ -1678,6 +1678,47 @@ and Globally Scoped DNS Node Names" registry:
 |--------------|------------------|-----------------------|
 | TXT          | \_dmarc          | RFC 7489              |
 Table: "Underscored and Globally Scoped DNS Node Names" registry
+
+# Privacy Considerations {#privacy-considerations}
+
+This section discusses issues specific to private data that may be
+included if DMARC reports are requested.  Issues associated with
+sending aggregate reports and failure reports are addressed in
+[@!I-D.ietf-dmarc-aggregate-reporting] and
+[@!I-D.ietf-dmarc-failure-reporting] respectively.
+
+## Aggregate Report Considerations {#aggregate-report-considerations}
+
+Aggregate reports may, particularly for small organizations, provide some
+limited insight into email sending patterns.  As an example, in a small
+organization, an aggregate report from a particular domain may be sufficient
+to make the report receiver aware of sensitive personal or business
+information.  If setting an rua= tag in a DMARC record, the reporting
+address needs controls appropriate to the organizational requirements to
+mitigate any risk associated with receiving and handling reports.
+
+In the case of rua= requests for multi-organizational PSDs, additional
+information leakage considerations exist.  Multi-organizational PSDs that
+do not mandate DMARC use by registants risk exposure of private data of
+registrant domains if they include the rua= tag in their DMARC record.
+
+## Failure Report Considerations {#failure-report-considerations}
+
+Failure reports do provide insight into email sending patterns, including
+specific users.  If requesting failure reports, data management controls
+are needed to support appropriate management of this information.  The
+additional detail available through failure reports (relative to aggregate
+reports) can drive a need for additional controls.  As an example, a
+company may be legally restricted from receiving data related to a specific
+subsidiary.  Before requesting failure reports, any such data spillage risks
+have to be addressed through data management controls or publishing DMARC
+records for relevant sub-domains to prevent reporting on data related to
+their emails.
+
+Out of band agreements between failure report senders and receivers may be
+required to address privacy concerns.
+
+DMARC records for multi-organizational PSDs **MUST NOT** include the ruf= tag.
 
 #  Security Considerations {#security-considerations}
 
