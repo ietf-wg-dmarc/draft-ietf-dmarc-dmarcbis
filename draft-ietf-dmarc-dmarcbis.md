@@ -83,7 +83,7 @@ authenticated for that message. Authentication does not carry an
 explicit or implicit value assertion about that message or about
 the Domain Owner. Furthermore, a mail-receiving organization that performs
 DMARC verification can choose to honor the Domain Owner's requested
-message handling for authentication failures, but it is not reqiured
+message handling for authentication failures, but it is not required
 to do so; it might choose different actions entirely.
 
 For a mail-receiving organization supporting DMARC, a message that
@@ -229,7 +229,7 @@ for details about the supported mechanisms.
 
 ### Author Domain {#author-domain}
 
-The domain name of the apparent author ts extracted from the RFC5322.From header field.
+The domain name of the apparent author is extracted from the RFC5322.From header field.
 
 ### Domain Owner {#domain-owner}
 
@@ -691,7 +691,7 @@ Note: There is no need to perform Tree Walk searches for Organizational Domains
 under any of the following conditions:
 
 * The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF 
-  authenticated), and/or the DKIM d= domain (if present and authenticated,) 
+  authenticated), and/or the DKIM d= domain (if present and authenticated) 
   are all the same, and that domain has a DMARC record. In this case, this 
   common domain is treated as the Organizational Domain.
 * No applicable DMARC policy is discovered for the RFC5322.From domain during 
@@ -1303,7 +1303,7 @@ Author Domain Signing Practices (ADSP) [@RFC5617], SPF) where a DMARC
 record is also discovered that specifies a policy other than "none". 
 Deviating from this practice introduces inconsistency among DMARC operators 
 in terms of handling the message.  However, such deviation is not
-proscribed.
+prescribed.
 
 To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" **MUST NOT**
@@ -2429,7 +2429,7 @@ will be to enable examination of messages sent to mailboxes hosted by
 participating Mail Receivers as a method for troubleshooting any existing
 authentication issues. Aggregate feedback reports will be sent to
 a mailbox within the Organizational Domain, and to a mailbox at a Report
-Consumer selected and authorized to receive same by the Domain Owner.
+Consumer selected and authorized to receive the same by the Domain Owner.
 
 The Domain Owner will accomplish this by constructing a policy record
 indicating that:
