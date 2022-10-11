@@ -2761,6 +2761,22 @@ come to an understanding of how its domain is being misused.
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 
+This reworking of the DMARC protocol specified in [@!RFC7489] is the
+result of contributions from many participants in the IETF Working Group
+dedicated to this effort. Although the contributors are too numerous to 
+mention, significant contributions were made by Kurt Andersen, Laura Atkins,
+Seth Blank, Alex Brotman, Dave Crocker, Dougles E. Foster, Ned Freed, 
+Mike Hammer, Steven M. Jones, Scott Kitterman, Murray S. Kucherawy, 
+Barry Leiba, Alessandro Vesely, and Tim Wicinski.
+
+The authors and contributors also recognize that this document would not 
+have been possible without the work done by those who had a hand in producing
+[@!RFC7489]. The Acknowledgements section from that document is preserved
+in full below.
+
+{numbered="false"}
+# Acknowledgements - RFC 7489 {#acknowledgements-rfc7489}
+
 DMARC and the draft version of this document submitted to the
 Independent Submission Editor were the result of lengthy efforts by
 an informal industry consortium: DMARC.org (see <http://dmarc.org>).
