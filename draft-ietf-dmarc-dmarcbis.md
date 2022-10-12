@@ -46,7 +46,7 @@ verification, and to request reports about the use of the domain name.
 Mail receiving organizations can use this information when evaluating
 handling choices for incoming mail.
 
-This document obsoletes RFC 7489.
+This document obsoletes RFCs 7489 and 9091.
 
 {mainmatter}
 
@@ -1370,6 +1370,9 @@ by a technique called a "DNS Tree Walk", and the methodology for the DNS Tree Wa
 in detail in this document.
 
 The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in [@!RFC9091].
+[@!RFC9091] was an Experimental RFC, and the results of that experiment were that the RFC was
+not implemented as written. Instead, this document redefines the algorithm for PSD policy 
+discovery, and thus obsoletes [@!RFC9091].
 
 ##  Reporting
 
