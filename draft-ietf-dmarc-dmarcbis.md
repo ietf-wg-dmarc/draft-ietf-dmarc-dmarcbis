@@ -2765,7 +2765,7 @@ This reworking of the DMARC protocol specified in [@!RFC7489] is the
 result of contributions from many participants in the IETF Working Group
 dedicated to this effort. Although the contributors are too numerous to 
 mention, significant contributions were made by Kurt Andersen, Laura Atkins,
-Seth Blank, Alex Brotman, Dave Crocker, Dougles E. Foster, Ned Freed, 
+Seth Blank, Alex Brotman, Dave Crocker, Douglas E. Foster, Ned Freed, 
 Mike Hammer, Steven M. Jones, Scott Kitterman, Murray S. Kucherawy, 
 Barry Leiba, Alessandro Vesely, and Tim Wicinski.
 
