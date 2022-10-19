@@ -308,8 +308,9 @@ of the DMARC environment.
 DMARC permits a Domain Owner or PSO to enable verification of a domain's
 use in an email message, to indicate the Domain Owner's or PSO's message
 handling preference regarding failed verification, and to request reports
-about use of the domain name.  All information about a Domain Owner's or
-PSO's DMARC policy is published and retrieved via the DNS.
+about use of the domain name. A domain's DMARC policy record is published 
+in DNS as a TXT record at the name created by prepending the label "\_dmarc"
+to the domain name and is retrieved through normal DNS queries.
 
 DMARC's verification function is based on whether the RFC5322.From
 domain is aligned with a domain name used in a supported authentication
@@ -578,41 +579,38 @@ in more than five DNS queries.
 
 The generic steps for a DNS Tree Walk are as follows:
 
-1. Query the DNS for a DMARC TXT record at the DNS domain matching the one
-   found in the domain(s) described above.  A possibly empty set of records
-   is returned.
+1. Query the DNS for a TXT record at the appropriate starting point for
+   the Tree Walk. A possibly empty set of records is returned.
 
-2. Records that do not start with a "v=" tag that identifies the
-   current version of DMARC are discarded. If multiple DMARC records are
-   returned, they are all discarded.
-   If a single record remains and it contains a "psd=n" tag, stop.
+2. Records that do not start with a "v=" tag that identifies the current
+   version of DMARC are discarded. If multiple records starting with a "v="
+   tag that identify any version of DMARC remain, all such records are 
+   discarded. If a single record remains and it contains a "psd=n" tag, stop.
 
-3. Determine the target for additional queries (if needed; see the note in
-   (#organizational-domain-discovery)), using steps 4 through 8 below.
+3. If additional queries are needed, proceed as follows.
 
-4. Break the subject DNS domain name into a set of "n" ordered
-   labels.  Number these labels from right to left; e.g., for
-   "a.mail.example.com", "com" would be label 1, "example" would be
-   label 2, "mail" would be label 3, and so forth.
+4. Remove the "\_dmarc" label from the name used in the previous query and
+   break the remaining DNS domain name into a set of "x" ordered labels. Assign
+   the count of labels to "x", and number the labels from right to left; e.g.,
+   for "a.mail.example.com", "x" would be assigned the value 4, "com" would be
+   label 1, "example" would be label 2, "mail" would be label 3, and so forth.
 
-5. Count the number of labels found in the subject DNS domain. Let that
-   number be "x". If x < 5, remove the left-most (highest-numbered)
-   label from the subject domain. If x >= 5, remove the left-most
-   (highest-numbered) labels from the subject domain until 4 labels remain.
-   The resulting DNS domain name is the new target for subsequent lookups.
+5. If x < 5, remove the left-most (highest-numbered) label from the subject
+   domain. If x >= 5, remove the left-most (highest-numbered) labels from the
+   subject domain until 4 labels remain. The resulting DNS domain name with
+   the label "\_dmarc" prepended to it is the new target for the next lookup.
 
-6. Query the DNS for a DMARC TXT record at the DNS domain matching this
-   new target in place of the RFC5322.From domain in the message.  A possibly
-   empty set of records is returned.
+6. Query the DNS for a DMARC TXT record at the DNS domain name matching this
+   new target. A possibly empty set of records is returned.
 
-7. Records that do not start with a "v=" tag that identifies the
-   current version of DMARC are discarded. If multiple DMARC records are
-   returned for a single target, they are all discarded.
-   If a single record remains and it contains a "psd=n" or "psd=y" tag, stop.
+7. Records that do not start with a "v=" tag that identifies the current
+   version of DMARC are discarded. If multiple records starting with a "v="
+   tag that identify any version of DMARC remain, all such records are 
+   discarded. If a single record remains and it contains a "psd=n" tag or 
+   "psd=y" tag, stop.
 
-8. Determine the target for additional queries by removing a single label
-   from the target domain as described in step 5 and repeating steps 6 and
-   7 until the process stops or there are no more labels remaining.
+8. Repeat steps 4 through 7 until the process stops or there are no more
+   labels remaining.
 
 To illustrate, for a message with the arbitrary RFC5322.From domain of
 "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require the following
@@ -626,34 +624,35 @@ five queries to locate the policy or Organizational Domain:
 
 ##  DMARC Policy Discovery {#dmarc-policy-discovery}
 
-For policy discovery, a DNS Tree Walk starts at the point in the DNS
-hierarchy that matches the domain in the RFC5322.From header of the
-message. The DMARC policy to be applied to the message will be the record
-found at one of these three locations:
+For DMARC policy discovery, a DNS Tree Walk starts at the DNS domain name created
+by prepending the label "\_dmarc" to the domain in the RFC5322.From header of the
+message being evaluated. The DMARC policy to be applied to the message will be
+taken from one of the following, listed from highest preference to lowest:
 
-* The RFC5322.From domain
-* The Organizational Domain (as determined by a separate DNS Tree Walk) of
-  the RFC5322.From domain
-* The Public Suffix Domain of the RFC5322.From domain
+* The DMARC policy record published by the domain name found in the RFC5322.From
+  header of the message being evaluated.
+* The DMARC policy record published by the Organizational Domain (as determined by
+  a separate DNS Tree Walk) of the RFC5322.From domain.
+* The DMARC policy record published by the Public Suffix Domain of the RFC5322.From
+  domain.
 
-If the DMARC policy to be applied is that of the RFC5322.From domain, then the
-DMARC policy is taken from the p= tag of the record. If the DMARC policy is
-taken from either the Organizational Domain or the Public Suffix Domain and that
-domain is different than the RFC5322.From domain, then the DMARC policy is taken
-from the sp= tag (if any) if the RFC5322.From domain exists and the np= tag (if any)
-if the RFC5322.From domain does not exist. In the absence of applicable sp= or np=
-tags, the p= tag policy is used for subdomains.
+If the DMARC policy to be applied is that of the domain in the RFC5322.From header,
+then the DMARC policy is taken from the p= tag of the record. 
 
-If a retrieved policy record does not contain a valid "p" tag, or contains
-an "sp" or "np" tag that is not valid, then:
+If the DMARC policy to be applied is that of either the Organizational Domain or the
+Public Suffix Domain and that domain is different than the RFC5322.From domain, then
+the DMARC policy is taken from the sp= tag (if any) if the RFC5322.From domain exists
+and the np= tag (if any) if the RFC5322.From domain does not exist. In the absence of
+applicable sp= or np= tags, the p= tag policy is used for subdomains.
 
-*   If a "rua" tag is present and contains at least one
-    syntactically valid reporting URI, the Mail Receiver **MUST**
-    act as if a record containing "p=none"
-    was retrieved and continue processing;
+If a retrieved policy record does not contain a valid "p" tag, or contains an "sp" or
+"np" tag that is not valid, then:
 
-*   Otherwise, the Mail Receiver applies no DMARC processing to
-    this message.
+*   If a "rua" tag is present and contains at least one syntactically valid reporting
+    URI, the Mail Receiver **MUST** act as if a record containing "p=none" was
+    retrieved and continue processing;
+
+*   Otherwise, the Mail Receiver applies no DMARC processing to this message.
 
 If the set produced by the DNS Tree Walk contains no DMARC policy
 record (i.e., any indication that there is no such record as opposed
@@ -677,15 +676,16 @@ declined to do so.
 ##  Organizational Domain Discovery {#organizational-domain-discovery}
 
 For Organizational Domain discovery, it may be necessary to perform
-multiple DNS Tree Walks to determine if any two domains are in
-alignment. This means that a DNS Tree Walk to discover an Organizational
-Domain might start at any of the following locations:
+multiple DNS Tree Walks to determine if any two domains are in alignment.
+This means that a DNS Tree Walk to discover an Organizational Domain might
+start at any of the following locations:
 
-* The domain in the RFC5322.From header of the message.
-* The RFC5321.MailFrom domain if there is an SPF pass result for the
-  message.
-* Any DKIM d= domain if there is a DKIM pass result for the message for that
-  domain.
+* The name created by prepending the label "\_dmarc" to the RFC5322.From domain
+  of the email message being evaluated.
+* The name created by prepending the label "\_dmarc" to the RFC5321.MailFrom 
+  domain if there is an SPF pass result for the message being evaluated.
+* The name created by prepending the label "\_dmarc" to any DKIM d= domain
+  if there is a DKIM pass result for that domain for the message being evaluated.
 
 Note: There is no need to perform Tree Walk searches for Organizational Domains
 under any of the following conditions:
@@ -695,7 +695,7 @@ under any of the following conditions:
   are all the same, and that domain has a DMARC record. In this case, this 
   common domain is treated as the Organizational Domain.
 * No applicable DMARC policy is discovered for the RFC5322.From domain during 
-  the tree walk for that domain. In this case, the DMARC mechanism does not apply to 
+  the Tree Walk for that domain. In this case, the DMARC mechanism does not apply to 
   the message in question. 
 * The record for the RFC5322.From domain indicates strict alignment. In this
   case, a simple string comparison of the RFC5322.From domain and the 
@@ -705,9 +705,9 @@ under any of the following conditions:
 To discover the Organizational Domain for a domain, perform the DNS Tree Walk 
 described in (#dns-tree-walk) as needed for any of the domains in question.
 
-For each Tree Walk that retrieved valid DMARC records,
-select the Organizational Domain from the domains for which valid
-DMARC records were retrieved from the longest to the shortest:
+For each Tree Walk that retrieved valid DMARC records, select the Organizational
+Domain from the domains for which valid DMARC records were retrieved from the longest
+to the shortest:
        
 1. If a valid DMARC record contains the psd= tag set to 'n' (psd=n), this is the 
    Organizational Domain, and the selection process is complete.
