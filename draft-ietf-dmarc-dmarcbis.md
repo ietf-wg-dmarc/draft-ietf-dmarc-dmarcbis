@@ -424,7 +424,7 @@ there is no reliable way to determine a DMARC policy that applies to
 the message. Accordingly, DMARC operation is predicated on the input
 being a valid RFC5322 message object. For non-compliant cases, handling
 is outside of the scope of this specification. Further discussion of this
-can be found in (#extract-author-domain).
+can be found in (#denial-of-dmarc-attacks).
 
 Each of the underlying authentication technologies that DMARC takes
 as input yields authenticated domains as their outputs when they
@@ -457,10 +457,6 @@ domain and the RFC5322.From domain are considered to be "in alignment",
 because both domains have the same Organizational Domain of "example.com".
 In strict mode, this test would fail because the d= domain does not
 exactly match the RFC5322.From domain.
-
-However, a DKIM signature bearing a value of "d=com" would never allow
-an "in alignment" result, as "com" can only be a Public Suffix Domain,
-not an Organizational Domain.
 
 Note that a single email can contain multiple DKIM signatures, and it
 is considered to produce a DMARC "pass" result if any DKIM signature
@@ -628,10 +624,10 @@ header of the message being evaluated. The DMARC policy to be applied to the mes
 will be the record found at of the following locations, listed from highest preference
 to lowest:
 
-* The domain name found in the RFC5322.From header
+* The RFC5322.From domain
 * The Organizational Domain (as determined by a separate DNS Tree Walk) of the
-  RFC5322.From domain.
-* The Public Suffix Domain of the RFC5322.From domain.
+  RFC5322.From domain
+* The Public Suffix Domain of the RFC5322.From domain
 
 If the DMARC policy to be applied is that of the RFC5322.From domain, then the
 DMARC policy is taken from the p= tag of the record. 
@@ -639,7 +635,7 @@ DMARC policy is taken from the p= tag of the record.
 If the DMARC policy to be applied is that of either the Organizational Domain or the
 Public Suffix Domain and that domain is different than the RFC5322.From domain, then
 the DMARC policy is taken from the sp= tag (if any) if the RFC5322.From domain exists,
-and the np= tag (if any) if the RFC5322.From domain does not exist. In the absence of
+or the np= tag (if any) if the RFC5322.From domain does not exist. In the absence of
 applicable sp= or np= tags, the p= tag policy is used for subdomains.
 
 If a retrieved policy record does not contain a valid "p" tag, or contains an "sp" or
@@ -677,7 +673,7 @@ multiple DNS Tree Walks to determine if any two domains are in alignment.
 This means that a DNS Tree Walk to discover an Organizational Domain might
 start at any of the following locations:
 
-* The domain found in the RFC5322.From header of the email message being evaluated.
+* The domain found in the RFC5322.From header of the message being evaluated.
 * The domain found in the RFC5321.MailFrom header if there is an SPF pass result
   for the message being evaluated.
 * Any DKIM d= domain if there is a DKIM pass result for that domain for the message
@@ -1161,30 +1157,17 @@ to be evaluated by DMARC. If the domain is a U-label, the
 domain name **MUST** be converted to an A-label, as described in Section
 2.3 of [@!RFC5890], for further processing.
 
-To be processed by DMARC, a message typically needs to
-contain precisely one RFC5322.From domain (a single From: field with a
-single domain in it). Not all messages meet this requirement, and
-the handling of those that are forbidden under [@!RFC5322] or that
-contain no meaningful domains is outside the scope of this document.
-
-The case of a syntactically valid multi-valued RFC5322.From header
-field presents a particular challenge. When a single RFC5322.From
-header field contains multiple addresses, it is possible that there
-may be multiple domains used in those addresses. The process, in this
-case, is to only proceed with DMARC checking if the domain is
-identical for all addresses in a multi-valued RFC5322.From
-header field. Multi-valued RFC5322.From header fields with multiple
-domains **MUST** be exempt from DMARC checking.
-
-Note that Public Suffix Domains are not exempt from DMARC policy
-application and reporting.
+If zero or more than one domain is extracted, then DMARC processing is 
+not possible and the process terminates. See (#denial-of-dmarc-attacks)
+for further discussion.
 
 ###  Determine Handling Policy {#determine-handling-policy}
 
 To arrive at a policy for an individual message, Mail Receivers **MUST**
 perform the following actions or their semantic equivalents.
 Steps 2-4 **MAY** be done in parallel, whereas steps 5 and 6 require
-input from previous steps.
+input from previous steps. Further, steps 5 and 6 **SHOULD** only be 
+performed if a DMARC policy record is found in step 2.
 
 The steps are as follows:
 
@@ -1312,7 +1295,7 @@ modify existing mail handling processes.
 
 Mail Receivers **MUST** also implement reporting instructions of DMARC,
 even in the absence of a request for DKIM reporting [@!RFC6651] or
-SPF reporting [@!RFC6652].  Furthermore, the presence of such requests
+SPF reporting [@!RFC6652]. Furthermore, the presence of such requests
 **MUST NOT** affect DMARC reporting.
 
 #   DMARC Feedback {#dmarc-feedback}
@@ -1387,7 +1370,7 @@ RFC 7489 was published, and at the same time, several others were removed.
 
 ### Tags Added:
 
-* np - Policy for non-existent domains
+* np - Policy for non-existent domains (Imported from [@!RFC9091])
 * psd - Flag indicating whether a domain is a Public Suffix Domain
 * t - Replacement for some pct tag functionality. See (#removal-of-the-pct-tag) for further discussion
 
@@ -1634,7 +1617,7 @@ The initial set of entries in this registry is as follows:
 | adkim    | RFC 7489  | current  | DKIM alignment mode                                                    |
 | aspf     | RFC 7489  | current  | SPF alignment mode                                                     |
 | fo       | RFC 7489  | current  | Failure reporting options                                              |
-| np       | RFC 7489  | current  | Requested handling policy for non-existent subdomains                  |
+| np       | RFC 9091  | current  | Requested handling policy for non-existent subdomains                  |
 | p        | RFC 7489  | current  | Requested handling policy                                              |
 | pct      | RFC 7489  | historic | Sampling rate                                                          |
 | psd      | [this document]  | current  | Indicates whether policy record is published by a Public Suffix Domain |
@@ -1819,6 +1802,23 @@ attacks, such as the following:
 *  In the MUA, only show the display name if the DMARC mechanism
    passes and the email address thus verified matches one found in
    the receiving user's list of known addresses.
+
+##  Denial of DMARC Processing Attacks {#denial-of-dmarc-attacks}
+
+The declaration in (#extract-author-domain) and elsewhere in this document
+that messages that do not contain precisely one RFC5322.From domain are
+outside the scope of this document exposes an attack vector that must be 
+taken into consideration. 
+
+Because such messages are outside the scope of this document, an attacker
+can craft messages with multiple RFC5322.From domains, including the spoofed
+domain, in an effort to bypass DMARC validation and get the fraudulent message
+to be displayed by the victim's MUA with the spoofed domain successfully shown
+to the victim. In those cases where such messages are not rejected due to other
+reasons (for example, many such messages would violate RFC5322's requirement that
+there be precisely one From: header), care must be taken by the receiving MTA
+to recognize such messages as the threats they might be and handle them 
+appropriately.
 
 ##  External Reporting Addresses {#external-report-addresses}
 
