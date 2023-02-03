@@ -864,10 +864,10 @@ np:
 :   Domain Owner Assessment Policy for non-existent subdomains
     (plain-text; **OPTIONAL**). Indicates the message handling preference
     of the Domain Owner or PSO for mail using non-existent subdomains
-    of the domain queried. It applies only to non-existent subdomains of
-    the domain queried and not to either existing subdomains or
-    the domain itself. Its syntax is identical to that of the "p"
-    tag defined below. If the "np" tag is absent, the policy
+    of the domain queried but not passing DMARC verification. It applies
+    only to non-existent subdomains of the domain queried and not to either
+    existing subdomains or the domain itself. Its syntax is identical to
+    that of the "p" tag defined below. If the "np" tag is absent, the policy
     specified by the "sp" tag (if the "sp" tag is present) or the
     policy specified by the "p" tag, if the "sp" tag is not present,
     **MUST** be applied for non-existent subdomains. Note that "np" will
