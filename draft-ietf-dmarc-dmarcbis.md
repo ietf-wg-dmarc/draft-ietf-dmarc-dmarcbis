@@ -1001,36 +1001,36 @@ The formal definition of the DMARC format, using [@!RFC5234] and [@!RFC7405],
 is as follows:
 
 ~~~
-  dmarc-uri       = URI
-                    ; "URI" is imported from [RFC3986]; commas (ASCII
-                    ; 0x2C) and exclamation points (ASCII 0x21)
-                    ; **MUST** be encoded
+  dmarc-uri     = URI
+                  ; "URI" is imported from [RFC3986]; commas (ASCII
+                  ; 0x2C) and exclamation points (ASCII 0x21)
+                  ; MUST be encoded
 
-  dmarc-sep       = *WSP ";" *WSP
+  dmarc-sep     = *WSP ";" *WSP
 
-  equals          = *WSP "=" *WSP
+  equals        = *WSP "=" *WSP
 
-  dmarc-record    = dmarc-version *(dmarc-sep dmarc-tag) [dmarc-sep]
+  dmarc-record  = dmarc-version *(dmarc-sep dmarc-tag) [dmarc-sep] *WSP
 
-  dmarc-tag       = 1*ALPHA equals 1*dmarc-value
+  dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
   ; any printing characters but semicolon
-  dmarc-value     = %x20-3A | %x3C-7E 
+  dmarc-value   = %x20-3A | %x3C-7E 
 
-  dmarc-version   = "v" equals %s"DMARC1" ; case sensitive
+  dmarc-version = "v" equals %s"DMARC1" ; case sensitive
 
   ; specialized syntax of DMARC values
-  dmarc-request   = "none" / "quarantine" / "reject"
+  dmarc-request = "none" / "quarantine" / "reject"
 
-  dmarc-yorn      = "y" / "n"
+  dmarc-yorn    = "y" / "n"
 
-  dmarc-psd       = "y" / "n" / "u"
+  dmarc-psd     = "y" / "n" / "u"
 
-  dmarc-rors      = "r" / "s"
+  dmarc-rors    = "r" / "s"
 
-  dmarc-urilist   = dmarc-uri *(*WSP "," *WSP dmarc-uri)
+  dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo        = "0" / "1" / "d" / "s" / "d:s" / "s:d"
+  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d"
 
 ~~~
 
