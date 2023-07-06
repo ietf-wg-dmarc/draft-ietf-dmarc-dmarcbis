@@ -244,6 +244,15 @@ Management Domain as defined in [@RFC5598]. It can also refer
 to delegates, such as Report Consumers when those are outside of
 their immediate management domain.
 
+### Enforcement {#enforcement}
+
+Enforcement describes a state where the Organizational Domain and 
+all subdomains below it are covered by a policy that is not "p=none".
+This means that the domain and its subdomains can only be used to send
+mail that is properly authenticated, and mail using the domain name that
+is unauthenticated will not reach the inbox of a mail receiver that validates
+DMARC and honors the published policy.
+
 ### Identifier Alignment {#identifier-alignment}
 
 When the domain in the address in the RFC5322.From header field has the
@@ -254,6 +263,13 @@ Identifier, it has Identifier Alignment. (see (#organizational-domain))
 
 The entity or organization that receives and processes email. Mail
 Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).
+
+### Monitoring Mode {#monitoring-mode}
+
+At p=none with a valid reporting address, the domain owner receives
+reports that showcase authorized and unauthorized mail streams, as
+well as gaps pertaining to authentication information pertaining to
+both streams.
 
 ### Non-existent Domains {#non-existent-domains}
 
@@ -1002,9 +1018,9 @@ is as follows:
 
 ~~~
   dmarc-uri     = URI
-                  ; "URI" is imported from [RFC3986]; commas (ASCII
-                  ; 0x2C) and exclamation points (ASCII 0x21)
-                  ; MUST be encoded
+                ; "URI" is imported from [RFC3986]; commas 
+                ; (ASCII 0x2C) and exclamation points (ASCII 0x21)
+                ; MUST be encoded
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -1078,12 +1094,12 @@ one of SPF or DKIM, it is commonly accepted best practice to ensure that
 both authentication mechanisms are in place to guard
 against failure of just one of them. 
 
-This is particularly important because
-SPF will always fail in situations where mail is sent to a forwarding
-address offered by a professional society, school or other institution, where the address
-simply relays the message to the recipient's current "real" address.
-Many recipients use such addresses and with SPF alone and not DKIM,
-messages sent to such users will always produce DMARC fail.
+This is particularly important because SPF will always fail in situations
+where mail is sent to a forwarding address offered by a professional society,
+school or other institution, where the address simply relays the message to
+the recipient's current "real" address.  Many recipients use such addresses
+and with SPF alone and not DKIM, messages sent to such users will always
+produce DMARC fail.
 
 The Domain Owner **SHOULD** choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
@@ -1114,10 +1130,11 @@ successful deployment.
 Once SPF, DKIM, and the aggregate reports mailbox are all in place,
 it's time to publish a DMARC record. For best results, Domain Owners
 usually start with "p=none", (see (#collect-and-analyze))
-with the rua tag containing a URI that
-references the mailbox created in the previous step. If the
-Organizational Domain is different from the Author Domain, a record
-also needs to be published for the Organizational Domain.
+with the rua tag containing a URI that references the mailbox created
+in the previous step. This is commonly referred to as putting the Author
+Domain into Monitoring Mode. If the Organizational Domain is different
+from the Author Domain, a record also needs to be published for the
+Organizational Domain.
 
 ### Collect and Analyze Reports {#collect-and-analyze}
 
@@ -1129,7 +1146,7 @@ takes advantage of DMARC's aggregate reporting function, with the Domain
 Owner using the reports to audit its own mail streams' authentication
 configurations. 
 
-### Decide If and When to Update DMARC Policy
+### Decide Whether to Update DMARC Policy
 
 Once the Domain Owner is satisfied that it is properly authenticating
 all of its mail, then it is time to decide if it is appropriate to
@@ -1139,6 +1156,11 @@ of consuming DMARC aggregate reports before a Domain Owner reaches
 the point where it is sure that it is properly authenticating all
 of its mail, and the decision on which p= value to use will depend
 on its needs.
+
+In making this decision it is important to understand the
+interoperability issues involved and problems that can result for
+mailing lists and for deliverability of legitimate mail. Those
+issues are discussed in detail in (#interoperability-considerations)
 
 ##  PSO Actions {#pso-actions}
 
@@ -1253,11 +1275,12 @@ campaigns.
 Mail Receivers **MAY** choose to accept email that fails the DMARC
 mechanism check even if the published Domain Owner Assessment Policy
 is "reject". In particular, because of the considerations discussed
-in [@!RFC7960], it is important that Mail Receivers **SHOULD NOT** reject
-messages solely because of a published policy of "reject", but that
-they apply other knowledge and analysis to avoid situations such as
-rejection of legitimate messages sent in ways that DMARC cannot
-describe, harm to the operation of mailing lists, and similar.
+in [@!RFC7960] and in (#interoperability-considerations) of
+this document, it is important that Mail Receivers not reject messages 
+solely because of a published policy of "reject", but that they apply 
+other knowledge and analysis to avoid situations such as rejection of 
+legitimate messages sent in ways that DMARC cannot describe, harm to 
+the operation of mailing lists, and similar.
 
 If they choose not to honor the published Domain Owner Assessment
 Policy to improve interoperability among mail systems,
@@ -1334,6 +1357,8 @@ The following changes were made to the Terminology and Definitions section.
 
 These terms were added:
 
+*   Enforcement
+*   Monitoring Mode
 *   Non-existent Domains
 *   Public Suffix Domain (PSD)
 *   Public Suffix Operator (PSO)
@@ -1380,9 +1405,20 @@ RFC 7489 was published, and at the same time, several others were removed.
 * rf - Tag specifying requested format of failure reports
 * ri - Tag specifying requested interval between aggregate reports
 
-##  Domain Owner Actions
+##  Expansion of Domain Owner Actions Section
 
 This section has been expanded upon from RFC 7489.
+
+RFC 7489 had just two paragraphs in its Domain Owner Actions section, and while
+the content of those paragraphs was correct, it was minimalist in its approach to
+providing guidance to domain owners on just how to implement DMARC.
+
+This document provides much more detail and explanatory text to a domain owner, 
+focusing not just on what to do to implement DMARC, but also on the reasons for
+each step and the repercussions of each decision.
+
+In particular, this document makes explicit that domains for general-purpose
+email **MUST NOT** deploy a DMARC policy of p=reject.
 
 ##  Report Generator Recommendations
 
@@ -1522,18 +1558,74 @@ DMARC limits which end-to-end scenarios can achieve a "pass" result.
 Because DMARC relies on SPF [@!RFC7208] and/or DKIM [@!RFC6376] to achieve
 a "pass", their limitations also apply.
 
-Additional DMARC constraints occur when a message is processed by
-some Mediators, such as mailing lists. Transiting a Mediator often
-causes either the authentication to fail or Identifier Alignment to
-be lost. These transformations may conform to standards but still
-prevent a DMARC "pass".
-
-In addition to Mediators, mail that is sent by authorized,
-independent third parties might not be sent with Identifier
-Alignment, also preventing a "pass" result.
-
 Issues specific to the use of policy mechanisms alongside DKIM are
 further discussed in [@RFC6377], particularly Section 5.2.
+
+Mail that is sent by authorized, independent third parties might not be 
+sent with Identifier Alignment, also preventing a "pass" result.
+
+##  Interoperability Considerations {#interoperability-considerations}
+
+As discussed in "Interoperability Issues between DMARC and Indirect
+Email Flows" [@RFC7960], use of p=reject can be incompatible with and
+cause interoperability problems to indirect message flows such as
+"alumni forwarders", role-based email aliases, and mailing lists
+across the Internet.
+
+Even a domain that expects to send only targeted messages to
+account holders - a bank, for example - could have account
+holders using addresses such as jones@alumni.example.edu (an
+address that relays the messages to another address with a real
+mailbox) or finance@association.example (a role-based address that
+does similar relaying for the current head of finance at the
+association).  When such mail is delivered to the actual recipient
+mailbox, it will necessarily fail SPF checks, as the incoming
+IP address will be that of example.edu or association.example, and
+not an address authorized for the sending domain.  DKIM signatures
+will generally remain valid in these relay situations.
+
+> It is therefore critical that domains that publish p=reject
+> **MUST NOT** rely solely on SPF, and MUST apply valid DKIM signatures
+> to their messages.
+
+Domains that have general users who send routine email are
+particularly likely to create interoperability issues if they
+publish p=reject.  For example, domains that serve as mailbox hosts
+and give out email addresses to the general public are best advised
+to delay adoption of p=reject until the authentication ecosystem
+becomes more mature and deliverability issues are better resolved.
+
+In particular, if users in p=reject domains post messages to
+mailing lists on the Internet, those messages can cause operational
+problems for the mailing lists and for the subscribers to those
+lists, as explained below and in [@RFC7960].
+
+> It is therefore critical that domains that host users who might
+> post messages to mailing lists **SHOULD NOT** publish p=reject.
+> Domains that choose to publish p=reject **SHOULD** implement
+> policies that their users not post to Internet mailing lists.
+
+As noted in (#policy-enforcement-considerations), receiving domains
+need to apply more analysis than just DMARC evaluation in their
+disposition of incoming messages.  An example of the consequences of
+honoring p=reject without further anaysis is that rejecting messages
+that have been relayed by a mailing list can cause your own users to
+have their subscriptions to that mailing list cancelled by the
+list software's automated handling of such rejections - it looks
+to the list manager as though the recipient's email address is no
+longer working, so the address is automatically unsubscribed.
+
+> It is therefore critical that receiving domains **MUST NOT** reject
+> incoming messages solely on the basis of a p=reject policy by
+> the sending domain.  Receiving domains must use the DMARC
+> policy as part of their disposition decision, along with other
+> knowledge and analysis.
+
+Failure to understand and abide by these considerations can cause
+legitimate, sometimes important email to be rejected, can cause
+operational damage to mailing lists throughout the Internet, and
+can result in trouble-desk calls and complaints from your own
+employees, customers, and clients.
 
 # IANA Considerations {#iana-considerations}
 
