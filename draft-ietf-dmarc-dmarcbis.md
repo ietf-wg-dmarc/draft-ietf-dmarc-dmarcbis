@@ -1019,8 +1019,8 @@ is as follows:
 ~~~
   dmarc-uri     = URI
                 ; "URI" is imported from [RFC3986]; commas 
-                ; (ASCII 0x2C) and exclamation points (ASCII 0x21)
-                ; MUST be encoded
+                ; (ASCII 0x2C) and exclamation points 
+                ; (ASCII 0x21) MUST be encoded
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -1572,38 +1572,39 @@ cause interoperability problems to indirect message flows such as
 "alumni forwarders", role-based email aliases, and mailing lists
 across the Internet.
 
-Even a domain that expects to send only targeted messages to
-account holders - a bank, for example - could have account
-holders using addresses such as jones@alumni.example.edu (an
-address that relays the messages to another address with a real
-mailbox) or finance@association.example (a role-based address that
-does similar relaying for the current head of finance at the
-association).  When such mail is delivered to the actual recipient
-mailbox, it will necessarily fail SPF checks, as the incoming
-IP address will be that of example.edu or association.example, and
-not an address authorized for the sending domain.  DKIM signatures
+A domain that expects to send only targeted messages to account holders
+- a bank, for example - could have account holders using addresses such
+as jones@alumni.example.edu (an address that relays the messages to
+another address with a real mailbox) or finance@association.example
+(a role-based address that does similar relaying for the current head
+of finance at the association).  When such mail is delivered to the
+actual recipient mailbox, it will necessarily fail SPF checks, as the
+incoming IP address will be that of example.edu or association.example,
+and not an address authorized for the sending domain.  DKIM signatures
 will generally remain valid in these relay situations.
 
 > It is therefore critical that domains that publish p=reject
-> **MUST NOT** rely solely on SPF, and MUST apply valid DKIM signatures
-> to their messages.
+> **MUST NOT** rely solely on SPF to secure a DMARC pass, and 
+> **MUST** apply valid DKIM signatures to their messages.
 
-Domains that have general users who send routine email are
-particularly likely to create interoperability issues if they
-publish p=reject.  For example, domains that serve as mailbox hosts
-and give out email addresses to the general public are best advised
-to delay adoption of p=reject until the authentication ecosystem
-becomes more mature and deliverability issues are better resolved.
-
-In particular, if users in p=reject domains post messages to
-mailing lists on the Internet, those messages can cause operational
-problems for the mailing lists and for the subscribers to those
-lists, as explained below and in [@RFC7960].
+In the case of domains that have general users who send routine email,
+those that publish p=reject are likely to create significant interoperability
+issues. In particular, if users in p=reject domains post messages to mailing
+lists on the Internet, those messages can cause operational problems for the
+mailing lists and for the subscribers to those lists, as explained below and
+in [@RFC7960].
 
 > It is therefore critical that domains that host users who might
 > post messages to mailing lists **SHOULD NOT** publish p=reject.
-> Domains that choose to publish p=reject **SHOULD** implement
-> policies that their users not post to Internet mailing lists.
+> Any such domains wishing to publish p=reject **SHOULD** first 
+> take advantage of DMARC aggregate report data for their domain to
+> determine the possible impact to their users, first by publishing
+> p=none for at least a month, followed by publishing p=quarantine for
+> an equally long period of time, and comparing the message disposition
+> results. Domains that choose to publish p=reject **SHOULD** either
+> implement policies that their users not post to Internet mailing lists
+> and/or inform their users that their participation in mailing lists may
+> be hindered.
 
 As noted in (#policy-enforcement-considerations), receiving domains
 need to apply more analysis than just DMARC evaluation in their
