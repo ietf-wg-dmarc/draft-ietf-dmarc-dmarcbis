@@ -1109,20 +1109,19 @@ header) that aligns with the Author Domain.
 
 Proper consumption and analysis of DMARC aggregate reports are the
 keys to any successful DMARC deployment for a Domain Owner. DMARC
-aggregate reports, which are XML documents and are defined in
-[@!I-D.ietf-dmarc-aggregate-reporting], contain valuable data for the Domain
-Owner, showing sources of mail using the Author Domain. Depending
-on how mature the Domain Owner's DMARC rollout is, some of these
-sources could be legitimate ones that were overlooked during the
-initial deployment of SPF and/or DKIM.
+aggregate reports, which are defined in [@!I-D.ietf-dmarc-aggregate-reporting],
+contain valuable data for the Domain Owner, showing sources of mail
+using the Author Domain. Depending on how mature the Domain Owner's
+DMARC deployment is, some of these sources could be legitimate ones
+that were overlooked during the initial deployment of SPF and/or DKIM.
 
-Because the aggregate reports are XML documents, it is recommended
-that they be machine-parsed, so setting up a mailbox involves more
-than just the physical creation of that mailbox. Many third-party
-services exist that will process DMARC aggregate reports or the
-Domain Owner can create its own set of tools. No matter which
-method is chosen, the ability to parse these reports and consume
-the data contained in them will go a long way to ensuring a
+While it is possible for a human to read aggregate reports, they are
+formatted in such a way that it is recommended that they be machine-parsed,
+so setting up a mailbox involves more than just the physical creation
+of that mailbox. Many third-party services exist that will process DMARC
+aggregate reports or the Domain Owner can create its own set of tools.
+No matter which method is chosen, the ability to consume these reports and
+parse the data contained in them will go a long way to ensuring a
 successful deployment.
 
 ### Publish a DMARC Policy for the Author Domain and Organizational Domain
@@ -1180,8 +1179,10 @@ domain name **MUST** be converted to an A-label, as described in Section
 2.3 of [@!RFC5890], for further processing.
 
 If zero or more than one domain is extracted, then DMARC processing is 
-not possible and the process terminates. See (#denial-of-dmarc-attacks)
-for further discussion.
+not possible and the process terminates, although in the case where more
+than one domain is retrieved, the Mail Receiver *MAY* choose to go forward
+with DMARC processing anyway. See (#denial-of-dmarc-attacks) for further 
+discussion.
 
 ###  Determine Handling Policy {#determine-handling-policy}
 
@@ -1387,6 +1388,8 @@ discovery, and thus obsoletes [@!RFC9091].
 
 Discussion of both aggregate and failure reporting have been moved to separate documents
 dedicated to the topics.
+
+In addition, the ability to specify a maximum report size in the DMARC URI has been removed.
 
 ##  Tags
 
@@ -1912,6 +1915,20 @@ reasons (for example, many such messages would violate RFC5322's requirement tha
 there be precisely one From: header), care must be taken by the receiving MTA
 to recognize such messages as the threats they might be and handle them 
 appropriately.
+
+The case of a syntactically valid multi-valued RFC5322.From field presents a
+particular challenge. Experience has shown that most such messages are abusive
+and/or unwanted by their recipients, and given this fact, an MTA may make a
+negative disposition decision for the message prior to and instead of its being
+subjected to DMARC processing. However, in a case where a Mail Receiver requires
+that the message go through DMARC processing, a recommended approach as per
+[@!RFC7489] is to apply the DMARC check to each domain found in the RFC5322.From
+field as the Author Domain and apply the most strict policy selected among the
+checks that fail. Such an approach might prove useful for a small number of
+Author Domains, but it is likely that applying such logic to messages with
+a larger number of domains (as defined by each Mail Receiver) will expose the
+Mail Receiver to a form of denial of service attack, and so applying a negative
+disposition decision to the message may be the best course of action.
 
 ##  External Reporting Addresses {#external-report-addresses}
 
