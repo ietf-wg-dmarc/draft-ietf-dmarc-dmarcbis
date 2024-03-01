@@ -72,11 +72,11 @@ As with SPF and DKIM, DMARC reports results as "pass" or "fail".
 To get a DMARC result of "pass", a pass from either SPF or DKIM is required.
 In addition, the passed domain can be "aligned" with the RFC5322.From domain
 in one of two modes - "relaxed" or "strict". The mode is expressed in the
-domain's DMARC policy record. Domains are said to be "in relaxed alignment"
+domain's DMARC policy record. Domains are said to be in "relaxed alignment"
 if they have the same "Organizational Domain", which is the domain at the
 top of the domain hierarchy for the RFC5322.From domain while having the
-same administrative authority as the RFC5322.From domain. Domains are "in
-strict alignment" if and only if they are identical.
+same administrative authority as the RFC5322.From domain. Domains are in
+"strict alignment" if and only if they are identical.
 
 A DMARC pass indicates only that the RFC5322.From domain has been
 authenticated for that message. Authentication does not carry an
@@ -124,11 +124,11 @@ and items that are documented as out of scope guide specification of DMARC.
 
 DMARC has the following high-level goals:
 
+*  Allow Domain Owners and PSOs to verify their authentication deployment.
+
 *  Allow Domain Owners and PSOs to assert their desired message handling
    for authentication failures for messages purporting to have authorship
    within the domain.
-
-*  Allow Domain Owners and PSOs to verify their authentication deployment.
 
 *  Minimize implementation complexity for both senders and receivers,
    as well as the impact on handling and delivery of legitimate
@@ -160,8 +160,8 @@ the RFC5322.From human-readable <display-name>.
 
 ##  Scalability {#scalability}
 
-Scalability is a significant issue for systems that need to operate in a
-system as widely deployed as current SMTP email. For this reason,
+Scalability is a significant issue for systems that need to operate in
+an environment as widely deployed as current SMTP email. For this reason,
 DMARC seeks to avoid the need for third parties or pre-sending
 agreements between senders and receivers. This preserves the
 positive aspects of the current email infrastructure.
@@ -249,8 +249,8 @@ their immediate management domain.
 Enforcement describes a state where the Organizational Domain and 
 all subdomains below it are covered by a policy that is not "p=none".
 This means that the domain and its subdomains can only be used to send
-mail that is properly authenticated, and mail using the domain name that
-is unauthenticated will not reach the inbox of a mail receiver that validates
+mail that is properly authenticated, and unauthenticated mail using the
+domain name will not reach the inbox of a mail receiver that validates
 DMARC and honors the published policy.
 
 ### Identifier Alignment {#identifier-alignment}
@@ -938,13 +938,16 @@ psd:
       psd=u in a DMARC record.
 
 rua:
-:  Addresses to which aggregate feedback is to be sent (comma-separated plain-text
-   list of DMARC URIs; **OPTIONAL**). [@!I-D.ietf-dmarc-aggregate-reporting] discusses
-   considerations that apply when the domain name of a URI differs from that of the domain
-   advertising the policy. See (#external-report-addresses) for additional considerations. Any
-   valid URI can be specified. A Mail Receiver **MUST** implement support for a "mailto:"
-   URI, i.e., the ability to send a DMARC report via electronic mail. If the tag is not
-   provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for the domain.
+:  Addresses to which aggregate feedback reports are to be sent (comma-separated plain-text
+   list of DMARC URIs; **OPTIONAL**). If present, the Domain Owner is requesting
+   Mail Receivers to send aggregate feedback reports about results of authentication
+   checks performed on mail using the domain for which the DMARC policy record is published.
+   [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when the
+   domain name of a URI differs from that of the domain advertising the policy. See
+   (#external-report-addresses) for additional considerations. Any valid URI can be
+   specified. A Mail Receiver **MUST** implement support for a "mailto:" URI, i.e.,
+   the ability to send a DMARC report via electronic mail. If the tag is not provided,
+   Mail Receivers **MUST NOT** generate aggregate feedback reports for the domain.
    URIs not supported by Mail Receivers **MUST** be ignored. The aggregate feedback report
    format is described in [@!I-D.ietf-dmarc-aggregate-reporting].
 
@@ -955,10 +958,12 @@ ruf:
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above).
    [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
-   A Mail Receiver **MUST** implement support for a "mailto:" URI, i.e., the ability to
-   send a DMARC report via electronic mail.  If the tag is not provided, Mail Receivers
-   **MUST NOT** generate failure reports for the domain. See (#external-report-addresses)
-   for additional considerations.
+   See (#external-report-addresses) for additional considerations.  A Mail Receiver
+   **MUST** implement support for a "mailto:" URI, i.e., the ability to send a DMARC
+   report via electronic mail.  If the tag is not provided, Mail Receivers **MUST NOT** 
+   generate failure reports for the domain.  URIs not supported by Mail Receivers **MUST**
+   be ignored. The format for message-specific failure reporting is described in
+   [@!I-D.ietf-dmarc-failure-reporting].
 
 sp:
 :  Domain Owner Assessment Policy for all subdomains (plain-text;
@@ -1416,12 +1421,12 @@ RFC 7489 had just two paragraphs in its Domain Owner Actions section, and while
 the content of those paragraphs was correct, it was minimalist in its approach to
 providing guidance to domain owners on just how to implement DMARC.
 
-This document provides much more detail and explanatory text to a domain owner, 
+This document provides much more detail and explanatory text to a Domain Owner, 
 focusing not just on what to do to implement DMARC, but also on the reasons for
 each step and the repercussions of each decision.
 
 In particular, this document makes explicit that domains for general-purpose
-email **MUST NOT** deploy a DMARC policy of p=reject.
+email **SHOULD NOT** deploy a DMARC policy of p=reject.
 
 ##  Report Generator Recommendations
 
@@ -1844,8 +1849,7 @@ have an adverse impact on DNS traffic include:
    sending mail.
 
 *  If they can block outgoing or reply DNS messages, they can prevent
-   systems from discovering senders' DMARC policies, causing recipients
-   to assume p=none by default.
+   systems from discovering senders' DMARC policies.
 
 *  If they can send forged response packets, they can make aligned mail
    appear unaligned or vice-versa.
@@ -2906,7 +2910,7 @@ recognize the invaluable input and guidance that was provided early
 on by J.D. Falk.
 
 Additional contributions within the IETF context were made by Kurt
-Anderson, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
+Andersen, Michael Jack Assels, Les Barstow, Anne Bennett, Jim Fenton,
 J. Gomez, Mike Jones, Scott Kitterman, Eliot Lear, John Levine,
 S. Moonesamy, Rolf Sonneveld, Henry Timmes, and Stephen J. Turnbull.
 
