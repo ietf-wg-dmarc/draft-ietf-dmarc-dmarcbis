@@ -931,8 +931,9 @@ the RFC5322.From domain to which the DMARC record applies, the &quot;t&quot;
 tag serves as a signal to the actor performing DMARC verification checks
 as to whether or not the domain owner wishes the assessment policy
 declared in the &quot;p=&quot;, &quot;sp=&quot;, and/or &quot;np=&quot; tags to actually be applied. This
-parameter does not affect the generation of DMARC reports. Possible values
-are as follows:</t>
+parameter does not affect the generation of DMARC reports.  See <xref target="removal-of-the-pct-tag"></xref>
+for further discussion of the use of this tag.  Possible values are as
+follows:</t>
 
 <dl spacing="compact">
 <dt>y:</dt>

@@ -1351,7 +1351,9 @@ Internet-Draft                  DMARCbis                      March 2024
       verification checks as to whether or not the domain owner wishes
       the assessment policy declared in the "p=", "sp=", and/or "np="
       tags to actually be applied.  This parameter does not affect the
-      generation of DMARC reports.  Possible values are as follows:
+      generation of DMARC reports.  See Appendix A.7 for further
+      discussion of the use of this tag.  Possible values are as
+      follows:
 
       y:  A request that the actor performing the DMARC verification
          check not apply the policy, but instead apply any special
@@ -1383,8 +1385,6 @@ Internet-Draft                  DMARCbis                      March 2024
 
    The formal definition of the DMARC format, using [RFC5234] and
    [RFC7405], is as follows:
-
-
 
 
 

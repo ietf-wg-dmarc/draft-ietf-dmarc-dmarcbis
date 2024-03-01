@@ -984,8 +984,9 @@ t:
    tag serves as a signal to the actor performing DMARC verification checks
    as to whether or not the domain owner wishes the assessment policy
    declared in the "p=", "sp=", and/or "np=" tags to actually be applied. This
-   parameter does not affect the generation of DMARC reports. Possible values
-   are as follows:
+   parameter does not affect the generation of DMARC reports.  See (#removal-of-the-pct-tag)
+   for further discussion of the use of this tag.  Possible values are as
+   follows:
 
     y:
     :  A request that the actor performing the DMARC verification check not
