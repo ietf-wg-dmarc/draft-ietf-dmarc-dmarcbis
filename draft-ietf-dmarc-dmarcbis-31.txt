@@ -355,7 +355,8 @@ Internet-Draft                  DMARCbis                      March 2024
    DMARC does not attempt to solve all problems with spoofed or
    otherwise fraudulent emails.  In particular, it does not address the
    use of visually similar domain names ("cousin domains") or abuse of
-   the RFC5322.From human-readable <display-name>.
+   the RFC5322.From human-readable display-name, as defined in
+   Section 3.4 of [RFC5322].
 
 2.3.  Scalability
 
@@ -384,8 +385,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
    *  Publishing policy other than via the DNS;
 
-   *  Reporting or otherwise evaluating other than the last-hop IP
-      address;
+
 
 
 
@@ -393,6 +393,9 @@ Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 7]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+   *  Reporting or otherwise evaluating other than the last-hop IP
+      address;
 
    *  Attacks in the display-name portions of the RFC5322.From header
       field, also known as "display name" attacks;
@@ -438,9 +441,6 @@ Internet-Draft                  DMARCbis                      March 2024
 
    The domain name of the apparent author as extracted from the
    RFC5322.From header field.
-
-
-
 
 
 

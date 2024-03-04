@@ -126,7 +126,7 @@ to be useful in the creation of reliable and defensible message streams.</t>
 <t>DMARC does not attempt to solve all problems with spoofed or
 otherwise fraudulent emails. In particular, it does not address the
 use of visually similar domain names (&quot;cousin domains&quot;) or abuse of
-the RFC5322.From human-readable &lt;display-name&gt;.</t>
+the RFC5322.From human-readable display-name, as defined in <xref target="RFC5322" sectionFormat="of" relative="#" section="3.4"></xref>.</t>
 </section>
 
 <section anchor="scalability"><name>Scalability</name>
