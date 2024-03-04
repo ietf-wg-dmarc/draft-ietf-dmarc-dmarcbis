@@ -1105,7 +1105,7 @@ where mail is sent to a forwarding address offered by a professional society,
 school or other institution, where the address simply relays the message to
 the recipient's current "real" address.  Many recipients use such addresses
 and with SPF alone and not DKIM, messages sent to such users will always
-produce DMARC fail.
+produce a DMARC result of "fail".
 
 The Domain Owner **SHOULD** choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
@@ -1317,7 +1317,7 @@ Author Domain Signing Practices (ADSP) [@RFC5617], SPF) where a DMARC
 record is also discovered that specifies a policy other than "none". 
 Deviating from this practice introduces inconsistency among DMARC operators 
 in terms of handling the message.  However, such deviation is not
-proscribed.
+forbidden.
 
 To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" **MUST NOT**
@@ -1618,9 +1618,9 @@ in [@RFC7960].
 As noted in (#policy-enforcement-considerations), receiving domains
 need to apply more analysis than just DMARC evaluation in their
 disposition of incoming messages.  An example of the consequences of
-honoring p=reject without further anaysis is that rejecting messages
+honoring p=reject without further analysis is that rejecting messages
 that have been relayed by a mailing list can cause your own users to
-have their subscriptions to that mailing list cancelled by the
+have their subscriptions to that mailing list canceled by the
 list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
 longer working, so the address is automatically unsubscribed.
@@ -1788,7 +1788,7 @@ mitigate any risk associated with receiving and handling reports.
 
 In the case of rua= requests for multi-organizational PSDs, additional
 information leakage considerations exist.  Multi-organizational PSDs that
-do not mandate DMARC use by registants risk exposure of private data of
+do not mandate DMARC use by registrants risk exposure of private data of
 registrant domains if they include the rua= tag in their DMARC record.
 
 ## Failure Report Considerations {#failure-report-considerations}

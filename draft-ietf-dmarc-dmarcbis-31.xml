@@ -1092,7 +1092,7 @@ where mail is sent to a forwarding address offered by a professional society,
 school or other institution, where the address simply relays the message to
 the recipient's current &quot;real&quot; address.  Many recipients use such addresses
 and with SPF alone and not DKIM, messages sent to such users will always
-produce DMARC fail.</t>
+produce a DMARC result of &quot;fail&quot;.</t>
 <t>The Domain Owner <bcp14>SHOULD</bcp14> choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
 header) that aligns with the Author Domain.</t>
@@ -1295,7 +1295,7 @@ Author Domain Signing Practices (ADSP) <xref target="RFC5617"></xref>, SPF) wher
 record is also discovered that specifies a policy other than &quot;none&quot;.
 Deviating from this practice introduces inconsistency among DMARC operators
 in terms of handling the message.  However, such deviation is not
-proscribed.</t>
+forbidden.</t>
 <t>To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of &quot;p=none&quot; <bcp14>MUST NOT</bcp14>
 modify existing mail handling processes.</t>
@@ -1580,9 +1580,9 @@ be hindered.</t>
 </blockquote><t>As noted in <xref target="policy-enforcement-considerations"></xref>, receiving domains
 need to apply more analysis than just DMARC evaluation in their
 disposition of incoming messages.  An example of the consequences of
-honoring p=reject without further anaysis is that rejecting messages
+honoring p=reject without further analysis is that rejecting messages
 that have been relayed by a mailing list can cause your own users to
-have their subscriptions to that mailing list cancelled by the
+have their subscriptions to that mailing list canceled by the
 list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
 longer working, so the address is automatically unsubscribed.</t>
@@ -1940,7 +1940,7 @@ address needs controls appropriate to the organizational requirements to
 mitigate any risk associated with receiving and handling reports.</t>
 <t>In the case of rua= requests for multi-organizational PSDs, additional
 information leakage considerations exist.  Multi-organizational PSDs that
-do not mandate DMARC use by registants risk exposure of private data of
+do not mandate DMARC use by registrants risk exposure of private data of
 registrant domains if they include the rua= tag in their DMARC record.</t>
 </section>
 

@@ -6,7 +6,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489, 9091 (if approved)                       J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 2 September 2024                                   1 March 2024
+Expires: 5 September 2024                                   4 March 2024
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 September 2024.
+   This Internet-Draft will expire on 5 September 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 1]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 1]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 2]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 2]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -122,16 +122,16 @@ Internet-Draft                  DMARCbis                      March 2024
                Aligned Domain  . . . . . . . . . . . . . . . . . . .  28
        5.5.3.  Setup a Mailbox to Receive Aggregate Reports  . . . .  28
        5.5.4.  Publish a DMARC Policy for the Author Domain and
-               Organizational Domain . . . . . . . . . . . . . . . .  28
+               Organizational Domain . . . . . . . . . . . . . . . .  29
        5.5.5.  Collect and Analyze Reports . . . . . . . . . . . . .  29
        5.5.6.  Decide Whether to Update DMARC Policy . . . . . . . .  29
      5.6.  PSO Actions . . . . . . . . . . . . . . . . . . . . . . .  29
      5.7.  Mail Receiver Actions . . . . . . . . . . . . . . . . . .  29
-       5.7.1.  Extract Author Domain . . . . . . . . . . . . . . . .  29
+       5.7.1.  Extract Author Domain . . . . . . . . . . . . . . . .  30
        5.7.2.  Determine Handling Policy . . . . . . . . . . . . . .  30
        5.7.3.  Store Results of DMARC Processing . . . . . . . . . .  31
        5.7.4.  Send Aggregate Reports  . . . . . . . . . . . . . . .  31
-     5.8.  Policy Enforcement Considerations . . . . . . . . . . . .  31
+     5.8.  Policy Enforcement Considerations . . . . . . . . . . . .  32
    6.  DMARC Feedback  . . . . . . . . . . . . . . . . . . . . . . .  33
    7.  Changes from RFC 7489 . . . . . . . . . . . . . . . . . . . .  33
      7.1.  IETF Category . . . . . . . . . . . . . . . . . . . . . .  33
@@ -143,85 +143,85 @@ Internet-Draft                  DMARCbis                      March 2024
      7.4.  Reporting . . . . . . . . . . . . . . . . . . . . . . . .  34
      7.5.  Tags  . . . . . . . . . . . . . . . . . . . . . . . . . .  34
        7.5.1.  Tags Added: . . . . . . . . . . . . . . . . . . . . .  34
-       7.5.2.  Tags Removed: . . . . . . . . . . . . . . . . . . . .  34
+       7.5.2.  Tags Removed: . . . . . . . . . . . . . . . . . . . .  35
      7.6.  Expansion of Domain Owner Actions Section . . . . . . . .  35
      7.7.  Report Generator Recommendations  . . . . . . . . . . . .  35
      7.8.  General Editing and Formatting  . . . . . . . . . . . . .  35
-   8.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  35
+   8.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  36
      8.1.  Issues Specific to SPF  . . . . . . . . . . . . . . . . .  36
      8.2.  DNS Load and Caching  . . . . . . . . . . . . . . . . . .  36
-     8.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  36
-     8.4.  Identifier Alignment Considerations . . . . . . . . . . .  37
+     8.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  37
+     8.4.  Identifier Alignment Considerations . . . . . . . . . . .  38
      8.5.  Interoperability Issues . . . . . . . . . . . . . . . . .  38
      8.6.  Interoperability Considerations . . . . . . . . . . . . .  38
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  39
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  40
      9.1.  Authentication-Results Method Registry Update . . . . . .  40
-     9.2.  Authentication-Results Result Registry Update . . . . . .  40
-     9.3.  Feedback Report Header Fields Registry Update . . . . . .  42
-     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  42
-     9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  43
+     9.2.  Authentication-Results Result Registry Update . . . . . .  41
+     9.3.  Feedback Report Header Fields Registry Update . . . . . .  43
+     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  43
+     9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  44
      9.6.  Underscored and Globally Scoped DNS Node Names
-           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  44
+           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  45
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 3]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 3]
 
 Internet-Draft                  DMARCbis                      March 2024
 
 
-   10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  44
-     10.1.  Aggregate Report Considerations  . . . . . . . . . . . .  45
-     10.2.  Failure Report Considerations  . . . . . . . . . . . . .  45
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  45
-     11.1.  Authentication Methods . . . . . . . . . . . . . . . . .  45
-     11.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  46
-     11.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  46
-     11.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  47
-     11.5.  Denial of DMARC Processing Attacks . . . . . . . . . . .  47
-     11.6.  External Reporting Addresses . . . . . . . . . . . . . .  48
-     11.7.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  49
+   10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  45
+     10.1.  Aggregate Report Considerations  . . . . . . . . . . . .  46
+     10.2.  Failure Report Considerations  . . . . . . . . . . . . .  46
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  46
+     11.1.  Authentication Methods . . . . . . . . . . . . . . . . .  46
+     11.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  47
+     11.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  47
+     11.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  48
+     11.5.  Denial of DMARC Processing Attacks . . . . . . . . . . .  48
+     11.6.  External Reporting Addresses . . . . . . . . . . . . . .  49
+     11.7.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  50
      11.8.  Determination of the Organizational Domain For Relaxed
-            Alignment  . . . . . . . . . . . . . . . . . . . . . . .  49
-   12. Normative References  . . . . . . . . . . . . . . . . . . . .  49
-   13. Informative References  . . . . . . . . . . . . . . . . . . .  52
-   Appendix A.  Technology Considerations  . . . . . . . . . . . . .  53
-     A.1.  S/MIME  . . . . . . . . . . . . . . . . . . . . . . . . .  53
-     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  54
-     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  54
-     A.4.  Domain Existence Test . . . . . . . . . . . . . . . . . .  55
-     A.5.  Issues with ADSP in Operation . . . . . . . . . . . . . .  56
-     A.6.  Organizational Domain Discovery Issues  . . . . . . . . .  56
-     A.7.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  58
-   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  59
-     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  59
-       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  59
-       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  60
-     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  61
-       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  61
+            Alignment  . . . . . . . . . . . . . . . . . . . . . . .  50
+   12. Normative References  . . . . . . . . . . . . . . . . . . . .  50
+   13. Informative References  . . . . . . . . . . . . . . . . . . .  53
+   Appendix A.  Technology Considerations  . . . . . . . . . . . . .  54
+     A.1.  S/MIME  . . . . . . . . . . . . . . . . . . . . . . . . .  54
+     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  55
+     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  55
+     A.4.  Domain Existence Test . . . . . . . . . . . . . . . . . .  56
+     A.5.  Issues with ADSP in Operation . . . . . . . . . . . . . .  57
+     A.6.  Organizational Domain Discovery Issues  . . . . . . . . .  57
+     A.7.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  59
+   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  60
+     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  60
+       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  60
+       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  61
+     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  62
+       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  62
        B.2.2.  Entire Domain, Monitoring Only, Per-Message
-               Reports . . . . . . . . . . . . . . . . . . . . . . .  62
+               Reports . . . . . . . . . . . . . . . . . . . . . . .  63
        B.2.3.  Per-Message Failure Reports Directed to Third
-               Party . . . . . . . . . . . . . . . . . . . . . . . .  63
+               Party . . . . . . . . . . . . . . . . . . . . . . . .  64
        B.2.4.  Subdomain, Testing, and Multiple Aggregate Report
-               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  64
-     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  66
-       B.3.1.  SMTP Session Example  . . . . . . . . . . . . . . . .  66
-     B.4.  Organizational and Policy Domain Tree Walk Examples . . .  67
-       B.4.1.  Simple Organizational and Policy Example  . . . . . .  68
-       B.4.2.  Deep Tree Walk Example  . . . . . . . . . . . . . . .  68
-       B.4.3.  Example with a PSD DMARC Record . . . . . . . . . . .  69
-     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  70
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  71
-   Acknowledgements - RFC 7489 . . . . . . . . . . . . . . . . . . .  71
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  72
+               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  65
+     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  67
+       B.3.1.  SMTP Session Example  . . . . . . . . . . . . . . . .  67
+     B.4.  Organizational and Policy Domain Tree Walk Examples . . .  68
+       B.4.1.  Simple Organizational and Policy Example  . . . . . .  69
+       B.4.2.  Deep Tree Walk Example  . . . . . . . . . . . . . . .  69
+       B.4.3.  Example with a PSD DMARC Record . . . . . . . . . . .  70
+     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  71
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  72
+   Acknowledgements - RFC 7489 . . . . . . . . . . . . . . . . . . .  72
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  73
 
 
 
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 4]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 4]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -277,7 +277,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 5]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 5]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -333,7 +333,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 6]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 6]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -389,7 +389,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 7]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 7]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -445,7 +445,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 8]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 8]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -501,7 +501,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024                [Page 9]
+Herr (ed) & Levine (ed) Expires 5 September 2024                [Page 9]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -557,7 +557,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 10]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 10]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -613,7 +613,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 11]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 11]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -669,7 +669,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 12]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 12]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -725,7 +725,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 13]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 13]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -781,7 +781,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 14]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 14]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -837,7 +837,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 15]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 15]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -893,7 +893,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 16]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 16]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -949,7 +949,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 17]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 17]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 18]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 18]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 19]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 19]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 20]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 20]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 21]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 21]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 22]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 22]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 23]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 23]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 24]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 24]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 25]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 25]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 26]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 26]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 27]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 27]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -1527,7 +1527,8 @@ Internet-Draft                  DMARCbis                      March 2024
    professional society, school or other institution, where the address
    simply relays the message to the recipient's current "real" address.
    Many recipients use such addresses and with SPF alone and not DKIM,
-   messages sent to such users will always produce DMARC fail.
+   messages sent to such users will always produce a DMARC result of
+   "fail".
 
    The Domain Owner SHOULD choose a DKIM-Signing domain (i.e., the d=
    domain in the DKIM-Signature header) that aligns with the Author
@@ -1553,6 +1554,22 @@ Internet-Draft                  DMARCbis                      March 2024
    consume these reports and parse the data contained in them will go a
    long way to ensuring a successful deployment.
 
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 28]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 5.5.4.  Publish a DMARC Policy for the Author Domain and Organizational
         Domain
 
@@ -1562,14 +1579,6 @@ Internet-Draft                  DMARCbis                      March 2024
    containing a URI that references the mailbox created in the previous
    step.  This is commonly referred to as putting the Author Domain into
    Monitoring Mode.  If the Organizational Domain is different from the
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 28]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    Author Domain, a record also needs to be published for the
    Organizational Domain.
 
@@ -1609,22 +1618,20 @@ Internet-Draft                  DMARCbis                      March 2024
 
    This section describes receiver actions in the DMARC environment.
 
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 29]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 5.7.1.  Extract Author Domain
 
    The domain in the RFC5322.From header field is extracted as the
    domain to be evaluated by DMARC.  If the domain is a U-label, the
    domain name MUST be converted to an A-label, as described in
    Section 2.3 of [RFC5890], for further processing.
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 29]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    If zero or more than one domain is extracted, then DMARC processing
    is not possible and the process terminates, although in the case
@@ -1668,19 +1675,17 @@ Internet-Draft                  DMARCbis                      March 2024
        align with the RFC5322.From domain, the message is considered to
        pass the DMARC mechanism check.
 
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 30]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
    6.  Apply policy, if appropriate.  Emails that fail the DMARC
        mechanism check are handled in accordance with the discovered
        DMARC policy of the Domain Owner and any local policy rules
        enforced by the Mail Receiver.  See Section 5.3 for details.
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 30]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    DMARC evaluation can only yield a "pass" result after one of the
    underlying authentication mechanisms passes for an aligned
@@ -1720,6 +1725,19 @@ Internet-Draft                  DMARCbis                      March 2024
    email ecosystem, Mail Receivers SHOULD generate and send aggregate
    reports with a frequency of at least once every 24 hours.
 
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 31]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 5.8.  Policy Enforcement Considerations
 
    Mail Receivers MAY choose to reject or quarantine email even if email
@@ -1729,14 +1747,6 @@ Internet-Draft                  DMARCbis                      March 2024
    been verified by the DMARC mechanism.  Mail Receivers are encouraged
    to maintain anti-abuse technologies to combat the possibility of
    DMARC-enabled criminal campaigns.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 31]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    Mail Receivers MAY choose to accept email that fails the DMARC
    mechanism check even if the published Domain Owner Assessment Policy
@@ -1774,7 +1784,15 @@ Internet-Draft                  DMARCbis                      March 2024
    record is also discovered that specifies a policy other than "none".
    Deviating from this practice introduces inconsistency among DMARC
    operators in terms of handling the message.  However, such deviation
-   is not proscribed.
+   is not forbidden.
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 32]
+
+Internet-Draft                  DMARCbis                      March 2024
+
 
    To enable Domain Owners to receive DMARC feedback without impacting
    existing mail processing, discovered policies of "p=none" MUST NOT
@@ -1784,15 +1802,6 @@ Internet-Draft                  DMARCbis                      March 2024
    even in the absence of a request for DKIM reporting [RFC6651] or SPF
    reporting [RFC6652].  Furthermore, the presence of such requests MUST
    NOT affect DMARC reporting.
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 32]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 6.  DMARC Feedback
 
@@ -1833,22 +1842,19 @@ Internet-Draft                  DMARCbis                      March 2024
    These terms were added:
 
    *  Enforcement
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 33]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
    *  Monitoring Mode
    *  Non-existent Domains
    *  Public Suffix Domain (PSD)
    *  Public Suffix Operator (PSO)
    *  PSO Controlled Domain Names
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 33]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 7.2.2.  Definitions Updated
 
@@ -1892,19 +1898,20 @@ Internet-Draft                  DMARCbis                      March 2024
    *  t - Replacement for some pct tag functionality.  See Appendix A.7
       for further discussion
 
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 34]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 7.5.2.  Tags Removed:
 
    *  pct - Tag requesting application of DMARC policy to only a
       percentage of messages
    *  rf - Tag specifying requested format of failure reports
    *  ri - Tag specifying requested interval between aggregate reports
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 34]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 7.6.  Expansion of Domain Owner Actions Section
 
@@ -1944,23 +1951,21 @@ Internet-Draft                  DMARCbis                      March 2024
    document, but much of it was subject to either minor editing, re-
    ordering of sections, and/or both.
 
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 35]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 8.  Other Topics
 
    This section discusses some topics regarding choices made in the
    development of DMARC, largely to commit the history to record.
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 35]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 8.1.  Issues Specific to SPF
 
@@ -2000,6 +2005,19 @@ Internet-Draft                  DMARCbis                      March 2024
    DMARC preference changes while preserving the benefits of DNS
    caching.
 
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 36]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 8.3.  Rejecting Messages
 
    This protocol calls for rejection of a message during the SMTP
@@ -2010,13 +2028,6 @@ Internet-Draft                  DMARCbis                      March 2024
    the RFC5321.MailFrom address.
 
    This synchronous rejection is typically done in one of two ways:
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 36]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    *  Full rejection, wherein the SMTP server issues a 5xy reply code as
       an indication to the SMTP client that the transaction failed; the
@@ -2056,6 +2067,13 @@ Internet-Draft                  DMARCbis                      March 2024
    retrieve or apply DMARC policy, this is best done with a 4xy SMTP
    reply code.
 
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 37]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
 8.4.  Identifier Alignment Considerations
 
    The DMARC mechanism allows both DKIM and SPF-authenticated
@@ -2064,15 +2082,6 @@ Internet-Draft                  DMARCbis                      March 2024
    users can gain control of the SPF record or DKIM selector records for
    a subdomain, the subdomain can be used to generate DMARC-passing
    email on behalf of the Organizational Domain.
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 37]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    For example, an attacker who controls the SPF record for
    "evil.example.com" can send mail with an RFC5322.From header field
@@ -2104,6 +2113,23 @@ Internet-Draft                  DMARCbis                      March 2024
    "alumni forwarders", role-based email aliases, and mailing lists
    across the Internet.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 38]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
    A domain that expects to send only targeted messages to account
    holders - a bank, for example - could have account holders using
    addresses such as jones@alumni.example.edu (an address that relays
@@ -2119,16 +2145,6 @@ Internet-Draft                  DMARCbis                      March 2024
    |  It is therefore critical that domains that publish p=reject MUST
    |  NOT rely solely on SPF to secure a DMARC pass, and MUST apply
    |  valid DKIM signatures to their messages.
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 38]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    In the case of domains that have general users who send routine
    email, those that publish p=reject are likely to create significant
@@ -2152,12 +2168,23 @@ Internet-Draft                  DMARCbis                      March 2024
    As noted in Section 5.8, receiving domains need to apply more
    analysis than just DMARC evaluation in their disposition of incoming
    messages.  An example of the consequences of honoring p=reject
-   without further anaysis is that rejecting messages that have been
+   without further analysis is that rejecting messages that have been
    relayed by a mailing list can cause your own users to have their
-   subscriptions to that mailing list cancelled by the list software's
+   subscriptions to that mailing list canceled by the list software's
    automated handling of such rejections - it looks to the list manager
    as though the recipient's email address is no longer working, so the
    address is automatically unsubscribed.
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 39]
+
+Internet-Draft                  DMARCbis                      March 2024
+
 
    |  It is therefore critical that receiving domains MUST NOT reject
    |  incoming messages solely on the basis of a p=reject policy by the
@@ -2175,21 +2202,45 @@ Internet-Draft                  DMARCbis                      March 2024
 
    This section describes actions completed by IANA.
 
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 39]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
 9.1.  Authentication-Results Method Registry Update
 
    IANA has added the following to the "Email Authentication Methods"
    registry:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 40]
+
+Internet-Draft                  DMARCbis                      March 2024
+
 
    +======+===========+======+==========+==============+======+=======+
    |Method| Defined   |ptype | Property | Value        |Status|Version|
@@ -2234,19 +2285,19 @@ Internet-Draft                  DMARCbis                      March 2024
    |         |           |           |       | published for    |      |
    |         |           |           |       | the aligned      |      |
    |         |           |           |       | identifier, or   |      |
-
-
-
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 40]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    |         |           |           |       | no aligned       |      |
    |         |           |           |       | identifier       |      |
    |         |           |           |       | could be         |      |
    |         |           |           |       | extracted.       |      |
    +---------+-----------+-----------+-------+------------------+------+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 41]
+
+Internet-Draft                  DMARCbis                      March 2024
+
+
    |pass     | existing  | [RFC8601] |dmarc  | A DMARC policy   |active|
    |         |           |           |(added)| record was       |      |
    |         |           |           |       | published for    |      |
@@ -2291,14 +2342,17 @@ Internet-Draft                  DMARCbis                      March 2024
    |         |           |           |       | result.          |      |
    +---------+-----------+-----------+-------+------------------+------+
 
+          Table 3: "Authentication-Results Result Registry Update"
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 41]
+
+
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 42]
 
 Internet-Draft                  DMARCbis                      March 2024
 
-
-          Table 3: "Authentication-Results Result Registry Update"
 
 9.3.  Feedback Report Header Fields Registry Update
 
@@ -2349,7 +2403,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 42]
+
+
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 43]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2405,7 +2461,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 43]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 44]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2461,7 +2517,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 44]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 45]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2479,7 +2535,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
    In the case of rua= requests for multi-organizational PSDs,
    additional information leakage considerations exist.  Multi-
-   organizational PSDs that do not mandate DMARC use by registants risk
+   organizational PSDs that do not mandate DMARC use by registrants risk
    exposure of private data of registrant domains if they include the
    rua= tag in their DMARC record.
 
@@ -2517,7 +2573,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 45]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 46]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2573,7 +2629,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 46]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 47]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2629,7 +2685,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 47]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 48]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2685,7 +2741,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 48]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 49]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2741,7 +2797,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 49]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 50]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2797,7 +2853,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 50]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 51]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2853,7 +2909,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 51]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 52]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2909,7 +2965,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 52]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 53]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -2965,7 +3021,7 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 53]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 54]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3021,7 +3077,7 @@ A.3.  Sender Header Field
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 54]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 55]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3077,7 +3133,7 @@ A.4.  Domain Existence Test
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 55]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 56]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3133,7 +3189,7 @@ A.6.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 56]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 57]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3189,7 +3245,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 57]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 58]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3245,7 +3301,7 @@ A.7.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 58]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 59]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3301,7 +3357,7 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 59]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 60]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3357,7 +3413,7 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 60]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 61]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3413,7 +3469,7 @@ B.2.1.  Entire Domain, Monitoring Only
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 61]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 62]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3469,7 +3525,7 @@ B.2.2.  Entire Domain, Monitoring Only, Per-Message Reports
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 62]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 63]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3525,7 +3581,7 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 63]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 64]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3581,7 +3637,7 @@ B.2.4.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 64]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 65]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3637,7 +3693,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 65]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 66]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3693,7 +3749,7 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 66]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 67]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3749,7 +3805,7 @@ B.4.  Organizational and Policy Domain Tree Walk Examples
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 67]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 68]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3805,7 +3861,7 @@ B.4.2.  Deep Tree Walk Example
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 68]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 69]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3861,7 +3917,7 @@ B.4.3.  Example with a PSD DMARC Record
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 69]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 70]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3917,7 +3973,7 @@ B.5.  Utilization of Aggregate Feedback: Example
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 70]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 71]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -3973,7 +4029,7 @@ Acknowledgements - RFC 7489
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 71]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 72]
 
 Internet-Draft                  DMARCbis                      March 2024
 
@@ -4029,4 +4085,4 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed) Expires 2 September 2024               [Page 72]
+Herr (ed) & Levine (ed) Expires 5 September 2024               [Page 73]
