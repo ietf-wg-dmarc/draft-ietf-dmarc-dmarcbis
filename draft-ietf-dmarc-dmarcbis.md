@@ -926,7 +926,7 @@ psd:
       Domain and policy domain applicable to the message in question.
 
     n:
-    : The DMARC policy record is published for a PSD, but it is the Organizational
+    : The DMARC policy record is published for a PSD, but it is not the Organizational
       Domain for itself and its subdomain. There is no need to put psd=n in a DMARC
       record, except in the very unusual case of a parent PSD publishing a DMARC
       record without the requisite psd=y tag.

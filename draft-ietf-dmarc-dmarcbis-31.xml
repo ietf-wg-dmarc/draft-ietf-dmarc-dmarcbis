@@ -874,7 +874,7 @@ is a PSD. If a record containing this tag with a value of 'y' is found during
 policy discovery, this information will be used to determine the Organizational
 Domain and policy domain applicable to the message in question.</dd>
 <dt>n:</dt>
-<dd>The DMARC policy record is published for a PSD, but it is the Organizational
+<dd>The DMARC policy record is published for a PSD, but it is not the Organizational
 Domain for itself and its subdomain. There is no need to put psd=n in a DMARC
 record, except in the very unusual case of a parent PSD publishing a DMARC
 record without the requisite psd=y tag.</dd>
