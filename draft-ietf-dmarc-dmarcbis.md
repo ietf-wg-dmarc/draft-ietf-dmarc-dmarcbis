@@ -958,12 +958,12 @@ ruf:
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above).
    [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
-   See (#external-report-addresses) for additional considerations.  A Mail Receiver
-   **MUST** implement support for a "mailto:" URI, i.e., the ability to send a DMARC
-   report via electronic mail.  If the tag is not provided, Mail Receivers **MUST NOT** 
-   generate failure reports for the domain.  URIs not supported by Mail Receivers **MUST**
-   be ignored. The format for message-specific failure reporting is described in
-   [@!I-D.ietf-dmarc-failure-reporting].
+   See (#external-report-addresses) for additional considerations. Any valid URI can be
+   specified. A Mail Receiver **MUST** implement support for a "mailto:" URI, i.e., the
+   ability to send message-specific failure information via electronic mail.  If the tag
+   is not provided, Mail Receivers **MUST NOT** generate failure reports for the domain. 
+   URIs not supported by Mail Receivers **MUST** be ignored. The format for message-specific
+   failure reporting is described in [@!I-D.ietf-dmarc-failure-reporting].
 
 sp:
 :  Domain Owner Assessment Policy for all subdomains (plain-text;
@@ -1186,7 +1186,7 @@ domain name **MUST** be converted to an A-label, as described in Section
 
 If zero or more than one domain is extracted, then DMARC processing is 
 not possible and the process terminates, although in the case where more
-than one domain is retrieved, the Mail Receiver *MAY* choose to go forward
+than one domain is retrieved, the Mail Receiver **MAY** choose to go forward
 with DMARC processing anyway. See (#denial-of-dmarc-attacks) for further 
 discussion.
 

@@ -1314,12 +1314,13 @@ Internet-Draft                  DMARCbis                      March 2024
       above).  [I-D.ietf-dmarc-aggregate-reporting] discusses
       considerations that apply when the domain name of a URI differs
       from that of the domain advertising the policy.  See Section 11.6
-      for additional considerations.  A Mail Receiver MUST implement
-      support for a "mailto:" URI, i.e., the ability to send a DMARC
-      report via electronic mail.  If the tag is not provided, Mail
-      Receivers MUST NOT generate failure reports for the domain.  URIs
-      not supported by Mail Receivers MUST be ignored.  The format for
-      message-specific failure reporting is described in
+      for additional considerations.  Any valid URI can be specified.  A
+      Mail Receiver MUST implement support for a "mailto:" URI, i.e.,
+      the ability to send message-specific failure information via
+      electronic mail.  If the tag is not provided, Mail Receivers MUST
+      NOT generate failure reports for the domain.  URIs not supported
+      by Mail Receivers MUST be ignored.  The format for message-
+      specific failure reporting is described in
       [I-D.ietf-dmarc-failure-reporting].
 
    sp:  Domain Owner Assessment Policy for all subdomains (plain-text;
@@ -1336,7 +1337,6 @@ Internet-Draft                  DMARCbis                      March 2024
       described in Section 4.7.
 
    t:  DMARC policy test mode (plain-text; OPTIONAL; default is 'n').
-
 
 
 
@@ -1635,9 +1635,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
    If zero or more than one domain is extracted, then DMARC processing
    is not possible and the process terminates, although in the case
-   where more than one domain is retrieved, the Mail Receiver _MAY_
-   choose to go forward with DMARC processing anyway.  See Section 11.5
-   for further discussion.
+   where more than one domain is retrieved, the Mail Receiver MAY choose
+   to go forward with DMARC processing anyway.  See Section 11.5 for
+   further discussion.
 
 5.7.2.  Determine Handling Policy
 
