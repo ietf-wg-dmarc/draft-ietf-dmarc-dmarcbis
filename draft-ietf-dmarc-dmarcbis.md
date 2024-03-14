@@ -635,10 +635,16 @@ five queries to locate the policy or Organizational Domain:
 
 ##  DMARC Policy Discovery {#dmarc-policy-discovery}
 
-For policy discovery, a DNS Tree Walk starts at the domain found in the RFC5322.From
-header of the message being evaluated. The DMARC policy to be applied to the message
-will be the record found at of the following locations, listed from highest preference
-to lowest:
+For policy discovery, first query for a DMARC policy record at the name created by
+prepending the label "\_dmarc" to the RFC5322.From domain of the message being evaluated.
+If no valid DMARC policy record is found there, then perform a DNS Tree Walk starting
+at the appropriate name as described in (#dns-tree-walk). If the RFC5322.From domain
+has five or fewer labels, the starting point for the tree walk will be the immediate
+parent domain of the RFC5322.From domain; otherwise, the starting point will be the
+name produced by shortening the RFC5322.From domain to its four rightmost labels. 
+
+The DMARC policy to be applied to the message will be the record found at of the following
+locations, listed from highest preference to lowest:
 
 * The RFC5322.From domain
 * The Organizational Domain (as determined by a separate DNS Tree Walk) of the
@@ -801,6 +807,11 @@ Per [@!RFC1035], a TXT record can comprise several "character-string"
 objects. Where this is the case, the module performing DMARC
 evaluation **MUST** concatenate these strings by joining together the
 objects in order and parsing the result as a single string.
+
+Also, consistent with [@!RFC1034, section 3.6.2], a DMARC record **MAY**
+be published as a CNAME record, as long as the corresponding canonical
+name ultimately resolves to a TXT record, and that TXT record is a DNS 
+Resource Record (RR) in the expected format.
 
 ##  DMARC URIs {#dmarc-uris}
 

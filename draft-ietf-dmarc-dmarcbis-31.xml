@@ -594,10 +594,15 @@ five queries to locate the policy or Organizational Domain:</t>
 </section>
 
 <section anchor="dmarc-policy-discovery"><name>DMARC Policy Discovery</name>
-<t>For policy discovery, a DNS Tree Walk starts at the domain found in the RFC5322.From
-header of the message being evaluated. The DMARC policy to be applied to the message
-will be the record found at of the following locations, listed from highest preference
-to lowest:</t>
+<t>For policy discovery, first query for a DMARC policy record at the name created by
+prepending the label &quot;_dmarc&quot; to the RFC5322.From domain of the message being evaluated.
+If no valid DMARC policy record is found there, then perform a DNS Tree Walk starting
+at the appropriate name as described in <xref target="dns-tree-walk"></xref>. If the RFC5322.From domain
+has five or fewer labels, the starting point for the tree walk will be the immediate
+parent domain of the RFC5322.From domain; otherwise, the starting point will be the
+name produced by shortening the RFC5322.From domain to its four rightmost labels.</t>
+<t>The DMARC policy to be applied to the message will be the record found at of the following
+locations, listed from highest preference to lowest:</t>
 
 <ul spacing="compact">
 <li>The RFC5322.From domain</li>
@@ -755,6 +760,10 @@ infrastructure, rather than creating a new one.</t>
 objects. Where this is the case, the module performing DMARC
 evaluation <bcp14>MUST</bcp14> concatenate these strings by joining together the
 objects in order and parsing the result as a single string.</t>
+<t>Also, consistent with <xref target="RFC1034" sectionFormat="of" relative="#" section="3.6.2"></xref>, a DMARC record <bcp14>MAY</bcp14>
+be published as a CNAME record, as long as the corresponding canonical
+name ultimately resolves to a TXT record, and that TXT record is a DNS
+Resource Record (RR) in the expected format.</t>
 </section>
 
 <section anchor="dmarc-uris"><name>DMARC URIs</name>
@@ -2152,6 +2161,7 @@ record will not be incorrectly evaluated to be the organizational domain</t>
 <references><name>Normative References</name>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-dmarc-aggregate-reporting.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-dmarc-failure-reporting.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1034.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml"/>
