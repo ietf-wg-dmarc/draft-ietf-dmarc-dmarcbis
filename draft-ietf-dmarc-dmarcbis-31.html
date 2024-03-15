@@ -2915,9 +2915,10 @@ a new version of DMARC.<a href="#section-5.3-6" class="pilcrow">¶</a></p>
 is as follows:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4-2">
 <pre>  dmarc-uri     = URI
-                ; "URI" is imported from [RFC3986]; commas
-                ; (ASCII 0x2C) and exclamation points
-                ; (ASCII 0x21) MUST be encoded
+                ; "URI" is imported from [RFC3986];
+                ; commas (ASCII 0x2C) and exclamation
+                ; points (ASCII 0x21) MUST be
+                ; encoded
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -2928,7 +2929,7 @@ is as follows:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
   dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
   ; any printing characters but semicolon
-  dmarc-value   = %x20-3A | %x3C-7E
+  dmarc-value   = %x20-3A / %x3C-7E
 
   dmarc-version = "v" equals %s"DMARC1" ; case sensitive
 
@@ -4233,7 +4234,7 @@ space, and spoofers can easily circumvent it by simply not using
 an email address in the display name. There are also known cases
 of legitimate uses of an email address in the display name with a
 domain different from the one in the address portion, e.g.,<a href="#section-11.4-4.1.1" class="pilcrow">¶</a></p>
-<p id="section-11.4-4.1.2">From: "user@example.org via Bug Tracker" <a href="mailto:support@example.com">support@example.com</a><a href="#section-11.4-4.1.2" class="pilcrow">¶</a></p>
+<p id="section-11.4-4.1.2">From: "user@example.org via Bug Tracker" &lt;support@example.com&gt;<a href="#section-11.4-4.1.2" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-11.4-4.2">
             <p id="section-11.4-4.2.1">In the MUA, only show the display name if the DMARC mechanism
@@ -4810,7 +4811,7 @@ checks.<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
           </h4>
 <p id="appendix-B.1.1-1">The following SPF examples assume that SPF produces a passing result.
 Alignment cannot exist if SPF does not produce a passing result.<a href="#appendix-B.1.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.1-2">Example 1: SPF in alignment:<a href="#appendix-B.1.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.1-2">Example 1: SPF in strict alignment:<a href="#appendix-B.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-B.1.1-3">
 <pre>     MAIL FROM: &lt;sender@example.com&gt;
 
@@ -4823,7 +4824,7 @@ Alignment cannot exist if SPF does not produce a passing result.<a href="#append
 <p id="appendix-B.1.1-4">In this case, the RFC5321.MailFrom parameter and the RFC5322.From
 header field have identical DNS domains. Thus, the identifiers are in
 strict alignment.<a href="#appendix-B.1.1-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.1-5">Example 2: SPF in alignment (parent):<a href="#appendix-B.1.1-5" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.1-5">Example 2: SPF in relaxed alignment:<a href="#appendix-B.1.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-B.1.1-6">
 <pre>     MAIL FROM: &lt;sender@child.example.com&gt;
 
@@ -4859,7 +4860,7 @@ RFC5322.From domain. Thus, the identifiers are not in alignment.<a href="#append
           </h4>
 <p id="appendix-B.1.2-1">The examples below assume that the DKIM signatures pass verification.
 Alignment cannot exist with a DKIM signature that does not verify.<a href="#appendix-B.1.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.2-2">Example 1: DKIM in alignment:<a href="#appendix-B.1.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.2-2">Example 1: DKIM in strict alignment:<a href="#appendix-B.1.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-B.1.2-3">
 <pre>     DKIM-Signature: v=1; ...; d=example.com; ...
      From: sender@example.com
@@ -4870,7 +4871,7 @@ Alignment cannot exist with a DKIM signature that does not verify.<a href="#appe
 </div>
 <p id="appendix-B.1.2-4">In this case, the DKIM "d=" parameter and the RFC5322.From header field have
 identical DNS domains. Thus, the identifiers are in strict alignment.<a href="#appendix-B.1.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.2-5">Example 2: DKIM in alignment (parent):<a href="#appendix-B.1.2-5" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.2-5">Example 2: DKIM in relaxed alignment:<a href="#appendix-B.1.2-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-B.1.2-6">
 <pre>     DKIM-Signature: v=1; ...; d=example.com; ...
      From: sender@child.example.com
@@ -4885,7 +4886,7 @@ identifiers are in relaxed alignment, as they have the same
 Organizational Domain (example.com).<a href="#appendix-B.1.2-7" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.2-8">Example 3: DKIM not in alignment:<a href="#appendix-B.1.2-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-B.1.2-9">
-<pre>     DKIM-Signature: v=1; ...; d=sample.net; ...
+<pre>     DKIM-Signature: v=1; ...; d=example.net; ...
      From: sender@child.example.com
      Date: Fri, Feb 15 2002 16:54:30 -0800
      To: receiver@example.org

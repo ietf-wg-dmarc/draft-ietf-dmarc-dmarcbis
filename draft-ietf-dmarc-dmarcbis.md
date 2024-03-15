@@ -1030,9 +1030,10 @@ is as follows:
 
 ~~~
   dmarc-uri     = URI
-                ; "URI" is imported from [RFC3986]; commas 
-                ; (ASCII 0x2C) and exclamation points 
-                ; (ASCII 0x21) MUST be encoded
+                ; "URI" is imported from [RFC3986]; 
+                ; commas (ASCII 0x2C) and exclamation
+                ; points (ASCII 0x21) MUST be 
+                ; encoded
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -1043,7 +1044,7 @@ is as follows:
   dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
   ; any printing characters but semicolon
-  dmarc-value   = %x20-3A | %x3C-7E 
+  dmarc-value   = %x20-3A / %x3C-7E 
 
   dmarc-version = "v" equals %s"DMARC1" ; case sensitive
 
@@ -1901,7 +1902,7 @@ attacks, such as the following:
     of legitimate uses of an email address in the display name with a
     domain different from the one in the address portion, e.g.,
 
-      From: "user@example.org via Bug Tracker" <support@example.com>
+      From: "user@example.org via Bug Tracker" \<support@example.com\>
 
 *  In the MUA, only show the display name if the DMARC mechanism
    succeeds. This too is easily defeated, as an attacker could
@@ -2277,7 +2278,7 @@ checks.
 The following SPF examples assume that SPF produces a passing result.
 Alignment cannot exist if SPF does not produce a passing result.
 
-Example 1: SPF in alignment:
+Example 1: SPF in strict alignment:
 
 ~~~
      MAIL FROM: <sender@example.com>
@@ -2292,7 +2293,7 @@ In this case, the RFC5321.MailFrom parameter and the RFC5322.From
 header field have identical DNS domains. Thus, the identifiers are in
 strict alignment.
 
-Example 2: SPF in alignment (parent):
+Example 2: SPF in relaxed alignment:
 
 ~~~
      MAIL FROM: <sender@child.example.com>
@@ -2328,7 +2329,7 @@ RFC5322.From domain. Thus, the identifiers are not in alignment.
 The examples below assume that the DKIM signatures pass verification.
 Alignment cannot exist with a DKIM signature that does not verify.
 
-Example 1: DKIM in alignment:
+Example 1: DKIM in strict alignment:
 
 ~~~
      DKIM-Signature: v=1; ...; d=example.com; ...
@@ -2341,7 +2342,7 @@ Example 1: DKIM in alignment:
 In this case, the DKIM "d=" parameter and the RFC5322.From header field have
 identical DNS domains. Thus, the identifiers are in strict alignment.
 
-Example 2: DKIM in alignment (parent):
+Example 2: DKIM in relaxed alignment:
 
 ~~~
      DKIM-Signature: v=1; ...; d=example.com; ...
@@ -2359,7 +2360,7 @@ Organizational Domain (example.com).
 Example 3: DKIM not in alignment:
 
 ~~~
-     DKIM-Signature: v=1; ...; d=sample.net; ...
+     DKIM-Signature: v=1; ...; d=example.net; ...
      From: sender@child.example.com
      Date: Fri, Feb 15 2002 16:54:30 -0800
      To: receiver@example.org

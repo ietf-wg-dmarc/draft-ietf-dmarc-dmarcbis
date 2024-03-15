@@ -975,9 +975,10 @@ a new version of DMARC.</t>
 is as follows:</t>
 
 <artwork>  dmarc-uri     = URI
-                ; &quot;URI&quot; is imported from [RFC3986]; commas 
-                ; (ASCII 0x2C) and exclamation points 
-                ; (ASCII 0x21) MUST be encoded
+                ; &quot;URI&quot; is imported from [RFC3986]; 
+                ; commas (ASCII 0x2C) and exclamation
+                ; points (ASCII 0x21) MUST be 
+                ; encoded
 
   dmarc-sep     = *WSP &quot;;&quot; *WSP
 
@@ -988,7 +989,7 @@ is as follows:</t>
   dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
   ; any printing characters but semicolon
-  dmarc-value   = %x20-3A | %x3C-7E 
+  dmarc-value   = %x20-3A / %x3C-7E 
 
   dmarc-version = &quot;v&quot; equals %s&quot;DMARC1&quot; ; case sensitive
 
@@ -2055,7 +2056,7 @@ space, and spoofers can easily circumvent it by simply not using
 an email address in the display name. There are also known cases
 of legitimate uses of an email address in the display name with a
 domain different from the one in the address portion, e.g.,</t>
-<t>From: &quot;user@example.org via Bug Tracker&quot; <eref target="mailto:support@example.com">support@example.com</eref></t>
+<t>From: &quot;user@example.org via Bug Tracker&quot; &lt;support@example.com&gt;</t>
 </li>
 <li><t>In the MUA, only show the display name if the DMARC mechanism
 succeeds. This too is easily defeated, as an attacker could
@@ -2453,7 +2454,7 @@ checks.</t>
 <section anchor="spf"><name>SPF</name>
 <t>The following SPF examples assume that SPF produces a passing result.
 Alignment cannot exist if SPF does not produce a passing result.</t>
-<t>Example 1: SPF in alignment:</t>
+<t>Example 1: SPF in strict alignment:</t>
 
 <artwork>     MAIL FROM: &lt;sender@example.com&gt;
 
@@ -2465,7 +2466,7 @@ Alignment cannot exist if SPF does not produce a passing result.</t>
 <t>In this case, the RFC5321.MailFrom parameter and the RFC5322.From
 header field have identical DNS domains. Thus, the identifiers are in
 strict alignment.</t>
-<t>Example 2: SPF in alignment (parent):</t>
+<t>Example 2: SPF in relaxed alignment:</t>
 
 <artwork>     MAIL FROM: &lt;sender@child.example.com&gt;
 
@@ -2495,7 +2496,7 @@ RFC5322.From domain. Thus, the identifiers are not in alignment.</t>
 <section anchor="dkim"><name>DKIM</name>
 <t>The examples below assume that the DKIM signatures pass verification.
 Alignment cannot exist with a DKIM signature that does not verify.</t>
-<t>Example 1: DKIM in alignment:</t>
+<t>Example 1: DKIM in strict alignment:</t>
 
 <artwork>     DKIM-Signature: v=1; ...; d=example.com; ...
      From: sender@example.com
@@ -2505,7 +2506,7 @@ Alignment cannot exist with a DKIM signature that does not verify.</t>
 </artwork>
 <t>In this case, the DKIM &quot;d=&quot; parameter and the RFC5322.From header field have
 identical DNS domains. Thus, the identifiers are in strict alignment.</t>
-<t>Example 2: DKIM in alignment (parent):</t>
+<t>Example 2: DKIM in relaxed alignment:</t>
 
 <artwork>     DKIM-Signature: v=1; ...; d=example.com; ...
      From: sender@child.example.com
@@ -2519,7 +2520,7 @@ identifiers are in relaxed alignment, as they have the same
 Organizational Domain (example.com).</t>
 <t>Example 3: DKIM not in alignment:</t>
 
-<artwork>     DKIM-Signature: v=1; ...; d=sample.net; ...
+<artwork>     DKIM-Signature: v=1; ...; d=example.net; ...
      From: sender@child.example.com
      Date: Fri, Feb 15 2002 16:54:30 -0800
      To: receiver@example.org

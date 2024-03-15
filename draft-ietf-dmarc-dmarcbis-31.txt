@@ -1408,9 +1408,10 @@ Internet-Draft                  DMARCbis                      March 2024
    [RFC7405], is as follows:
 
    dmarc-uri     = URI
-                 ; "URI" is imported from [RFC3986]; commas
-                 ; (ASCII 0x2C) and exclamation points
-                 ; (ASCII 0x21) MUST be encoded
+                 ; "URI" is imported from [RFC3986];
+                 ; commas (ASCII 0x2C) and exclamation
+                 ; points (ASCII 0x21) MUST be
+                 ; encoded
 
    dmarc-sep     = *WSP ";" *WSP
 
@@ -1421,7 +1422,7 @@ Internet-Draft                  DMARCbis                      March 2024
    dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
    ; any printing characters but semicolon
-   dmarc-value   = %x20-3A | %x3C-7E
+   dmarc-value   = %x20-3A / %x3C-7E
 
    dmarc-version = "v" equals %s"DMARC1" ; case sensitive
 
@@ -1443,7 +1444,6 @@ Internet-Draft                  DMARCbis                      March 2024
    In each dmarc-tag, the dmarc-value has a syntax that depends on the
    tag name.  The ABNF rule for each dmarc-value is specified in the
    following table:
-
 
 
 
@@ -2662,8 +2662,7 @@ Internet-Draft                  DMARCbis                      March 2024
       email address in the display name with a domain different from the
       one in the address portion, e.g.,
 
-      From: "user@example.org via Bug Tracker" support@example.com
-      (mailto:support@example.com)
+      From: "user@example.org via Bug Tracker" <support@example.com>
 
    *  In the MUA, only show the display name if the DMARC mechanism
       succeeds.  This too is easily defeated, as an attacker could
@@ -2680,6 +2679,7 @@ Internet-Draft                  DMARCbis                      March 2024
    messages that do not contain precisely one RFC5322.From domain are
    outside the scope of this document exposes an attack vector that must
    be taken into consideration.
+
 
 
 
@@ -3323,7 +3323,7 @@ B.1.1.  SPF
    The following SPF examples assume that SPF produces a passing result.
    Alignment cannot exist if SPF does not produce a passing result.
 
-   Example 1: SPF in alignment:
+   Example 1: SPF in strict alignment:
 
         MAIL FROM: <sender@example.com>
 
@@ -3336,7 +3336,7 @@ B.1.1.  SPF
    header field have identical DNS domains.  Thus, the identifiers are
    in strict alignment.
 
-   Example 2: SPF in alignment (parent):
+   Example 2: SPF in relaxed alignment:
 
         MAIL FROM: <sender@child.example.com>
 
@@ -3378,7 +3378,7 @@ B.1.2.  DKIM
    The examples below assume that the DKIM signatures pass verification.
    Alignment cannot exist with a DKIM signature that does not verify.
 
-   Example 1: DKIM in alignment:
+   Example 1: DKIM in strict alignment:
 
         DKIM-Signature: v=1; ...; d=example.com; ...
         From: sender@example.com
@@ -3390,7 +3390,7 @@ B.1.2.  DKIM
    field have identical DNS domains.  Thus, the identifiers are in
    strict alignment.
 
-   Example 2: DKIM in alignment (parent):
+   Example 2: DKIM in relaxed alignment:
 
         DKIM-Signature: v=1; ...; d=example.com; ...
         From: sender@child.example.com
@@ -3405,7 +3405,7 @@ B.1.2.  DKIM
 
    Example 3: DKIM not in alignment:
 
-        DKIM-Signature: v=1; ...; d=sample.net; ...
+        DKIM-Signature: v=1; ...; d=example.net; ...
         From: sender@child.example.com
         Date: Fri, Feb 15 2002 16:54:30 -0800
         To: receiver@example.org
