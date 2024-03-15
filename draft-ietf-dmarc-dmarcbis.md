@@ -808,11 +808,6 @@ objects. Where this is the case, the module performing DMARC
 evaluation **MUST** concatenate these strings by joining together the
 objects in order and parsing the result as a single string.
 
-Also, consistent with [@!RFC1034, section 3.6.2], a DMARC record **MAY**
-be published as a CNAME record, as long as the corresponding canonical
-name ultimately resolves to a TXT record, and that TXT record is a DNS 
-Resource Record (RR) in the expected format.
-
 ##  DMARC URIs {#dmarc-uris}
 
 [@!RFC3986] defines a generic syntax for identifying a resource. The DMARC
@@ -1095,12 +1090,14 @@ DMARC mechanism.
 ### Publish an SPF Policy for an Aligned Domain
 
 Because DMARC relies on SPF [@!RFC7208] and DKIM [@!RFC6376], in
-order to take full advantage of DMARC, a Domain Owner **SHOULD** first
-ensure that SPF and DKIM authentication are properly configured.
-As a first step, the Domain Owner **SHOULD** choose a domain to use as the
-RFC5321.MailFrom domain (i.e., the Return-Path domain) for its mail,
-one that aligns with the Author Domain, and then publish an SPF
-policy in DNS for that domain. The SPF record **SHOULD** be constructed
+order to take full advantage of DMARC, a Domain Owner **MUST** first
+ensure that either SPF or DKIM authentication are properly configured,
+and **SHOULD** ensure that both are..
+
+To configure SPF for DMARC, the Domain Owner **MUST** choose a domain
+to use as the RFC5321.MailFrom domain (i.e., the Return-Path domain)
+for its mail that aligns with the Author Domain, and then publish an SPF
+policy in DNS for that domain. The SPF record **MUST** be constructed
 at a minimum to ensure an SPF pass verdict for all known sources of
 mail for the RFC5321.MailFrom domain.
 
@@ -1118,7 +1115,7 @@ the recipient's current "real" address.  Many recipients use such addresses
 and with SPF alone and not DKIM, messages sent to such users will always
 produce a DMARC result of "fail".
 
-The Domain Owner **SHOULD** choose
+To configure DKIM for DMARC, the Domain Owner **MUST** choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
 header) that aligns with the Author Domain.
 

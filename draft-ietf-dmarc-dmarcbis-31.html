@@ -1216,7 +1216,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 15 September 2024</td>
+<td class="center">Expires 16 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-14" class="published">14 March 2024</time>
+<time datetime="2024-03-15" class="published">15 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-15">15 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-16">16 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1283,7 +1283,7 @@ handling choices for incoming mail.<a href="#section-abstract-2" class="pilcrow"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2635,10 +2635,6 @@ infrastructure, rather than creating a new one.<a href="#section-5.1-2" class="p
 objects. Where this is the case, the module performing DMARC
 evaluation <span class="bcp14">MUST</span> concatenate these strings by joining together the
 objects in order and parsing the result as a single string.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">Also, consistent with <span><a href="https://rfc-editor.org/rfc/rfc1034" class="relref">Section 3.6.2</a> of [<a href="#RFC1034" class="cite xref">RFC1034</a>]</span>, a DMARC record <span class="bcp14">MAY</span>
-be published as a CNAME record, as long as the corresponding canonical
-name ultimately resolves to a TXT record, and that TXT record is a DNS
-Resource Record (RR) in the expected format.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="dmarc-uris">
@@ -3023,14 +3019,15 @@ DMARC mechanism.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-publish-an-spf-policy-for-a" class="section-name selfRef">Publish an SPF Policy for an Aligned Domain</a>
           </h4>
 <p id="section-5.5.1-1">Because DMARC relies on SPF <span>[<a href="#RFC7208" class="cite xref">RFC7208</a>]</span> and DKIM <span>[<a href="#RFC6376" class="cite xref">RFC6376</a>]</span>, in
-order to take full advantage of DMARC, a Domain Owner <span class="bcp14">SHOULD</span> first
-ensure that SPF and DKIM authentication are properly configured.
-As a first step, the Domain Owner <span class="bcp14">SHOULD</span> choose a domain to use as the
-RFC5321.MailFrom domain (i.e., the Return-Path domain) for its mail,
-one that aligns with the Author Domain, and then publish an SPF
-policy in DNS for that domain. The SPF record <span class="bcp14">SHOULD</span> be constructed
+order to take full advantage of DMARC, a Domain Owner <span class="bcp14">MUST</span> first
+ensure that either SPF or DKIM authentication are properly configured,
+and <span class="bcp14">SHOULD</span> ensure that both are..<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-2">To configure SPF for DMARC, the Domain Owner <span class="bcp14">MUST</span> choose a domain
+to use as the RFC5321.MailFrom domain (i.e., the Return-Path domain)
+for its mail that aligns with the Author Domain, and then publish an SPF
+policy in DNS for that domain. The SPF record <span class="bcp14">MUST</span> be constructed
 at a minimum to ensure an SPF pass verdict for all known sources of
-mail for the RFC5321.MailFrom domain.<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
+mail for the RFC5321.MailFrom domain.<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="configure-sending-system-for-dkim-signing-using-an-aligned-domain">
@@ -3048,7 +3045,7 @@ school or other institution, where the address simply relays the message to
 the recipient's current "real" address.  Many recipients use such addresses
 and with SPF alone and not DKIM, messages sent to such users will always
 produce a DMARC result of "fail".<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.2-3">The Domain Owner <span class="bcp14">SHOULD</span> choose
+<p id="section-5.5.2-3">To configure DKIM for DMARC, the Domain Owner <span class="bcp14">MUST</span> choose
 a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
 header) that aligns with the Author Domain.<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
 </section>
@@ -4364,10 +4361,6 @@ record will not be incorrectly evaluated to be the organizational domain<a href=
 <dt id="I-D.ietf-dmarc-failure-reporting">[I-D.ietf-dmarc-failure-reporting]</dt>
       <dd>
 <span class="refAuthor">Jones, S. M.</span> and <span class="refAuthor">A. Vesely</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Failure Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-failure-reporting-09</span>, <time datetime="2023-09-14" class="refDate">14 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-09">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-09</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC1034">[RFC1034]</dt>
-      <dd>
-<span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - concepts and facilities"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1034</span>, <span class="seriesInfo">DOI 10.17487/RFC1034</span>, <time datetime="1987-11" class="refDate">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1034">https://www.rfc-editor.org/info/rfc1034</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
       <dd>
