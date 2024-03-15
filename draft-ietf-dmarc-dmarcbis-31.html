@@ -3753,20 +3753,9 @@ registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
 </td>
-              <td class="text-left" rowspan="1" colspan="1">polrec</td>
-              <td class="text-left" rowspan="1" colspan="1">p</td>
-              <td class="text-left" rowspan="1" colspan="1">the p= value read from the discovered policy record</td>
-              <td class="text-left" rowspan="1" colspan="1">active</td>
-              <td class="text-left" rowspan="1" colspan="1">1</td>
-            </tr>
-            <tr>
+              <td class="text-left" rowspan="1" colspan="1">policy</td>
               <td class="text-left" rowspan="1" colspan="1">dmarc</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">polrec</td>
-              <td class="text-left" rowspan="1" colspan="1">domain</td>
-              <td class="text-left" rowspan="1" colspan="1">the domain at which the policy record was discovered, if different from the RFC5322.From domain</td>
+              <td class="text-left" rowspan="1" colspan="1">Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject.</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
               <td class="text-left" rowspan="1" colspan="1">1</td>
             </tr>
@@ -3788,63 +3777,47 @@ Names" registry:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
           </caption>
 <thead>
             <tr>
+              <th class="text-left" rowspan="1" colspan="1">Auth Method(s)</th>
               <th class="text-left" rowspan="1" colspan="1">Code</th>
-              <th class="text-left" rowspan="1" colspan="1">Existing/New Code</th>
-              <th class="text-left" rowspan="1" colspan="1">Defined</th>
-              <th class="text-left" rowspan="1" colspan="1">Auth Method</th>
-              <th class="text-left" rowspan="1" colspan="1">Meaning</th>
+              <th class="text-left" rowspan="1" colspan="1">Specification</th>
               <th class="text-left" rowspan="1" colspan="1">Status</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">none</td>
-              <td class="text-left" rowspan="1" colspan="1">existing</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC8601" class="cite xref">RFC8601</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">dmarc (added)</td>
-              <td class="text-left" rowspan="1" colspan="1">No DMARC policy record was published for the aligned identifier, or no aligned identifier could be extracted.</td>
-              <td class="text-left" rowspan="1" colspan="1">active</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">pass</td>
-              <td class="text-left" rowspan="1" colspan="1">existing</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC8601" class="cite xref">RFC8601</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">dmarc (added)</td>
-              <td class="text-left" rowspan="1" colspan="1">A DMARC policy record was published for the aligned identifier, and at least one of the authentication mechanisms passed.</td>
-              <td class="text-left" rowspan="1" colspan="1">active</td>
-            </tr>
-            <tr>
+              <td class="text-left" rowspan="1" colspan="1">dmarc</td>
               <td class="text-left" rowspan="1" colspan="1">fail</td>
-              <td class="text-left" rowspan="1" colspan="1">existing</td>
               <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC8601" class="cite xref">RFC8601</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">dmarc (added)</td>
-              <td class="text-left" rowspan="1" colspan="1">A DMARC policy record was published for the aligned identifier, and none of the authentication mechanisms passed.</td>
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> section 11.2</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">temperror</td>
-              <td class="text-left" rowspan="1" colspan="1">existing</td>
+              <td class="text-left" rowspan="1" colspan="1">dmarc</td>
+              <td class="text-left" rowspan="1" colspan="1">none</td>
               <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC8601" class="cite xref">RFC8601</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">dmarc (added)</td>
-              <td class="text-left" rowspan="1" colspan="1">A temporary error occurred during DMARC evaluation. A later attempt might produce a final result.</td>
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> section 11.2</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
             </tr>
             <tr>
+              <td class="text-left" rowspan="1" colspan="1">dmarc</td>
+              <td class="text-left" rowspan="1" colspan="1">pass</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> section 11.2</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">dmarc</td>
               <td class="text-left" rowspan="1" colspan="1">permerror</td>
-              <td class="text-left" rowspan="1" colspan="1">existing</td>
               <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC8601" class="cite xref">RFC8601</a>]</span>
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> section 11.2</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">dmarc</td>
+              <td class="text-left" rowspan="1" colspan="1">temperror</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
 </td>
-              <td class="text-left" rowspan="1" colspan="1">dmarc (added)</td>
-              <td class="text-left" rowspan="1" colspan="1">A permanent error occurred during DMARC evaluation, such as encountering a syntactically incorrect DMARC record. A later attempt is unlikely to produce a final result.</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
             </tr>
           </tbody>
@@ -3858,19 +3831,35 @@ Names" registry:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-9.3-1">The following has been added to the "Feedback Report Header Fields"
 registry:<a href="#section-9.3-1" class="pilcrow">¶</a></p>
-<p id="section-9.3-2">Field Name:  Identity-Alignment<a href="#section-9.3-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlCompact dlParallel" id="section-9.3-3">
-          <dt id="section-9.3-3.1">Description:</dt>
-          <dd style="margin-left: 1.5em" id="section-9.3-3.2">indicates whether the message about which a report is
-being generated had any identifiers in alignment as defined in
-RFC 7489<a href="#section-9.3-3.2" class="pilcrow">¶</a>
-</dd>
-        <dd class="break"></dd>
-</dl>
-<p id="section-9.3-4">Multiple Appearances:  No<a href="#section-9.3-4" class="pilcrow">¶</a></p>
-<p id="section-9.3-5">Related "Feedback-Type":  auth-failure<a href="#section-9.3-5" class="pilcrow">¶</a></p>
-<p id="section-9.3-6">Reference:  RFC 7489<a href="#section-9.3-6" class="pilcrow">¶</a></p>
-<p id="section-9.3-7">Status:  current<a href="#section-9.3-7" class="pilcrow">¶</a></p>
+<span id="name-feedback-report-header-field"></span><table class="center" id="table-4">
+          <caption>
+<a href="#table-4" class="selfRef">Table 4</a>:
+<a href="#name-feedback-report-header-field" class="selfRef">"Feedback Report Header Fields"</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Field Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+              <th class="text-left" rowspan="1" colspan="1">Multiple Apperances</th>
+              <th class="text-left" rowspan="1" colspan="1">Related "Feedback-Type"</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Identity-Alignment</td>
+              <td class="text-left" rowspan="1" colspan="1">indicates whether the message about which a report is being generated had any identifiers in alignment as defined in <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">No</td>
+              <td class="text-left" rowspan="1" colspan="1">auth-failure</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">current</td>
+            </tr>
+          </tbody>
+        </table>
 </section>
 </div>
 <div id="dmarc-tag-registry">
@@ -3896,9 +3885,9 @@ Mail Receivers.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.<a href="#section-9.4-3" class="pilcrow">¶</a></p>
 <p id="section-9.4-4">The initial set of entries in this registry is as follows:<a href="#section-9.4-4" class="pilcrow">¶</a></p>
-<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-4">
+<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-5">
           <caption>
-<a href="#table-4" class="selfRef">Table 4</a>:
+<a href="#table-5" class="selfRef">Table 5</a>:
 <a href="#name-dmarc-tag-registry-2" class="selfRef">"DMARC Tag Registry"</a>
           </caption>
 <thead>
@@ -4017,9 +4006,9 @@ confirm that the provided specification adequately describes the
 report format and clearly presents how it would be used within the
 DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.5-2" class="pilcrow">¶</a></p>
 <p id="section-9.5-3">The initial entry in this registry is as follows:<a href="#section-9.5-3" class="pilcrow">¶</a></p>
-<span id="name-dmarc-report-format-registry"></span><table class="left" id="table-5">
+<span id="name-dmarc-report-format-registry"></span><table class="left" id="table-6">
           <caption>
-<a href="#table-5" class="selfRef">Table 5</a>:
+<a href="#table-6" class="selfRef">Table 6</a>:
 <a href="#name-dmarc-report-format-registry" class="selfRef">"DMARC Report Format Registry"</a>
           </caption>
 <thead>
@@ -4048,9 +4037,9 @@ DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.5-2" class
         </h3>
 <p id="section-9.6-1">Per <span>[<a href="#RFC8552" class="cite xref">RFC8552</a>]</span>, please add the following entry to the "Underscored
 and Globally Scoped DNS Node Names" registry:<a href="#section-9.6-1" class="pilcrow">¶</a></p>
-<span id="name-underscored-and-globally-sco"></span><table class="left" id="table-6">
+<span id="name-underscored-and-globally-sco"></span><table class="left" id="table-7">
           <caption>
-<a href="#table-6" class="selfRef">Table 6</a>:
+<a href="#table-7" class="selfRef">Table 7</a>:
 <a href="#name-underscored-and-globally-sco" class="selfRef">"Underscored and Globally Scoped DNS Node Names" registry</a>
           </caption>
 <thead>
@@ -4427,6 +4416,10 @@ record will not be incorrectly evaluated to be the organizational domain<a href=
       <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8552">https://www.rfc-editor.org/info/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC8601">[RFC8601]</dt>
+      <dd>
+<span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"Message Header Field for Indicating Message Authentication Status"</span>, <span class="seriesInfo">RFC 8601</span>, <span class="seriesInfo">DOI 10.17487/RFC8601</span>, <time datetime="2019-05" class="refDate">May 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8601">https://www.rfc-editor.org/info/rfc8601</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9091">[RFC9091]</dt>
     <dd>
 <span class="refAuthor">Kitterman, S.</span> and <span class="refAuthor">T. Wicinski, Ed.</span>, <span class="refTitle">"Experimental Domain-Based Message Authentication, Reporting, and Conformance (DMARC) Extension for Public Suffix Domains"</span>, <span class="seriesInfo">RFC 9091</span>, <span class="seriesInfo">DOI 10.17487/RFC9091</span>, <time datetime="2021-07" class="refDate">July 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9091">https://www.rfc-editor.org/info/rfc9091</a>&gt;</span>. </dd>
@@ -4487,12 +4480,8 @@ record will not be incorrectly evaluated to be the organizational domain<a href=
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8484">[RFC8484]</dt>
-      <dd>
-<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">P. McManus</span>, <span class="refTitle">"DNS Queries over HTTPS (DoH)"</span>, <span class="seriesInfo">RFC 8484</span>, <span class="seriesInfo">DOI 10.17487/RFC8484</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8484">https://www.rfc-editor.org/info/rfc8484</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8601">[RFC8601]</dt>
     <dd>
-<span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"Message Header Field for Indicating Message Authentication Status"</span>, <span class="seriesInfo">RFC 8601</span>, <span class="seriesInfo">DOI 10.17487/RFC8601</span>, <time datetime="2019-05" class="refDate">May 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8601">https://www.rfc-editor.org/info/rfc8601</a>&gt;</span>. </dd>
+<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">P. McManus</span>, <span class="refTitle">"DNS Queries over HTTPS (DoH)"</span>, <span class="seriesInfo">RFC 8484</span>, <span class="seriesInfo">DOI 10.17487/RFC8484</span>, <time datetime="2018-10" class="refDate">October 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8484">https://www.rfc-editor.org/info/rfc8484</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>

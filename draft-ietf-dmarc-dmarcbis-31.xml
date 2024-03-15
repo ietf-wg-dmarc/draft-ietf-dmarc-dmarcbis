@@ -1640,19 +1640,9 @@ registry:</t>
 <tr>
 <td align="left">dmarc</td>
 <td align="left"><xref target="RFC7489"></xref></td>
-<td align="left">polrec</td>
-<td align="left">p</td>
-<td align="left">the p= value read from the discovered policy record</td>
-<td align="left">active</td>
-<td align="left">1</td>
-</tr>
-
-<tr>
+<td align="left">policy</td>
 <td align="left">dmarc</td>
-<td align="left"><xref target="RFC7489"></xref></td>
-<td align="left">polrec</td>
-<td align="left">domain</td>
-<td align="left">the domain at which the policy record was discovered, if different from the RFC5322.From domain</td>
+<td align="left">Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject.</td>
 <td align="left">active</td>
 <td align="left">1</td>
 </tr>
@@ -1666,58 +1656,46 @@ Names&quot; registry:</t>
 </name>
 <thead>
 <tr>
+<th align="left">Auth Method(s)</th>
 <th align="left">Code</th>
-<th align="left">Existing/New Code</th>
-<th align="left">Defined</th>
-<th align="left">Auth Method</th>
-<th align="left">Meaning</th>
+<th align="left">Specification</th>
 <th align="left">Status</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td align="left">none</td>
-<td align="left">existing</td>
-<td align="left"><xref target="RFC8601"></xref></td>
-<td align="left">dmarc (added)</td>
-<td align="left">No DMARC policy record was published for the aligned identifier, or no aligned identifier could be extracted.</td>
-<td align="left">active</td>
-</tr>
-
-<tr>
-<td align="left">pass</td>
-<td align="left">existing</td>
-<td align="left"><xref target="RFC8601"></xref></td>
-<td align="left">dmarc (added)</td>
-<td align="left">A DMARC policy record was published for the aligned identifier, and at least one of the authentication mechanisms passed.</td>
-<td align="left">active</td>
-</tr>
-
-<tr>
+<td align="left">dmarc</td>
 <td align="left">fail</td>
-<td align="left">existing</td>
-<td align="left"><xref target="RFC8601"></xref></td>
-<td align="left">dmarc (added)</td>
-<td align="left">A DMARC policy record was published for the aligned identifier, and none of the authentication mechanisms passed.</td>
+<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
-<td align="left">temperror</td>
-<td align="left">existing</td>
-<td align="left"><xref target="RFC8601"></xref></td>
-<td align="left">dmarc (added)</td>
-<td align="left">A temporary error occurred during DMARC evaluation. A later attempt might produce a final result.</td>
+<td align="left">dmarc</td>
+<td align="left">none</td>
+<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
+<td align="left">dmarc</td>
+<td align="left">pass</td>
+<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">active</td>
+</tr>
+
+<tr>
+<td align="left">dmarc</td>
 <td align="left">permerror</td>
-<td align="left">existing</td>
-<td align="left"><xref target="RFC8601"></xref></td>
-<td align="left">dmarc (added)</td>
-<td align="left">A permanent error occurred during DMARC evaluation, such as encountering a syntactically incorrect DMARC record. A later attempt is unlikely to produce a final result.</td>
+<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">active</td>
+</tr>
+
+<tr>
+<td align="left">dmarc</td>
+<td align="left">temperror</td>
+<td align="left"><xref target="RFC7489"></xref></td>
 <td align="left">active</td>
 </tr>
 </tbody>
@@ -1726,19 +1704,30 @@ Names&quot; registry:</t>
 <section anchor="feedback-report-header-fields-registry-update"><name>Feedback Report Header Fields Registry Update</name>
 <t>The following has been added to the &quot;Feedback Report Header Fields&quot;
 registry:</t>
-<t>Field Name:  Identity-Alignment</t>
+<table><name>&quot;Feedback Report Header Fields&quot;
+</name>
+<thead>
+<tr>
+<th align="left">Field Name</th>
+<th align="left">Description</th>
+<th align="left">Multiple Apperances</th>
+<th align="left">Related &quot;Feedback-Type&quot;</th>
+<th align="left">Reference</th>
+<th align="left">Status</th>
+</tr>
+</thead>
 
-<dl spacing="compact">
-<dt>Description:</dt>
-<dd>indicates whether the message about which a report is
-being generated had any identifiers in alignment as defined in
-RFC 7489</dd>
-</dl>
-<t>Multiple Appearances:  No</t>
-<t>Related &quot;Feedback-Type&quot;:  auth-failure</t>
-<t>Reference:  RFC 7489</t>
-<t>Status:  current</t>
-</section>
+<tbody>
+<tr>
+<td align="left">Identity-Alignment</td>
+<td align="left">indicates whether the message about which a report is being generated had any identifiers in alignment as defined in <xref target="RFC7489"></xref></td>
+<td align="left">No</td>
+<td align="left">auth-failure</td>
+<td align="left"><xref target="RFC7489"></xref></td>
+<td align="left">current</td>
+</tr>
+</tbody>
+</table></section>
 
 <section anchor="dmarc-tag-registry"><name>DMARC Tag Registry</name>
 <t>A new registry tree called &quot;Domain-based Message Authentication,
@@ -2175,6 +2164,7 @@ record will not be incorrectly evaluated to be the organizational domain</t>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8552.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9091.xml"/>
 </references>
 <references><name>Informative References</name>
@@ -2191,7 +2181,6 @@ record will not be incorrectly evaluated to be the organizational domain</t>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8484.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 </references>
 
 <section anchor="technology-considerations"><name>Technology Considerations</name>

@@ -1659,8 +1659,7 @@ registry:
 | Method | Defined   | ptype  | Property  | Value                        | Status | Version |
 |:-------|:----------|:-------|:----------|:-----------------------------|:-------|:--------|
 | dmarc  |[@!RFC7489]| header | from      | the domain portion of the RFC5322.From header field    | active |    1    |
-| dmarc  |[@!RFC7489]| polrec | p         | the p= value read from the discovered policy record    | active |    1    |
-| dmarc  |[@!RFC7489]| polrec | domain    | the domain at which the policy record was discovered, if different from the RFC5322.From domain    | active |    1    |
+| dmarc  |[@!RFC7489]| policy | dmarc     | Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject. | active |    1    |
 Table: "Authentication-Results Method Registry Update"
 
 ## Authentication-Results Result Registry Update {#authentication-results-result-registry-update}
@@ -1669,34 +1668,23 @@ IANA has added the following in the "Email Authentication Result
 Names" registry:
 
 {align="left"}
-| Code   | Existing/New Code | Defined  | Auth Method  | Meaning                                      | Status |
-|:-------|:------------------|:---------|:-------------|:---------------------------------------------|:-------|
-| none   | existing          |[@RFC8601]| dmarc (added)|No DMARC policy record was published for the aligned identifier, or no aligned identifier could be extracted. | active |
-| pass   | existing          |[@RFC8601]| dmarc (added)|A DMARC policy record was published for the aligned identifier, and at least one of the authentication mechanisms passed. | active |
-| fail   | existing          |[@RFC8601]| dmarc (added)|A DMARC policy record was published for the aligned identifier, and none of the authentication mechanisms passed. | active |
-| temperror   | existing          |[@RFC8601]| dmarc (added)|A temporary error occurred during DMARC evaluation. A later attempt might produce a final result. | active |
-| permerror   | existing          |[@RFC8601]| dmarc (added)|A permanent error occurred during DMARC evaluation, such as encountering a syntactically incorrect DMARC record. A later attempt is unlikely to produce a final result. | active |
+| Auth Method(s)   | Code | Specification  |  Status |
+|:-------|:------------------|:---------|:-------------|
+| dmarc  | fail | [@RFC7489] section 11.2 | active |
+| dmarc  | none | [@RFC7489] section 11.2 | active |
+| dmarc  | pass | [@RFC7489] section 11.2 | active |
+| dmarc  | permerror | [@RFC7489] section 11.2 | active |
+| dmarc  | temperror | [@RFC7489] | active |
 Table: "Authentication-Results Result Registry Update"
 
 ##  Feedback Report Header Fields Registry Update {#feedback-report-header-fields-registry-update}
 
 The following has been added to the "Feedback Report Header Fields"
 registry:
-
-Field Name:  Identity-Alignment
-
-Description:
-:   indicates whether the message about which a report is
-being generated had any identifiers in alignment as defined in
-RFC 7489
-
-Multiple Appearances:  No
-
-Related "Feedback-Type":  auth-failure
-
-Reference:  RFC 7489
-
-Status:  current
+| Field Name          | Description   | Multiple Apperances  | Related "Feedback-Type"  | Reference | Status | 
+|:--------------------|:-------|:----------|:-----------------------------|:-------|:--------|
+| Identity-Alignment  | indicates whether the message about which a report is being generated had any identifiers in alignment as defined in [@RFC7489] | No | auth-failure | [@RFC7489] | current |
+Table: "Feedback Report Header Fields"
 
 ##  DMARC Tag Registry {#dmarc-tag-registry}
 
