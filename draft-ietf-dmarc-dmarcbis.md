@@ -1278,6 +1278,16 @@ Given the above, to ensure maximum usefulness for DMARC across
 the email ecosystem, Mail Receivers **SHOULD** generate and send
 aggregate reports with a frequency of at least once every 24 hours.
 
+### Optionally Send Failure Reports {#send-failure-reports}
+
+As mentioned previously, per-message failure reports can be a useful
+source of information for a Domain Owner, either for debugging deployments
+or in analyzing attacks, and so Mail Receivers **MAY** choose to send them.
+Experience has shown, however, that Mail Receivers rightly concerned about
+protecting user privacy have either chosen to heavily redact the information
+in such reports (which can hinder their usefulness) or not send them at all.
+See [@!I-D.ietf-dmarc-failure-reporting] for further information.
+
 ##  Policy Enforcement Considerations {#policy-enforcement-considerations}
 
 Mail Receivers **MAY** choose to reject or quarantine email even if email
@@ -1331,11 +1341,6 @@ forbidden.
 To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of "p=none" **MUST NOT**
 modify existing mail handling processes.
-
-Mail Receivers **MUST** also implement reporting instructions of DMARC,
-even in the absence of a request for DKIM reporting [@!RFC6651] or
-SPF reporting [@!RFC6652]. Furthermore, the presence of such requests
-**MUST NOT** affect DMARC reporting.
 
 #   DMARC Feedback {#dmarc-feedback}
 

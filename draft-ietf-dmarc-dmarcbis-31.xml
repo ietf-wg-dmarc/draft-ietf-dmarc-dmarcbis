@@ -1258,6 +1258,16 @@ with handling decisions for a message in ways that p= tag values of
 the email ecosystem, Mail Receivers <bcp14>SHOULD</bcp14> generate and send
 aggregate reports with a frequency of at least once every 24 hours.</t>
 </section>
+
+<section anchor="send-failure-reports"><name>Optionally Send Failure Reports</name>
+<t>As mentioned previously, per-message failure reports can be a useful
+source of information for a Domain Owner, either for debugging deployments
+or in analyzing attacks, and so Mail Receivers <bcp14>MAY</bcp14> choose to send them.
+Experience has shown, however, that Mail Receivers rightly concerned about
+protecting user privacy have either chosen to heavily redact the information
+in such reports (which can hinder their usefulness) or not send them at all.
+See <xref target="I-D.ietf-dmarc-failure-reporting"></xref> for further information.</t>
+</section>
 </section>
 
 <section anchor="policy-enforcement-considerations"><name>Policy Enforcement Considerations</name>
@@ -1306,10 +1316,6 @@ forbidden.</t>
 <t>To enable Domain Owners to receive DMARC feedback without impacting
 existing mail processing, discovered policies of &quot;p=none&quot; <bcp14>MUST NOT</bcp14>
 modify existing mail handling processes.</t>
-<t>Mail Receivers <bcp14>MUST</bcp14> also implement reporting instructions of DMARC,
-even in the absence of a request for DKIM reporting <xref target="RFC6651"></xref> or
-SPF reporting <xref target="RFC6652"></xref>. Furthermore, the presence of such requests
-<bcp14>MUST NOT</bcp14> affect DMARC reporting.</t>
 </section>
 </section>
 
