@@ -157,9 +157,9 @@ Internet-Draft                  DMARCbis                      March 2024
      8.6.  Interoperability Considerations . . . . . . . . . . . . .  38
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  40
      9.1.  Authentication-Results Method Registry Update . . . . . .  40
-     9.2.  Authentication-Results Result Registry Update . . . . . .  40
+     9.2.  Authentication-Results Result Registry Update . . . . . .  41
      9.3.  Feedback Report Header Fields Registry Update . . . . . .  41
-     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  41
+     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  42
      9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  43
 
 
@@ -1941,7 +1941,8 @@ Internet-Draft                  DMARCbis                      March 2024
    decision.
 
    In particular, this document makes explicit that domains for general-
-   purpose email SHOULD NOT deploy a DMARC policy of p=reject.
+   purpose email SHOULD NOT deploy a DMARC policy of p=reject.  See
+   Section 8.6 for further discussion of this topic.
 
 7.7.  Report Generator Recommendations
 
@@ -1953,7 +1954,6 @@ Internet-Draft                  DMARCbis                      March 2024
      will send reports but MUST support the ability to send to at least
      two.
 
-   This document in Section 5.2 says:
 
 
 
@@ -1961,6 +1961,8 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 35]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+   This document in Section 5.2 says:
 
      A report SHOULD be sent to each listed URI provided in the DMARC
      record.
@@ -2008,8 +2010,6 @@ Internet-Draft                  DMARCbis                      March 2024
    Conversely, long TTLs will cause records to be cached for long
    periods.  This can cause a critical change to DMARC parameters
    advertised by a Domain Owner or PSO to go unnoticed for the length of
-   the TTL (while waiting for DNS caches to expire).  Avoiding this
-   problem can mean shorter TTLs, with the potential problems described
 
 
 
@@ -2018,6 +2018,8 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 36]
 Internet-Draft                  DMARCbis                      March 2024
 
 
+   the TTL (while waiting for DNS caches to expire).  Avoiding this
+   problem can mean shorter TTLs, with the potential problems described
    above.  A balance should be sought to maintain responsiveness of
    DMARC preference changes while preserving the benefits of DNS
    caching.
@@ -2062,10 +2064,8 @@ Internet-Draft                  DMARCbis                      March 2024
 
    550 5.7.1 Email rejected per DMARC policy for example.com
 
-   Many systems are able to scan the SMTP reply text to determine the
-   nature of the rejection.  Thus, providing a machine-detectable reason
-   for rejection allows the problems causing rejections to be properly
-   addressed by automated systems.
+
+
 
 
 
@@ -2073,6 +2073,11 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 37]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+   Many systems are able to scan the SMTP reply text to determine the
+   nature of the rejection.  Thus, providing a machine-detectable reason
+   for rejection allows the problems causing rejections to be properly
+   addressed by automated systems.
 
    If a Mail Receiver elects to defer delivery due to the inability to
    retrieve or apply DMARC policy, this is best done with a 4xy SMTP
@@ -2117,11 +2122,6 @@ Internet-Draft                  DMARCbis                      March 2024
    "alumni forwarders", role-based email aliases, and mailing lists
    across the Internet.
 
-   A domain that expects to send only targeted messages to account
-   holders - a bank, for example - could have account holders using
-   addresses such as jones@alumni.example.edu (an address that relays
-   the messages to another address with a real mailbox) or
-   finance@association.example (a role-based address that does similar
 
 
 
@@ -2130,6 +2130,11 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 38]
 Internet-Draft                  DMARCbis                      March 2024
 
 
+   A domain that expects to send only targeted messages to account
+   holders - a bank, for example - could have account holders using
+   addresses such as jones@alumni.example.edu (an address that relays
+   the messages to another address with a real mailbox) or
+   finance@association.example (a role-based address that does similar
    relaying for the current head of finance at the association).  When
    such mail is delivered to the actual recipient mailbox, it will
    necessarily fail SPF checks, as the incoming IP address will be that
@@ -2170,11 +2175,6 @@ Internet-Draft                  DMARCbis                      March 2024
    as though the recipient's email address is no longer working, so the
    address is automatically unsubscribed.
 
-   |  It is therefore critical that receiving domains MUST NOT reject
-   |  incoming messages solely on the basis of a p=reject policy by the
-   |  sending domain.  Receiving domains must use the DMARC policy as
-   |  part of their disposition decision, along with other knowledge and
-   |  analysis.
 
 
 
@@ -2185,6 +2185,12 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 39]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+   |  It is therefore critical that receiving domains MUST NOT reject
+   |  incoming messages solely on the basis of a p=reject policy by the
+   |  sending domain.  Receiving domains must use the DMARC policy as
+   |  part of their disposition decision, along with other knowledge and
+   |  analysis.
 
    Failure to understand and abide by these considerations can cause
    legitimate, sometimes important email to be rejected, can cause
@@ -2228,12 +2234,6 @@ Internet-Draft                  DMARCbis                      March 2024
 
           Table 2: "Authentication-Results Method Registry Update"
 
-9.2.  Authentication-Results Result Registry Update
-
-   IANA has added the following in the "Email Authentication Result
-   Names" registry:
-
-
 
 
 
@@ -2241,6 +2241,11 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 40]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+9.2.  Authentication-Results Result Registry Update
+
+   IANA has added the following in the "Email Authentication Result
+   Names" registry:
 
    +================+===========+========================+========+
    | Auth Method(s) | Code      | Specification          | Status |
@@ -2284,12 +2289,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
                  Table 4: "Feedback Report Header Fields"
 
-9.4.  DMARC Tag Registry
 
-   A new registry tree called "Domain-based Message Authentication,
-   Reporting, and Conformance (DMARC) Parameters" has been created.
-   Within it, a new sub-registry called the "DMARC Tag Registry" has
-   been created.
 
 
 
@@ -2297,6 +2297,13 @@ Herr (ed) & Levine (ed) Expires 19 September 2024              [Page 41]
 
 Internet-Draft                  DMARCbis                      March 2024
 
+
+9.4.  DMARC Tag Registry
+
+   A new registry tree called "Domain-based Message Authentication,
+   Reporting, and Conformance (DMARC) Parameters" has been created.
+   Within it, a new sub-registry called the "DMARC Tag Registry" has
+   been created.
 
    Names of DMARC tags are registered with IANA in this new sub-
    registry.  New entries are assigned only for values that have been
@@ -2314,13 +2321,6 @@ Internet-Draft                  DMARCbis                      March 2024
    when processed by implementations conforming to prior specifications.
 
    The initial set of entries in this registry is as follows:
-
-
-
-
-
-
-
 
 
 

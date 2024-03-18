@@ -1441,7 +1441,8 @@ focusing not just on what to do to implement DMARC, but also on the reasons for
 each step and the repercussions of each decision.
 
 In particular, this document makes explicit that domains for general-purpose
-email **SHOULD NOT** deploy a DMARC policy of p=reject.
+email **SHOULD NOT** deploy a DMARC policy of p=reject. See (#interoperability-considerations)
+for further discussion of this topic.
 
 ##  Report Generator Recommendations
 

@@ -1419,7 +1419,8 @@ providing guidance to domain owners on just how to implement DMARC.</t>
 focusing not just on what to do to implement DMARC, but also on the reasons for
 each step and the repercussions of each decision.</t>
 <t>In particular, this document makes explicit that domains for general-purpose
-email <bcp14>SHOULD NOT</bcp14> deploy a DMARC policy of p=reject.</t>
+email <bcp14>SHOULD NOT</bcp14> deploy a DMARC policy of p=reject. See <xref target="interoperability-considerations"></xref>
+for further discussion of this topic.</t>
 </section>
 
 <section anchor="report-generator-recommendations"><name>Report Generator Recommendations</name>
