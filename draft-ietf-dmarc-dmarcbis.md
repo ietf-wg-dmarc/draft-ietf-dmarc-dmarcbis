@@ -1985,14 +1985,15 @@ particular challenge. Experience has shown that most such messages are abusive
 and/or unwanted by their recipients, and given this fact, an MTA may make a
 negative disposition decision for the message prior to and instead of its being
 subjected to DMARC processing. However, in a case where a Mail Receiver requires
-that the message go through DMARC processing, a recommended approach as per
+that the message be subject to DMARC evaluation, a recommended approach as per
 [@!RFC7489] is to apply the DMARC check to each domain found in the RFC5322.From
 field as the Author Domain and apply the most strict policy selected among the
 checks that fail. Such an approach might prove useful for a small number of
-Author Domains, but it is likely that applying such logic to messages with
-a larger number of domains (as defined by each Mail Receiver) will expose the
-Mail Receiver to a form of denial of service attack, and so applying a negative
-disposition decision to the message may be the best course of action.
+Author Domains, but it is possible that applying such logic to messages with
+a large number of domains (as defined by each Mail Receiver) will expose the
+Mail Receiver to a form of denial of service attack. Limiting the number of
+Author Domains processed will avoid this risk. If not all Author Domains are
+processed, then the DMARC evaluation is incomplete.
 
 ##  External Reporting Addresses {#external-report-addresses}
 
