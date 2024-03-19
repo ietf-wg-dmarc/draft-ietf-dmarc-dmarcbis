@@ -1460,6 +1460,15 @@ This document in (#dmarc-uris) says:
   record.
 ~~~
 
+##  Removal of RFC 7489 Appendix A.5
+
+One of the appendices in RFC 7489, specifically [@!RFC7489, Appendix A.5],
+has been removed from the text with this update. The appendix was titled 
+"Issues with ADSP in Operation" and it contained a list of issues associated
+with ADSP that influenced the direction of DMARC. The ADSP protocol was moved
+to "Historic" status in 2013 and working group consensus was that such a
+discussion of ADSP's influence on DMARC was no longer relevant.
+
 ##  RFC 7489 Errata Summary
 
 Remove this before final submission:
@@ -1470,44 +1479,44 @@ This document and its companion documents ([@!I-D.ietf-dmarc-aggregate-reporting
 and [@!I-D.ietf-dmarc-failure-reporting]) address the following errata
 filed against [@!RFC7489] since that document's publication in March,
 2015.  More details on each of these can be found at 
-\<https://www.rfc-editor.org/errata_search.php?rfc=7489\>
+<https://www.rfc-editor.org/errata_search.php?rfc=7489>
 
-[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid5365\>
+[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5365>:
 
-   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid5371\>
+[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5371>:
 
-   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 \<https://www.rfc-editor.org/errata/eid5440\>
+[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid5440>:
 
-   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 \<https://www.rfc-editor.org/errata/eid5440\>
+[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 <https://www.rfc-editor.org/errata/eid5440>:
 
-   Addressed in this document.
+:   Addressed in this document.
 
-[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 \<https://www.rfc-editor.org/errata/eid6439\>
+[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid6439>:
 
-   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid6485\>
+[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid6485>:
 
-   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 \<https://www.rfc-editor.org/errata/eid7835\>
+[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 <https://www.rfc-editor.org/errata/eid7835>:
 
-   This erratum is in reference to the description of the process documented
-   in RFC 7489 for the applicable DMARC policy for an email message. The process
-   for doing this has drastically changed in DMARCbis, and so the text identified in
-   this erratum no longer exists.
+:   This erratum is in reference to the description of the process documented
+    in RFC 7489 for the applicable DMARC policy for an email message. The process
+    for doing this has drastically changed in DMARCbis, and so the text identified in
+    this erratum no longer exists.
 
-[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 \<https://www.rfc-editor.org/errata/eid5151\>
+[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 <https://www.rfc-editor.org/errata/eid5151>:
 
-   This erratum is in reference to the Introduction section of RFC 7489.
-   That section has been substantially rewritten in DMARCbis, and the text
-   at issue for this erratum no longer exists.
+:   This erratum is in reference to the Introduction section of RFC 7489.
+    That section has been substantially rewritten in DMARCbis, and the text
+    at issue for this erratum no longer exists.
 
 ##  General Editing and Formatting
 
@@ -2164,43 +2173,6 @@ Furthermore, in keeping with [@RFC8020], if a query for a name returns NXDOMAIN,
 then not only does the name not exist, every name below it in the DNS hierarchy
 also does not exist.
 
-##  Issues with ADSP in Operation {#issues-with-adsp-in-operation}
-
-DMARC has been characterized as a "super-ADSP" of sorts.
-
-Contributors to DMARC have compiled a list of issues associated with
-ADSP, ones gained from operational experience, that have influenced the
-direction of DMARC:
-
-1. ADSP has no support for subdomains, i.e., the ADSP record for
-   example.com does not explicitly or implicitly apply to
-   subdomain.example.com. If wildcarding is not applied, then
-   spammers can trivially bypass ADSP by sending from a subdomain
-   with no ADSP record.
-
-2. Nonexistent subdomains are explicitly out of scope in ADSP.
-   There is nothing in ADSP that states Mail Receivers should simply
-   reject mail from NXDOMAINs regardless of ADSP policy (which of
-   course allows spammers to trivially bypass ADSP by sending email
-   from nonexistent subdomains).
-
-3. ADSP has no operational advice on when to look up the ADSP
-   record.
-
-4. ADSP has no support for using SPF as an auxiliary mechanism to
-   DKIM.
-
-5. ADSP has no support for a slow rollout, i.e., no way to configure
-   a percentage of email on which the Mail Receiver should apply the
-   policy.  This is important for large-volume senders.
-
-6. ADSP has no explicit support for an intermediate phase where the
-   Mail Receiver quarantines (e.g., sends to the recipient's "spam"
-   folder) rather than rejects the email.
-
-7. The binding between the "From" header domain and DKIM is too
-   tight for ADSP; they must match exactly.
-
 ##  Organizational Domain Discovery Issues {#organizational-domain-discovery-issues}
 
 An earlier informational version of the DMARC protocol [@!RFC7489]
@@ -2233,7 +2205,7 @@ Domain described in [@!RFC7489] is preserved here:
 
       A PSL can be obtained from various sources. The most common one
       is maintained by the Mozilla Foundation and made public at
-      <http://publicsuffix.org>.  License terms governing the use of that
+      <https://publicsuffix.org>.  License terms governing the use of that
       list are available at that URI.
 
       Note that if operators use a variety of public suffix lists,
@@ -2948,7 +2920,7 @@ in full below.
 
 DMARC and the draft version of this document submitted to the
 Independent Submission Editor were the result of lengthy efforts by
-an informal industry consortium: DMARC.org (see <http://dmarc.org>).
+an informal industry consortium: DMARC.org (see <https://dmarc.org>).
 Participating companies included Agari, American Greetings, AOL, Bank
 of America, Cloudmark, Comcast, Facebook, Fidelity Investments,
 Google, JPMorgan Chase & Company, LinkedIn, Microsoft, Netease,
