@@ -1534,7 +1534,10 @@ handling choices for incoming mail.<a href="#section-abstract-2" class="pilcrow"
                 <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="auto internal xref">7.7</a>.  <a href="#name-report-generator-recommenda" class="internal xref">Report Generator Recommendations</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.8">
-                <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="auto internal xref">7.8</a>.  <a href="#name-general-editing-and-formatt" class="internal xref">General Editing and Formatting</a></p>
+                <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="auto internal xref">7.8</a>.  <a href="#name-rfc-7489-errata-summary" class="internal xref">RFC 7489 Errata Summary</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.9">
+                <p id="section-toc.1-1.7.2.9.1"><a href="#section-7.9" class="auto internal xref">7.9</a>.  <a href="#name-general-editing-and-formatt" class="internal xref">General Editing and Formatting</a></p>
 </li>
             </ul>
 </li>
@@ -1740,9 +1743,8 @@ domain name in the "From" header field defined in <span><a href="https://rfc-edi
 and referred to as RFC5322.From. The domain typically belongs to an organization
 expected to be known to - and presumably trusted by - the recipient. The Sender
 Policy Framework (SPF) <span>[<a href="#RFC7208" class="cite xref">RFC7208</a>]</span> and DomainKeys Identified Mail (DKIM) <span>[<a href="#RFC6376" class="cite xref">RFC6376</a>]</span>
-protocols provide
-domain-level authentication but are not directly associated with the
-RFC5322.From domain. DMARC leverages these two protocols, providing a method
+protocols provide domain-level authentication but are not directly associated
+with the RFC5322.From domain. DMARC leverages these two protocols, providing a method
 for Domain Owners to publish a DNS record describing the email authentication
 policies for the RFC5322.From domain and to request specific handling
 for messages using that domain that fail authentication checks.<a href="#section-1-2" class="pilcrow">¶</a></p>
@@ -1766,10 +1768,9 @@ to do so; it might choose different actions entirely.<a href="#section-1-4" clas
 passes verification is part of a message stream reliably
 associated with the RFC5322.From field Domain Owner. Therefore,
 reputation assessment of that stream by the mail-receiving organization
-can assume the use of that domain
-in the RFC5322.From field is authorized. A message that fails this verification
-is not necessarily associated with the Domain Owner's domain and its
-reputation.<a href="#section-1-5" class="pilcrow">¶</a></p>
+can assume the use of that domain in the RFC5322.From field is authorized.
+A message that fails this verification is not necessarily associated with
+the Domain Owner's domain and its reputation.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">DMARC policy records can also cover non-existent sub-domains below the
 "Organizational Domain", as well as domains at the top of the name hierarchy,
 controlled by Public Suffix Operators (PSOs).<a href="#section-1-6" class="pilcrow">¶</a></p>
@@ -3505,13 +3506,49 @@ reports or failure reports, RFC 7489 stated:<a href="#section-7.7-1" class="pilc
 </div>
 </section>
 </div>
-<div id="general-editing-and-formatting">
+<div id="rfc-7489-errata-summary">
 <section id="section-7.8">
-        <h3 id="name-general-editing-and-formatt">
-<a href="#section-7.8" class="section-number selfRef">7.8. </a><a href="#name-general-editing-and-formatt" class="section-name selfRef">General Editing and Formatting</a>
+        <h3 id="name-rfc-7489-errata-summary">
+<a href="#section-7.8" class="section-number selfRef">7.8. </a><a href="#name-rfc-7489-errata-summary" class="section-name selfRef">RFC 7489 Errata Summary</a>
         </h3>
-<p id="section-7.8-1">A great deal of the content from RFC 7489 was preserved in this document, but much
-of it was subject to either minor editing, re-ordering of sections, and/or both.<a href="#section-7.8-1" class="pilcrow">¶</a></p>
+<p id="section-7.8-1">Remove this before final submission:
+    (<a href="https://www.rfc-editor.org/styleguide/part2/#ref_errata">https://www.rfc-editor.org/styleguide/part2/#ref_errata</a> says errata in the Reported
+     state should not be referenced; they are not considered stable.)<a href="#section-7.8-1" class="pilcrow">¶</a></p>
+<p id="section-7.8-2">This document and its companion documents (<span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>
+and <span>[<a href="#I-D.ietf-dmarc-failure-reporting" class="cite xref">I-D.ietf-dmarc-failure-reporting</a>]</span>) address the following errata
+filed against <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> since that document's publication in March,
+2015.  More details on each of these can be found at
+&lt;<a href="https://www.rfc-editor.org/errata_search.php?rfc=7489&gt;">https://www.rfc-editor.org/errata_search.php?rfc=7489&gt;</a><a href="#section-7.8-2" class="pilcrow">¶</a></p>
+<p id="section-7.8-3">[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 &lt;<a href="https://www.rfc-editor.org/errata/eid5365&gt;">https://www.rfc-editor.org/errata/eid5365&gt;</a><a href="#section-7.8-3" class="pilcrow">¶</a></p>
+<p id="section-7.8-4">To be addressed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-7.8-4" class="pilcrow">¶</a></p>
+<p id="section-7.8-5">[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 &lt;<a href="https://www.rfc-editor.org/errata/eid5371&gt;">https://www.rfc-editor.org/errata/eid5371&gt;</a><a href="#section-7.8-5" class="pilcrow">¶</a></p>
+<p id="section-7.8-6">To be addressed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-7.8-6" class="pilcrow">¶</a></p>
+<p id="section-7.8-7">[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 &lt;<a href="https://www.rfc-editor.org/errata/eid5440&gt;">https://www.rfc-editor.org/errata/eid5440&gt;</a><a href="#section-7.8-7" class="pilcrow">¶</a></p>
+<p id="section-7.8-8">To be addressed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-7.8-8" class="pilcrow">¶</a></p>
+<p id="section-7.8-9">[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 &lt;<a href="https://www.rfc-editor.org/errata/eid5440&gt;">https://www.rfc-editor.org/errata/eid5440&gt;</a><a href="#section-7.8-9" class="pilcrow">¶</a></p>
+<p id="section-7.8-10">Addressed in this document.<a href="#section-7.8-10" class="pilcrow">¶</a></p>
+<p id="section-7.8-11">[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 &lt;<a href="https://www.rfc-editor.org/errata/eid6439&gt;">https://www.rfc-editor.org/errata/eid6439&gt;</a><a href="#section-7.8-11" class="pilcrow">¶</a></p>
+<p id="section-7.8-12">To be addressed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-7.8-12" class="pilcrow">¶</a></p>
+<p id="section-7.8-13">[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 &lt;<a href="https://www.rfc-editor.org/errata/eid6485&gt;">https://www.rfc-editor.org/errata/eid6485&gt;</a><a href="#section-7.8-13" class="pilcrow">¶</a></p>
+<p id="section-7.8-14">To be addressed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-7.8-14" class="pilcrow">¶</a></p>
+<p id="section-7.8-15">[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 &lt;<a href="https://www.rfc-editor.org/errata/eid7835&gt;">https://www.rfc-editor.org/errata/eid7835&gt;</a><a href="#section-7.8-15" class="pilcrow">¶</a></p>
+<p id="section-7.8-16">This erratum is in reference to the description of the process documented
+   in RFC 7489 for the applicable DMARC policy for an email message. The process
+   for doing this has drastically changed in DMARCbis, and so the text identified in
+   this erratum no longer exists.<a href="#section-7.8-16" class="pilcrow">¶</a></p>
+<p id="section-7.8-17">[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 &lt;<a href="https://www.rfc-editor.org/errata/eid5151&gt;">https://www.rfc-editor.org/errata/eid5151&gt;</a><a href="#section-7.8-17" class="pilcrow">¶</a></p>
+<p id="section-7.8-18">This erratum is in reference to the Introduction section of RFC 7489.
+   That section has been substantially rewritten in DMARCbis, and the text
+   at issue for this erratum no longer exists.<a href="#section-7.8-18" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="general-editing-and-formatting">
+<section id="section-7.9">
+        <h3 id="name-general-editing-and-formatt">
+<a href="#section-7.9" class="section-number selfRef">7.9. </a><a href="#name-general-editing-and-formatt" class="section-name selfRef">General Editing and Formatting</a>
+        </h3>
+<p id="section-7.9-1">A great deal of the content from RFC 7489 was preserved in this document, but much
+of it was subject to either minor editing, re-ordering of sections, and/or both.<a href="#section-7.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

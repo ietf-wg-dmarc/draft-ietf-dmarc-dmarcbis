@@ -37,9 +37,8 @@ domain name in the &quot;From&quot; header field defined in <xref target="RFC532
 and referred to as RFC5322.From. The domain typically belongs to an organization
 expected to be known to - and presumably trusted by - the recipient. The Sender
 Policy Framework (SPF) <xref target="RFC7208"></xref> and DomainKeys Identified Mail (DKIM) <xref target="RFC6376"></xref>
-protocols provide
-domain-level authentication but are not directly associated with the
-RFC5322.From domain. DMARC leverages these two protocols, providing a method
+protocols provide domain-level authentication but are not directly associated
+with the RFC5322.From domain. DMARC leverages these two protocols, providing a method
 for Domain Owners to publish a DNS record describing the email authentication
 policies for the RFC5322.From domain and to request specific handling
 for messages using that domain that fail authentication checks.</t>
@@ -63,10 +62,9 @@ to do so; it might choose different actions entirely.</t>
 passes verification is part of a message stream reliably
 associated with the RFC5322.From field Domain Owner. Therefore,
 reputation assessment of that stream by the mail-receiving organization
-can assume the use of that domain
-in the RFC5322.From field is authorized. A message that fails this verification
-is not necessarily associated with the Domain Owner's domain and its
-reputation.</t>
+can assume the use of that domain in the RFC5322.From field is authorized.
+A message that fails this verification is not necessarily associated with
+the Domain Owner's domain and its reputation.</t>
 <t>DMARC policy records can also cover non-existent sub-domains below the
 &quot;Organizational Domain&quot;, as well as domains at the top of the name hierarchy,
 controlled by Public Suffix Operators (PSOs).</t>
@@ -1436,6 +1434,38 @@ reports or failure reports, RFC 7489 stated:</t>
 <artwork>  A report SHOULD be sent to each listed URI provided in the DMARC 
   record.
 </artwork>
+</section>
+
+<section anchor="rfc-7489-errata-summary"><name>RFC 7489 Errata Summary</name>
+<t>Remove this before final submission:
+    (<eref target="https://www.rfc-editor.org/styleguide/part2/#ref_errata">https://www.rfc-editor.org/styleguide/part2/#ref_errata</eref> says errata in the Reported
+     state should not be referenced; they are not considered stable.)</t>
+<t>This document and its companion documents (<xref target="I-D.ietf-dmarc-aggregate-reporting"></xref>
+and <xref target="I-D.ietf-dmarc-failure-reporting"></xref>) address the following errata
+filed against <xref target="RFC7489"></xref> since that document's publication in March,
+2015.  More details on each of these can be found at
+&lt;<eref target="https://www.rfc-editor.org/errata_search.php?rfc=7489&gt;">https://www.rfc-editor.org/errata_search.php?rfc=7489></eref></t>
+<t>[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 &lt;<eref target="https://www.rfc-editor.org/errata/eid5365&gt;">https://www.rfc-editor.org/errata/eid5365></eref></t>
+<t>To be addressed in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+<t>[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 &lt;<eref target="https://www.rfc-editor.org/errata/eid5371&gt;">https://www.rfc-editor.org/errata/eid5371></eref></t>
+<t>To be addressed in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+<t>[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 &lt;<eref target="https://www.rfc-editor.org/errata/eid5440&gt;">https://www.rfc-editor.org/errata/eid5440></eref></t>
+<t>To be addressed in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+<t>[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 &lt;<eref target="https://www.rfc-editor.org/errata/eid5440&gt;">https://www.rfc-editor.org/errata/eid5440></eref></t>
+<t>Addressed in this document.</t>
+<t>[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 &lt;<eref target="https://www.rfc-editor.org/errata/eid6439&gt;">https://www.rfc-editor.org/errata/eid6439></eref></t>
+<t>To be addressed in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+<t>[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 &lt;<eref target="https://www.rfc-editor.org/errata/eid6485&gt;">https://www.rfc-editor.org/errata/eid6485></eref></t>
+<t>To be addressed in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
+<t>[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 &lt;<eref target="https://www.rfc-editor.org/errata/eid7835&gt;">https://www.rfc-editor.org/errata/eid7835></eref></t>
+<t>This erratum is in reference to the description of the process documented
+   in RFC 7489 for the applicable DMARC policy for an email message. The process
+   for doing this has drastically changed in DMARCbis, and so the text identified in
+   this erratum no longer exists.</t>
+<t>[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 &lt;<eref target="https://www.rfc-editor.org/errata/eid5151&gt;">https://www.rfc-editor.org/errata/eid5151></eref></t>
+<t>This erratum is in reference to the Introduction section of RFC 7489.
+   That section has been substantially rewritten in DMARCbis, and the text
+   at issue for this erratum no longer exists.</t>
 </section>
 
 <section anchor="general-editing-and-formatting"><name>General Editing and Formatting</name>

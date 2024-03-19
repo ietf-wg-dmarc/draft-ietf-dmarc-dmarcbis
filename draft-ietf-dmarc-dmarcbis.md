@@ -61,9 +61,8 @@ domain name in the "From" header field defined in [@!RFC5322, section 3.6.2]
 and referred to as RFC5322.From. The domain typically belongs to an organization
 expected to be known to - and presumably trusted by - the recipient. The Sender
 Policy Framework (SPF) [@!RFC7208] and DomainKeys Identified Mail (DKIM) [@!RFC6376]
-protocols provide
-domain-level authentication but are not directly associated with the
-RFC5322.From domain. DMARC leverages these two protocols, providing a method
+protocols provide domain-level authentication but are not directly associated
+with the RFC5322.From domain. DMARC leverages these two protocols, providing a method
 for Domain Owners to publish a DNS record describing the email authentication
 policies for the RFC5322.From domain and to request specific handling
 for messages using that domain that fail authentication checks.
@@ -90,10 +89,9 @@ For a mail-receiving organization supporting DMARC, a message that
 passes verification is part of a message stream reliably
 associated with the RFC5322.From field Domain Owner. Therefore,
 reputation assessment of that stream by the mail-receiving organization
-can assume the use of that domain
-in the RFC5322.From field is authorized. A message that fails this verification
-is not necessarily associated with the Domain Owner's domain and its
-reputation.
+can assume the use of that domain in the RFC5322.From field is authorized.
+A message that fails this verification is not necessarily associated with
+the Domain Owner's domain and its reputation.
 
 DMARC policy records can also cover non-existent sub-domains below the
 "Organizational Domain", as well as domains at the top of the name hierarchy,
@@ -1461,6 +1459,55 @@ This document in (#dmarc-uris) says:
   A report SHOULD be sent to each listed URI provided in the DMARC 
   record.
 ~~~
+
+##  RFC 7489 Errata Summary
+
+Remove this before final submission:
+    (https://www.rfc-editor.org/styleguide/part2/#ref_errata says errata in the Reported
+     state should not be referenced; they are not considered stable.)
+
+This document and its companion documents ([@!I-D.ietf-dmarc-aggregate-reporting]
+and [@!I-D.ietf-dmarc-failure-reporting]) address the following errata
+filed against [@!RFC7489] since that document's publication in March,
+2015.  More details on each of these can be found at 
+\<https://www.rfc-editor.org/errata_search.php?rfc=7489\>
+
+[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid5365\>
+
+   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+
+[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid5371\>
+
+   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+
+[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 \<https://www.rfc-editor.org/errata/eid5440\>
+
+   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+
+[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 \<https://www.rfc-editor.org/errata/eid5440\>
+
+   Addressed in this document.
+
+[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 \<https://www.rfc-editor.org/errata/eid6439\>
+
+   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+
+[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 \<https://www.rfc-editor.org/errata/eid6485\>
+
+   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+
+[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 \<https://www.rfc-editor.org/errata/eid7835\>
+
+   This erratum is in reference to the description of the process documented
+   in RFC 7489 for the applicable DMARC policy for an email message. The process
+   for doing this has drastically changed in DMARCbis, and so the text identified in
+   this erratum no longer exists.
+
+[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 \<https://www.rfc-editor.org/errata/eid5151\>
+
+   This erratum is in reference to the Introduction section of RFC 7489.
+   That section has been substantially rewritten in DMARCbis, and the text
+   at issue for this erratum no longer exists.
 
 ##  General Editing and Formatting
 
