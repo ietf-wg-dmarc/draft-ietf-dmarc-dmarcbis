@@ -6,7 +6,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489, 9091 (if approved)                       J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 20 September 2024                                 19 March 2024
+Expires: 28 October 2024                                   26 April 2024
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -18,11 +18,11 @@ Abstract
    Reporting, and Conformance (DMARC) protocol.
 
    DMARC permits the owner of an email author's domain name to enable
-   verification of the domain's use, to indicate the Domain Owner's or
+   validation of the domain's use, to indicate the Domain Owner's or
    Public Suffix Operator's message handling preference regarding failed
-   verification, and to request reports about the use of the domain
-   name.  Mail receiving organizations can use this information when
-   evaluating handling choices for incoming mail.
+   validation, and to request reports about the use of the domain name.
+   Mail receiving organizations can use this information when evaluating
+   handling choices for incoming mail.
 
    This document obsoletes RFCs 7489 and 9091.
 
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 September 2024.
+   This Internet-Draft will expire on 28 October 2024.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 1]
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 1]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -78,153 +78,155 @@ Table of Contents
    3.  Terminology and Definitions . . . . . . . . . . . . . . . . .   8
      3.1.  Conventions Used in This Document . . . . . . . . . . . .   8
      3.2.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   8
-       3.2.1.  Authenticated Identifiers . . . . . . . . . . . . . .   8
-       3.2.2.  Author Domain . . . . . . . . . . . . . . . . . . . .   8
+       3.2.1.  Authenticated Identifiers . . . . . . . . . . . . . .   9
+       3.2.2.  Author Domain . . . . . . . . . . . . . . . . . . . .   9
        3.2.3.  Domain Owner  . . . . . . . . . . . . . . . . . . . .   9
        3.2.4.  Enforcement . . . . . . . . . . . . . . . . . . . . .   9
        3.2.5.  Identifier Alignment  . . . . . . . . . . . . . . . .   9
        3.2.6.  Mail Receiver . . . . . . . . . . . . . . . . . . . .   9
-       3.2.7.  Monitoring Mode . . . . . . . . . . . . . . . . . . .   9
-       3.2.8.  Non-existent Domains  . . . . . . . . . . . . . . . .   9
+       3.2.7.  Monitoring Mode . . . . . . . . . . . . . . . . . . .  10
+       3.2.8.  Non-existent Domains  . . . . . . . . . . . . . . . .  10
        3.2.9.  Organizational Domain . . . . . . . . . . . . . . . .  10
        3.2.10. Public Suffix Domain (PSD)  . . . . . . . . . . . . .  10
        3.2.11. Public Suffix Operator (PSO)  . . . . . . . . . . . .  10
        3.2.12. PSO Controlled Domain Names . . . . . . . . . . . . .  10
-       3.2.13. Report Consumer . . . . . . . . . . . . . . . . . . .  10
-   4.  Overview and Key Concepts . . . . . . . . . . . . . . . . . .  10
+       3.2.13. Report Consumer . . . . . . . . . . . . . . . . . . .  11
+   4.  Overview and Key Concepts . . . . . . . . . . . . . . . . . .  11
      4.1.  DMARC Basics  . . . . . . . . . . . . . . . . . . . . . .  11
      4.2.  Use of RFC5322.From . . . . . . . . . . . . . . . . . . .  12
      4.3.  Authentication Mechanisms . . . . . . . . . . . . . . . .  12
-     4.4.  Identifier Alignment Explained  . . . . . . . . . . . . .  13
-       4.4.1.  DKIM-Authenticated Identifiers  . . . . . . . . . . .  13
+     4.4.  Identifier Alignment  . . . . . . . . . . . . . . . . . .  13
+       4.4.1.  DKIM-Authenticated Identifiers  . . . . . . . . . . .  14
        4.4.2.  SPF-Authenticated Identifiers . . . . . . . . . . . .  14
-       4.4.3.  Alignment and Extension Technologies  . . . . . . . .  15
-     4.5.  Flow Diagram  . . . . . . . . . . . . . . . . . . . . . .  15
-     4.6.  DNS Tree Walk . . . . . . . . . . . . . . . . . . . . . .  16
-     4.7.  DMARC Policy Discovery  . . . . . . . . . . . . . . . . .  17
-     4.8.  Organizational Domain Discovery . . . . . . . . . . . . .  19
-   5.  Policy  . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     5.1.  DMARC Policy Record . . . . . . . . . . . . . . . . . . .  21
-     5.2.  DMARC URIs  . . . . . . . . . . . . . . . . . . . . . . .  21
+       4.4.3.  Alignment and Extension Technologies  . . . . . . . .  14
+     4.5.  DMARC Policy Record . . . . . . . . . . . . . . . . . . .  15
+     4.6.  DMARC URIs  . . . . . . . . . . . . . . . . . . . . . . .  16
+     4.7.  DMARC Policy Record Format  . . . . . . . . . . . . . . .  16
+     4.8.  Formal Definition . . . . . . . . . . . . . . . . . . . .  20
+     4.9.  Flow Diagram  . . . . . . . . . . . . . . . . . . . . . .  22
+     4.10. DNS Tree Walk . . . . . . . . . . . . . . . . . . . . . .  24
+       4.10.1.  DMARC Policy Discovery . . . . . . . . . . . . . . .  25
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 2]
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 2]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-     5.3.  General Record Format . . . . . . . . . . . . . . . . . .  22
-     5.4.  Formal Definition . . . . . . . . . . . . . . . . . . . .  26
-     5.5.  Domain Owner Actions  . . . . . . . . . . . . . . . . . .  27
-       5.5.1.  Publish an SPF Policy for an Aligned Domain . . . . .  27
-       5.5.2.  Configure Sending System for DKIM Signing Using an
-               Aligned Domain  . . . . . . . . . . . . . . . . . . .  28
-       5.5.3.  Setup a Mailbox to Receive Aggregate Reports  . . . .  28
-       5.5.4.  Publish a DMARC Policy for the Author Domain and
-               Organizational Domain . . . . . . . . . . . . . . . .  29
-       5.5.5.  Collect and Analyze Reports . . . . . . . . . . . . .  29
-       5.5.6.  Decide Whether to Update DMARC Policy . . . . . . . .  29
-     5.6.  PSO Actions . . . . . . . . . . . . . . . . . . . . . . .  29
-     5.7.  Mail Receiver Actions . . . . . . . . . . . . . . . . . .  29
-       5.7.1.  Extract Author Domain . . . . . . . . . . . . . . . .  30
-       5.7.2.  Determine Handling Policy . . . . . . . . . . . . . .  30
-       5.7.3.  Store Results of DMARC Processing . . . . . . . . . .  31
-       5.7.4.  Send Aggregate Reports  . . . . . . . . . . . . . . .  31
-       5.7.5.  Optionally Send Failure Reports . . . . . . . . . . .  32
-     5.8.  Policy Enforcement Considerations . . . . . . . . . . . .  32
-   6.  DMARC Feedback  . . . . . . . . . . . . . . . . . . . . . . .  33
-   7.  Changes from RFC 7489 . . . . . . . . . . . . . . . . . . . .  33
-     7.1.  IETF Category . . . . . . . . . . . . . . . . . . . . . .  33
-     7.2.  Changes to Terminology and Definitions  . . . . . . . . .  34
-       7.2.1.  Terms Added . . . . . . . . . . . . . . . . . . . . .  34
-       7.2.2.  Definitions Updated . . . . . . . . . . . . . . . . .  34
-     7.3.  Policy Discovery and Organizational Domain
-            Determination  . . . . . . . . . . . . . . . . . . . . .  34
-     7.4.  Reporting . . . . . . . . . . . . . . . . . . . . . . . .  34
-     7.5.  Tags  . . . . . . . . . . . . . . . . . . . . . . . . . .  35
-       7.5.1.  Tags Added: . . . . . . . . . . . . . . . . . . . . .  35
-       7.5.2.  Tags Removed: . . . . . . . . . . . . . . . . . . . .  35
-     7.6.  Expansion of Domain Owner Actions Section . . . . . . . .  35
-     7.7.  Report Generator Recommendations  . . . . . . . . . . . .  35
-     7.8.  Removal of RFC 7489 Appendix A.5  . . . . . . . . . . . .  36
-     7.9.  RFC 7489 Errata Summary . . . . . . . . . . . . . . . . .  36
-     7.10. General Editing and Formatting  . . . . . . . . . . . . .  37
-   8.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  37
-     8.1.  Issues Specific to SPF  . . . . . . . . . . . . . . . . .  37
-     8.2.  DNS Load and Caching  . . . . . . . . . . . . . . . . . .  38
-     8.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  38
-     8.4.  Identifier Alignment Considerations . . . . . . . . . . .  39
-     8.5.  Interoperability Issues . . . . . . . . . . . . . . . . .  40
-     8.6.  Interoperability Considerations . . . . . . . . . . . . .  40
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  41
-     9.1.  Authentication-Results Method Registry Update . . . . . .  41
-     9.2.  Authentication-Results Result Registry Update . . . . . .  42
-     9.3.  Feedback Report Header Fields Registry Update . . . . . .  43
-     9.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  43
+       4.10.2.  Identifier Alignment Evaluation  . . . . . . . . . .  27
+   5.  DMARC Participation . . . . . . . . . . . . . . . . . . . . .  29
+     5.1.  Domain Owner Actions  . . . . . . . . . . . . . . . . . .  29
+       5.1.1.  Publish an SPF Policy for an Aligned Domain . . . . .  29
+       5.1.2.  Configure Sending System for DKIM Signing Using an
+               Aligned Domain  . . . . . . . . . . . . . . . . . . .  29
+       5.1.3.  Setup a Mailbox to Receive Aggregate Reports  . . . .  30
+       5.1.4.  Publish a DMARC Policy for the Author Domain and
+               Organizational Domain . . . . . . . . . . . . . . . .  30
+       5.1.5.  Collect and Analyze Reports . . . . . . . . . . . . .  30
+       5.1.6.  Decide Whether to Update DMARC Policy . . . . . . . .  31
+       5.1.7.  A Note on Large, Complex Organizations and
+               Decentralized DNS Management  . . . . . . . . . . . .  31
+     5.2.  PSO Actions . . . . . . . . . . . . . . . . . . . . . . .  32
+     5.3.  Mail Receiver Actions . . . . . . . . . . . . . . . . . .  32
+       5.3.1.  Extract Author Domain . . . . . . . . . . . . . . . .  32
+       5.3.2.  Determine Handling Policy . . . . . . . . . . . . . .  32
+       5.3.3.  Store Results of DMARC Processing . . . . . . . . . .  33
+       5.3.4.  Send Aggregate Reports  . . . . . . . . . . . . . . .  34
+       5.3.5.  Optionally Send Failure Reports . . . . . . . . . . .  34
+     5.4.  Policy Enforcement Considerations . . . . . . . . . . . .  34
+   6.  DMARC Feedback  . . . . . . . . . . . . . . . . . . . . . . .  36
+   7.  Other Topics  . . . . . . . . . . . . . . . . . . . . . . . .  36
+     7.1.  Issues Specific to SPF  . . . . . . . . . . . . . . . . .  36
+     7.2.  DNS Load and Caching  . . . . . . . . . . . . . . . . . .  37
+     7.3.  Rejecting Messages  . . . . . . . . . . . . . . . . . . .  37
+     7.4.  Identifier Alignment Considerations . . . . . . . . . . .  38
+     7.5.  Interoperability Issues . . . . . . . . . . . . . . . . .  39
+     7.6.  Interoperability Considerations . . . . . . . . . . . . .  39
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  40
+     8.1.  Authentication-Results Method Registry Update . . . . . .  40
+     8.2.  Authentication-Results Result Registry Update . . . . . .  41
+     8.3.  Feedback Report Header Fields Registry Update . . . . . .  42
+     8.4.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  42
+     8.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  44
+     8.6.  Underscored and Globally Scoped DNS Node Names
+           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  44
+   9.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  45
+     9.1.  Aggregate Report Considerations . . . . . . . . . . . . .  45
+     9.2.  Failure Report Considerations . . . . . . . . . . . . . .  45
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  46
+     10.1.  Authentication Methods . . . . . . . . . . . . . . . . .  46
+     10.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  46
+     10.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  47
+     10.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  47
+     10.5.  Denial of DMARC Processing Attacks . . . . . . . . . . .  48
+     10.6.  External Reporting Addresses . . . . . . . . . . . . . .  49
+     10.7.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  49
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 3]
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 3]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-     9.5.  DMARC Report Format Registry  . . . . . . . . . . . . . .  45
-     9.6.  Underscored and Globally Scoped DNS Node Names
-           Registry  . . . . . . . . . . . . . . . . . . . . . . . .  45
-   10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  46
-     10.1.  Aggregate Report Considerations  . . . . . . . . . . . .  46
-     10.2.  Failure Report Considerations  . . . . . . . . . . . . .  46
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  47
-     11.1.  Authentication Methods . . . . . . . . . . . . . . . . .  47
-     11.2.  Attacks on Reporting URIs  . . . . . . . . . . . . . . .  47
-     11.3.  DNS Security . . . . . . . . . . . . . . . . . . . . . .  47
-     11.4.  Display Name Attacks . . . . . . . . . . . . . . . . . .  48
-     11.5.  Denial of DMARC Processing Attacks . . . . . . . . . . .  49
-     11.6.  External Reporting Addresses . . . . . . . . . . . . . .  49
-     11.7.  Secure Protocols . . . . . . . . . . . . . . . . . . . .  50
-     11.8.  Determination of the Organizational Domain For Relaxed
+     10.8.  Determination of the Organizational Domain For Relaxed
             Alignment  . . . . . . . . . . . . . . . . . . . . . . .  50
-   12. Normative References  . . . . . . . . . . . . . . . . . . . .  51
-   13. Informative References  . . . . . . . . . . . . . . . . . . .  53
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  50
+   12. Informative References  . . . . . . . . . . . . . . . . . . .  52
    Appendix A.  Technology Considerations  . . . . . . . . . . . . .  54
      A.1.  S/MIME  . . . . . . . . . . . . . . . . . . . . . . . . .  54
-     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  55
-     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  56
+     A.2.  Method Exclusion  . . . . . . . . . . . . . . . . . . . .  54
+     A.3.  Sender Header Field . . . . . . . . . . . . . . . . . . .  55
      A.4.  Domain Existence Test . . . . . . . . . . . . . . . . . .  56
-     A.5.  Organizational Domain Discovery Issues  . . . . . . . . .  57
-     A.6.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  58
-   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  59
-     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  59
-       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  59
-       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  60
-     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  61
-       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  61
+     A.5.  Organizational Domain Discovery Issues  . . . . . . . . .  56
+     A.6.  Removal of the "pct" Tag  . . . . . . . . . . . . . . . .  57
+   Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  58
+     B.1.  Identifier Alignment Examples . . . . . . . . . . . . . .  58
+       B.1.1.  SPF . . . . . . . . . . . . . . . . . . . . . . . . .  58
+       B.1.2.  DKIM  . . . . . . . . . . . . . . . . . . . . . . . .  59
+     B.2.  Domain Owner Example  . . . . . . . . . . . . . . . . . .  60
+       B.2.1.  Entire Domain, Monitoring Only  . . . . . . . . . . .  60
        B.2.2.  Entire Domain, Monitoring Only, Per-Message
-               Reports . . . . . . . . . . . . . . . . . . . . . . .  62
+               Reports . . . . . . . . . . . . . . . . . . . . . . .  61
        B.2.3.  Per-Message Failure Reports Directed to Third
-               Party . . . . . . . . . . . . . . . . . . . . . . . .  63
+               Party . . . . . . . . . . . . . . . . . . . . . . . .  62
        B.2.4.  Subdomain, Testing, and Multiple Aggregate Report
-               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  64
-     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  66
-       B.3.1.  SMTP Session Example  . . . . . . . . . . . . . . . .  66
-     B.4.  Organizational and Policy Domain Tree Walk Examples . . .  68
-       B.4.1.  Simple Organizational and Policy Example  . . . . . .  68
-       B.4.2.  Deep Tree Walk Example  . . . . . . . . . . . . . . .  69
-       B.4.3.  Example with a PSD DMARC Record . . . . . . . . . . .  70
-     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  71
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  72
-   Acknowledgements - RFC 7489 . . . . . . . . . . . . . . . . . . .  72
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  72
+               URIs  . . . . . . . . . . . . . . . . . . . . . . . .  63
+     B.3.  Mail Receiver Example . . . . . . . . . . . . . . . . . .  65
+       B.3.1.  SMTP Session Example  . . . . . . . . . . . . . . . .  65
+     B.4.  Organizational and Policy Domain Tree Walk Examples . . .  67
+       B.4.1.  Simple Organizational and Policy Example  . . . . . .  67
+       B.4.2.  Deep Tree Walk Example  . . . . . . . . . . . . . . .  68
+       B.4.3.  Example with a PSD DMARC Record . . . . . . . . . . .  69
+     B.5.  Utilization of Aggregate Feedback: Example  . . . . . . .  70
+   Appendix C.  Changes from RFC 7489  . . . . . . . . . . . . . . .  70
+     C.1.  IETF Category . . . . . . . . . . . . . . . . . . . . . .  71
+     C.2.  Changes to Terminology and Definitions  . . . . . . . . .  71
+       C.2.1.  Terms Added . . . . . . . . . . . . . . . . . . . . .  71
+       C.2.2.  Definitions Updated . . . . . . . . . . . . . . . . .  71
+     C.3.  Policy Discovery and Organizational Domain
+            Determination  . . . . . . . . . . . . . . . . . . . . .  71
+     C.4.  Reporting . . . . . . . . . . . . . . . . . . . . . . . .  71
+     C.5.  Tags  . . . . . . . . . . . . . . . . . . . . . . . . . .  72
+       C.5.1.  Tags Added: . . . . . . . . . . . . . . . . . . . . .  72
+       C.5.2.  Tags Removed: . . . . . . . . . . . . . . . . . . . .  72
+     C.6.  Expansion of Domain Owner Actions Section . . . . . . . .  72
+     C.7.  Report Generator Recommendations  . . . . . . . . . . . .  72
+     C.8.  Removal of RFC 7489 Appendix A.5  . . . . . . . . . . . .  73
+     C.9.  RFC 7489 Errata Summary . . . . . . . . . . . . . . . . .  73
+     C.10. General Editing and Formatting  . . . . . . . . . . . . .  74
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  74
+   Acknowledgements - RFC 7489 . . . . . . . . . . . . . . . . . . .  75
 
 
 
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 4]
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 4]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
+
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  75
 
 1.  Introduction
 
@@ -244,11 +246,20 @@ Internet-Draft                  DMARCbis                      March 2024
    providing a method for Domain Owners to publish a DNS record
    describing the email authentication policies for the RFC5322.From
    domain and to request specific handling for messages using that
-   domain that fail authentication checks.
+   domain that fail validation checks.
 
-   As with SPF and DKIM, DMARC reports results as "pass" or "fail".  To
-   get a DMARC result of "pass", a pass from either SPF or DKIM is
-   required.  In addition, the passed domain can be "aligned" with the
+   As with SPF and DKIM, DMARC reports results as "pass" or "fail".  A
+   DMARC pass indicates only that the use of the RFC5322.From domain has
+   been validated for that message as authorized by the Domain Owner.
+   Such authorization does not carry an explicit or implicit value
+   assertion about that message or about the Domain Owner.  Furthermore,
+   a mail-receiving organization that performs DMARC validation can
+   choose to honor the Domain Owner's requested message handling for
+   validation failures, but it is not required to do so; it might choose
+   different actions entirely.
+
+   To get a DMARC result of "pass", a pass from either SPF or DKIM is
+   required.  In addition, the passed domain must be "aligned" with the
    RFC5322.From domain in one of two modes - "relaxed" or "strict".  The
    mode is expressed in the domain's DMARC policy record.  Domains are
    said to be in "relaxed alignment" if they have the same
@@ -257,34 +268,32 @@ Internet-Draft                  DMARCbis                      March 2024
    administrative authority as the RFC5322.From domain.  Domains are in
    "strict alignment" if and only if they are identical.
 
-   A DMARC pass indicates only that the RFC5322.From domain has been
-   authenticated for that message.  Authentication does not carry an
-   explicit or implicit value assertion about that message or about the
-   Domain Owner.  Furthermore, a mail-receiving organization that
-   performs DMARC verification can choose to honor the Domain Owner's
-   requested message handling for authentication failures, but it is not
-   required to do so; it might choose different actions entirely.
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 5]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    For a mail-receiving organization supporting DMARC, a message that
-   passes verification is part of a message stream reliably associated
-   with the RFC5322.From field Domain Owner.  Therefore, reputation
-   assessment of that stream by the mail-receiving organization can
-   assume the use of that domain in the RFC5322.From field is
-   authorized.  A message that fails this verification is not
-   necessarily associated with the Domain Owner's domain and its
-   reputation.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 5]
-
-Internet-Draft                  DMARCbis                      March 2024
-
+   passes DMARC validation is part of a message stream reliably
+   associated with the RFC5322.From field Domain Owner.  Therefore,
+   reputation assessment of that stream by the mail-receiving
+   organization can assume the use of that domain in the RFC5322.From
+   field is authorized.  A message that fails this validation is not
+   necessarily associated with the Domain Owner's domain and should not
+   affect its reputation.
 
    DMARC policy records can also cover non-existent sub-domains below
-   the "Organizational Domain", as well as domains at the top of the
-   name hierarchy, controlled by Public Suffix Operators (PSOs).
+   the Organizational Domain, as well as domains at the top of the name
+   hierarchy, controlled by Public Suffix Operators (PSOs).
 
    DMARC, in the associated [I-D.ietf-dmarc-aggregate-reporting] and
    [I-D.ietf-dmarc-failure-reporting] documents, also specifies a
@@ -293,18 +302,18 @@ Internet-Draft                  DMARCbis                      March 2024
    publishing DMARC policies, sending those reports to the address(es)
    specified by the Domain Owner in the latter's DMARC policy record.
    Domain Owners can use these reports, especially the aggregate
-   reports, to identify not only sources of mail attempting to
+   reports, not only to identify sources of mail attempting to
    fraudulently use their domain, but also (and perhaps more
-   importantly) gaps in their authentication practices.  However, as
-   with honoring the Domain Owner's stated mail handling preference, a
-   mail-receiving organization supporting DMARC is under no obligation
-   to send requested reports, although it is recommended that they do
-   send aggregate reports.
+   importantly) to flag and fix gaps in their authentication practices.
+   However, as with honoring the Domain Owner's stated mail handling
+   preference, a mail-receiving organization supporting DMARC is under
+   no obligation to send requested reports, although it is recommended
+   that they do send aggregate reports.
 
    The use of DMARC creates some interoperability challenges that
    require due consideration before deployment, particularly with
    configurations that can cause mail to be rejected.  These are
-   discussed in Section 8.
+   discussed in Section 7.
 
 2.  Requirements
 
@@ -316,12 +325,22 @@ Internet-Draft                  DMARCbis                      March 2024
 
    DMARC has the following high-level goals:
 
-   *  Allow Domain Owners and PSOs to verify their authentication
-      deployment.
+   *  Allow Domain Owners and Public Suffix Operators (PSOs) to verify
+      their authentication deployment.
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 6]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    *  Allow Domain Owners and PSOs to assert their desired message
-      handling for authentication failures for messages purporting to
-      have authorship within the domain.
+      handling for validation failures for messages purporting to have
+      authorship within the domain.
 
    *  Minimize implementation complexity for both senders and receivers,
       as well as the impact on handling and delivery of legitimate
@@ -331,23 +350,14 @@ Internet-Draft                  DMARCbis                      March 2024
 
    *  Work at Internet scale.
 
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 6]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
 2.2.  Anti-Phishing
 
-   DMARC is designed to prevent bad actors from sending mail that claims
-   to come from legitimate senders, particularly transactional email
-   (official mail about business transactions).  One of the primary uses
-   of this kind of spoofed mail is phishing (enticing users to provide
-   information by pretending to be the legitimate service requesting the
-   information).  Thus, DMARC is significantly informed by ongoing
-   efforts to enact large-scale, Internet-wide anti-phishing measures.
-
+   DMARC is designed to prevent the unauthorized use of a domain in the
+   RFC5322.From header of an email message, a technique known as
+   "spoofing", particularly in transactional email (official mail about
+   business transactions).  One of the primary uses of this kind of
+   spoofed mail is phishing (enticing users to provide information by
+   pretending to be the legitimate service requesting the information).
    Although DMARC can only be used to combat specific forms of exact-
    domain spoofing directly, the DMARC mechanism has been found to be
    useful in the creation of reliable and defensible message streams.
@@ -376,23 +386,24 @@ Internet-Draft                  DMARCbis                      March 2024
    Several topics and issues are specifically out of scope of this work.
    These include the following:
 
-   *  Different treatment of messages that are not authenticated versus
-      those that fail authentication;
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 7]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   *  Different treatment of messages that are not authenticated (e.g.,
+      those that have no DKIM signature or those sent using an
+      RFC5322.From domain for which no DMARC policy record exists)
+      versus those that fail validation;
 
    *  Evaluation of anything other than RFC5322.From header field;
 
    *  Multiple reporting formats;
 
    *  Publishing policy other than via the DNS;
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 7]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    *  Reporting or otherwise evaluating other than the last-hop IP
       address;
@@ -431,24 +442,24 @@ Internet-Draft                  DMARCbis                      March 2024
 
    The following sections define the terms used in this document.
 
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 8]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
 3.2.1.  Authenticated Identifiers
 
-   Domain-level identifiers that are verified using authentication
-   technologies are referred to as "Authenticated Identifiers".  See
-   Section 4.3 for details about the supported mechanisms.
+   Authenticated Identifiers are those domain-level identifiers for
+   which authorized use is validated using a supported authentication
+   mechanism.  The supported mechanisms are described in Section 4.3
 
 3.2.2.  Author Domain
 
    The domain name of the apparent author as extracted from the
    RFC5322.From header field.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 8]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 3.2.3.  Domain Owner
 
@@ -485,6 +496,16 @@ Internet-Draft                  DMARCbis                      March 2024
    Receivers operate one or more Internet-facing Mail Transport Agents
    (MTAs).
 
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024                [Page 9]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
 3.2.7.  Monitoring Mode
 
    At p=none with a valid reporting address, the domain owner receives
@@ -499,17 +520,14 @@ Internet-Draft                  DMARCbis                      March 2024
    code received for a query for a domain name is NXDOMAIN, then the
    domain name and all the names under it do not exist.
 
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024               [Page 9]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
 3.2.9.  Organizational Domain
 
-   The Organizational Domain for any domain is determined by applying
-   the algorithm found in Section 4.8.
+   The Organizational Domain for any domain is akin to the ADMD
+   described in [RFC5598].  A domain's Organizational Domain is the
+   domain at the top of the namespace hierarchy for that domain while
+   having the same administrative authority as the domain.  An
+   Organizational Domain is determined by applying the algorithm found
+   in Section 4.10
 
 3.2.10.  Public Suffix Domain (PSD)
 
@@ -531,6 +549,19 @@ Internet-Draft                  DMARCbis                      March 2024
    a PSO.  PSO-controlled Domain Names may have one label (e.g., ".com")
    or more (e.g., ".co.uk"), depending on the PSD's policy.
 
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 10]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
 3.2.13.  Report Consumer
 
    An operator that receives reports from another operator implementing
@@ -548,37 +579,23 @@ Internet-Draft                  DMARCbis                      March 2024
    This section provides a general overview of the design and operation
    of the DMARC environment.
 
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 10]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
 4.1.  DMARC Basics
 
-   DMARC permits a Domain Owner or PSO to enable verification of a
+   DMARC permits a Domain Owner or PSO to enable validation of a
    domain's use in an email message, to indicate the Domain Owner's or
-   PSO's message handling preference regarding failed verification, and
-   to request reports about use of the domain name.  A domain's DMARC
+   PSO's message handling preference regarding failed validation, and to
+   request reports about use of the domain name.  A domain's DMARC
    policy record is published in DNS as a TXT record at the name created
    by prepending the label "_dmarc" to the domain name and is retrieved
    through normal DNS queries.
 
-   DMARC's verification function is based on whether the RFC5322.From
+   DMARC's validation function is based on whether the RFC5322.From
    domain is aligned with a domain name used in a supported
    authentication mechanism, as described in Section 4.3.  When a DMARC
    policy exists for the domain name found in the RFC5322.From header
-   field, and that domain name is not verified through an aligned
-   supported authentication mechanism, the handling of that message can
-   be affected based on the DMARC policy when delivered to a
+   field, and that domain name's usage is not validated by an aligned
+   domain in a supported authentication mechanism, the handling of that
+   message can be affected based on the DMARC policy when delivered to a
    participating Mail Receiver.
 
    A message satisfies the DMARC checks if at least one of the supported
@@ -587,36 +604,40 @@ Internet-Draft                  DMARCbis                      March 2024
    1.  produces a "pass" result, and
 
    2.  produces that result based on an identifier that is in alignment,
-       as described in Section 4.4.
+       as described in Section 3.2.5.
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 11]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    It is important to note that the authentication mechanisms employed
-   by DMARC authenticate only a DNS domain.  They do not authenticate
-   the local-part of any email address identifier found in a message,
-   nor do they validate the legitimacy of message content.
+   by DMARC only validate the usage of a DNS domain in an email message.
+   They do not validate the local-part of any email address identifier
+   found in that message, nor do they assert the legitimacy of that
+   message's content.
 
-   DMARC's feedback component involves the collection of information
-   about received messages claiming to be from the Author Domain for
-   periodic aggregate reports to the Domain Owner or PSO.  The
-   parameters and format for such reports are discussed in
+   DMARC's reporting component involves the collection of information
+   about received messages using the Author Domain for periodic
+   aggregate reports to the Domain Owner or PSO.  The parameters and
+   format for such reports are discussed in
    [I-D.ietf-dmarc-aggregate-reporting]
 
    A DMARC-enabled Mail Receiver might also generate per-message reports
    that contain information related to individual messages that fail
-   authentication checks.  Per-message failure reports are a useful
-   source of information when debugging deployments (if messages can be
-   determined to be legitimate even though failing authentication) or in
+   validation checks.  Per-message failure reports are a useful source
+   of information when debugging deployments (if messages can be
+   determined to be legitimate even though failing validation) or in
    analyzing attacks.  The capability for such services is enabled by
    DMARC but defined in other referenced material such as [RFC6591] and
    [I-D.ietf-dmarc-failure-reporting]
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 11]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 4.2.  Use of RFC5322.From
 
@@ -626,33 +647,11 @@ Internet-Draft                  DMARCbis                      March 2024
    throughout the history of email.  This field is the one used by end
    users to identify the source of the message, and so it has always
    been a prime target for abuse through such forgery and other means.
-
-   Several points suggest that it is the most correct and safest thing
-   to do in this context:
-
-   *  Of all the identifiers that are part of the message itself, this
-      is the only one required to be present.  A message without a
-      single, properly formed RFC5322.From header field does not comply
-      with [RFC5322], and handling such a message is outside of the
-      scope of this specification.
-
-   *  It seems the best choice of an identifier on which to focus, as
-      most MUAs display some or all of the contents of that field in a
-      manner strongly suggesting those data as reflective of the true
-      originator of the message.
-
-   *  Many high-profile email sources, such as email service providers,
-      require that the sending agent has authenticated itself before
-      email can be generated.  Thus, for these mailboxes, the mechanism
-      described in this document provides recipient end users with
-      strong evidence that the message was indeed originated by the
-      agent they associate with that mailbox, if the end user knows that
-      these various protections have been provided.
-
-   Since the sorts of mail typically protected by DMARC participants
-   tend only to have single Authors, DMARC participants generally
-   operate under a slightly restricted profile of RFC5322 with respect
-   to the expected syntax of this field.  See Section 5.7 for details.
+   That said, of all the identifiers that are part of the message
+   itself, this is the only one required to be present.  A message
+   without a single, properly formed RFC5322.From header field does not
+   comply with [RFC5322], and handling such a message is outside of the
+   scope of this specification.
 
 4.3.  Authentication Mechanisms
 
@@ -660,43 +659,59 @@ Internet-Draft                  DMARCbis                      March 2024
    are supported in this version of DMARC:
 
    *  DKIM, [RFC6376], which provides a domain-level identifier in the
-      content of the "d=" tag of a verified DKIM-Signature header field.
-
-   *  SPF, [RFC7208], which can authenticate both the domain found in an
-      SMTP [RFC5321] HELO/EHLO command (the HELO identity) and the
-      domain found in an SMTP MAIL command (the MAIL FROM identity).  As
-      noted earlier, however, DMARC relies solely on SPF authentication
+      content of the "d=" tag of a validated DKIM-Signature header
+      field.
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 12]
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 12]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-      of the domain found in SMTP MAIL FROM command.  Section 2.4 of
-      [RFC7208] describes MAIL FROM processing for cases in which the
-      MAIL command has a null path.
+   *  SPF, [RFC7208], which can validate the uses of both the domain
+      found in an SMTP [RFC5321] HELO/EHLO command (the HELO identity)
+      and the domain found in an SMTP MAIL command (the MAIL FROM
+      identity).  DMARC relies solely on SPF validation of the MAIL FROM
+      identity.
 
-4.4.  Identifier Alignment Explained
+4.4.  Identifier Alignment
 
-   Email authentication technologies authenticate various (and
-   disparate) aspects of an individual message.  For example, DKIM
-   [RFC6376] authenticates the domain that affixed a signature to the
-   message, while SPF [RFC7208] can authenticate either the domain that
-   appears in the RFC5321.MailFrom (MAIL FROM) portion of an SMTP
-   [RFC5321] conversation or the RFC5321.EHLO/HELO domain, or both.
-   These domains may be different and are typically not visible to the
-   end user.
-
-   DMARC authenticates the use of the RFC5322.From domain by requiring
-   either that it have the same Organizational Domain as an
+   DMARC validates the authorized use of the RFC5322.From domain by
+   requiring either that it have the same Organizational Domain as an
    Authenticated Identifier (a condition known as "relaxed alignment")
    or that it be identical to the domain of the Authenticated Identifier
    (a condition known as "strict alignment").  The choice of relaxed or
    strict alignment is left to the Domain Owner and is expressed in the
-   domain's DMARC policy record.  Domain name comparisons in this
-   context are case-insensitive, per [RFC4343].
+   domain's DMARC policy record.  In practice, nearly all Domain Owners
+   have found relaxed alignment sufficient to meet their needs.  Domain
+   name comparisons in this context are case-insensitive, per [RFC4343].
+
+   The following table is meant to illustrate possible alignment
+   scenarios.
+
+   +==================+==================+=========================+
+   | Authenticated    | RFC5322.From     | Identifier Alignment    |
+   | Identifier       | Domain           |                         |
+   +==================+==================+=========================+
+   | foo.example.com  | news.example.com | relaxed; the two have   |
+   |                  |                  | the same organizational |
+   |                  |                  | domain, example.com     |
+   +------------------+------------------+-------------------------+
+   | news.example.com | news.example.com | strict; the two are     |
+   |                  |                  | identical               |
+   +------------------+------------------+-------------------------+
+   | foo.example.net  | news.example.com | none; the two do not    |
+   |                  |                  | share a common          |
+   |                  |                  | organizational domain   |
+   +------------------+------------------+-------------------------+
+
+                    Table 1: "Tag Names and Values"
 
    It is important to note that Identifier Alignment cannot occur with a
    message that is not valid per [RFC5322], particularly one with a
@@ -705,435 +720,81 @@ Internet-Draft                  DMARCbis                      March 2024
    applies to the message.  Accordingly, DMARC operation is predicated
    on the input being a valid RFC5322 message object.  For non-compliant
    cases, handling is outside of the scope of this specification.
-   Further discussion of this can be found in Section 11.5.
+   Further discussion of this can be found in Section 10.5.
 
-   Each of the underlying authentication technologies that DMARC takes
-   as input yields authenticated domains as their outputs when they
-   succeed.
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 13]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
 4.4.1.  DKIM-Authenticated Identifiers
 
-   DMARC requires that Identifier Alignment is applied to the result of
-   a DKIM authentication because a message can bear a valid signature
+   DKIM permits a Domain Owner to claim some responsibility for a
+   message by associating the domain to the message.  This association
+   is done by inserting the domain as the value of the d= tag in a DKIM-
+   Signature header, and the assertion of responsiblity is validated
+   through a crytographic signature in the header.  If the cryptographic
+   signature validates, then the signing domain (i.e., the value of the
+   d= tag) is the Authenticated Identifier.
+
+   DMARC requires that Identifier Alignment is applied to the DKIM
+   Authenticated Identifier because a message can bear a valid signature
    from any domain, including domains used by a mailing list or even a
    bad actor.  Therefore, merely bearing a valid signature is not enough
    to infer the authenticity of the Author Domain.
 
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 13]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    DMARC requires that Identifier Alignment applied to the result of a
-   DKIM authentication to be strict or relaxed.  (Note that these terms
-   are not related to DKIM's "simple" and "relaxed" canonicalization
-   modes.)
+   DKIM authentication be strict or relaxed.  (Note that these terms are
+   not related to DKIM's "simple" and "relaxed" canonicalization modes.)
 
-   In relaxed mode, the identifiers are considered to be aligned if the
-   Organizational Domains of both the DKIM-authenticated signing domain
-   (taken from the value of the d= tag in the signature) and that of the
-   RFC5322.From domain are equal.  In strict mode, only an exact match
-   between both Fully Qualified Domain Names (FQDNs) is considered to
-   produce Identifier Alignment.
-
-   To illustrate, in relaxed mode, if a verified DKIM signature
-   successfully verifies with a "d=" domain of "example.com", and the
-   RFC5322.From address is "alerts@news.example.com", the DKIM "d="
-   domain and the RFC5322.From domain are considered to be "in
-   alignment", because both domains have the same Organizational Domain
-   of "example.com".  In strict mode, this test would fail because the
-   d= domain does not exactly match the RFC5322.From domain.
-
-   Note that a single email can contain multiple DKIM signatures, and it
-   is considered to produce a DMARC "pass" result if any DKIM signature
-   is aligned and verified.
+   A single email can contain multiple DKIM signatures, and it is
+   considered to produce a DMARC "pass" result if any DKIM-Authenticated
+   Identifier aligns with the RFC5322.From domain.
 
 4.4.2.  SPF-Authenticated Identifiers
 
-   DMARC requires that Identifier Alignment is applied to the result of
-   an SPF authentication.  As with DKIM, Identifier Alignment can be
+   SPF allows a Domain Owner to authorize hosts to use its domain in the
+   SMTP "MAIL FROM" or "HELO" identities.  DMARC relies solely on SPF
+   validation of the MAIL FROM identity.  If the authorization is
+   validated, the domain used in the MAIL FROM identity, which will also
+   be the RFC5321.MailFrom domain in the email message, is the
+   Authenticated Identifier.
+
+   DMARC requires that Identifier Alignment is applied to the SPF-
+   Authenticated Identifier, because any Domain Owner, even a bad actor,
+   can publish an SPF record for its domain and send email that will
+   obtain an SPF pass result.  As with DKIM, Identifier Alignment can be
    either strict or relaxed.
-
-   In relaxed mode, the identifiers are considered to be aligned if the
-   Organizational Domains of the SPF-authenticated domain and
-   RFC5322.From domain are equal.  In strict mode, only an exact match
-   between the two FQDNs is considered to produce Identifier Alignment.
-
-   For example, in relaxed mode, if a message passes an SPF check with
-   an RFC5321.MailFrom domain of "cbg.bounces.example.com", and the
-   address portion of the RFC5322.From header field contains
-   "payments@example.com", the Authenticated RFC5321.MailFrom domain
-   identifier and the RFC5322.From domain are considered to be "in
-   alignment" because they have the same Organizational Domain
-   ("example.com").  In strict mode, this test would fail because the
-   two domains are not identical.
-
-   Note that SPF alignment checks in DMARC rely solely on the
-   RFC5321.MailFrom domain.  This differs from Section 2.3 of [RFC7208],
-   which recommends that SPF checks be done on not only the "MAIL FROM"
-   but also on a separate check of the "HELO" identity.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 14]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 4.4.3.  Alignment and Extension Technologies
 
    If in the future DMARC is extended to include the use of other
-   authentication mechanisms, the extensions will need to allow for
-   domain identifier extraction so that alignment with the RFC5322.From
-   domain can be verified.
-
-4.5.  Flow Diagram
-
-    +---------------+                             +--------------------+
-    | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
-    +---------------+                        .    +--------------------+
-        |                                    .               ^
-        V                                    V               .
-    +-----------+     +--------+       +----------+          v
-    |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
-    |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
-    +-----------+     +--------+       +----------+  *  | Verifier |
-        |                                    ^       *  +----------+
-        |                                    *       *
-        V                                    v       *
-     +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
-     | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
-     +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
-                                            |           +----------+
-                                            |                ^
-                                            V                .
-                                     +-----------+           .
-                       +---------+   |    MDA    |           v
-                       |  User   |<--| Filtering |      +-----------+
-                       | Mailbox |   |  Engine   |      |   DKIM    |
-                       +---------+   +-----------+      |  Signing  |
-                                                        | Domain(s) |
-                                                        +-----------+
-
-     MSA = Mail Submission Agent
-     MDA = Mail Delivery Agent
-
-   The above diagram shows a simple flow of messages through a DMARC-
-   aware system.  Solid lines denote the actual message flow, dotted
-   lines involve DNS queries used to retrieve message policy related to
-   the supported message authentication schemes, and asterisk lines
-   indicate data exchange between message-handling modules and message
-   authentication modules. "sMTA" is the sending MTA, and "rMTA" is the
-   receiving MTA.
+   authentication mechanisms, the extensions MUST allow for the
+   assignment of a domain as an Authenticated Identified so that
+   alignment with the RFC5322.From domain can be verified.
 
 
 
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 15]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 14]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-   Put simply, when a message reaches a DMARC-aware rMTA, a DNS query
-   will be initiated to determine if a DMARC policy exists that applies
-   to the author domain.  If a policy is found, the rMTA will use the
-   results of SPF and DKIM verification checks to determine the ultimate
-   DMARC authentication status.  The DMARC status can then factor into
-   the message handling decision made by the recipient's mail system.
-
-   More details on specific actions for the parties involved can be
-   found in Section 5.5 and Section 5.7.
-
-4.6.  DNS Tree Walk
-
-   The DMARC protocol defines a method for communicating information
-   through the publishing of records in DNS.  Both the content of the
-   records and their location in the DNS hierarchy are used for two
-   purposes: policy discovery (see Section 4.7) and Organizational
-   Domain determination (see Section 4.8).
-
-   The relevant DMARC record for these purposes is not necessarily the
-   DMARC policy record found in DNS at the same level as the name label
-   for the domain in question.  Instead, some domains will inherit their
-   DMARC policy records from parent domains one level or more above them
-   in the DNS hierarchy.  Similarly, the Organizational Domain may be
-   found at a higher level in the DNS hierarchy.
-
-   These records are discovered through the technique described here,
-   known colloquially as the "DNS Tree Walk".  The target of any DNS
-   Tree Walk is a valid DMARC policy record, but the rules defining
-   required content for that record depend on the reason for performing
-   the Tree Walk.
-
-   To prevent possible abuse of the DNS, a shortcut is built into the
-   process so that domains that have more than five labels do not result
-   in more than five DNS queries.
-
-   The generic steps for a DNS Tree Walk are as follows:
-
-   1.  Query the DNS for a DMARC TXT record at the appropriate starting
-       point for the Tree Walk.  A possibly empty set of records is
-       returned.
-
-   2.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.  If multiple DMARC
-       records are returned, they are all discarded.  If a single record
-       remains and it contains a "psd=n" tag, stop.
-
-   3.  Determine the target for additional queries (if needed; see the
-       note in Section 4.8), using steps 4 through 8 below.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 16]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   4.  Break the subject DNS domain name into a set of ordered labels.
-       Assign the count of labels to "x", and number the labels from
-       right to left; e.g., for "a.mail.example.com", "x" would be
-       assigned the value 4, "com" would be label 1, "example" would be
-       label 2, "mail" would be label 3, and so forth.
-
-   5.  If x < 5, remove the left-most (highest-numbered) label from the
-       subject domain.  If x >= 5, remove the left-most (highest-
-       numbered) labels from the subject domain until 4 labels remain.
-       The resulting DNS domain name is the new target for the next
-       lookup.
-
-   6.  Query the DNS for a DMARC TXT record at the DNS domain name
-       matching this new target.  A possibly empty set of records is
-       returned.
-
-   7.  Records that do not start with a "v=" tag that identifies the
-       current version of DMARC are discarded.  If multiple DMARC
-       records are returned for a single target, they are all discarded.
-       If a single record remains and it contains a "psd=n" or "psd=y"
-       tag, stop.
-
-   8.  Determine the target for additional queries by removing a single
-       label from the target domain as described in step 5 and repeating
-       steps 6 and 7 until the process stops or there are no more labels
-       remaining.
-
-   To illustrate, for a message with the arbitrary RFC5322.From domain
-   of "a.b.c.d.e.mail.example.com", a full DNS Tree Walk would require
-   the following five queries to locate the policy or Organizational
-   Domain:
-
-   *  _dmarc.a.b.c.d.e.mail.example.com
-   *  _dmarc.e.mail.example.com
-   *  _dmarc.mail.example.com
-   *  _dmarc.example.com
-   *  _dmarc.com
-
-4.7.  DMARC Policy Discovery
-
-   For policy discovery, first query for a DMARC policy record at the
-   name created by prepending the label "_dmarc" to the RFC5322.From
-   domain of the message being evaluated.  If no valid DMARC policy
-   record is found there, then perform a DNS Tree Walk starting at the
-   appropriate name as described in Section 4.6.  If the RFC5322.From
-   domain has five or fewer labels, the starting point for the tree walk
-   will be the immediate parent domain of the RFC5322.From domain;
-   otherwise, the starting point will be the name produced by shortening
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 17]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   the RFC5322.From domain to its four rightmost labels.
-
-   The DMARC policy to be applied to the message will be the record
-   found at of the following locations, listed from highest preference
-   to lowest:
-
-   *  The RFC5322.From domain
-   *  The Organizational Domain (as determined by a separate DNS Tree
-      Walk) of the RFC5322.From domain
-   *  The Public Suffix Domain of the RFC5322.From domain
-
-   If the DMARC policy to be applied is that of the RFC5322.From domain,
-   then the DMARC policy is taken from the p= tag of the record.
-
-   If the DMARC policy to be applied is that of either the
-   Organizational Domain or the Public Suffix Domain and that domain is
-   different than the RFC5322.From domain, then the DMARC policy is
-   taken from the sp= tag (if any) if the RFC5322.From domain exists, or
-   the np= tag (if any) if the RFC5322.From domain does not exist.  In
-   the absence of applicable sp= or np= tags, the p= tag policy is used
-   for subdomains.
-
-   If a retrieved policy record does not contain a valid "p" tag, or
-   contains an "sp" or "np" tag that is not valid, then:
-
-   *  If a "rua" tag is present and contains at least one syntactically
-      valid reporting URI, the Mail Receiver MUST act as if a record
-      containing "p=none" was retrieved and continue processing;
-
-   *  Otherwise, the Mail Receiver applies no DMARC processing to this
-      message.
-
-   If the set produced by the DNS Tree Walk contains no DMARC policy
-   record (i.e., any indication that there is no such record as opposed
-   to a transient DNS error), Mail Receivers MUST NOT apply the DMARC
-   mechanism to the message.
-
-   Handling of DNS errors when querying for the DMARC policy record is
-   left to the discretion of the Mail Receiver.  For example, to ensure
-   minimal disruption of mail flow, transient errors could result in
-   delivery of the message ("fail open"), or they could result in the
-   message being temporarily rejected (i.e., an SMTP 4yx reply), which
-   invites the sending MTA to try again after the condition has possibly
-   cleared, allowing a definite DMARC conclusion to be reached ("fail
-   closed").
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 18]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   Note: PSD policy is not used for Organizational Domains that have
-   published a DMARC policy.  Specifically, this is not a mechanism to
-   provide feedback addresses (rua/ruf) when an Organizational Domain
-   has declined to do so.
-
-4.8.  Organizational Domain Discovery
-
-   For Organizational Domain discovery, it may be necessary to perform
-   multiple DNS Tree Walks to determine if any two domains are in
-   alignment.  This means that a DNS Tree Walk to discover an
-   Organizational Domain might start at any of the following locations:
-
-   *  The domain found in the RFC5322.From header of the message being
-      evaluated.
-   *  The domain found in the RFC5321.MailFrom header if there is an SPF
-      pass result for the message being evaluated.
-   *  Any DKIM d= domain if there is a DKIM pass result for that domain
-      for the message being evaluated.
-
-   Note: There is no need to perform Tree Walk searches for
-   Organizational Domains under any of the following conditions:
-
-   *  The RFC5322.From domain and the RFC5321.MailFrom domain (if SPF
-      authenticated), and/or the DKIM d= domain (if present and
-      authenticated) are all the same, and that domain has a DMARC
-      record.  In this case, this common domain is treated as the
-      Organizational Domain.
-   *  No applicable DMARC policy is discovered for the RFC5322.From
-      domain during the Tree Walk for that domain.  In this case, the
-      DMARC mechanism does not apply to the message in question.
-   *  The record for the RFC5322.From domain indicates strict alignment.
-      In this case, a simple string comparison of the RFC5322.From
-      domain and the RFC5321.MailFrom domain (if SPF authenticated),
-      and/or the DKIM d= domain (if present and authenticated) is all
-      that is required.
-
-   To discover the Organizational Domain for a domain, perform the DNS
-   Tree Walk described in Section 4.6 as needed for any of the domains
-   in question.
-
-   For each Tree Walk that retrieved valid DMARC records, select the
-   Organizational Domain from the domains for which valid DMARC records
-   were retrieved from the longest to the shortest:
-
-   1.  If a valid DMARC record contains the psd= tag set to 'n' (psd=n),
-       this is the Organizational Domain, and the selection process is
-       complete.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 19]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   2.  If a valid DMARC record, other than the one for the domain where
-       the tree walk started, contains the psd= tag set to 'y' (psd=y),
-       the Organizational Domain is the domain one label below this one
-       in the DNS hierarchy, and the selection process is complete.
-
-   3.  Otherwise, select the record for the domain with the fewest
-       number of labels.  This is the Organizational Domain and the
-       selection process is complete.
-
-   If this process does not determine the Organizational Domain, then
-   the initial target domain is the Organizational Domain.
-
-   For example, given the starting domain "a.mail.example.com", a search
-   for the Organizational Domain would require a series of DNS queries
-   for DMARC records starting with "_dmarc.a.mail.example.com" and
-   finishing with "_dmarc.com".  If there are DMARC records for
-   "_dmarc.mail.example.com" and "_dmarc.example.com", but not for
-   "_dmarc.a.mail.example.com" or "_dmarc.com", then the Organizational
-   Domain for this domain would be "example.com".
-
-   As another example, given the starting domain "a.mail.example.com",
-   if a search for the Organizational Domain yields a DMARC record at
-   "_dmarc.mail.example.com" with the psd= tag set to 'n', then the
-   Organizational Domain for this domain would be "mail.example.com".
-
-   As a last example, given the starting domain "a.mail.example.com", if
-   a search for the Organizational Domain only yields a DMARC record at
-   "_dmarc.com" and that record contains the tag psd=y, then the
-   Organizational Domain for this domain would be "example.com".
-
-5.  Policy
+4.5.  DMARC Policy Record
 
    A Domain Owner or PSO advertises DMARC participation of one or more
-   of its domains by adding a DNS TXT record (described in Section 5.1)
-   to those domains.  In doing so, Domain Owners and PSOs indicate their
-   handling preference regarding failed authentication for email
-   messages using their domain in the RFC5322.From header field as well
-   as their desire for feedback about those messages.  Mail Receivers,
-   in turn, can take into account the Domain Owner's stated preference
-   when making handling decisions about email messages that fail DMARC
-   authentication checks.
-
-   A Domain Owner or PSO may choose not to participate in DMARC
-   evaluation by Mail Receivers simply by not publishing an appropriate
-   DNS TXT record for its domain(s).  A Domain Owner can also choose not
-   to have some underlying authentication technologies apply to DMARC
-   evaluation of its domain(s).  In this case, the Domain Owner simply
-   declines to advertise participation in those schemes.  For example,
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 20]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   if the results of path authorization checks ought not to be
-   considered as part of the overall DMARC result for a given Author
-   Domain, then the Domain Owner does not publish an SPF policy record
-   that can produce an SPF pass result.
-
-   A Mail Receiver implementing the DMARC mechanism gets the Domain
-   Owner's or PSO's published DMARC Domain Owner Assessment Policy and
-   uses it as an important factor in deciding how to handle the message.
-   Mail handling considerations based on DMARC policy enforcement are
-   discussed below in Section 5.8.
-
-5.1.  DMARC Policy Record
+   of its domains by publishing DNS TXT records that will apply to those
+   domains.  In doing so, Domain Owners and PSOs indicate their handling
+   preference regarding failed validation for email messages using their
+   domain in the RFC5322.From header field as well as their desire to
+   receive feedback about such messages in the form of aggregate and/or
+   failure reports.
 
    Domain Owner and PSO DMARC preferences are stored as DNS TXT records
    in subdomains named "_dmarc".  For example, the Domain Owner of
@@ -1159,40 +820,62 @@ Internet-Draft                  DMARCbis                      March 2024
    evaluation MUST concatenate these strings by joining together the
    objects in order and parsing the result as a single string.
 
-5.2.  DMARC URIs
+   A Domain Owner or PSO may choose not to participate in DMARC
+   evaluation by Mail Receivers simply by not publishing a DMARC record
+   for its domain(s).  A Domain Owner can also choose not to have some
+   underlying authentication mechanisms apply to DMARC evaluation of its
+   domain(s).  For example, if a Domain Owner only wants to use DKIM as
+   the underlying authentication mechanism, then the Domain Owner does
+   not publish an SPF policy record that can produce an SPF pass result.
+   Alternatively, if the Domain Owner wishes to rely solely on SPF, then
+   it can send email messages that have no DKIM-Signature header that
+   would produce an Aligned Identifier as the result of a DKIM pass.
+   Neither approach is recommended, however.
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 15]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   A Mail Receiver implementing the DMARC mechanism gets the Domain
+   Owner's or PSO's published DMARC Domain Owner Assessment Policy and
+   can use it to inform its handling decisions for messages that undergo
+   DMARC validation checks and do not produce a result of pass.  Mail
+   handling considerations based on DMARC policy enforcement are
+   discussed below in Section 5.4.
+
+4.6.  DMARC URIs
 
    [RFC3986] defines a generic syntax for identifying a resource.  The
    DMARC mechanism uses this as the format by which a Domain Owner or
    PSO specifies the destination for the two report types that are
    supported.
 
-   The place such URIs are specified (see Section 5.3) allows a list of
+   The place such URIs are specified (see Section 4.7) allows a list of
    these to be provided.  The list of URIs is separated by commas (ASCII
    0x2c).  A report SHOULD be sent to each listed URI provided in the
    DMARC record.
 
+   A formal definition is provided in Section 4.8.
 
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 21]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   A formal definition is provided in Section 5.4.
-
-5.3.  General Record Format
+4.7.  DMARC Policy Record Format
 
    DMARC records follow the extensible "tag-value" syntax for DNS-based
    key records defined in DKIM [RFC6376].
 
-   Section 9 creates a registry for known DMARC tags and registers the
+   Section 8 creates a registry for known DMARC tags and registers the
    initial set defined in this document.  Only tags defined in that
    registry are to be processed; unknown tags MUST be ignored.
 
    The following tags are valid DMARC tags:
 
    adkim:  (plain-text; OPTIONAL; default is "r".)  Indicates whether
-      the Domain Owner requires strict or relaxed DKIM Identifier
+      the Domain Owner or PSO requires strict or relaxed DKIM Identifier
       Alignment mode.  See Section 4.4.1 for details.  Valid values are
       as follows:
 
@@ -1200,12 +883,20 @@ Internet-Draft                  DMARCbis                      March 2024
       s:  strict mode
 
    aspf:  (plain-text; OPTIONAL; default is "r".)  Indicates whether the
-      Domain Owner requires strict or relaxed SPF Identifier Alignment
-      mode.  See Section 4.4.2 for details.  Valid values are as
-      follows:
+      Domain Owner or PSO requires strict or relaxed SPF Identifier
+      Alignment mode.  See Section 4.4.2 for details.  Valid values are
+      as follows:
 
       r:  relaxed mode
       s:  strict mode
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 16]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    fo:  Failure reporting options (plain-text; OPTIONAL; default is "0")
       Provides requested options for the generation of failure reports.
@@ -1226,21 +917,13 @@ Internet-Draft                  DMARCbis                      March 2024
          that failed evaluation, regardless of its alignment.  DKIM-
          specific reporting is described in [RFC6651].
       s:  Generate an SPF failure report if the message failed SPF
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 22]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
          evaluation, regardless of its alignment.  SPF-specific
          reporting is described in [RFC6652].
 
    np:  Domain Owner Assessment Policy for non-existent subdomains
       (plain-text; OPTIONAL).  Indicates the message handling preference
       of the Domain Owner or PSO for mail using non-existent subdomains
-      of the domain queried but not passing DMARC verification.  It
+      of the domain queried but not passing DMARC validation.  It
       applies only to non-existent subdomains of the domain queried and
       not to either existing subdomains or the domain itself.  Its
       syntax is identical to that of the "p" tag defined below.  If the
@@ -1250,17 +933,35 @@ Internet-Draft                  DMARCbis                      March 2024
       subdomains.  Note that "np" will be ignored for DMARC records
       published on subdomains of Organizational Domains and PSDs due to
       the effect of the DMARC policy discovery mechanism described in
-      Section 4.7.
+      Section 4.10.1.
 
    p:  Domain Owner Assessment Policy (plain-text; RECOMMENDED for
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 17]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
       policy records).  Indicates the message handling preference of the
       Domain Owner or PSO for mail using its domain but not passing
-      DMARC verification.  The policy applies to the domain queried and
-      to subdomains, unless the subdomain policy is explicitly described
+      DMARC validation.  The policy applies to the domain queried and to
+      subdomains, unless the subdomain policy is explicitly described
       using the "sp" or "np" tags.  If this tag is not present in an
       otherwise syntactically valid DMARC record, then the record is
-      treated as if it included "p=none" (see Section 4.7).  This tag is
-      not applicable for third-party reporting records (see
+      treated as if it included "p=none" (see Section 4.10.1).  This tag
+      is not applicable for third-party reporting records (see
       [I-D.ietf-dmarc-aggregate-reporting] and
       [I-D.ietf-dmarc-failure-reporting]) Possible values are as
       follows:
@@ -1271,7 +972,7 @@ Internet-Draft                  DMARCbis                      March 2024
          failure creates a significant concern.
       reject:  The Domain Owner considers all such failures to be a
          clear indication that the use of the domain name is not valid.
-         See Section 8.3 for some discussion of SMTP rejection methods
+         See Section 7.3 for some discussion of SMTP rejection methods
          and their implications.
 
    psd:  A flag indicating whether the domain is a PSD. (plain-text;
@@ -1282,34 +983,34 @@ Internet-Draft                  DMARCbis                      March 2024
          of 'y' is found during policy discovery, this information will
          be used to determine the Organizational Domain and policy
          domain applicable to the message in question.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 23]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-      n:  The DMARC policy record is published for a PSD, but it is not
-         the Organizational Domain for itself and its subdomain.  There
-         is no need to put psd=n in a DMARC record, except in the very
-         unusual case of a parent PSD publishing a DMARC record without
-         the requisite psd=y tag.
+      n:  The DMARC policy record is published for a domain that is not
+         a PSD, but it is the Organizational Domain for itself and its
+         subdomains.  There is no need to put psd=n in a DMARC record,
+         except in the very unusual case of a parent PSD publishing a
+         DMARC record without the requisite psd=y tag.
       u:  The default indicates that the DMARC policy record is
          published for a domain that is not a PSD.  Use the mechanism
-         described in Section 4.8 for determining the Organizational
+         described in Section 4.10 for determining the Organizational
          Domain.  There is no need to explicitly publish psd=u in a
          DMARC record.
 
    rua:  Addresses to which aggregate feedback reports are to be sent
       (comma-separated plain-text list of DMARC URIs; OPTIONAL).  If
       present, the Domain Owner is requesting Mail Receivers to send
-      aggregate feedback reports about results of authentication checks
+      aggregate feedback reports about results of validation checks
       performed on mail using the domain for which the DMARC policy
       record is published.  [I-D.ietf-dmarc-aggregate-reporting]
       discusses considerations that apply when the domain name of a URI
       differs from that of the domain advertising the policy.  See
-      Section 11.6 for additional considerations.  Any valid URI can be
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 18]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+      Section 10.6 for additional considerations.  Any valid URI can be
       specified.  A Mail Receiver MUST implement support for a "mailto:"
       URI, i.e., the ability to send a DMARC report via electronic mail.
       If the tag is not provided, Mail Receivers MUST NOT generate
@@ -1324,7 +1025,7 @@ Internet-Draft                  DMARCbis                      March 2024
       fail the DMARC evaluation in specific ways (see the "fo" tag
       above).  [I-D.ietf-dmarc-aggregate-reporting] discusses
       considerations that apply when the domain name of a URI differs
-      from that of the domain advertising the policy.  See Section 11.6
+      from that of the domain advertising the policy.  See Section 10.6
       for additional considerations.  Any valid URI can be specified.  A
       Mail Receiver MUST implement support for a "mailto:" URI, i.e.,
       the ability to send message-specific failure information via
@@ -1337,37 +1038,37 @@ Internet-Draft                  DMARCbis                      March 2024
    sp:  Domain Owner Assessment Policy for all subdomains (plain-text;
       OPTIONAL).  Indicates the message handling preference of the
       Domain Owner or PSO for mail using an existing subdomain of the
-      domain queried but not passing DMARC verification.  It applies
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 24]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-      only to subdomains of the domain queried and not to the domain
-      itself.  Its syntax is identical to that of the "p" tag defined
-      above.  If both the "sp" tag is absent, and the "np" tag is either
-      absent or not applicable, the policy specified by the "p" tag MUST
-      be applied for subdomains.  Note that "sp" will be ignored for
-      DMARC records published on subdomains of Organizational Domains
-      due to the effect of the DMARC policy discovery mechanism
-      described in Section 4.7.
+      domain queried but not passing DMARC validation.  It applies only
+      to subdomains one or more levels below the domain queried in the
+      DNS hierarchy and not to the domain itself.  Its syntax is
+      identical to that of the "p" tag defined above.  If both the "sp"
+      tag is absent, and the "np" tag is either absent or not
+      applicable, the policy specified by the "p" tag MUST be applied
+      for subdomains.  Note that "sp" will be ignored for DMARC records
+      published on subdomains of Organizational Domains due to the
+      effect of the DMARC policy discovery mechanism described in
+      Section 4.10.1.
 
    t:  DMARC policy test mode (plain-text; OPTIONAL; default is 'n').
       For the RFC5322.From domain to which the DMARC record applies, the
       "t" tag serves as a signal to the actor performing DMARC
-      verification checks as to whether or not the domain owner wishes
-      the assessment policy declared in the "p=", "sp=", and/or "np="
-      tags to actually be applied.  This parameter does not affect the
+      validation checks as to whether or not the domain owner wishes the
+      assessment policy declared in the "p=", "sp=", and/or "np=" tags
+      to actually be applied.  This parameter does not affect the
       generation of DMARC reports.  See Appendix A.6 for further
       discussion of the use of this tag.  Possible values are as
       follows:
 
-      y:  A request that the actor performing the DMARC verification
-         check not apply the policy, but instead apply any special
-         handling rules it might have in place, such as rewriting the
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 19]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+      y:  A request that the actor performing the DMARC validation check
+         not apply the policy, but instead apply any special handling
+         rules it might have in place, such as rewriting the
          RFC5322.From header.  The domain owner is currently testing its
          specified DMARC assessment policy.
       n:  The default is a request to apply the policy as specified to
@@ -1380,7 +1081,7 @@ Internet-Draft                  DMARCbis                      March 2024
       tag in the list.
 
    A DMARC policy record MUST comply with the formal specification found
-   in Section 5.4 in that the "v" tag MUST be present and MUST appear
+   in Section 4.8 in that the "v" tag MUST be present and MUST appear
    first.  Unknown tags MUST be ignored.  Syntax errors in the remainder
    of the record MUST be discarded in favor of default values (if any)
    or ignored outright.
@@ -1391,21 +1092,35 @@ Internet-Draft                  DMARCbis                      March 2024
    the "v" tag's value), but a change to any existing tags does require
    a new version of DMARC.
 
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 25]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-5.4.  Formal Definition
+4.8.  Formal Definition
 
    The formal definition of the DMARC format, using [RFC5234] and
    [RFC7405], is as follows:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 20]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    dmarc-uri     = URI
                  ; "URI" is imported from [RFC3986];
@@ -1453,9 +1168,14 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 26]
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 21]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    +==========+===============+
@@ -1482,15 +1202,388 @@ Internet-Draft                  DMARCbis                      March 2024
    | fo       | dmarc-fo      |
    +----------+---------------+
 
-     Table 1: "Tag Names and
+     Table 2: "Tag Names and
              Values"
 
-5.5.  Domain Owner Actions
+4.9.  Flow Diagram
 
-   This section describes Domain Owner actions to implement the DMARC
-   mechanism.
 
-5.5.1.  Publish an SPF Policy for an Aligned Domain
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 22]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+    +---------------+                             +--------------------+
+    | Author Domain |< . . . . . . . . . . . .    | Return-Path Domain |
+    +---------------+                        .    +--------------------+
+        |                                    .               ^
+        V                                    V               .
+    +-----------+     +--------+       +----------+          v
+    |   MSA     |<***>|  DKIM  |       |   DMARC  |     +----------+
+    |  Service  |     | Signer |       | Verifier |<***>|    SPF   |
+    +-----------+     +--------+       +----------+  *  | Verifier |
+        |                                    ^       *  +----------+
+        |                                    *       *
+        V                                    v       *
+     +------+        (~~~~~~~~~~~~)      +------+    *  +----------+
+     | sMTA |------->( other MTAs )----->| rMTA |    **>|   DKIM   |
+     +------+        (~~~~~~~~~~~~)      +------+       | Verifier |
+                                            |           +----------+
+                                            |                ^
+                                            V                .
+                                     +-----------+           .
+                       +---------+   |    MDA    |           v
+                       |  User   |<--| Filtering |      +-----------+
+                       | Mailbox |   |  Engine   |      |   DKIM    |
+                       +---------+   +-----------+      |  Signing  |
+                                                        | Domain(s) |
+                                                        +-----------+
+
+     MSA = Mail Submission Agent
+     MDA = Mail Delivery Agent
+
+   The above diagram shows a simple flow of messages through a DMARC-
+   aware system.  Dashed lines (e.g., -->) denote the actual message
+   flow, dotted lines (e.g., < . . >) represent DNS queries used to
+   retrieve message policy related to the supported message
+   authentication schemes, and starred lines (e.g., <**>) indicate data
+   exchange between message-handling modules and message authentication
+   modules. "sMTA" is the sending MTA, and "rMTA" is the receiving MTA.
+
+   Put simply, when a message reaches a DMARC-aware rMTA, a DNS query
+   will be initiated to determine if a DMARC policy exists that applies
+   to the author domain.  If a policy is found, the rMTA will use the
+   results of SPF and DKIM validation checks to determine the ultimate
+   DMARC authentication status.  The DMARC status can then factor into
+   the message handling decision made by the recipient's mail system.
+
+   More details on specific actions for the parties involved can be
+   found in Section 5.1 and Section 5.3.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 23]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+4.10.  DNS Tree Walk
+
+   An Organizational Domain serves two different purposes, depending on
+   the context:
+
+   *  The Organizational Domain of the RFC5322.From domain establishes
+      the DMARC policy for that domain when no DMARC record is published
+      specifically for the RFC5322.From domain. (see Section 4.10.1)
+
+   *  The Organizational Domains of an Authenticated Identifier and the
+      RFC5322.From domain are used in determining Identifier Alignment
+      between the two. (see Section 4.10.2).
+
+   [RFC7489] defined an Organizational Domain as "The domain that was
+   registered with a domain name registrar."  This update to that
+   document offers more flexibility to Domain Owners, especially those
+   with large, complex organizations that might want to applying
+   decentralized management to their DNS and their DMARC policies.
+   Rather than just searching the Public Suffix List to identify an
+   Organizational Domain, this update defines a discovery technique
+   known colloquially as the "DNS Tree Walk".  The target of any DNS
+   Tree Walk is a valid DMARC policy record, and its use in determing an
+   Organizational Domain allows for publishing DMARC records at multiple
+   points in the namespace.
+
+   This flexibility comes at a possible cost, however.  Since the DNS
+   Tree Walk relies on the Mail Receiver making a series of DNS queries,
+   the potential exists for an ill-intentioned Domain Owner to send mail
+   with RFC5322.From domains with tens or even hundreds of labels for
+   the purpose of executing a Denial of Service Attack on the Mail
+   Receiver.  To guard against such abuse of the DNS, an available
+   shortcut is built into the process.  This shortcut relies on a Mail
+   Receiver setting a policy of the maximum number of DNS queries,
+   identified as N, that it is willing to perform during any one Tree
+   Walk, with the requirement that N MUST be greeter than or equal to 5.
+
+   The generic steps for a DNS Tree Walk are as follows:
+
+   1.  Query the DNS for a DMARC TXT record at the appropriate starting
+       point for the Tree Walk.  A possibly empty set of records is
+       returned.
+
+   2.  Records that do not start with a "v=" tag that identifies the
+       current version of DMARC are discarded.  If multiple DMARC
+       records are returned, they are all discarded.  If a single record
+       remains and it contains a "psd=n" tag, stop.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 24]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   3.  Determine the target for additional queries (if needed; see the
+       note in Section 4.10.2), using steps 4 through 8 below.
+
+   4.  Break the subject DNS domain name into a set of ordered labels.
+       Assign the count of labels to "x", and number the labels from
+       right to left; e.g., for "a.mail.example.com", "x" would be
+       assigned the value 4, "com" would be label 1, "example" would be
+       label 2, "mail" would be label 3, and so forth.
+
+   5.  If x < N, remove the left-most (highest-numbered) label from the
+       subject domain.  If x >= N, remove the left-most (highest-
+       numbered) labels from the subject domain until N-1 labels remain.
+       The resulting DNS domain name is the new target for the next
+       lookup.
+
+   6.  Query the DNS for a DMARC TXT record at the DNS domain name
+       matching this new target.  A possibly empty set of records is
+       returned.
+
+   7.  Records that do not start with a "v=" tag that identifies the
+       current version of DMARC are discarded.  If multiple DMARC
+       records are returned for a single target, they are all discarded.
+       If a single record remains and it contains a "psd=n" or "psd=y"
+       tag, stop.
+
+   8.  Determine the target for additional queries by removing a single
+       label from the target domain as described in step 5 and repeating
+       steps 6 and 7 until the process stops or there are no more labels
+       remaining.
+
+   To illustrate, for a message with the arbitrary RFC5322.From domain
+   of "a.b.c.d.e.mail.example.com" and N set at 5, a full DNS Tree Walk
+   would require the following five queries to locate the policy or
+   Organizational Domain:
+
+   *  _dmarc.a.b.c.d.e.mail.example.com
+   *  _dmarc.e.mail.example.com
+   *  _dmarc.mail.example.com
+   *  _dmarc.example.com
+   *  _dmarc.com
+
+4.10.1.  DMARC Policy Discovery
+
+   The DMARC policy to be applied to an email message will be the record
+   found at any of the following locations, listed from highest
+   preference to lowest:
+
+   *  The RFC5322.From domain
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 25]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   *  The Organizational Domain of the RFC5322.From domain
+   *  The Public Suffix Domain of the RFC5322.From domain
+
+   Policy discovery starts first with a query for a valid DMARC policy
+   record at the name created by prepending the label "_dmarc" to the
+   RFC5322.From domain of the message being evaluated.  If a valid DMARC
+   record is found there, then this is the DMARC policy to be applied to
+   the message; however, this does not necessarily mean the the
+   RFC5322.From domain is the Organizational Domain to be used in
+   Identifier Alignment checks.  Whether this is the also the
+   Organizational Domain is dependent on the value of the 'psd' tag, if
+   present, or some conditions described in Section 4.10.2.
+
+   If no valid DMARC policy record is found by the first query, then
+   perform a DNS Tree Walk to find the RFC5322.From domain's
+   Organizational Domain or its Public Suffix Domain.  The starting
+   point for this DNS Tree Walk is determined as follows:
+
+   *  If the RFC5322.From domain has five or fewer labels, the starting
+      point will be the immediate parent domain of the RFC5322.From
+      domain.
+   *  Otherwise, the starting point will be the name produced by
+      shortening the RFC5322.From domain as described starting in step 3
+      of the Section 4.10.
+
+   If the DMARC policy to be applied is that of the RFC5322.From domain,
+   then the DMARC policy is taken from the p= tag of the record.
+
+   If the DMARC policy to be applied is that of either the
+   Organizational Domain or the Public Suffix Domain and that domain is
+   different than the RFC5322.From domain, then the DMARC policy is
+   taken from the sp= tag (if any) if the RFC5322.From domain exists, or
+   the np= tag (if any) if the RFC5322.From domain does not exist.  In
+   the absence of applicable sp= or np= tags, the p= tag policy is used
+   for subdomains.
+
+   If a retrieved policy record does not contain a valid "p" tag, or
+   contains an "sp" or "np" tag that is not valid, then:
+
+   *  If a "rua" tag is present and contains at least one syntactically
+      valid reporting URI, the Mail Receiver MUST act as if a record
+      containing "p=none" was retrieved and continue processing;
+
+   *  Otherwise, the Mail Receiver applies no DMARC processing to this
+      message.
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 26]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   If the set produced by the DNS Tree Walk contains no DMARC policy
+   record (i.e., any indication that there is no such record as opposed
+   to a transient DNS error), Mail Receivers MUST NOT apply the DMARC
+   mechanism to the message.
+
+   Handling of DNS errors when querying for the DMARC policy record is
+   left to the discretion of the Mail Receiver.  For example, to ensure
+   minimal disruption of mail flow, transient errors could result in
+   delivery of the message ("fail open"), or they could result in the
+   message being temporarily rejected (i.e., an SMTP 4yx reply), which
+   invites the sending MTA to try again after the condition has possibly
+   cleared, allowing a definite DMARC conclusion to be reached ("fail
+   closed").
+
+   Note: PSD policy is not used for Organizational Domains that have
+   published a DMARC policy.  Specifically, this is not a mechanism to
+   provide feedback addresses (rua/ruf) when an Organizational Domain
+   has declined to do so.
+
+4.10.2.  Identifier Alignment Evaluation
+
+   It may be necessary to perform multiple DNS Tree Walks to determine
+   if an Authenticated Identifier and an RFC5322.From domain are in
+   alignment, meaning that they have either the same Organizational
+   Domain (relaxed alignment) or that they're identical (strict
+   alignment).  DNS Tree Walks done to discover an Organizational Domain
+   for use in Identifier Alignment Evaluation might start at any of the
+   following locations:
+
+   *  The domain found in the RFC5322.From header of the message being
+      evaluated.
+   *  The domain found in the RFC5321.MailFrom header if there is an SPF
+      pass result for the message being evaluated.
+   *  Any DKIM d= domain if there is a DKIM pass result for that domain
+      for the message being evaluated.
+
+   Note: There is no need to perform Tree Walk searches for
+   Organizational Domains under any of the following conditions:
+
+   *  The RFC5322.From domain and the Authenticated Identifier(s) are
+      all the same domain, and there is a DMARC record published for
+      that domain.  In this case, this common domain is treated as the
+      Organizational Domain.  For example, if the common domain in
+      question is "mail.example.com", and there is a valid DMARC record
+      published at _dmarc.mail.example.com, then mail.example.com is the
+      Organizational Domain.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 27]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   *  No applicable DMARC policy is discovered for the RFC5322.From
+      domain.  In this case, the DMARC mechanism does not apply to the
+      message in question.
+   *  The DMARC record for the RFC5322.From domain indicates strict
+      alignment.  In this case, a simple string comparison of the
+      RFC5322.From domain and the Authenticated Identifier(s) is all
+      that is required.
+
+   To discover the Organizational Domain for a domain, perform the DNS
+   Tree Walk described in Section 4.10 as needed for any of the domains
+   in question.
+
+   For each Tree Walk that retrieved valid DMARC records, select the
+   Organizational Domain from the domains for which valid DMARC records
+   were retrieved from the longest to the shortest:
+
+   1.  If a valid DMARC record contains the psd= tag set to 'n' (psd=n),
+       this is the Organizational Domain, and the selection process is
+       complete.
+
+   2.  If a valid DMARC record, other than the one for the domain where
+       the tree walk started, contains the psd= tag set to 'y' (psd=y),
+       the Organizational Domain is the domain one label below this one
+       in the DNS hierarchy, and the selection process is complete.
+
+   3.  Otherwise, select the record for the domain with the fewest
+       number of labels.  This is the Organizational Domain and the
+       selection process is complete.
+
+   If this process does not determine the Organizational Domain, then
+   the initial target domain is the Organizational Domain.
+
+   For example, given the starting domain "a.mail.example.com", a search
+   for the Organizational Domain would require a series of DNS queries
+   for DMARC records starting with "_dmarc.a.mail.example.com" and
+   finishing with "_dmarc.com".  If there are DMARC records for
+   "_dmarc.mail.example.com" and "_dmarc.example.com", but not for
+   "_dmarc.a.mail.example.com" or "_dmarc.com", then the Organizational
+   Domain for this domain would be "example.com".
+
+   As another example, given the starting domain "a.mail.example.com",
+   if a search for the Organizational Domain yields a DMARC record at
+   "_dmarc.mail.example.com" with the psd= tag set to 'n', then the
+   Organizational Domain for this domain would be "mail.example.com".
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 28]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   As a last example, given the starting domain "a.mail.example.com", if
+   a search for the Organizational Domain only yields a DMARC record at
+   "_dmarc.com" and that record contains the tag psd=y, then the
+   Organizational Domain for this domain would be "example.com".
+
+5.  DMARC Participation
+
+   This section describes the actions for participating in DMARC for
+   each of three unique entities - Domain Owners, PSOs, and Mail
+   Receivers.
+
+5.1.  Domain Owner Actions
+
+5.1.1.  Publish an SPF Policy for an Aligned Domain
 
    Because DMARC relies on SPF [RFC7208] and DKIM [RFC6376], in order to
    take full advantage of DMARC, a Domain Owner MUST first ensure that
@@ -1504,17 +1597,7 @@ Internet-Draft                  DMARCbis                      March 2024
    a minimum to ensure an SPF pass verdict for all known sources of mail
    for the RFC5321.MailFrom domain.
 
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 27]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-5.5.2.  Configure Sending System for DKIM Signing Using an Aligned
+5.1.2.  Configure Sending System for DKIM Signing Using an Aligned
         Domain
 
    While it is possible to secure a DMARC pass verdict based on only one
@@ -1534,7 +1617,16 @@ Internet-Draft                  DMARCbis                      March 2024
    Signing domain (i.e., the d= domain in the DKIM-Signature header)
    that aligns with the Author Domain.
 
-5.5.3.  Setup a Mailbox to Receive Aggregate Reports
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 29]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+5.1.3.  Setup a Mailbox to Receive Aggregate Reports
 
    Proper consumption and analysis of DMARC aggregate reports are the
    keys to any successful DMARC deployment for a Domain Owner.  DMARC
@@ -1554,35 +1646,19 @@ Internet-Draft                  DMARCbis                      March 2024
    consume these reports and parse the data contained in them will go a
    long way to ensuring a successful deployment.
 
-
-
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 28]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-5.5.4.  Publish a DMARC Policy for the Author Domain and Organizational
+5.1.4.  Publish a DMARC Policy for the Author Domain and Organizational
         Domain
 
    Once SPF, DKIM, and the aggregate reports mailbox are all in place,
    it's time to publish a DMARC record.  For best results, Domain Owners
-   usually start with "p=none", (see Section 5.5.5) with the rua tag
+   usually start with "p=none", (see Section 5.1.5) with the rua tag
    containing a URI that references the mailbox created in the previous
    step.  This is commonly referred to as putting the Author Domain into
    Monitoring Mode.  If the Organizational Domain is different from the
    Author Domain, a record also needs to be published for the
    Organizational Domain.
 
-5.5.5.  Collect and Analyze Reports
+5.1.5.  Collect and Analyze Reports
 
    The reason for starting at "p=none" is to ensure that nothing's been
    missed in the initial SPF and DKIM deployments.  In all but the most
@@ -1592,7 +1668,21 @@ Internet-Draft                  DMARCbis                      March 2024
    function, with the Domain Owner using the reports to audit its own
    mail streams' authentication configurations.
 
-5.5.6.  Decide Whether to Update DMARC Policy
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 30]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+5.1.6.  Decide Whether to Update DMARC Policy
 
    Once the Domain Owner is satisfied that it is properly authenticating
    all of its mail, then it is time to decide if it is appropriate to
@@ -1606,27 +1696,73 @@ Internet-Draft                  DMARCbis                      March 2024
    In making this decision it is important to understand the
    interoperability issues involved and problems that can result for
    mailing lists and for deliverability of legitimate mail.  Those
-   issues are discussed in detail in Section 8.6
+   issues are discussed in detail in Section 7.6
 
-5.6.  PSO Actions
+5.1.7.  A Note on Large, Complex Organizations and Decentralized DNS
+        Management
+
+   Large, complex organizations frequently adopt a decentralized model
+   for DNS management, whereby management of a subtree of the name space
+   is delegated to a local deparment by the central IT organization.  In
+   such situations, the 'psd' tag makes it possible for those local
+   departments to declare any arbitrary node in their subtree as an
+   Organizational Domain.  This would be accomplished by publishing a
+   DMARC policy record at that node with the psd tag set to 'n'.  The
+   reasons that departments might declare their own Organizational
+   Domains include a desire to have different policy settings or
+   reporting URIs than the DMARC record published for the apex domain.
+
+   Such configurations would work in theory, and they might involve
+   domain names with many labels, reflecting the structure of the
+   organization, for example:
+
+   *  Apex domain (DMARC policy published here): example.com
+   *  Zone cut domain (DMARC policy published here):
+      c.d.e.f.g.example.com
+   *  RFC5322.From domain: mail.a.b.c.d.e.f.g.example.com
+
+   However, Domain Owners should be aware that a Mail Receiver MUST be
+   prepared to walk at least eight levels when performing a DNS Tree
+   Walk (#dns-tree-walk).  Such a setting would be optional on the part
+   of the Mail Receiver, as a proper Tree Walk only requires a minimum
+   of five levels.  A Mail Receiver that self-limits to five DNS queries
+   when performing the Tree Walk will never discover the DMARC policy at
+   _dmarc.c.d.e.f.g.example.com, as queries would only be performed for
+   these five names:
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 31]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   *  _dmarc.mail.a.b.c.d.e.f.g.example.com
+   *  _dmarc.f.g.example.com
+   *  _dmarc.g.example.com
+   *  _dmarc.example.com
+   *  _dmarc.com
+
+   To avoid this circumstance, Domain Owners wishing to have a specific
+   DMARC policy applied to a given RFC5322.From domain longer than five
+   labels SHOULD publish a DMARC policy record at that domain's location
+   in the DNS namespace, as such policy records are always queried for
+   by Mail Receivers that participate in DMARC.  In the above example,
+   this would mean publishing a DMARC policy record at the name
+   _dmarc.mail.a.b.c.d.e.f.g.example.com.
+
+5.2.  PSO Actions
 
    In addition to the DMARC Domain Owner actions, if a PSO publishes a
-   DMARC record it MUST include the psd tag (see Section 5.3) with a
+   DMARC record it MUST include the psd tag (see Section 4.7) with a
    value of 'y' ("psd=y").
 
-5.7.  Mail Receiver Actions
+5.3.  Mail Receiver Actions
 
    This section describes receiver actions in the DMARC environment.
 
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 29]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-5.7.1.  Extract Author Domain
+5.3.1.  Extract Author Domain
 
    The domain in the RFC5322.From header field is extracted as the
    domain to be evaluated by DMARC.  If the domain is a U-label, the
@@ -1636,10 +1772,10 @@ Internet-Draft                  DMARCbis                      March 2024
    If zero or more than one domain is extracted, then DMARC processing
    is not possible and the process terminates, although in the case
    where more than one domain is retrieved, the Mail Receiver MAY choose
-   to go forward with DMARC processing anyway.  See Section 11.5 for
+   to go forward with DMARC processing anyway.  See Section 10.5 for
    further discussion.
 
-5.7.2.  Determine Handling Policy
+5.3.2.  Determine Handling Policy
 
    To arrive at a policy for an individual message, Mail Receivers MUST
    perform the following actions or their semantic equivalents.  Steps
@@ -1651,41 +1787,41 @@ Internet-Draft                  DMARCbis                      March 2024
 
    1.  Extract the RFC5322.From domain from the message (as above).
 
-   2.  Query the DNS for a DMARC policy record.  Continue if one is
-       found, or terminate DMARC evaluation otherwise.  See Section 4.7
-       for details.
 
-   3.  Perform DKIM signature verification checks.  A single email could
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 32]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   2.  Query the DNS for a DMARC policy record.  Continue if one is
+       found, or terminate DMARC evaluation otherwise.  See
+       Section 4.10.1 for details.
+
+   3.  Perform DKIM signature validation checks.  A single email could
        contain multiple DKIM signatures.  The results of this step are
        passed to the remainder of the algorithm, MUST include "pass" or
        "fail", and if "fail", SHOULD include information about the
        reasons for failure.  The results MUST further include the value
        of the "d=" and "s=" tags from each checked DKIM signature.
 
-   4.  Perform SPF verification checks.  The results of this step are
+   4.  Perform SPF validation checks.  The results of this step are
        passed to the remainder of the algorithm, MUST include "pass" or
        "fail", and if "fail", SHOULD include information about the
        reasons for failure.  The results MUST further include the domain
        name used to complete the SPF check.
 
-   5.  Conduct Identifier Alignment checks.  With authentication checks
-       and policy discovery performed, the Mail Receiver checks to see
-       if Authenticated Identifiers are aligned as described in
-       Section 4.4.  If one or more of the Authenticated Identifiers
+   5.  Conduct Identifier Alignment checks.  With validation checks and
+       policy discovery performed, the Mail Receiver checks to see if
+       Authenticated Identifiers are aligned as described in
+       Section 4.10.2.  If one or more of the Authenticated Identifiers
        align with the RFC5322.From domain, the message is considered to
        pass the DMARC mechanism check.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 30]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    6.  Apply policy, if appropriate.  Emails that fail the DMARC
        mechanism check are handled in accordance with the discovered
        DMARC policy of the Domain Owner and any local policy rules
-       enforced by the Mail Receiver.  See Section 5.3 for details.
+       enforced by the Mail Receiver.  See Section 4.7 for details.
 
    DMARC evaluation can only yield a "pass" result after one of the
    underlying authentication mechanisms passes for an aligned
@@ -1699,14 +1835,22 @@ Internet-Draft                  DMARCbis                      March 2024
    Handling of messages for which SPF and/or DKIM evaluation encounter a
    permanent DNS error is left to the discretion of the Mail Receiver.
 
-5.7.3.  Store Results of DMARC Processing
+5.3.3.  Store Results of DMARC Processing
 
    Mail Receiver-based DMARC processing results should be stored for
    eventual presentation back to the Domain Owner in the form of
-   aggregate feedback reports.  Section 5.3 and
+   aggregate feedback reports.  Section 4.7 and
    [I-D.ietf-dmarc-aggregate-reporting] discuss aggregate feedback.
 
-5.7.4.  Send Aggregate Reports
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 33]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+5.3.4.  Send Aggregate Reports
 
    For a Domain Owner, DMARC aggregate reports provide data about all
    mailstreams making use of its domain in email, to include not only
@@ -1725,20 +1869,7 @@ Internet-Draft                  DMARCbis                      March 2024
    email ecosystem, Mail Receivers SHOULD generate and send aggregate
    reports with a frequency of at least once every 24 hours.
 
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 31]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-5.7.5.  Optionally Send Failure Reports
+5.3.5.  Optionally Send Failure Reports
 
    As mentioned previously, per-message failure reports can be a useful
    source of information for a Domain Owner, either for debugging
@@ -1749,7 +1880,7 @@ Internet-Draft                  DMARCbis                      March 2024
    their usefulness) or not send them at all.  See
    [I-D.ietf-dmarc-failure-reporting] for further information.
 
-5.8.  Policy Enforcement Considerations
+5.4.  Policy Enforcement Considerations
 
    Mail Receivers MAY choose to reject or quarantine email even if email
    passes the DMARC mechanism check.  The DMARC mechanism does not
@@ -1759,10 +1890,26 @@ Internet-Draft                  DMARCbis                      March 2024
    to maintain anti-abuse technologies to combat the possibility of
    DMARC-enabled criminal campaigns.
 
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 34]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
    Mail Receivers MAY choose to accept email that fails the DMARC
    mechanism check even if the published Domain Owner Assessment Policy
    is "reject".  In particular, because of the considerations discussed
-   in [RFC7960] and in Section 8.6 of this document, it is important
+   in [RFC7960] and in Section 7.6 of this document, it is important
    that Mail Receivers not reject messages solely because of a published
    policy of "reject", but that they apply other knowledge and analysis
    to avoid situations such as rejection of legitimate messages sent in
@@ -1780,19 +1927,6 @@ Internet-Draft                  DMARCbis                      March 2024
    of and reason for the deviation to the Domain Owner via feedback
    reporting, specifically using the "PolicyOverride" feature of the
    aggregate report defined in [I-D.ietf-dmarc-aggregate-reporting].
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 32]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    The final handling of a message is always a matter of local policy.
    An operator that wishes to favor DMARC policy over SPF policy, for
@@ -1814,6 +1948,20 @@ Internet-Draft                  DMARCbis                      March 2024
    existing mail processing, discovered policies of "p=none" MUST NOT
    modify existing mail handling processes.
 
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 35]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
 6.  DMARC Feedback
 
    Providing Domain Owners with visibility into how Mail Receivers
@@ -1828,235 +1976,15 @@ Internet-Draft                  DMARCbis                      March 2024
 
    Operational note for PSD DMARC: For PSOs, feedback for non-existent
    domains is desirable and useful, just as it is for org-level DMARC
-   operators.  See Section 10 for discussion of Privacy Considerations
+   operators.  See Section 9 for discussion of Privacy Considerations
    for PSD DMARC.
 
-7.  Changes from RFC 7489
-
-   This document is intended to render obsolete [RFC7489].  As one might
-   guess, that means there are significant differences between RFC 7489
-   and this document.  This section will summarize those changes.
-
-7.1.  IETF Category
-
-   RFC 7489 was not an Internet Standards Track specification; it was
-   instead published in the Informational Category.  This document, by
-   contrast, is intended to be Internet Standards Track.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 33]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-7.2.  Changes to Terminology and Definitions
-
-   The following changes were made to the Terminology and Definitions
-   section.
-
-7.2.1.  Terms Added
-
-   These terms were added:
-
-   *  Enforcement
-   *  Monitoring Mode
-   *  Non-existent Domains
-   *  Public Suffix Domain (PSD)
-   *  Public Suffix Operator (PSO)
-   *  PSO Controlled Domain Names
-
-7.2.2.  Definitions Updated
-
-   These definitions were updated:
-
-   *  Organizational Domain
-   *  Report Receiver (renamed to Report Consumer)
-
-7.3.  Policy Discovery and Organizational Domain Determination
-
-   The algorithms for DMARC policy discovery and for determining the
-   Organizational Domain have been changed.  Specifically, reliance on
-   the Public Suffix List (PSL) has been replaced by a technique called
-   a "DNS Tree Walk", and the methodology for the DNS Tree Walk is
-   explained in detail in this document.
-
-   The DNS Tree Walk also incorporates PSD policy discovery, which was
-   introduced in [RFC9091].  [RFC9091] was an Experimental RFC, and the
-   results of that experiment were that the RFC was not implemented as
-   written.  Instead, this document redefines the algorithm for PSD
-   policy discovery, and thus obsoletes [RFC9091].
-
-7.4.  Reporting
-
-   Discussion of both aggregate and failure reporting have been moved to
-   separate documents dedicated to the topics.
-
-   In addition, the ability to specify a maximum report size in the
-   DMARC URI has been removed.
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 34]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-7.5.  Tags
-
-   Several tags have been added to the "General Record Format" section
-   of this document since RFC 7489 was published, and at the same time,
-   several others were removed.
-
-7.5.1.  Tags Added:
-
-   *  np - Policy for non-existent domains (Imported from [RFC9091])
-   *  psd - Flag indicating whether a domain is a Public Suffix Domain
-   *  t - Replacement for some pct tag functionality.  See Appendix A.6
-      for further discussion
-
-7.5.2.  Tags Removed:
-
-   *  pct - Tag requesting application of DMARC policy to only a
-      percentage of messages
-   *  rf - Tag specifying requested format of failure reports
-   *  ri - Tag specifying requested interval between aggregate reports
-
-7.6.  Expansion of Domain Owner Actions Section
-
-   This section has been expanded upon from RFC 7489.
-
-   RFC 7489 had just two paragraphs in its Domain Owner Actions section,
-   and while the content of those paragraphs was correct, it was
-   minimalist in its approach to providing guidance to domain owners on
-   just how to implement DMARC.
-
-   This document provides much more detail and explanatory text to a
-   Domain Owner, focusing not just on what to do to implement DMARC, but
-   also on the reasons for each step and the repercussions of each
-   decision.
-
-   In particular, this document makes explicit that domains for general-
-   purpose email SHOULD NOT deploy a DMARC policy of p=reject.  See
-   Section 8.6 for further discussion of this topic.
-
-7.7.  Report Generator Recommendations
-
-   In the cases where a DMARC policy record specifies multiple
-   destinations for either aggregate reports or failure reports, RFC
-   7489 stated:
-
-     Receivers MAY impose a limit on the number of URIs to which they
-     will send reports but MUST support the ability to send to at least
-     two.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 35]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   This document in Section 5.2 says:
-
-     A report SHOULD be sent to each listed URI provided in the DMARC
-     record.
-
-7.8.  Removal of RFC 7489 Appendix A.5
-
-   One of the appendices in RFC 7489, specifically Appendix A.5, has
-   been removed from the text with this update.  The appendix was titled
-   "Issues with ADSP in Operation" and it contained a list of issues
-   associated with ADSP that influenced the direction of DMARC.  The
-   ADSP protocol was moved to "Historic" status in 2013 and working
-   group consensus was that such a discussion of ADSP's influence on
-   DMARC was no longer relevant.
-
-7.9.  RFC 7489 Errata Summary
-
-   Remove this before final submission: (https://www.rfc-
-   editor.org/styleguide/part2/#ref_errata (https://www.rfc-
-   editor.org/styleguide/part2/#ref_errata) says errata in the Reported
-   state should not be referenced; they are not considered stable.)
-
-   This document and its companion documents
-   ([I-D.ietf-dmarc-aggregate-reporting] and
-   [I-D.ietf-dmarc-failure-reporting]) address the following errata
-   filed against [RFC7489] since that document's publication in March,
-   2015.  More details on each of these can be found at https://www.rfc-
-   editor.org/errata_search.php?rfc=7489 (https://www.rfc-editor.org/
-   errata_search.php?rfc=7489)
-
-   [Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1
-   https://www.rfc-editor.org/errata/eid5365 (https://www.rfc-
-   editor.org/errata/eid5365):  To be addressed in
-      [I-D.ietf-dmarc-aggregate-reporting]
-
-   [Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1
-   https://www.rfc-editor.org/errata/eid5371 (https://www.rfc-
-   editor.org/errata/eid5371):  To be addressed in
-      [I-D.ietf-dmarc-aggregate-reporting]
-
-   [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1
-   https://www.rfc-editor.org/errata/eid5440 (https://www.rfc-
-   editor.org/errata/eid5440):  To be addressed in
-      [I-D.ietf-dmarc-aggregate-reporting]
-
-   [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1,
-   B.2.3, and B.2.4 https://www.rfc-editor.org/errata/eid5440
-   (https://www.rfc-editor.org/errata/eid5440):  Addressed in this
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 36]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-      document.
-
-   [Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1
-   https://www.rfc-editor.org/errata/eid6439 (https://www.rfc-
-   editor.org/errata/eid6439):  To be addressed in
-      [I-D.ietf-dmarc-aggregate-reporting]
-
-   [Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1
-   https://www.rfc-editor.org/errata/eid6485 (https://www.rfc-
-   editor.org/errata/eid6485):  To be addressed in
-      [I-D.ietf-dmarc-aggregate-reporting]
-
-   [Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3
-   https://www.rfc-editor.org/errata/eid7835 (https://www.rfc-
-   editor.org/errata/eid7835):  This erratum is in reference to the
-      description of the process documented in RFC 7489 for the
-      applicable DMARC policy for an email message.  The process for
-      doing this has drastically changed in DMARCbis, and so the text
-      identified in this erratum no longer exists.
-
-   [Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1
-   https://www.rfc-editor.org/errata/eid5151 (https://www.rfc-
-   editor.org/errata/eid5151):  This erratum is in reference to the
-      Introduction section of RFC 7489.  That section has been
-      substantially rewritten in DMARCbis, and the text at issue for
-      this erratum no longer exists.
-
-7.10.  General Editing and Formatting
-
-   A great deal of the content from RFC 7489 was preserved in this
-   document, but much of it was subject to either minor editing, re-
-   ordering of sections, and/or both.
-
-8.  Other Topics
+7.  Other Topics
 
    This section discusses some topics regarding choices made in the
    development of DMARC, largely to commit the history to record.
 
-8.1.  Issues Specific to SPF
+7.1.  Issues Specific to SPF
 
    Though DMARC does not inherently change the semantics of an SPF
    policy record, historically lax enforcement of such policies has led
@@ -2064,24 +1992,37 @@ Internet-Draft                  DMARCbis                      March 2024
    network ranges.  Domain Owners are strongly encouraged to carefully
    review their SPF records to understand which networks are authorized
    to send on behalf of the Domain Owner before publishing a DMARC
-   record.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 37]
-
-Internet-Draft                  DMARCbis                      March 2024
-
+   record.  Furthermore, Domain Owners should periodically review their
+   SPF records to ensure that the authorization conveyed by the records
+   matches the domain's current needs.
 
    Some Mail Receiver architectures might implement SPF in advance of
-   any DMARC operations.  This means that a "-" prefix on a sender's SPF
-   mechanism, such as "-all", could cause that rejection to go into
-   effect early in handling, causing message rejection before any DMARC
-   processing takes place.  Operators choosing to use "-all" should be
-   aware of this.
+   any DMARC operations.  This means that a SPF hard fail ("-") prefix
+   on a sender's SPF mechanism, such as "-all", could cause a message to
+   be rejected early in the SMTP transaction, before any DMARC
+   processing takes place, if the message fails SPF validation checks.
+   Domain Owners choosing to use "-all" to terminate SPF records should
+   be aware of this, and should understand that messages that might
+   otherwise pass DMARC due to an aligned DKIM pass could be rejected
+   solely due to an SPF fail.  Domain Owners and Mail Receivers can
+   consult the following two documents for more discussion of the topic:
 
-8.2.  DNS Load and Caching
+   *  M3AAWG Best Practices for Managing SPF Records
+      (https://www.m3aawg.org/Managing-SPF-Records)
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 36]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   *  M3AAWG Email Authentication Recommended Best Practices
+      (https://www.m3aawg.org/sites/default/files/m3aawg-email-
+      authentication-recommended-best-practices-09-2020.pdf)
+
+7.2.  DNS Load and Caching
 
    DMARC policies are communicated using the DNS and therefore inherit a
    number of considerations related to DNS caching.  The inherent
@@ -2102,7 +2043,7 @@ Internet-Draft                  DMARCbis                      March 2024
    DMARC preference changes while preserving the benefits of DNS
    caching.
 
-8.3.  Rejecting Messages
+7.3.  Rejecting Messages
 
    This protocol calls for rejection of a message during the SMTP
    session under certain circumstances.  This is preferable to
@@ -2125,9 +2066,12 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 38]
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 37]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    Each of these has a cost.  For instance, a silent discard can help to
@@ -2158,7 +2102,7 @@ Internet-Draft                  DMARCbis                      March 2024
    retrieve or apply DMARC policy, this is best done with a 4xy SMTP
    reply code.
 
-8.4.  Identifier Alignment Considerations
+7.4.  Identifier Alignment Considerations
 
    The DMARC mechanism allows both DKIM and SPF-authenticated
    identifiers to authenticate email on behalf of a Domain Owner and,
@@ -2181,12 +2125,12 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 39]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 38]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-8.5.  Interoperability Issues
+7.5.  Interoperability Issues
 
    DMARC limits which end-to-end scenarios can achieve a "pass" result.
 
@@ -2199,7 +2143,7 @@ Internet-Draft                  DMARCbis                      March 2024
    Mail that is sent by authorized, independent third parties might not
    be sent with Identifier Alignment, also preventing a "pass" result.
 
-8.6.  Interoperability Considerations
+7.6.  Interoperability Considerations
 
    As discussed in "Interoperability Issues between DMARC and Indirect
    Email Flows" [RFC7960], use of p=reject can be incompatible with and
@@ -2237,9 +2181,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 40]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 39]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    |  determine the possible impact to their users, first by publishing
@@ -2250,7 +2194,7 @@ Internet-Draft                  DMARCbis                      March 2024
    |  Internet mailing lists and/or inform their users that their
    |  participation in mailing lists may be hindered.
 
-   As noted in Section 5.8, receiving domains need to apply more
+   As noted in Section 5.4, receiving domains need to apply more
    analysis than just DMARC evaluation in their disposition of incoming
    messages.  An example of the consequences of honoring p=reject
    without further analysis is that rejecting messages that have been
@@ -2260,7 +2204,7 @@ Internet-Draft                  DMARCbis                      March 2024
    as though the recipient's email address is no longer working, so the
    address is automatically unsubscribed.
 
-   |  It is therefore critical that receiving domains MUST NOT reject
+   |  It is therefore critical that Mail Receivers MUST NOT reject
    |  incoming messages solely on the basis of a p=reject policy by the
    |  sending domain.  Receiving domains must use the DMARC policy as
    |  part of their disposition decision, along with other knowledge and
@@ -2272,11 +2216,18 @@ Internet-Draft                  DMARCbis                      March 2024
    result in trouble-desk calls and complaints from your own employees,
    customers, and clients.
 
-9.  IANA Considerations
+   As a final note, one possible mitigation to the problems caused by
+   Domain Owners publishing p=reject when they should not or Mail
+   Receivers rejecting messages solely on the basis of a p=reject policy
+   is the Autheticated Received Chain (ARC) protocol described in
+   [RFC8617].  However, as of this writing, use of ARC is nascent, as is
+   industry experience with it in connection with DMARC.
+
+8.  IANA Considerations
 
    This section describes actions completed by IANA.
 
-9.1.  Authentication-Results Method Registry Update
+8.1.  Authentication-Results Method Registry Update
 
    IANA has added the following to the "Email Authentication Methods"
    registry:
@@ -2286,16 +2237,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 41]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 40]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    +======+===========+======+==========+===============+======+=======+
@@ -2323,9 +2267,9 @@ Internet-Draft                  DMARCbis                      March 2024
    |      |           |      |          | or reject.    |      |       |
    +------+-----------+------+----------+---------------+------+-------+
 
-          Table 2: "Authentication-Results Method Registry Update"
+          Table 3: "Authentication-Results Method Registry Update"
 
-9.2.  Authentication-Results Result Registry Update
+8.2.  Authentication-Results Result Registry Update
 
    IANA has added the following in the "Email Authentication Result
    Names" registry:
@@ -2344,17 +2288,17 @@ Internet-Draft                  DMARCbis                      March 2024
    | dmarc          | temperror | [RFC7489]              | active |
    +----------------+-----------+------------------------+--------+
 
-       Table 3: "Authentication-Results Result Registry Update"
+       Table 4: "Authentication-Results Result Registry Update"
 
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 42]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 41]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-9.3.  Feedback Report Header Fields Registry Update
+8.3.  Feedback Report Header Fields Registry Update
 
    The following has been added to the "Feedback Report Header Fields"
    registry:
@@ -2378,9 +2322,9 @@ Internet-Draft                  DMARCbis                      March 2024
    |         | in [RFC7489] |          |            |         |       |
    +---------+--------------+----------+------------+---------+-------+
 
-                 Table 4: "Feedback Report Header Fields"
+                 Table 5: "Feedback Report Header Fields"
 
-9.4.  DMARC Tag Registry
+8.4.  DMARC Tag Registry
 
    A new registry tree called "Domain-based Message Authentication,
    Reporting, and Conformance (DMARC) Parameters" has been created.
@@ -2405,9 +2349,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 43]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 42]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    The initial set of entries in this registry is as follows:
@@ -2453,7 +2397,7 @@ Internet-Draft                  DMARCbis                      March 2024
    | v     | RFC 7489  | current  | Specification version       |
    +-------+-----------+----------+-----------------------------+
 
-                   Table 5: "DMARC Tag Registry"
+                   Table 6: "DMARC Tag Registry"
 
 
 
@@ -2461,12 +2405,12 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 44]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 43]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-9.5.  DMARC Report Format Registry
+8.5.  DMARC Report Format Registry
 
    Also, within "Domain-based Message Authentication, Reporting, and
    Conformance (DMARC) Parameters", a new sub-registry called "DMARC
@@ -2493,9 +2437,9 @@ Internet-Draft                  DMARCbis                      March 2024
    |        |           |         | Format (see [RFC6591])           |
    +--------+-----------+---------+----------------------------------+
 
-                 Table 6: "DMARC Report Format Registry"
+                 Table 7: "DMARC Report Format Registry"
 
-9.6.  Underscored and Globally Scoped DNS Node Names Registry
+8.6.  Underscored and Globally Scoped DNS Node Names Registry
 
    Per [RFC8552], please add the following entry to the "Underscored and
    Globally Scoped DNS Node Names" registry:
@@ -2506,7 +2450,7 @@ Internet-Draft                  DMARCbis                      March 2024
    | TXT     | _dmarc     | RFC 7489  |
    +---------+------------+-----------+
 
-        Table 7: "Underscored and
+        Table 8: "Underscored and
      Globally Scoped DNS Node Names"
                  registry
 
@@ -2517,12 +2461,12 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 45]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 44]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-10.  Privacy Considerations
+9.  Privacy Considerations
 
    This section discusses issues specific to private data that may be
    included if DMARC reports are requested.  Issues associated with
@@ -2530,7 +2474,7 @@ Internet-Draft                  DMARCbis                      March 2024
    [I-D.ietf-dmarc-aggregate-reporting] and
    [I-D.ietf-dmarc-failure-reporting] respectively.
 
-10.1.  Aggregate Report Considerations
+9.1.  Aggregate Report Considerations
 
    Aggregate reports may, particularly for small organizations, provide
    some limited insight into email sending patterns.  As an example, in
@@ -2547,7 +2491,7 @@ Internet-Draft                  DMARCbis                      March 2024
    exposure of private data of registrant domains if they include the
    rua= tag in their DMARC record.
 
-10.2.  Failure Report Considerations
+9.2.  Failure Report Considerations
 
    Failure reports do provide insight into email sending patterns,
    including specific users.  If requesting failure reports, data
@@ -2573,22 +2517,44 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 46]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 45]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
-11.  Security Considerations
+10.  Security Considerations
 
    This section discusses security issues and possible remediations
    (where available) for DMARC.
 
-11.1.  Authentication Methods
+10.1.  Authentication Methods
 
    Security considerations from the authentication methods used by DMARC
    are incorporated here by reference.
 
-11.2.  Attacks on Reporting URIs
+   Both of the email authentication methods that underlie DMARC provide
+   some assurance that an email was transmitted by an MTA which is
+   authorized to do so.  SPF policies map domain names to sets of
+   authorized MTAs [ref to RFC 7208, section 11.4].  Verified DKIM
+   signatures indicate that an email was transmitted by an MTA with
+   access to a private key that matches the published DKIM key record.
+
+   Whenever mail is sent, there is a risk that an overly permissive
+   source may send mail that will receive a DMARC pass result that was
+   not, in fact, intended by the Domain Owner.  These results may lead
+   to issues when systems interpret DMARC pass results to indicate a
+   message is in some way authentic.  They also allow such unauthorized
+   senders to evade the Domain Owner's intended message handling for
+   authentication failures.
+
+   To avoid this risk one must ensure that no unauthorized source can
+   add DKIM signatures to the domain's mail or transmit mail which will
+   evaluate as SPF pass.  If, nonetheless, a Domain Owner wishes to
+   include a permissive source in a domain's SPF record, the source can
+   be excluded from DMARC consideration by using the '?' qualifier on
+   the SPF record mechanism associated with that source.
+
+10.2.  Attacks on Reporting URIs
 
    URIs published in DNS TXT records are well-understood possible
    targets for attack.  Specifications such as [RFC1035] and [RFC2142]
@@ -2603,6 +2569,15 @@ Internet-Draft                  DMARCbis                      March 2024
 
    *  high-volume denial-of-service attacks;
 
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 46]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
    *  deliberate construction of malformed reports intended to identify
       or exploit parsing or processing vulnerabilities;
 
@@ -2610,7 +2585,7 @@ Internet-Draft                  DMARCbis                      March 2024
       Submitter or Reported-Domain fields, including the possibility of
       false data from compromised but known Mail Receivers.
 
-11.3.  DNS Security
+10.3.  DNS Security
 
    The DMARC mechanism and its underlying technologies (SPF, DKIM)
    depend on the security of the DNS.  Examples of how hostile parties
@@ -2625,15 +2600,6 @@ Internet-Draft                  DMARCbis                      March 2024
    *  If they can send forged response packets, they can make aligned
       mail appear unaligned or vice-versa.
 
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 47]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    None of these threats are unique to DMARC, and they can be addressed
    using a variety of techniques, including, but not limited to:
 
@@ -2644,7 +2610,7 @@ Internet-Draft                  DMARCbis                      March 2024
    *  DNS over TLS [RFC7858] or DNS over HTTPS [RFC8484] can mitigate
       snooping and forged responses.
 
-11.4.  Display Name Attacks
+10.4.  Display Name Attacks
 
    A common attack in messaging abuse is the presentation of false
    information in the display-name portion of the RFC5322.From header
@@ -2659,6 +2625,14 @@ Internet-Draft                  DMARCbis                      March 2024
    Generally, display name attacks are out of scope for DMARC, as
    further exploration of possible defenses against these attacks needs
    to be undertaken.
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 47]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    There are a few possible mechanisms that attempt mitigation of these
    attacks, such as the following:
@@ -2683,16 +2657,9 @@ Internet-Draft                  DMARCbis                      March 2024
       passes and the email address thus verified matches one found in
       the receiving user's list of known addresses.
 
+10.5.  Denial of DMARC Processing Attacks
 
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 48]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-11.5.  Denial of DMARC Processing Attacks
-
-   The declaration in Section 5.7.1 and elsewhere in this document that
+   The declaration in Section 5.3.1 and elsewhere in this document that
    messages that do not contain precisely one RFC5322.From domain are
    outside the scope of this document exposes an attack vector that must
    be taken into consideration.
@@ -2715,6 +2682,14 @@ Internet-Draft                  DMARCbis                      March 2024
    message prior to and instead of its being subjected to DMARC
    processing.  However, in a case where a Mail Receiver requires that
    the message be subject to DMARC evaluation, a recommended approach as
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 48]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
    per [RFC7489] is to apply the DMARC check to each domain found in the
    RFC5322.From field as the Author Domain and apply the most strict
    policy selected among the checks that fail.  Such an approach might
@@ -2725,7 +2700,7 @@ Internet-Draft                  DMARCbis                      March 2024
    Domains processed will avoid this risk.  If not all Author Domains
    are processed, then the DMARC evaluation is incomplete.
 
-11.6.  External Reporting Addresses
+10.6.  External Reporting Addresses
 
    To avoid abuse by bad actors, reporting addresses generally have to
    be inside the domains about which reports are requested.  To
@@ -2738,13 +2713,6 @@ Internet-Draft                  DMARCbis                      March 2024
    domains that are claimed as external recipients.  Negative caching
    will mitigate this problem, but only to a limited extent, mostly
    dependent on the default TTL in the domain's SOA record.
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 49]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    Where possible, external reporting is best achieved by having the
    report be directed to domains that can receive mail and simply having
@@ -2759,7 +2727,7 @@ Internet-Draft                  DMARCbis                      March 2024
    routed fraudulently to an attacker's systems may be an attractive
    prospect.  Deployment of [RFC4033] is advisable if this is a concern.
 
-11.7.  Secure Protocols
+10.7.  Secure Protocols
 
    This document encourages the use of secure transport mechanisms to
    prevent the loss of private data to third parties that may be able to
@@ -2770,7 +2738,15 @@ Internet-Draft                  DMARCbis                      March 2024
    secured might appear in a report that is not sent securely, which
    could reveal private information.
 
-11.8.  Determination of the Organizational Domain For Relaxed Alignment
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 49]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+10.8.  Determination of the Organizational Domain For Relaxed Alignment
 
    DMARC evaluation for relaxed alignment is highly sensitive to errors
    in determining the organizational domain if the RFC5322.From domain
@@ -2779,7 +2755,7 @@ Internet-Draft                  DMARCbis                      March 2024
    domain, then relaxed alignment could potentially allow a malicious
    sender to obtain DMARC PASS.  This potential exists for both the
    legacy [RFC7489] and current methods for determining the
-   organizational domain, the latter described in Section 4.8.
+   organizational domain, the latter described in Section 4.10.2.
 
    This issue is entirely avoided by the use of strict alignment and
    publishing DMARC records for all domains/sub-domains used as
@@ -2794,15 +2770,7 @@ Internet-Draft                  DMARCbis                      March 2024
    organizational domain's DMARC record so that the PSD record will not
    be incorrectly evaluated to be the organizational domain
 
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 50]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-12.  Normative References
+11.  Normative References
 
    [I-D.ietf-dmarc-aggregate-reporting]
               Brotman, A., "DMARC Aggregate Reporting", Work in
@@ -2815,13 +2783,24 @@ Internet-Draft                  DMARCbis                      March 2024
               Jones, S. M. and A. Vesely, "Domain-based Message
               Authentication, Reporting, and Conformance (DMARC) Failure
               Reporting", Work in Progress, Internet-Draft, draft-ietf-
-              dmarc-failure-reporting-09, 14 September 2023,
+              dmarc-failure-reporting-10, 17 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-
-              failure-reporting-09>.
+              failure-reporting-10>.
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
               November 1987, <https://www.rfc-editor.org/info/rfc1035>.
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 50]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2851,13 +2830,6 @@ Internet-Draft                  DMARCbis                      March 2024
               DOI 10.17487/RFC5322, October 2008,
               <https://www.rfc-editor.org/info/rfc5322>.
 
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 51]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    [RFC5890]  Klensin, J., "Internationalized Domain Names for
               Applications (IDNA): Definitions and Document Framework",
               RFC 5890, DOI 10.17487/RFC5890, August 2010,
@@ -2876,6 +2848,15 @@ Internet-Draft                  DMARCbis                      March 2024
               (DKIM) for Failure Reporting", RFC 6651,
               DOI 10.17487/RFC6651, June 2012,
               <https://www.rfc-editor.org/info/rfc6651>.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 51]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    [RFC6652]  Kitterman, S., "Sender Policy Framework (SPF)
               Authentication Failure Reporting Using the Abuse Reporting
@@ -2906,21 +2887,7 @@ Internet-Draft                  DMARCbis                      March 2024
               DOI 10.17487/RFC8601, May 2019,
               <https://www.rfc-editor.org/info/rfc8601>.
 
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 52]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   [RFC9091]  Kitterman, S. and T. Wicinski, Ed., "Experimental Domain-
-              Based Message Authentication, Reporting, and Conformance
-              (DMARC) Extension for Public Suffix Domains", RFC 9091,
-              DOI 10.17487/RFC9091, July 2021,
-              <https://www.rfc-editor.org/info/rfc9091>.
-
-13.  Informative References
+12.  Informative References
 
    [RFC2142]  Crocker, D., "Mailbox Names for Common Services, Roles and
               Functions", RFC 2142, DOI 10.17487/RFC2142, May 1997,
@@ -2940,6 +2907,13 @@ Internet-Draft                  DMARCbis                      March 2024
               RFC 4033, DOI 10.17487/RFC4033, March 2005,
               <https://www.rfc-editor.org/info/rfc4033>.
 
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 52]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
    [RFC5598]  Crocker, D., "Internet Mail Architecture", RFC 5598,
               DOI 10.17487/RFC5598, July 2009,
               <https://www.rfc-editor.org/info/rfc5598>.
@@ -2957,18 +2931,6 @@ Internet-Draft                  DMARCbis                      March 2024
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 53]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    [RFC7960]  Martin, F., Ed., Lear, E., Ed., Draegen, T., Ed., Zwicky,
               E., Ed., and K. Andersen, Ed., "Interoperability Issues
@@ -2994,6 +2956,26 @@ Internet-Draft                  DMARCbis                      March 2024
               (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
               <https://www.rfc-editor.org/info/rfc8484>.
 
+   [RFC8617]  Andersen, K., Long, B., Ed., Blank, S., Ed., and M.
+              Kucherawy, Ed., "The Authenticated Received Chain (ARC)
+              Protocol", RFC 8617, DOI 10.17487/RFC8617, July 2019,
+              <https://www.rfc-editor.org/info/rfc8617>.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 53]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   [RFC9091]  Kitterman, S. and T. Wicinski, Ed., "Experimental Domain-
+              Based Message Authentication, Reporting, and Conformance
+              (DMARC) Extension for Public Suffix Domains", RFC 9091,
+              DOI 10.17487/RFC9091, July 2021,
+              <https://www.rfc-editor.org/info/rfc9091>.
+
 Appendix A.  Technology Considerations
 
    This section documents some design decisions made in the development
@@ -3012,19 +2994,6 @@ A.1.  S/MIME
    Domain Owner taking responsibility for the message), while S/MIME is
    really intended for user-to-user authentication and encryption.  This
    alone appears to make it a bad fit for DMARC's goals.
-
-
-
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 54]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
    S/MIME also suffers from the heavyweight problem of Public Key
    Infrastructure, which means that distribution of keys used to verify
@@ -3047,8 +3016,15 @@ Internet-Draft                  DMARCbis                      March 2024
 A.2.  Method Exclusion
 
    It was suggested that DMARC include a mechanism by which a Domain
-   Owner could tell Mail Receivers not to attempt verification by one of
+   Owner could tell Mail Receivers not to attempt validation by one of
    the supported methods (e.g., "check DKIM, but not SPF").
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 54]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    Specifically, consider a Domain Owner that has deployed one of the
    technologies and that technology fails for some messages, but such
@@ -3071,16 +3047,6 @@ A.2.  Method Exclusion
        the failure modes of the first.
 
    3.  Deploy DMARC in a reporting-only mode.
-
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 55]
-
-Internet-Draft                  DMARCbis                      March 2024
-
 
 A.3.  Sender Header Field
 
@@ -3107,6 +3073,15 @@ A.3.  Sender Header Field
        is for, its use in this way is also unreliable, making it a poor
        candidate for inclusion in the DMARC evaluation algorithm.
 
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 55]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
    3.  Allowing multiple ways to discover policy introduces unacceptable
        ambiguity into the DMARC evaluation algorithm in terms of which
        policy is to be applied and when.
@@ -3130,14 +3105,6 @@ A.4.  Domain Existence Test
    specific DNS RRs in order for a domain to exist; instead, if any RR
    exists for a domain, then the domain exists.  To use the terminology
    from [RFC2308], an "NXDOMAIN" response (rcode "Name Error") to a DNS
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 56]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    query means that the domain name does not exist, while a "NODATA"
    response (rcode "NOERROR") means that the given resource record type
    queried for does not exist, but the domain name does.
@@ -3163,56 +3130,21 @@ A.5.  Organizational Domain Discovery Issues
    high number of messages each with a relatively large number of
    nonsense labels, causing a Mail Receiver to perform a large number of
    DNS queries in search of a policy record.  This version defines a
-   method for performing a DNS Tree Walk, described in Section 4.6, and
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 56]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   method for performing a DNS Tree Walk, described in Section 4.10, and
    further mitigates the risk of the denial-of-service attack by
    expressly limiting the number of DNS queries to execute regardless of
    the number of labels in the domain name.
 
-   As a matter of historical record, the method for finding the
-   Organizational Domain described in [RFC7489] is preserved here:
-
-   1.  Acquire a "public suffix" list (PSL), i.e., a list of DNS domain
-       names reserved for registrations.  Some country Top-Level Domains
-       (TLDs) make specific registration requirements, e.g., the United
-       Kingdom places company registrations under ".co.uk"; other TLDs
-       such as ".com" appear in the IANA registry of top-level DNS
-       domains.  A PSL is the union of all of these.
-
-       A PSL can be obtained from various sources.  The most common one
-       is maintained by the Mozilla Foundation and made public at
-       https://publicsuffix.org (https://publicsuffix.org).  License
-       terms governing the use of that list are available at that URI.
-
-       Note that if operators use a variety of public suffix lists,
-       interoperability will be difficult or impossible to guarantee.
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 57]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
-   2.  Break the subject DNS domain name into a set of "n" ordered
-       labels.  Number these labels from right to left; e.g., for
-       "example.com", "com" would be label 1 and "example" would be
-       label 2.
-
-   3.  Search the public suffix list for the name that matches the
-       largest number of labels found in the subject DNS domain.  Let
-       that number be "x".
-
-   4.  Construct a new DNS domain name using the name that matched from
-       the public suffix list and prefixing to it the "x+1"th label from
-       the subject domain.  This new name is the Organizational Domain.
-
-   Thus, since "com" is an IANA-registered TLD, a subject domain of
-   "a.b.c.d.example.com" would have an Organizational Domain of
-   "example.com".
-
-   The process of determining a suffix is currently a heuristic one.  No
-   list is guaranteed to be accurate or current.
+   Readers curious about the previous method for Organizational Domain
+   Discovery are directed to Section 3.2 of [RFC7489].
 
 A.6.  Removal of the "pct" Tag
 
@@ -3242,14 +3174,6 @@ A.6.  Removal of the "pct" Tag
    reveal to the Domain Owner how much of its traffic was routing
    through intermediaries that don't rewrite the RFC5322.From header.
    It required work on the part of the Domain Owner to compare aggregate
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 58]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    reports from before and after the p= value was changed and pct= was
    included in the DMARC policy record with a value of "0", but the data
    was there.  Consequently, knowing how much mail was subject to
@@ -3259,6 +3183,16 @@ Internet-Draft                  DMARCbis                      March 2024
    p=reject.  Armed with this knowledge, the Domain Owner could make an
    informed decision regarding subjecting its mail traffic to possible
    DMARC failures based on the Domain Owner's tolerance for such things.
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 57]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    Because of the value provided by "pct=0" to Domain Owners, it was
    logical to keep this functionality in the protocol; at the same time,
@@ -3299,13 +3233,6 @@ B.1.1.  SPF
    header field have identical DNS domains.  Thus, the identifiers are
    in strict alignment.
 
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 59]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    Example 2: SPF in relaxed alignment:
 
         MAIL FROM: <sender@child.example.com>
@@ -3314,6 +3241,14 @@ Internet-Draft                  DMARCbis                      March 2024
         Date: Fri, Feb 15 2002 16:54:30 -0800
         To: receiver@example.org
         Subject: here's a sample
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 58]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    In this case, the RFC5322.From header parameter includes a DNS domain
    that is a parent of the RFC5321.MailFrom domain.  Thus, the
@@ -3335,7 +3270,7 @@ Internet-Draft                  DMARCbis                      March 2024
 
 B.1.2.  DKIM
 
-   The examples below assume that the DKIM signatures pass verification.
+   The examples below assume that the DKIM signatures pass validation.
    Alignment cannot exist with a DKIM signature that does not verify.
 
    Example 1: DKIM in strict alignment:
@@ -3352,16 +3287,6 @@ B.1.2.  DKIM
 
    Example 2: DKIM in relaxed alignment:
 
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 60]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
         DKIM-Signature: v=1; ...; d=example.com; ...
         From: sender@child.example.com
         Date: Fri, Feb 15 2002 16:54:30 -0800
@@ -3372,6 +3297,14 @@ Internet-Draft                  DMARCbis                      March 2024
    domain that is a parent of the RFC5322.From domain.  Thus, the
    identifiers are in relaxed alignment, as they have the same
    Organizational Domain (example.com).
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 59]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    Example 3: DKIM not in alignment:
 
@@ -3411,13 +3344,6 @@ B.2.1.  Entire Domain, Monitoring Only
    The Domain Owner accomplishes this by constructing a policy record
    indicating that:
 
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 61]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    *  The version of DMARC being used is "DMARC1" ("v=DMARC1;")
 
    *  Mail Receivers should not alter how they treat these messages
@@ -3426,6 +3352,15 @@ Internet-Draft                  DMARCbis                      March 2024
    *  Aggregate feedback reports are sent via email to the address
       "dmarc-feedback@example.com" ("rua=mailto:dmarc-
       feedback@example.com" (mailto:dmarc-feedback@example.com"))
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 60]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    *  All messages from this Organizational Domain are subject to this
       policy (no "t" tag present, so the default of "n" applies).
@@ -3466,14 +3401,6 @@ B.2.2.  Entire Domain, Monitoring Only, Per-Message Reports
       "auth-reports@example.com" ("ruf=mailto:auth-reports@example.com"
       (mailto:auth-reports@example.com"))
 
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 62]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
    The DMARC policy record might look like this when retrieved using a
    common command-line tool (the output shown would appear on a single
    line but is wrapped here for publication):
@@ -3481,6 +3408,15 @@ Internet-Draft                  DMARCbis                      March 2024
      % dig +short TXT _dmarc.example.com.
      "v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com;
       ruf=mailto:auth-reports@example.com"
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 61]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    To publish such a record, the DNS administrator for the Domain Owner
    might create an entry like the following in the appropriate zone file
@@ -3520,21 +3456,23 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
    might create an entry like the following in the appropriate zone file
    (following the conventional zone file format):
 
-
-
-
-
-
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 63]
-
-Internet-Draft                  DMARCbis                      March 2024
-
-
      ; DMARC record for the domain example.com
 
      _dmarc IN TXT ( "v=DMARC1; p=none; "
                      "rua=mailto:dmarc-feedback@example.com; "
                      "ruf=mailto:auth-reports@thirdparty.example.net" )
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 62]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    Because the address used in the "ruf" tag is outside the
    Organizational Domain in which this record is published, conforming
@@ -3581,19 +3519,25 @@ B.2.4.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 64]
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 63]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    As a first step, it will express that it considers messages using
-   this subdomain that fail authentication to be suspicious.  The goal
-   here will be to enable examination of messages sent to mailboxes
-   hosted by participating Mail Receivers as a method for
-   troubleshooting any existing authentication issues.  Aggregate
-   feedback reports will be sent to a mailbox within the Organizational
-   Domain, and to a mailbox at a Report Consumer selected and authorized
-   to receive them by the Domain Owner.
+   this subdomain that fail validation to be suspicious.  The goal here
+   will be to enable examination of messages sent to mailboxes hosted by
+   participating Mail Receivers as a method for troubleshooting any
+   existing authentication issues.  Aggregate feedback reports will be
+   sent to a mailbox within the Organizational Domain, and to a mailbox
+   at a Report Consumer selected and authorized to receive them by the
+   Domain Owner.
 
    The Domain Owner will accomplish this by constructing a policy record
    indicating that:
@@ -3615,8 +3559,8 @@ Internet-Draft                  DMARCbis                      March 2024
       test@thirdparty.example.net"))
 
    *  The Domain Owner desires only that an actor performing a DMARC
-      verification check apply any special handling rules it might have
-      in place, such as rewriting the RFC53322.From header; the Domain
+      validation check apply any special handling rules it might have in
+      place, such as rewriting the RFC53322.From header; the Domain
       Owner is testing its setup at this point and so does not want the
       handling policy to be applied. ("t=y")
 
@@ -3637,9 +3581,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 65]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 64]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
      ; DMARC record for the domain test.example.com
@@ -3653,9 +3597,9 @@ Internet-Draft                  DMARCbis                      March 2024
    give the Domain Owner confidence that all legitimate email sent using
    the subdomain is properly authenticating and passing DMARC checks,
    then the Domain Owner can update the policy record to indicate that
-   it considers authentication failures to be a clear indication that
-   use of the subdomain is not valid.  It would do this by altering the
-   DNS record to advise Mail Receivers of its position on such messages
+   it considers validation failures to be a clear indication that use of
+   the subdomain is not valid.  It would do this by altering the DNS
+   record to advise Mail Receivers of its position on such messages
    ("p=reject") and removing the testing flag ("t=y").
 
    After alteration, the DMARC policy record might look like this when
@@ -3685,7 +3629,7 @@ B.3.  Mail Receiver Example
 
 B.3.1.  SMTP Session Example
 
-   An optimal DMARC-enabled Mail Receiver performs authentication and
+   An optimal DMARC-enabled Mail Receiver performs validation and
    Identifier Alignment checking during the SMTP [RFC5321] conversation.
 
    Before returning a final reply to the DATA command, the Mail
@@ -3693,9 +3637,9 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 66]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 65]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    1.  An SPF check to determine an SPF-authenticated Identifier.
@@ -3749,9 +3693,9 @@ Internet-Draft                  DMARCbis                      March 2024
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 67]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 66]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    The Mail Receiver is now ready to reply to the DATA command.  If the
@@ -3805,9 +3749,9 @@ B.4.1.  Simple Organizational and Policy Example
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 68]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 67]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    For the RFC5322.From domain, query _dmarc.example.com and _dmarc.com;
@@ -3861,9 +3805,9 @@ B.4.2.  Deep Tree Walk Example
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 69]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 68]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    For the DKIM d= domain, query _dmarc.signing.example.com,
@@ -3917,9 +3861,9 @@ B.4.3.  Example with a PSD DMARC Record
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 70]
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 69]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
 
    For the DKIM signature domain mail.mega.bank.example, the tree walk
@@ -3937,46 +3881,250 @@ B.5.  Utilization of Aggregate Feedback: Example
    Aggregate feedback is consumed by Domain Owners to verify their
    understanding of how a given domain is being processed by the Mail
    Receiver.  Aggregate reporting data on emails that pass all DMARC-
-   supporting authentication checks is used by Domain Owners to verify
-   that their authentication practices remain accurate.  For example, if
-   a third party is sending on behalf of a Domain Owner, the Domain
-   Owner can use aggregate report data to verify ongoing authentication
+   supporting validation checks is used by Domain Owners to verify that
+   their authentication practices remain accurate.  For example, if a
+   third party is sending on behalf of a Domain Owner, the Domain Owner
+   can use aggregate report data to verify ongoing authentication
    practices of the third party.
 
-   Data on email that only partially passes underlying authentication
-   checks provides visibility into problems that need to be addressed by
-   the Domain Owner.  For example, if either SPF or DKIM fails to pass,
-   the Domain Owner is provided with enough information to either
-   directly correct the problem or understand where authentication-
-   breaking changes are being introduced in the email transmission path.
-   If authentication-breaking changes due to email transmission path
-   cannot be directly corrected, then the Domain Owner at least
-   maintains an understanding of the effect of DMARC-based policies upon
-   the Domain Owner's email.
+   Data on email that only partially passes underlying validation checks
+   provides visibility into problems that need to be addressed by the
+   Domain Owner.  For example, if either SPF or DKIM fails to pass, the
+   Domain Owner is provided with enough information to either directly
+   correct the problem or understand where authentication- breaking
+   changes are being introduced in the email transmission path.  If
+   authentication-breaking changes due to email transmission path cannot
+   be directly corrected, then the Domain Owner at least maintains an
+   understanding of the effect of DMARC-based policies upon the Domain
+   Owner's email.
 
-   Data on email that fails all underlying authentication checks
-   provides baseline visibility on how the Domain Owner's domain is
-   being received at the Mail Receiver.  Based on this visibility, the
-   Domain Owner can begin deployment of authentication technologies
-   across uncovered email sources, if the mail that is failing the
-   checks was generated by or on behalf of the Domain Owner.  Data
-   regarding failing authentication checks can also allow the Domain
-   Owner to come to an understanding of how its domain is being misused.
+   Data on email that fails all underlying validation checks provides
+   baseline visibility on how the Domain Owner's domain is being
+   received at the Mail Receiver.  Based on this visibility, the Domain
+   Owner can begin deployment of authentication technologies across
+   uncovered email sources, if the mail that is failing the checks was
+   generated by or on behalf of the Domain Owner.  Data regarding
+   failing validation checks can also allow the Domain Owner to come to
+   an understanding of how its domain is being misused.
 
+Appendix C.  Changes from RFC 7489
 
-
-
-
-
-
-
+   This document is intended to render obsolete [RFC7489].  As one might
+   guess, that means there are significant differences between RFC 7489
+   and this document.  This section will summarize those changes.
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 71]
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 70]
 
-Internet-Draft                  DMARCbis                      March 2024
+Internet-Draft                  DMARCbis                      April 2024
 
+
+C.1.  IETF Category
+
+   RFC 7489 was not an Internet Standards Track specification; it was
+   instead published in the Informational Category.  This document, by
+   contrast, is intended to be Internet Standards Track.
+
+C.2.  Changes to Terminology and Definitions
+
+   The following changes were made to the Terminology and Definitions
+   section.
+
+C.2.1.  Terms Added
+
+   These terms were added:
+
+   *  Enforcement
+   *  Monitoring Mode
+   *  Non-existent Domains
+   *  Public Suffix Domain (PSD)
+   *  Public Suffix Operator (PSO)
+   *  PSO Controlled Domain Names
+
+C.2.2.  Definitions Updated
+
+   These definitions were updated:
+
+   *  Organizational Domain
+   *  Report Receiver (renamed to Report Consumer)
+
+C.3.  Policy Discovery and Organizational Domain Determination
+
+   The algorithms for DMARC policy discovery and for determining the
+   Organizational Domain have been changed.  Specifically, reliance on
+   the Public Suffix List (PSL) has been replaced by a technique called
+   a "DNS Tree Walk", and the methodology for the DNS Tree Walk is
+   explained in detail in this document.
+
+   The DNS Tree Walk also incorporates PSD policy discovery, which was
+   introduced in [RFC9091].  [RFC9091] was an Experimental RFC, and the
+   results of that experiment were that the RFC was not implemented as
+   written.  Instead, this document redefines the algorithm for PSD
+   policy discovery, and thus obsoletes [RFC9091].
+
+C.4.  Reporting
+
+   Discussion of both aggregate and failure reporting have been moved to
+   separate documents dedicated to the topics.
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 71]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   In addition, the ability to specify a maximum report size in the
+   DMARC URI has been removed.
+
+C.5.  Tags
+
+   Several tags have been added to the "DMARC Policy Record Format"
+   section of this document since RFC 7489 was published, and at the
+   same time, several others were removed.
+
+C.5.1.  Tags Added:
+
+   *  np - Policy for non-existent domains (Imported from [RFC9091])
+   *  psd - Flag indicating whether a domain is a Public Suffix Domain
+   *  t - Replacement for some pct tag functionality.  See Appendix A.6
+      for further discussion
+
+C.5.2.  Tags Removed:
+
+   *  pct - Tag requesting application of DMARC policy to only a
+      percentage of messages
+   *  rf - Tag specifying requested format of failure reports
+   *  ri - Tag specifying requested interval between aggregate reports
+
+C.6.  Expansion of Domain Owner Actions Section
+
+   This section has been expanded upon from RFC 7489.
+
+   RFC 7489 had just two paragraphs in its Domain Owner Actions section,
+   and while the content of those paragraphs was correct, it was
+   minimalist in its approach to providing guidance to domain owners on
+   just how to implement DMARC.
+
+   This document provides much more detail and explanatory text to a
+   Domain Owner, focusing not just on what to do to implement DMARC, but
+   also on the reasons for each step and the repercussions of each
+   decision.
+
+   In particular, this document makes explicit that domains for general-
+   purpose email SHOULD NOT deploy a DMARC policy of p=reject.  See
+   Section 7.6 for further discussion of this topic.
+
+C.7.  Report Generator Recommendations
+
+   In the cases where a DMARC policy record specifies multiple
+   destinations for either aggregate reports or failure reports, RFC
+   7489 stated:
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 72]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+     Receivers MAY impose a limit on the number of URIs to which they
+     will send reports but MUST support the ability to send to at least
+     two.
+
+   This document in Section 4.6 says:
+
+     A report SHOULD be sent to each listed URI provided in the DMARC
+     record.
+
+C.8.  Removal of RFC 7489 Appendix A.5
+
+   One of the appendices in RFC 7489, specifically Appendix A.5, has
+   been removed from the text with this update.  The appendix was titled
+   "Issues with ADSP in Operation" and it contained a list of issues
+   associated with ADSP that influenced the direction of DMARC.  The
+   ADSP protocol was moved to "Historic" status in 2013 and working
+   group consensus was that such a discussion of ADSP's influence on
+   DMARC was no longer relevant.
+
+C.9.  RFC 7489 Errata Summary
+
+   Remove this before final submission: (https://www.rfc-
+   editor.org/styleguide/part2/#ref_errata (https://www.rfc-
+   editor.org/styleguide/part2/#ref_errata) says errata in the Reported
+   state should not be referenced; they are not considered stable.)
+
+   This document and its companion documents
+   ([I-D.ietf-dmarc-aggregate-reporting] and
+   [I-D.ietf-dmarc-failure-reporting]) address the following errata
+   filed against [RFC7489] since that document's publication in March,
+   2015.  More details on each of these can be found at https://www.rfc-
+   editor.org/errata_search.php?rfc=7489 (https://www.rfc-editor.org/
+   errata_search.php?rfc=7489)
+
+   [Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1
+   https://www.rfc-editor.org/errata/eid5365 (https://www.rfc-
+   editor.org/errata/eid5365):  To be addressed in
+      [I-D.ietf-dmarc-aggregate-reporting]
+
+   [Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1
+   https://www.rfc-editor.org/errata/eid5371 (https://www.rfc-
+   editor.org/errata/eid5371):  To be addressed in
+      [I-D.ietf-dmarc-aggregate-reporting]
+
+   [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1
+   https://www.rfc-editor.org/errata/eid5440 (https://www.rfc-
+   editor.org/errata/eid5440):  To be addressed in
+      [I-D.ietf-dmarc-aggregate-reporting]
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 73]
+
+Internet-Draft                  DMARCbis                      April 2024
+
+
+   [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1,
+   B.2.3, and B.2.4 https://www.rfc-editor.org/errata/eid5440
+   (https://www.rfc-editor.org/errata/eid5440):  Addressed in this
+      document.
+
+   [Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1
+   https://www.rfc-editor.org/errata/eid6439 (https://www.rfc-
+   editor.org/errata/eid6439):  To be addressed in
+      [I-D.ietf-dmarc-aggregate-reporting]
+
+   [Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1
+   https://www.rfc-editor.org/errata/eid6485 (https://www.rfc-
+   editor.org/errata/eid6485):  To be addressed in
+      [I-D.ietf-dmarc-aggregate-reporting]
+
+   [Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3
+   https://www.rfc-editor.org/errata/eid7835 (https://www.rfc-
+   editor.org/errata/eid7835):  This erratum is in reference to the
+      description of the process documented in RFC 7489 for the
+      applicable DMARC policy for an email message.  The process for
+      doing this has drastically changed in DMARCbis, and so the text
+      identified in this erratum no longer exists.
+
+   [Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1
+   https://www.rfc-editor.org/errata/eid5151 (https://www.rfc-
+   editor.org/errata/eid5151):  This erratum is in reference to the
+      Introduction section of RFC 7489.  That section has been
+      substantially rewritten in DMARCbis, and the text at issue for
+      this erratum no longer exists.
+
+C.10.  General Editing and Formatting
+
+   A great deal of the content from RFC 7489 was preserved in this
+   document, but much of it was subject to either minor editing, re-
+   ordering of sections, and/or both.
 
 Acknowledgements
 
@@ -3988,6 +4136,15 @@ Acknowledgements
    Douglas E.  Foster, Ned Freed, Mike Hammer, Steven M.  Jones, Scott
    Kitterman, Murray S.  Kucherawy, Barry Leiba, Alessandro Vesely, and
    Tim Wicinski.
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 74]
+
+Internet-Draft                  DMARCbis                      April 2024
+
 
    The authors and contributors also recognize that this document would
    not have been possible without the work done by those who had a hand
@@ -4029,4 +4186,15 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed) Expires 20 September 2024              [Page 72]
+
+
+
+
+
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 28 October 2024               [Page 75]
