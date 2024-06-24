@@ -68,9 +68,9 @@ a DNS TXT record describing the email authentication policies for the Author Dom
 and to request specific handling for messages using that domain that fail validation
 checks. These DNS records are called [DMARC Policy Records](#dmarc-policy-record).
 
-As with SPF and DKIM, DMARC valdation results are either "pass" or "fail". A
-DMARC result of "pass" requires not only an SPF or DKIM pass verdict for the
-email message, but also and more importantly that the domain associated with
+As with SPF and DKIM, DMARC validation results in a verdict of either "pass" or 
+"fail". A DMARC result of "pass" requires not only an SPF or DKIM pass verdict for 
+the email message, but also and more importantly that the domain associated with
 the SPF or DKIM pass be "aligned" with the Author Domain in one of two
 modes - "relaxed" or "strict". Domains are said to be in "relaxed alignment"
 if they have the same [Organizational Domain](#organizational-domain); a
@@ -413,7 +413,10 @@ The following mechanisms for determining [Authenticated Identifiers]
 *  SPF, [@!RFC7208], which can validate the uses of both the domain found in
    an SMTP [@!RFC5321] HELO/EHLO command (the HELO identity) and the domain
    found in an SMTP MAIL command (the MAIL FROM identity).  DMARC relies solely
-   on SPF validation of the MAIL FROM identity. 
+   on SPF validation of the MAIL FROM identity. Section 2.4 of [@!RFC7208] describes
+   the determination of the MAIL FROM identity for cases in which the SMTP MAIL
+   command has a null path, i.e., the mailbox composed of the local-part "postmaster"
+   and the HELO identity.
 
 ##  Identifier Alignment Explained {#identifier-alignment-explained}
 
@@ -453,9 +456,9 @@ associating the domain to the message. This association is done by inserting
 the domain as the value of the d= tag in a DKIM-Signature header field, and the
 assertion of responsiblity is validated through a crytographic signature in 
 the header field. If the cryptographic signature validates, then the signing domain 
-(i.e., the value of the d= tag) is the Authenticated Identifier.
+(i.e., the value of the d= tag) is the DKIM-Authenticated Identifier.
 
-DMARC requires that Identifier Alignment is applied to the DKIM Authenticated
+DMARC requires that Identifier Alignment is applied to the DKIM-Authenticated
 Identifier because a message can bear a valid signature from any domain, even
 one used by a bad actor. Therefore, a DKIM-Authenticated Identifier that does
 not have Identifier Alignment with the Author Domain is not enough to validate
@@ -467,14 +470,17 @@ the Author Domain.
 
 ###  SPF-Authenticated Identifiers {#spf-identifiers}
 
-SPF allows a Domain Owner to authorize hosts to use its domain in the SMTP
-"MAIL FROM" or "HELO" identities. DMARC relies solely on SPF validation of
-the MAIL FROM identity. If the authorization is validated, the domain used
-in the MAIL FROM identity, which will also be the RFC5321.MailFrom domain
-in the email message, is the Authenticated Identifier.
+SPF can validate the uses of both the domain found in an SMTP HELO/EHLO command 
+(the HELO identity) and the domain found in an SMTP MAIL command (the MAIL FROM 
+identity). DMARC relies solely on SPF validation of the MAIL FROM identity. Section 
+2.4 of [@!RFC7208] describes the determination of the MAIL FROM identity for cases
+in which the SMTP MAIL command has a null path, i.e., the mailbox composed of the 
+local-part "postmaster" and the HELO identity. If the use of the domain in the
+MAIL FROM identity is validated by SPF, then that domain is the SPF-Authenticated
+Identifier.
 
 DMARC requires that Identifier Alignment is applied to the SPF-Authenticated
-Identifier, because any Domain Owner, even a bad actor, can publish an SPF 
+Identifier because any Domain Owner, even a bad actor, can publish an SPF 
 record for its domain and send email that will obtain an SPF pass result. 
 Therefore, an SPF-Authenticated Identifier that does not have Identifier 
 Alignment with the Author Domain is not enough to validate whether the use
@@ -531,7 +537,7 @@ objects in order and parsing the result as a single string.
 A Domain Owner can choose not to have some underlying authentication mechanisms 
 apply to DMARC evaluation of its Author Domain(s). For example, if a Domain Owner
 only wants to use DKIM as the underlying authentication mechanism, then the Domain
-Owner does not publish an SPF policy record that can produce Identifier Alignment
+Owner does not publish an SPF record that can produce Identifier Alignment
 between an SPF-Authenticated Identifier and the Author Domain. Alternatively, if 
 the Domain Owner wishes to rely solely on SPF, then it can send email messages that
 have no DKIM-Signature header field that would produce Identifier Alignment between
@@ -554,13 +560,13 @@ report types that are supported.
 The place such URIs are specified (see (#policy-record-format)) allows
 a list of these to be provided. The list of URIs is separated by commas
 (ASCII 0x2c). A report **SHOULD** be sent to each listed URI provided in
-the DMARC record.
+the DMARC Policy Record.
 
 A formal definition is provided in (#formal-definition).
 
 ##  DMARC Policy Record Format {#policy-record-format}
 
-DMARC records follow the extensible "tag-value" syntax for DNS-based
+DMARC Policy Records follow the extensible "tag-value" syntax for DNS-based
 key records defined in DKIM [@!RFC6376].
 
 (#iana-considerations) creates a registry for known DMARC tags and
@@ -597,10 +603,9 @@ fo:
 Provides requested options for the generation of failure reports.
 Report generators may choose to adhere to the requested options.
 This tag's content **MUST** be ignored if a "ruf" tag (below) is not
-also specified. Failure reporting options are shown below. The value
-of this tag is either "0", "1", or a colon-separated list of the
-options represented by alphabetic characters. The valid values and
-their meanings are:
+also specified. This tag can include one or more of the values shown here;
+if more than one value is assigned to the tag, the list of values should be
+separated by colons (e.g., fo=0:d).  The valid values and their meanings are:
 
     0:
     : Generate a DMARC failure report if all underlying authentication
@@ -622,16 +627,14 @@ their meanings are:
 
 np:
 :   [Domain Owner Assessment Policy](#domain-owner-policy) for non-existent subdomains
-    (plain-text; **OPTIONAL**). Indicates the message handling preference
-    of the Domain Owner or PSO for mail using non-existent subdomains of its
-    domain and not passing DMARC validation. It applies only to non-existent 
-    subdomains of the domain queried and not to either existing subdomains 
-    or the domain itself. Its syntax is identical to that of the "p" tag defined
-    below. If the "np" tag is absent, the policy specified by the "sp" tag (if
+    of the given Organizational Domain (plain-text; **OPTIONAL**). Indicates the message
+    handling preference of the Domain Owner or PSO for mail using non-existent subdomains 
+    of the prevailing Organizational Domain and not passing DMARC validation. It applies 
+    only to non-existent subdomains of the Organizational Domain queried and not to either 
+    existing subdomains or the domain itself. Its syntax is identical to that of the "p" 
+    tag defined below. If the "np" tag is absent, the policy specified by the "sp" tag (if
     the "sp" tag is present) or the policy specified by the "p" tag, if the "sp"
-    tag is not present, **MUST** be applied for non-existent subdomains. Note that
-    "np" will be ignored for DMARC Policy Records published on subdomains of Organizational
-    Domains and PSDs due to the effect of the [DMARC Policy Discovery](#dmarc-policy-discovery).
+    tag is not present, **MUST** be applied for non-existent subdomains. 
 
 p:
 :   [Domain Owner Assessment Policy](#domain-owner-policy) (plain-text; **RECOMMENDED** 
@@ -676,7 +679,7 @@ psd:
       that is not a PSD, and may or may not be an Organizational Domain for itself and
       its subdomains. Use the mechanism described in (#dns-tree-walk) for determining
       the Organizational Domain for this domain. There is no need to explicitly publish
-      psd=u in a DMARC record.
+      psd=u in a DMARC Policy Record.
 
 rua:
 :  Addresses to which aggregate feedback reports are to be sent (comma-separated plain-text
@@ -706,31 +709,38 @@ ruf:
    See (#external-report-addresses) for additional considerations. 
 
 sp:
-:  Domain Owner Assessment Policy for all subdomains (plain-text;
-   **OPTIONAL**). Indicates the message handling preference of the Domain Owner
-   or PSO for mail using an existing subdomain of its domain and not passing DMARC 
-   validation. It applies only to existing subdomains of the domain queried in the 
-   DNS hierarchy and not to the domain itself. Its syntax is identical to that of 
-   the "p" tag defined above. If both the "sp" tag is absent, and the "np" tag is
-   either absent or not applicable, the policy specified by the "p" tag **MUST** be
-   applied for subdomains.  Note that "sp" will be ignored for DMARC Policy Records 
-   published on subdomains of Organizational Domains and PSDs due to the effect of 
-   the DMARC Policy Discovery.
+:  Domain Owner Assessment Policy for all subdomains of the given Organizational Domain
+   (plain-text; **OPTIONAL**). Indicates the message handling preference of the Domain Owner
+   or PSO for mail using an existing subdomain of the prevailing Organizational Domain for
+   and not passing DMARC validation. It applies only to existing subdomains of the message's
+   Organizational Domain in the DNS hierarchy and not to the Organizational Domain itself. 
+   Its syntax is identical to that of the "p" tag defined above. If both the "sp" tag is 
+   absent, and the "np" tag is either absent or not applicable, the policy specified by 
+   the "p" tag **MUST** be applied for subdomains.  Note that "sp" will be ignored for 
+   DMARC Policy Records published on subdomains of Organizational Domains and PSDs due 
+   to the effect of the [DMARC Policy Discovery](#dmarc-policy-discovery).
 
 t:
 :  DMARC policy test mode (plain-text; **OPTIONAL**; default is 'n'). For
    the Author Domain to which the DMARC Policy Record applies, the "t" tag serves 
    as a signal to the actor performing DMARC validation checks as to whether or not 
    the Domain Owner wishes the Domain Owner Assessment Policy declared in the "p=", 
-   "sp=", and/or "np=" tags to actually be applied. This parameter does not affect the 
-   generation of DMARC reports.  See (#removal-of-the-pct-tag) for further discussion 
-   of the use of this tag.  Possible values are as follows:
+   "sp=", and/or "np=" tags to actually be applied. This tag does not affect the 
+   generation of DMARC reports, and it has no effect on any policy (p=, sp=, or np=)
+   that is 'none'.  See (#removal-of-the-pct-tag) for further discussion of the use 
+   of this tag.  Possible values are as follows:
 
     y:
     :  A request that the actor performing the DMARC validation check not
     apply the policy, but instead apply any special handling rules it might have
     in place, such as rewriting the RFC5322.From header field. The Domain Owner is
-    currently testing its specified DMARC assessment policy.
+    currently testing its specified DMARC assessment policy, and has an expectation
+    that the policy applied to any failing messages will be one level below the 
+    specified policy. That is, if the policy is 'quarantine' and the value of the 't'
+    tag is 'y', a policy of 'none' will be applied to failing messages; if the policy
+    is 'reject' and the value of the 't' tag is 'y', a policy of 'quarantine' will be
+    applied to failing messages, irrespective of any other special handling rules that
+    might be triggered by the 't' tag having a value of 'y'.
 
     n:
     :  The default is a request to apply the Domain Owner Assessment Policy as specified 
@@ -931,10 +941,9 @@ The generic steps for a DNS Tree Walk are as follows:
    a single target, they are all discarded. If a single record remains and it
    contains a "psd=n" or "psd=y" tag, stop.
 
-8. Determine the target for additional queries by removing a single label
-   from the target domain as described in step 5 and repeating steps 6 and 7
-   until the process stops or there are no more labels remaining.
-
+8. Determine the target for the next query by removing the left-most label
+   from the target of the previous query. Repeat steps 6, 7, and 8 until the 
+   process stops or there are no more labels remaining.
 
 To illustrate, for a message with the arbitrary Author Domain of
 "a.b.c.d.e.f.g.h.i.j.mail.example.com", a full DNS Tree Walk would require the following 
@@ -981,8 +990,8 @@ If the DMARC Policy Record to be applied is that of the Author Domain, then the
 Domain Owner Assessment Policy is taken from the p= tag of the record. 
 
 If the DMARC Policy Record to be applied is that of either the Organizational Domain or the
-Public Suffix Domain and that domain is different than the Author Domain, then
-the Domain Owner Assessment Policy is taken from the sp= tag (if any) if the Author Domain exists,
+Public Suffix Domain and the Author Domain is a subdomain of that domain, then the Domain 
+Owner Assessment Policy is taken from the sp= tag (if any) if the Author Domain exists,
 or the np= tag (if any) if the Author Domain does not exist. In the absence of
 applicable sp= or np= tags, the p= tag policy is used for subdomains.
 
@@ -1056,7 +1065,11 @@ to the shortest:
 2. If a valid DMARC Policy Record, other than the one for the domain where the tree
    walk started, contains the psd= tag set to 'y' (psd=y), the Organizational
    Domain is the domain one label below this one in the DNS hierarchy, and the 
-   selection process is complete.
+   selection process is complete. For example, if in the course of a tree walk a DMARC
+   record is queried for at first \_dmarc.mail.example.com and then \_dmarc.example.com, 
+   and a valid DMARC Policy Record containing the psd= tag set to 'y' is found at 
+   \_dmarc.example.com, then "mail.example.com" is the domain one label below "example.com"
+   in the DNS hierarchy and is thus the Organizational Domain.
    
 3. Otherwise, select the DMARC Policy Record found at the name with the fewest number 
    of labels.  This is the Organizational Domain and the selection process is complete.
@@ -1097,7 +1110,7 @@ preferably two, [Authenticated Identifiers](#authenticated-identifiers) that ali
 with the Author Domain, and will receive and monitor the content of DMARC aggregate
 reports. The following sections describe how to achieve this.
 
-### Publish an SPF Policy for an Aligned Domain
+### Publish an SPF Record for an Aligned Domain
 
 To configure SPF for DMARC, the Domain Owner **MUST** send mail that has
 an RFC5321.MailFrom domain that will produce an [SPF-Authenticated
@@ -1114,7 +1127,7 @@ has a DKIM-Signing domain (i.e., the d= domain in the DKIM-Signature
 header field) that will produce a [DKIM-Aligned Identifier](#dkim-authenticated-identifier)
 that aligns with the Author Domain.
 
-### Setup a Mailbox to Receive Aggregate Reports
+### Set Up a Mailbox to Receive Aggregate Reports
 
 Proper consumption and analysis of DMARC aggregate reports are essential
 to any successful DMARC deployment for a Domain Owner. DMARC aggregate
@@ -1183,7 +1196,7 @@ DNS management, whereby management of a subtree of the name space is delegated
 to a local deparment by the central IT organization. In such situations, the 
 'psd' tag makes it possible for those local departments to declare any arbitrary
 node in their subtree as an Organizational Domain. This would be accomplished by
-publishing a DMARC record at that node with the psd tag set to 'n'. The
+publishing a DMARC Policy Record at that node with the psd tag set to 'n'. The
 reasons that departments might declare their own Organizational Domains include a
 desire to have different policy settings or reporting URIs than the DMARC Policy Record
 published for the apex domain.
@@ -1232,7 +1245,7 @@ Owners that request them. Mail Receivers might also send failure reports
 to Domain Owners that request them.
 
 The steps for applying the DMARC mechanism to an email message can take 
-place during the SMTP transaction, and should do if the Mail Receiver 
+place during the SMTP transaction, and should do so if the Mail Receiver 
 plans to honor [Domain Owner Assessment Policies](#domain-owner-policy) that
 are at the [Enforcement](#enforcement) state. 
 
@@ -1398,7 +1411,7 @@ policy record, historically lax enforcement of such policies has led
 many to publish extremely broad records containing many extensive network
 ranges. [Domain Owners](#domain-owner) are strongly encouraged to carefully review
 their SPF records to understand which networks are authorized to send
-on behalf of the Domain Owner before publishing a DMARC record. Furthermore,
+on behalf of the Domain Owner before publishing a DMARC Policy Record. Furthermore,
 Domain Owners should periodically review their SPF records to ensure that
 the authorization conveyed by the records matches the domain's current needs.
 
@@ -1411,7 +1424,8 @@ SPF records should be aware of this, and should understand that messages that
 might otherwise pass DMARC due to an aligned [DKIM-Authenticated Identifier]
 (#dkim-authenticated-identifiers) could be rejected solely due to an SPF fail. 
 Domain Owners and [Mail Receivers](#mail-receiver) can consult the following two 
-documents for more discussion of the topic:
+documents for more discussion of the topic and best practices regarding publishing
+SPF records and when to reject based solely on SPF failure:
 
 * [M3AAWG Best Practices for Managing SPF Records](https://www.m3aawg.org/Managing-SPF-Records)
 * [M3AAWG Email Authentication Recommended Best Practices](https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf)
@@ -1705,14 +1719,14 @@ Aggregate reports may, particularly for small organizations, provide some
 limited insight into email sending patterns.  As an example, in a small
 organization, an aggregate report from a particular domain may be sufficient
 to make the report receiver aware of sensitive personal or business
-information.  If setting an rua= tag in a DMARC record, the reporting
+information.  If setting an rua= tag in a DMARC Policy Record, the reporting
 address needs controls appropriate to the organizational requirements to
 mitigate any risk associated with receiving and handling reports.
 
 In the case of rua= requests for multi-organizational PSDs, additional
 information leakage considerations exist.  Multi-organizational PSDs that
 do not mandate DMARC use by registrants risk exposure of private data of
-registrant domains if they include the rua= tag in their DMARC record.
+registrant domains if they include the rua= tag in their DMARC Policy Record.
 
 ## Failure Report Considerations {#failure-report-considerations}
 
@@ -1727,10 +1741,12 @@ have to be addressed through data management controls or publishing DMARC
 records for relevant subdomains to prevent reporting on data related to
 their emails.
 
-Out of band agreements between failure report senders and receivers may be
-required to address privacy concerns.
+Due to the nature of the email contents which may be shared through Failure
+Reports, most Mail Receivers refuse to send them out of privacy concerns. Out 
+of band agreements between Report Consumers and Mail Receivers may be required 
+to address these concerns.
 
-DMARC records for multi-organizational PSDs **MUST NOT** include the ruf= tag.
+DMARC Policy Records for multi-organizational PSDs **MUST NOT** include the ruf= tag.
 
 #  Security Considerations {#security-considerations}
 
@@ -2512,7 +2528,7 @@ piece of email originating from the Domain Owner of "example.com":
   Author Domain: example.com
   SPF-authenticated Identifier: mail.example.com
   DKIM-authenticated Identifier: example.com
-  DMARC record:
+  DMARC Policy Record:
     "v=DMARC1; p=reject; aspf=r;
      rua=mailto:dmarc-feedback@example.com"
 ~~~
@@ -2584,14 +2600,14 @@ not all domains are the same, if the alignment is relaxed then the tree
 walk is performed to determine the Organizational Domain for each:
 
 For the Author Domain, query \_dmarc.example.com and \_dmarc.com; 
-example.com is the last element of the DNS tree with a DMARC record, so 
+example.com is the last element of the DNS tree with a DMARC Policy Record, so 
 it is the Organizational Domain for example.com.
 
 For the RFC5321.MailFrom domain, the Organizational Domain already found for 
 example.com is example.com, so SPF is aligned.
 
 For the DKIM d= domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
-and \_dmarc.com. Both signing.example.com and example.com have DMARC records,
+and \_dmarc.com. Both signing.example.com and example.com have DMARC Policy Records,
 but example.com is the highest element in the tree with a DMARC Policy Record
 (it has the fewest labels), so example.com is the Organizational Domain. Since 
 this is also the Organizational Domain for the Author Domain, DKIM is aligned 
@@ -2599,8 +2615,8 @@ for relaxed alignment.
 
 Since both SPF and DKIM are aligned, they can be used to determine if the
 message has a DMARC pass result. If the result is not pass, then the policy
-domain's DMARC record is used to determine the appropriate policy. In this
-case, since the RFC5322.From domain has a DMARC record, that is the policy
+domain's DMARC Policy Record is used to determine the appropriate policy. In this
+case, since the RFC5322.From domain has a DMARC Policy Record, that is the policy
 domain.
 
 ### Deep Tree Walk Example
@@ -2616,7 +2632,7 @@ RFC5321.MailFrom domain
 DKIM signature d=
 :  signing.example.com
 
-Both \_dmarc.example.com and \_dmarc.signing.example.com have DMARC records, 
+Both \_dmarc.example.com and \_dmarc.signing.example.com have DMARC Policy Records, 
 while \_dmarc.com does not. If SPF or DKIM yield pass results, they still have
 to be aligned to support a DMARC pass. Since not all domains are the same, if
 the alignment is relaxed then the tree walk is performed to determine the Organizational
@@ -2627,17 +2643,17 @@ skip to \_dmarc.g.h.i.j.k.example.com, then query \_dmarc.h.i.j.k.example.com,
 \_dmarc.i.j.k.example.com, \_dmarc.j.k.example.com, \_dmarc.k.example.com,
  \_dmarc.example.com, and \_dmarc.com. None of
 a.b.c.d.e.f.g.h.i.j.k.example.com, g.h.i.j.k.example.com, h.i.j.k.example.com,
-i.j.k.example.com, j.k.example.com, or k.example.com have a DMARC record.
+i.j.k.example.com, j.k.example.com, or k.example.com have a DMARC Policy Record.
 
-Since example.com is the last element of the DNS tree with a DMARC record, 
+Since example.com is the last element of the DNS tree with a DMARC Policy Record, 
 it is the Organizational Domain for a.b.c.d.e.f.g.h.i.j.k.example.com.
 
 For the RFC5321.MailFrom domain, the Organizational domain already found
 for example.com is example.com. SPF is aligned.
 
 For the DKIM d= domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
-and \_dmarc.com. Both signing.example.com and example.com have DMARC records,
-but example.com is the highest element in the tree with a DMARC record, so
+and \_dmarc.com. Both signing.example.com and example.com have DMARC Policy Records,
+but example.com is the highest element in the tree with a DMARC Policy Record, so
 example.com is the Organizational Domain. Since this is also the Organizational Domain 
 for the Author Domain, DKIM is aligned for relaxed alignment.
 
@@ -2648,7 +2664,7 @@ In this case, the Author Domain does not have a DMARC Policy Record, so the
 policy domain is the highest element in the DNS tree with a DMARC Policy Record,
 example.com.
 
-### Example with a PSD DMARC Record
+### Example with a PSD DMARC Policy Record
 
 In rare cases, a PSD publishes a DMARC Policy Record with a psd tag, which the tree
 walk must take into account.
@@ -2667,7 +2683,7 @@ DKIM signature d=
 In this case, \_dmarc.bank.example has a DMARC Policy Record which includes the psd=y tag,
 and \_dmarc.example does not have a DMARC Policy Record.
 While \_dmarc.giant.bank.example has a DMARC Policy Record without a psd tag,
-\_dmarc.mega.bank.example and \_mail.mega.bank.example have no DMARC Policy Records.
+\_dmarc.mega.bank.example and \_dmarc.mail.mega.bank.example have no DMARC Policy Records.
 
 Since the three domains are all different, tree walks find their Organizational Domains
 to see which are aligned.
@@ -2811,7 +2827,7 @@ for further discussion of this topic.
 
 ##  Report Generator Recommendations
 
-In the cases where a DMARC record specifies multiple destinations for either aggregate
+In the cases where a DMARC Policy Record specifies multiple destinations for either aggregate
 reports or failure reports, RFC 7489 stated:
 
 ~~~
@@ -2850,27 +2866,27 @@ filed against [@!RFC7489] since that document's publication in March,
 
 [Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5365>:
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5371>:
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid5440>:
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 <https://www.rfc-editor.org/errata/eid5440>:
 
-:   Addressed in this document.
+:   Addressed both in this document and in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid6439>:
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid6485>:
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting]
+:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 [Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 <https://www.rfc-editor.org/errata/eid7835>:
 
