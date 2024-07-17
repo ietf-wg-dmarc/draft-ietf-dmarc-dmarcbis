@@ -49,7 +49,7 @@ the email message, but also and more importantly that the domain associated with
 the SPF or DKIM pass be &quot;aligned&quot; with the Author Domain in one of two
 modes - &quot;relaxed&quot; or &quot;strict&quot;. Domains are said to be in &quot;relaxed alignment&quot;
 if they have the same <eref target="#organizational-domain">Organizational Domain</eref>; a
-domain's Organizational Domain is the domain at the the top of the namespace
+domain's Organizational Domain is the domain at the top of the namespace
 hierarchy for that domain while having the same administrative authority as
 that domain. On the other hand, domains are in &quot;strict alignment&quot; if and only
 if they are identical. The choice of required alignment mode is left to the
@@ -437,7 +437,7 @@ can be found in <xref target="denial-of-dmarc-attacks"></xref>.</t>
 <t>DKIM permits a Domain Owner to claim some responsibility for a message by
 associating the domain to the message. This association is done by inserting
 the domain as the value of the d= tag in a DKIM-Signature header field, and the
-assertion of responsiblity is validated through a crytographic signature in
+assertion of responsibility is validated through a cryptographic signature in
 the header field. If the cryptographic signature validates, then the signing domain
 (i.e., the value of the d= tag) is the DKIM-Authenticated Identifier.</t>
 <t>DMARC requires that Identifier Alignment is applied to the DKIM-Authenticated
@@ -515,7 +515,7 @@ Owner does not publish an SPF record that can produce Identifier Alignment
 between an SPF-Authenticated Identifier and the Author Domain. Alternatively, if
 the Domain Owner wishes to rely solely on SPF, then it can send email messages that
 have no DKIM-Signature header field that would produce Identifier Alignment between
-a DKIM-Authenicated Identifier and the Author Domain. Neither approach is recommended,
+a DKIM-Authenticated Identifier and the Author Domain. Neither approach is recommended,
 however.</t>
 <t>A Mail Receiver implementing the DMARC mechanism gets the Domain Owner's or
 PSO's published Domain Owner Assessment Policy and can use it to inform its handling decisions
@@ -903,7 +903,7 @@ that might want to applying decentralized management to their DNS and their
 DMARC Policy Records. Rather than just searching the Public Suffix List to identify
 an Organizational Domain, this update defines a discovery technique known
 colloquially as the &quot;DNS Tree Walk&quot;. The target of any DNS Tree Walk is a
-valid DMARC Policy Record, and its use in determing an Organizational Domain
+valid DMARC Policy Record, and its use in determining an Organizational Domain
 allows for publishing DMARC Policy Records at multiple points in the namespace.</t>
 <t>This flexibility comes at a possible cost, however. Since the DNS Tree Walk
 relies on the Mail Receiver making a series of DNS queries, the potential
@@ -1124,7 +1124,7 @@ Identifier</eref> that aligns with the
 Author Domain. The SPF record for the RFC5321.MailFrom domain <bcp14>MUST</bcp14> be
 constructed at a minimum to ensure an SPF pass verdict for all sources of
 mail that are authorized to use RFC5321.MailFrom domain, and <bcp14>SHOULD</bcp14> be
-constructed to ensure that only those authorized sources can get an SPF pass verdict..</t>
+constructed to ensure that only those authorized sources can get an SPF pass verdict.</t>
 </section>
 
 <section anchor="configure-sending-system-for-dkim-signing-using-an-aligned-domain"><name>Configure Sending System for DKIM Signing Using an Aligned Domain</name>
@@ -1197,7 +1197,7 @@ issues are discussed in detail in <xref target="interoperability-considerations"
 <section anchor="a-note-on-large-complex-organizations-and-decentralized-dns-management"><name>A Note on Large, Complex Organizations and Decentralized DNS Management</name>
 <t>Large, complex organizations frequently adopt a decentralized model for
 DNS management, whereby management of a subtree of the name space is delegated
-to a local deparment by the central IT organization. In such situations, the
+to a local department by the central IT organization. In such situations, the
 'psd' tag makes it possible for those local departments to declare any arbitrary
 node in their subtree as an Organizational Domain. This would be accomplished by
 publishing a DMARC Policy Record at that node with the psd tag set to 'n'. The
@@ -1338,7 +1338,7 @@ Receivers <bcp14>SHOULD</bcp14> generate and send aggregate reports with a frequ
 of at least once every 24 hours. Such reports provide Domain Owners with
 insight into all mail streams using Author Domains under the Domain Owner's
 control, and aid the Domain Owner in determining whether and when to transition
-from <eref target="#monitoring-mode">Monitoring Mode</eref> to Enforcement<xref target="enforcement"></xref>.</t>
+from <eref target="#monitoring-mode">Monitoring Mode</eref> to Enforcement <xref target="enforcement"></xref>.</t>
 </section>
 
 <section anchor="send-failure-reports"><name>Optionally Send Failure Reports</name>
@@ -1476,7 +1476,7 @@ bypass those efforts on a later attempt, though it might also assist
 a legitimate client to determine the source of some local issue that
 caused the rejection.</t>
 <t>In the latter case, when doing an SMTP rejection, providing a clear
-hint can be useful in resolving issues. A <eref target="#mail-recevier">Mail Receiver</eref>
+hint can be useful in resolving issues. A <eref target="#mail-receiver">Mail Receiver</eref>
 might indicate in plain text the reason for the rejection by using the
 word &quot;DMARC&quot; somewhere in the reply text. For example:</t>
 
@@ -1561,7 +1561,7 @@ employees, customers, and clients.</t>
 <t>As a final note, one possible mitigation to the problems caused by
 Domain Owners publishing a Domain Owner Assessment Policy of p=reject when
 they should not or Mail Receivers rejecting messages solely on the basis of
-a p=reject policy is the Autheticated Received Chain (ARC) protocol described
+a p=reject policy is the Authenticated Received Chain (ARC) protocol described
 in <xref target="RFC8617"></xref>.  However, as of this writing, use of ARC is nascent, as is industry
 experience with it in connection with DMARC.</t>
 </section>
