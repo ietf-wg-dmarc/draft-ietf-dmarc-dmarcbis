@@ -74,7 +74,7 @@ the email message, but also and more importantly that the domain associated with
 the SPF or DKIM pass be "aligned" with the Author Domain in one of two
 modes - "relaxed" or "strict". Domains are said to be in "relaxed alignment"
 if they have the same [Organizational Domain](#organizational-domain); a
-domain's Organizational Domain is the domain at the the top of the namespace
+domain's Organizational Domain is the domain at the top of the namespace
 hierarchy for that domain while having the same administrative authority as
 that domain. On the other hand, domains are in "strict alignment" if and only
 if they are identical. The choice of required alignment mode is left to the
@@ -138,19 +138,17 @@ DMARC has the following high-level goals:
 ##  Anti-Phishing {#anti-phishing}
 
 DMARC is designed to prevent the unauthorized use of the [Author Domain](#author-domain)
-of an email message, a technique known as "spoofing", particularly in transactional
-email (official mail about business transactions).  One of the primary uses of
-this kind of spoofed mail is phishing (enticing users to provide information
-by pretending to be the legitimate service requesting the information).  Although
-DMARC can only be used to combat specific forms of exact-domain spoofing directly,
-the DMARC mechanism has been found to be useful in the creation of reliable
-and defensible message streams.
+of an email message, a technique known as "spoofing". Such unauthorized usage can 
+frequently be found in messages impersonating a domain belonging to a business entity, 
+messages that are meant to entice the recipient to provide sensitive information, such 
+as usernames, passwords, and financial account information. These spoofed messages are 
+commonly referred to as "phishing". 
 
-DMARC does not attempt to solve all problems with spoofed or
-otherwise fraudulent emails. In particular, it does not address the
-use of visually similar domain names ("cousin domains") or abuse of
-the RFC5322.From human-readable display-name, as defined 
-in [@!RFC5322, section 3.4].
+DMARC can only be used to combat specific forms of exact-domain spoofing directly. DMARC 
+does not attempt to solve all problems with spoofed or otherwise fraudulent emails. In 
+particular, it does not address the use of visually similar domain names ("cousin domains")
+or abuse of the RFC5322.From human-readable display-name, as defined in
+[@!RFC5322, section 3.4].
 
 ##  Scalability {#scalability}
 
@@ -454,7 +452,7 @@ can be found in (#denial-of-dmarc-attacks).
 DKIM permits a Domain Owner to claim some responsibility for a message by
 associating the domain to the message. This association is done by inserting
 the domain as the value of the d= tag in a DKIM-Signature header field, and the
-assertion of responsiblity is validated through a crytographic signature in 
+assertion of responsibility is validated through a cryptographic signature in 
 the header field. If the cryptographic signature validates, then the signing domain 
 (i.e., the value of the d= tag) is the DKIM-Authenticated Identifier.
 
@@ -541,7 +539,7 @@ Owner does not publish an SPF record that can produce Identifier Alignment
 between an SPF-Authenticated Identifier and the Author Domain. Alternatively, if 
 the Domain Owner wishes to rely solely on SPF, then it can send email messages that
 have no DKIM-Signature header field that would produce Identifier Alignment between
-a DKIM-Authenicated Identifier and the Author Domain. Neither approach is recommended,
+a DKIM-Authenticated Identifier and the Author Domain. Neither approach is recommended,
 however.
 
 A Mail Receiver implementing the DMARC mechanism gets the Domain Owner's or
@@ -896,7 +894,7 @@ that might want to applying decentralized management to their DNS and their
 DMARC Policy Records. Rather than just searching the Public Suffix List to identify
 an Organizational Domain, this update defines a discovery technique known 
 colloquially as the "DNS Tree Walk". The target of any DNS Tree Walk is a
-valid DMARC Policy Record, and its use in determing an Organizational Domain
+valid DMARC Policy Record, and its use in determining an Organizational Domain
 allows for publishing DMARC Policy Records at multiple points in the namespace.
 
 This flexibility comes at a possible cost, however. Since the DNS Tree Walk
@@ -1118,7 +1116,7 @@ Identifier](#spf-authenticated-identifier) that aligns with the
 Author Domain. The SPF record for the RFC5321.MailFrom domain **MUST** be
 constructed at a minimum to ensure an SPF pass verdict for all sources of
 mail that are authorized to use RFC5321.MailFrom domain, and **SHOULD** be
-constructed to ensure that only those authorized sources can get an SPF pass verdict..
+constructed to ensure that only those authorized sources can get an SPF pass verdict.
 
 ### Configure Sending System for DKIM Signing Using an Aligned Domain
 
@@ -1193,7 +1191,7 @@ issues are discussed in detail in (#interoperability-considerations)
 
 Large, complex organizations frequently adopt a decentralized model for
 DNS management, whereby management of a subtree of the name space is delegated
-to a local deparment by the central IT organization. In such situations, the 
+to a local department by the central IT organization. In such situations, the 
 'psd' tag makes it possible for those local departments to declare any arbitrary
 node in their subtree as an Organizational Domain. This would be accomplished by
 publishing a DMARC Policy Record at that node with the psd tag set to 'n'. The
@@ -1338,7 +1336,7 @@ Receivers **SHOULD** generate and send aggregate reports with a frequency
 of at least once every 24 hours. Such reports provide Domain Owners with
 insight into all mail streams using Author Domains under the Domain Owner's
 control, and aid the Domain Owner in determining whether and when to transition
-from [Monitoring Mode](#monitoring-mode) to Enforcement(#enforcement).
+from [Monitoring Mode](#monitoring-mode) to [Enforcement](#enforcement).
 
 ### Optionally Send Failure Reports {#send-failure-reports}
 
@@ -1485,7 +1483,7 @@ a legitimate client to determine the source of some local issue that
 caused the rejection.
 
 In the latter case, when doing an SMTP rejection, providing a clear
-hint can be useful in resolving issues. A [Mail Receiver](#mail-recevier)
+hint can be useful in resolving issues. A [Mail Receiver](#mail-receiver)
 might indicate in plain text the reason for the rejection by using the
 word "DMARC" somewhere in the reply text. For example:
 
@@ -1582,7 +1580,7 @@ employees, customers, and clients.
 As a final note, one possible mitigation to the problems caused by
 Domain Owners publishing a Domain Owner Assessment Policy of p=reject when 
 they should not or Mail Receivers rejecting messages solely on the basis of 
-a p=reject policy is the Autheticated Received Chain (ARC) protocol described 
+a p=reject policy is the Authenticated Received Chain (ARC) protocol described 
 in [@RFC8617].  However, as of this writing, use of ARC is nascent, as is industry
 experience with it in connection with DMARC.
 
