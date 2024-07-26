@@ -33,7 +33,7 @@ when evaluating handling choices for incoming mail.</t>
 The source for this draft is maintained on GitHub at:
 <eref target="https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis">https://github.com/ietf-wg-dmarc/draft-ietf-dmarc-dmarcbis</eref></t>
 <t>Abusive email often includes unauthorized and deceptive use of a
-domain name in the &quot;From&quot; header field defined in <xref target="RFC5322" sectionFormat="of" relative="#" section="3.6.2"></xref>
+domain name in the &quot;From&quot; header field defined in section 3.6.2 of <xref target="RFC5322" sectionFormat="bare" relative="#" section="RFC 5322, Internet Message Format"></xref>
 and referred to as RFC5322.From. The domain typically belongs to an organization
 expected to be known to - and presumably trusted by - the recipient. The Sender
 Policy Framework (SPF) <xref target="RFC7208"></xref> and DomainKeys Identified Mail (DKIM) <xref target="RFC6376"></xref>
@@ -171,12 +171,13 @@ built upon SPF and DKIM, which authenticate domains; and</t>
 <section anchor="conventions-used-in-this-document"><name>Conventions Used in This Document</name>
 <t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;,
 &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;NOT RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot; in this
-document are to be interpreted as described in BCP 14 <xref target="RFC2119"></xref> and <xref target="RFC8174"></xref>
-when, and only when, they appear in all capitals, as shown here.</t>
+document are to be interpreted as described in BCP 14 <xref target="RFC2119"></xref> and
+<xref target="RFC8174" sectionFormat="bare" relative="#" section="RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"></xref> when, and
+only when, they appear in all capitals, as shown here.</t>
 <t>Readers are encouraged to be familiar with the contents of
-<xref target="RFC5598"></xref>.  In particular, that document defines various roles in
-the messaging infrastructure that can appear the same or separate in
-various contexts. For example, a <eref target="#domain-owner">Domain Owner</eref> could,
+<xref target="RFC5598" sectionFormat="bare" relative="#" section="RFC 5598, Internet Mail Architecture"></xref>.  In particular, that document
+defines various roles in the messaging infrastructure that can appear the same
+or separate in various contexts. For example, a <eref target="#domain-owner">Domain Owner</eref> could,
 via the messaging security mechanisms on which DMARC is based, delegate the
 ability to send mail as the Domain Owner to a third party with
 another role. This document does not address the distinctions among
@@ -269,9 +270,9 @@ the authentication practices for its mail streams.</t>
 
 <section anchor="non-existent-domains"><name>Non-existent Domains</name>
 <t>For DMARC purposes, a non-existent domain is consistent with the term's meaning
-as described in <xref target="RFC8020"></xref>. That is, if the response code received for a query
-for a domain name is NXDOMAIN, then the domain name and any possible subdomains
-do not exist.</t>
+as described in <xref target="RFC8020" sectionFormat="bare" relative="#" section="RFC 8020, NXDOMAIN: There Really Is Nothing Underneath"></xref>. That is,
+if the response code received for a query for a domain name is NXDOMAIN, then the domain name
+and any possible subdomains do not exist.</t>
 </section>
 
 <section anchor="organizational-domain"><name>Organizational Domain</name>
@@ -347,8 +348,8 @@ validation checks. Per-message failure reports are a useful source of
 information when debugging deployments (if messages can be determined
 to be legitimate even though failing validation) or in analyzing
 attacks.  The capability for such services is enabled by DMARC but
-defined in other referenced material such as <xref target="RFC6591"></xref> and
-<xref target="I-D.ietf-dmarc-failure-reporting"></xref></t>
+defined in other referenced material such as
+<xref target="RFC6591" sectionFormat="bare" relative="#" section="RFC 6591, Authentication Failure Reporting Using the Abuse Reporting Format"></xref> and <xref target="I-D.ietf-dmarc-failure-reporting"></xref></t>
 </section>
 
 <section anchor="use-of-rfc5322-from"><name>Use of RFC5322.From</name>
@@ -360,8 +361,8 @@ users to identify the source of the message, and so it has always
 been a prime target for abuse through such forgery and other means.
 That said, of all the identifiers that are part of the message itself,
 this is the only one required to be present. A message without a single,
-properly formed RFC5322.From header field does not comply with <xref target="RFC5322"></xref>,
-and handling such a message is outside of the scope of this specification.</t>
+properly formed RFC5322.From header field does not comply with
+<xref target="RFC5322"></xref>, and handling such a message is outside of the scope of this specification.</t>
 </section>
 
 <section anchor="authentication-mechanisms"><name>Authentication Mechanisms</name>
@@ -391,7 +392,7 @@ Alignment</eref>&quot;) or that it be identical to the Authenticated Identifier
 or strict alignment is left to the <eref target="#domain-owner">Domain Owner</eref> and is expressed in
 the domain's <eref target="#dmarc-policy-record">DMARC Policy Record</eref>. In practice, nearly all Domain
 Owners have found relaxed alignment sufficient to meet their needs. Domain name comparisons
-in this context are case-insensitive, per <xref target="RFC4343"></xref>.</t>
+in this context are case-insensitive, per <xref target="RFC4343" sectionFormat="bare" relative="#" section="RFC 4343, DNS Case Insensitivity Clarification"></xref>.</t>
 <t>The following table is meant to illustrate possible alignment conditions.</t>
 <table align="left"><name>&quot;Alignment Examples&quot;
 </name>
@@ -502,10 +503,10 @@ a DNS query, specifically an isolated TXT record that is restricted to the
 DMARC context.  Using the DNS as the query service has the benefit of reusing
 an extremely well-established operations, administration, and management
 infrastructure, rather than creating a new one.</t>
-<t>Per <xref target="RFC1035"></xref>, a TXT record can comprise several &quot;character-string&quot;
-objects. Where this is the case, the module performing DMARC
-evaluation <bcp14>MUST</bcp14> concatenate these strings by joining together the
-objects in order and parsing the result as a single string.</t>
+<t>Per <xref target="RFC1035" sectionFormat="bare" relative="#" section="RFC 1035, Domain Names - Implementation and Specification"></xref>, a TXT record
+can comprise multiple &quot;character-string&quot; objects, each with the same name. Where this is
+the case, the module performing DMARC evaluation <bcp14>MUST</bcp14> concatenate these strings by joining
+together the objects in order and parsing the result as a single string.</t>
 <t>A Domain Owner can choose not to have some underlying authentication mechanisms
 apply to DMARC evaluation of its Author Domain(s). For example, if a Domain Owner
 only wants to use DKIM as the underlying authentication mechanism, then the Domain
@@ -523,7 +524,7 @@ are discussed below in <xref target="policy-enforcement-considerations"></xref>.
 </section>
 
 <section anchor="dmarc-uris"><name>DMARC Reporting URIs</name>
-<t><xref target="RFC3986"></xref> defines a generic syntax for identifying a resource. The DMARC
+<t><xref target="RFC3986" sectionFormat="bare" relative="#" section="RFC 3986, URI Generic Syntax"></xref> defines a syntax for identifying a resource. The DMARC
 mechanism uses this as the format by which a <eref target="#domain-owner">Domain Owner</eref>
 or <eref target="#public-suffix-organization">PSO</eref> specifies the destination for the two
 report types that are supported.</t>
@@ -585,11 +586,11 @@ mechanism produced something other than an aligned &quot;pass&quot; result.</dd>
 <dt>d:</dt>
 <dd>Generate a DKIM failure report if the message had a signature
 that failed evaluation, regardless of its alignment. DKIM-specific
-reporting is described in <xref target="RFC6651"></xref>.</dd>
+reporting is described in <xref target="RFC6651" sectionFormat="bare" relative="#" section="RFC 6651, Extensions to DKIM for Failure Reporting"></xref>.</dd>
 <dt>s:</dt>
 <dd>Generate an SPF failure report if the message failed SPF
 evaluation, regardless of its alignment. SPF-specific
-reporting is described in <xref target="RFC6652"></xref>.</dd>
+reporting is described in <xref target="RFC6652" sectionFormat="bare" relative="#" section="RFC 6652, SPF Authentication Failure Reporting Using the Abuse Reporting Format"></xref>.</dd>
 </dl></dd>
 <dt>np:</dt>
 <dd><t><eref target="#domain-owner-policy">Domain Owner Assessment Policy</eref> for non-existent subdomains
@@ -731,8 +732,8 @@ a new version of DMARC.</t>
 </section>
 
 <section anchor="formal-definition"><name>Formal Definition</name>
-<t>The formal definition of the DMARC Policy Record format, using <xref target="RFC5234"></xref> and <xref target="RFC7405"></xref>,
-is as follows:</t>
+<t>The formal definition of the DMARC Policy Record format, using <xref target="RFC5234" sectionFormat="bare" relative="#" section="RFC 5234, Augmented BNF for Syntax Specifications: ABNF"></xref>
+and <xref target="RFC7405" sectionFormat="bare" relative="#" section="RFC 7405, Case-Sensitive String Support in ABNF"></xref>, is as follows:</t>
 
 <artwork>  dmarc-uri     = URI
                 ; &quot;URI&quot; is imported from [RFC3986]; 
@@ -894,7 +895,8 @@ and the Author Domain are used in determining Identifier Alignment between the t
 <xref target="identifier-alignment-evaluation"></xref>).</t>
 </li>
 </ul>
-<t><xref target="RFC7489"></xref> defined an Organizational Domain as &quot;The domain that was registered
+<t><xref target="RFC7489" sectionFormat="bare" relative="#" section="RFC 7489, Domain-based Message Authentication, Reporting, and Conformance (DMARC)"></xref>
+defined an Organizational Domain as &quot;The domain that was registered
 with a domain name registrar.&quot; This update to that document offers more
 flexibility to Domain Owners, especially those with large, complex organizations
 that might want to applying decentralized management to their DNS and their
@@ -916,8 +918,10 @@ future expansion of the name space that did not require updating this document.<
 <t>The generic steps for a DNS Tree Walk are as follows:</t>
 
 <ol>
-<li><t>Query the DNS for a DMARC Policy Record at the appropriate starting point
-for the Tree Walk. A possibly empty set of records is returned.</t>
+<li><t>Query the DNS for a DMARC Policy Record at the starting point for the Tree Walk.
+The starting point for the DNS Tree Walk will depend on the ultimate target of
+the DNS Tree Walk. <xref target="dmarc-policy-discovery"></xref> and <xref target="identifier-alignment-evaluation"></xref>
+describe the possible starting points. A possibly empty set of records is returned.</t>
 </li>
 <li><t>Records that do not start with a &quot;v=&quot; tag that identifies the current
 version of DMARC are discarded. If multiple DMARC Policy Records are
@@ -1264,7 +1268,9 @@ participate in DMARC.</t>
 <t>Once the email message has been transmitted to the Mail Receiver, the Mail
 Receiver extracts the domain in the RFC5322.From header field as the Author
 Domain. If the domain is a U-label, the domain <bcp14>MUST</bcp14> be converted to an
-A-label, as described in Section 2.3 of <xref target="RFC5890"></xref>, for further processing.</t>
+A-label, as described in Section 2.3 of
+<xref target="RFC5890" sectionFormat="bare" relative="#" section="RFC 5890, Internationalized Domain Names for Applications (IDNA): Definitions and Document Framework"></xref>, for
+further processing.</t>
 <t>If zero or more than one domain is extracted, then DMARC validation is
 not possible and the process terminates. In the case where more than one
 domain is retrieved, the Mail Receiver <bcp14>MAY</bcp14> choose to go forward
@@ -1362,9 +1368,9 @@ DMARC-enabled criminal campaigns.</t>
 <t>Mail Receivers <bcp14>MAY</bcp14> choose to accept email that fails the DMARC
 validation check even if the published Domain Owner Assessment Policy
 is &quot;reject&quot;. In particular, because of the considerations discussed
-in <xref target="RFC7960"></xref> and in <xref target="interoperability-considerations"></xref> of
-this document, it is important that Mail Receivers not reject messages
-solely because of a published policy of &quot;reject&quot;, but that they apply
+in <xref target="RFC7960" sectionFormat="bare" relative="#" section="RFC 7960, Interoperability Issues between DMARC and Indirect Email Flows"></xref>
+and in <xref target="interoperability-considerations"></xref> of this document, it is important that Mail
+Receivers not reject messages solely because of a published policy of &quot;reject&quot;, but that they apply
 other knowledge and analysis to avoid situations such as rejection of
 legitimate messages sent in ways that DMARC cannot describe, harm to
 the operation of mailing lists, and similar.</t>
@@ -1372,8 +1378,8 @@ the operation of mailing lists, and similar.</t>
 Assessment Policy to improve interoperability among mail systems, it may
 increase the likelihood of accepting abusive mail.  At a minimum, Mail
 Receivers <bcp14>SHOULD</bcp14> add the Authentication-Results header field (see
-<xref target="RFC8601"></xref>), and it is <bcp14>RECOMMENDED</bcp14> when delivering messages that
-fail the DMARC validation check.</t>
+<xref target="RFC8601" sectionFormat="bare" relative="#" section="RFC 8601, Message Header Field for Indicating Message Authentication Status"></xref>),
+and it is <bcp14>RECOMMENDED</bcp14> when delivering messages that fail the DMARC validation check.</t>
 <t>When Mail Receivers deviate from a published Domain Owner
 Assessment Policy during message processing they <bcp14>SHOULD</bcp14> make
 available the fact of and reason for the deviation to the Domain
@@ -1445,10 +1451,11 @@ of DMARC Policy Record changes while preserving the benefits of DNS caching.</t>
 <section anchor="rejecting-messages"><name>Rejecting Messages</name>
 <t>The DMARC mechanism calls for rejection of a message during the SMTP
 session under certain circumstances. This is preferable to
-generation of a Delivery Status Notification <xref target="RFC3464"></xref>, since
-fraudulent messages caught and rejected using the DMARC mechanism would
-then result in the annoying generation of such failure reports that go
-back to the RFC5321.MailFrom address.</t>
+generation of a Delivery Status Notification
+<xref target="RFC3464" sectionFormat="bare" relative="#" section="RFC 3464, An Extensible Message Format for Delivery Status Notifications"></xref>, since fraudulent
+messages caught and rejected using the DMARC mechanism would then result in the
+annoying generation of such failure reports that go back to the RFC5321.MailFrom
+address.</t>
 <t>This synchronous rejection is typically done in one of two ways:</t>
 
 <ul>
@@ -1493,7 +1500,8 @@ reply code.</t>
 <t>Because DMARC relies on SPF <xref target="RFC7208"></xref> and/or DKIM <xref target="RFC6376"></xref> to achieve
 a &quot;pass&quot;, their limitations also apply.</t>
 <t>Issues specific to the use of policy mechanisms alongside DKIM are
-further discussed in <xref target="RFC6377"></xref>, particularly Section 5.2.</t>
+further discussed in <xref target="RFC6377" sectionFormat="bare" relative="#" section="RFC 6377, DKIM and Mailing Lists"></xref>, particularly
+Section 5.2.</t>
 <t>Mail that is sent by authorized, independent third parties might not be
 sent with Identifier Alignment, also preventing a &quot;pass&quot; result. A Domain
 Owner can use DMARC aggregate reports to identify this mail and take steps
@@ -1696,9 +1704,10 @@ been created.</t>
 <t>Names of DMARC tags are registered with IANA in this new
 sub-registry. New entries are assigned only for values that have
 been documented in a manner that satisfies the terms of Specification
-Required, per <xref target="RFC8126"></xref>. Each registration includes
-the tag name; the specification that defines it; a brief description;
-and its status, which is one of &quot;current&quot;, &quot;experimental&quot;, or
+Required, per
+<xref target="RFC8126" sectionFormat="bare" relative="#" section="RFC 8126, Guidelines for Writing an IANA Considerations Section in RFCs"></xref>.
+Each registration includes the tag name; the specification that
+defines it; a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;, or
 &quot;historic&quot;. The Designated Expert needs to confirm that the provided
 specification adequately describes the new tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
@@ -1856,8 +1865,8 @@ DMARC context by Domain Owners and Mail Receivers.</t>
 </table></section>
 
 <section anchor="underscored-and-globally-scoped-dns-node-names-registry"><name>Underscored and Globally Scoped DNS Node Names Registry</name>
-<t>Per <xref target="RFC8552"></xref>, please add the following entry to the &quot;Underscored
-and Globally Scoped DNS Node Names&quot; registry:</t>
+<t>Per <xref target="RFC8552" sectionFormat="bare" relative="#" section="RFC 8852, Scoped Interpretation of DNS Resource Records through 'Underscored' Naming of Attribute Leaves"></xref>,
+please add the following entry to the &quot;Underscored and Globally Scoped DNS Node Names&quot; registry:</t>
 <table align="left"><name>&quot;Underscored and Globally Scoped DNS Node Names&quot; registry
 </name>
 <thead>
@@ -1946,7 +1955,8 @@ mechanism associated with that source.</t>
 
 <section anchor="attacks-on-reporting-uris"><name>Attacks on Reporting URIs</name>
 <t>URIs published in DNS TXT records are well-understood possible
-targets for attack.  Specifications such as <xref target="RFC1035"></xref> and <xref target="RFC2142"></xref> either
+targets for attack.  Specifications such as <xref target="RFC1035"></xref> and
+<xref target="RFC2142" sectionFormat="bare" relative="#" section="RFC 2142, Mailbox Names for Common Services, Roles, and Functions"></xref> either
 expose or cause the exposure of email addresses that could be flooded
 by an attacker, for example. Records found in the DNS such as MX, NS,
 and others advertise potential attack destinations. Common DNS names such
@@ -2122,6 +2132,7 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7208.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7960.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8552.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 </references>
@@ -2133,7 +2144,6 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6377.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7960.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
@@ -2244,10 +2254,12 @@ Receivers to determine whether or not to accept a mail message before performing
 other more expensive processing.</t>
 <t>The DMARC mechanism makes no such requirement for the existence of specific DNS
 RRs in order for a domain to exist; instead, if any RR exists for a domain, then
-the domain exists. To use the terminology from <xref target="RFC2308"></xref>, an &quot;NXDOMAIN&quot; response
-(rcode &quot;Name Error&quot;) to a DNS query means that the domain name does not exist,
-while a &quot;NODATA&quot; response (rcode &quot;NOERROR&quot;) means that the given resource record
-type queried for does not exist, but the domain name does.</t>
+the domain exists. To use the terminology from
+<xref target="RFC2308" sectionFormat="bare" relative="#" section="RFC 2308, Negative Caching of DNS Queries (DNS NCACHE)"></xref>,
+an &quot;NXDOMAIN&quot; response (rcode &quot;Name Error&quot;) to a DNS
+query means that the domain name does not exist, while a &quot;NODATA&quot; response (rcode
+&quot;NOERROR&quot;) means that the given resource record type queried for does not exist,
+but the domain name does.</t>
 <t>Furthermore, in keeping with <xref target="RFC8020"></xref>, if a query for a name returns NXDOMAIN,
 then not only does the name not exist, every name below it in the DNS hierarchy
 also does not exist.</t>
@@ -2866,7 +2878,7 @@ come to an understanding of how its domain is being misused.</t>
 </section>
 
 <section anchor="rfc7849-changes"><name>Changes from RFC 7489</name>
-<t>This document is intended to render obsolete <xref target="RFC7489"></xref>. As one might guess,
+<t>This document is intended to render <xref target="RFC7489"></xref> obsolete. As one might guess,
 that means there are significant differences between RFC 7489 and this
 document. This section will summarize those changes.</t>
 
@@ -2908,10 +2920,10 @@ to be Internet Standards Track.</t>
 have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
 by a technique called a &quot;DNS Tree Walk&quot;, and the methodology for the DNS Tree Walk is explained
 in detail in this document.</t>
-<t>The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in <xref target="RFC9091"></xref>.
-<xref target="RFC9091"></xref> was an Experimental RFC, and the results of that experiment were that the RFC was
-not implemented as written. Instead, this document redefines the algorithm for PSD policy
-discovery, and thus obsoletes <xref target="RFC9091"></xref>.</t>
+<t>The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in
+<xref target="RFC9091" sectionFormat="bare" relative="#" section="RFC 9091, Experimental DMARC Extension for Public Suffix Domains"></xref>.  <xref target="RFC9091"></xref> was an Experimental
+RFC, and the results of that experiment were that the RFC was not implemented as written. Instead,
+this document redefines the algorithm for PSD policy discovery, and thus obsoletes <xref target="RFC9091"></xref>.</t>
 </section>
 
 <section anchor="reporting"><name>Reporting</name>
@@ -2944,7 +2956,6 @@ RFC 7489 was published, and at the same time, several others were removed.</t>
 </section>
 
 <section anchor="expansion-of-domain-owner-actions-section"><name>Expansion of Domain Owner Actions Section</name>
-<t>This section has been expanded upon from RFC 7489.</t>
 <t>RFC 7489 had just two paragraphs in its Domain Owner Actions section, and while
 the content of those paragraphs was correct, it was minimalist in its approach to
 providing guidance to domain owners on just how to implement DMARC.</t>
