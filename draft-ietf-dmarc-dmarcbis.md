@@ -2463,7 +2463,7 @@ file (following the conventional zone file format):
 
   _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
                     "rua=mailto:dmarc-feedback@example.com,"
-                    "mailto:tld-test@thirdparty.example.net;"
+                    "mailto:tld-test@thirdparty.example.net; "
                     "t=y" )
 ~~~
 
