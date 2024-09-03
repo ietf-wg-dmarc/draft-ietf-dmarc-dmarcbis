@@ -2334,8 +2334,8 @@ might create an entry like the following in the appropriate zone file
   ; DMARC Policy Record for the domain example.com
 
   _dmarc  IN TXT ( "v=DMARC1; p=none; "
-                    "rua=mailto:dmarc-feedback@example.com; "
-                    "ruf=mailto:auth-reports@example.com" )
+                   "rua=mailto:dmarc-feedback@example.com; "
+                   "ruf=mailto:auth-reports@example.com" )
 ~~~
 
 ###  Per-Message Failure Reports Directed to Third Party {#per-message-failure-reports-directed-to-third-party}
