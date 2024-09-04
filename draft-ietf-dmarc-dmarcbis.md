@@ -196,11 +196,11 @@ This section defines terms used in the rest of the document.
 
 ## Conventions Used in This Document
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in BCP 14 [@!RFC2119] and 
-[@RFC8174, RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words] when, and 
-only when, they appear in all capitals, as shown here.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 [@!RFC2119] [@!RFC8174] when, and only when, they
+appear in all capitals, as shown here.
 
 Readers are encouraged to be familiar with the contents of
 [@RFC5598, RFC 5598, Internet Mail Architecture].  In particular, that document 
