@@ -2343,7 +2343,7 @@ might create an entry like the following in the appropriate zone file
 The Domain Owner from the previous example is maintaining the same
 policy but now wishes to have a third party serve as a Report Consumer.
 Again, not all Mail Receivers will honor this request, but those that 
-do may implement additional checks to validate that the third party authorizes
+do **MUST** implement additional checks to validate that the third party authorizes
 reception of failure reports on behalf of this domain.
 
 The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-reports)
@@ -2376,7 +2376,7 @@ might create an entry like the following in the appropriate zone file
 ~~~
 
 Because the address used in the "ruf" tag is outside the Organizational Domain 
-in which this record is published, conforming Mail Receivers will implement 
+in which this record is published, conforming Mail Receivers **MUST** implement
 additional checks as described in [@!I-D.ietf-dmarc-aggregate-reporting, section 3]. 
 To pass these additional checks, the Report Consumer's Domain Owner will need to 
 publish an additional DMARC Policy Record as follows:
