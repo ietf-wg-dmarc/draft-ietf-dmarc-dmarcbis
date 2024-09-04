@@ -2271,7 +2271,7 @@ indicating that:
 
 *  Aggregate feedback reports are sent via email to the address
    "dmarc-feedback@example.com"
-   ("rua=mailto:dmarc-feedback@example.com")
+   `("rua=mailto:dmarc-feedback@example.com")`
 
 *  All messages from this Organizational Domain are subject to this
    policy (no "t" tag present, so the default of "n" applies).
@@ -2314,7 +2314,7 @@ DMARC Policy Record from (#entire-domain-monitoring-mode):
 
 *  Per-message failure reports are sent via email to the
    address "auth-reports@example.com"
-   ("ruf=mailto:auth-reports@example.com")
+   `("ruf=mailto:auth-reports@example.com")`
 
 The DMARC Policy Record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
@@ -2351,7 +2351,7 @@ as follows:
 
 *  Per-message failure reports are sent via email to the
    address "auth-reports@thirdparty.example.net"
-   ("ruf=mailto:auth-reports@thirdparty.example.net")
+   `("ruf=mailto:auth-reports@thirdparty.example.net")`
 
 The DMARC Policy Record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
@@ -2435,8 +2435,8 @@ indicating that:
 *  Aggregate feedback reports are sent via email to the
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net"
-   ("rua=mailto:dmarc-feedback@example.com,
-     mailto:tld-test@thirdparty.example.net")
+   `("rua=mailto:dmarc-feedback@example.com,
+     mailto:tld-test@thirdparty.example.net")`
 
 *  The Domain Owner desires only that an actor performing a DMARC
    validation check apply any special handling rules it might have
