@@ -670,11 +670,11 @@ psd:
       Domain and policy domain applicable to the message in question.
 
     n:
-    : The DMARC policy record is published for a domain that is not a PSD, but it is 
+    : The DMARC Policy Record is published for a domain that is not a PSD, but it is
       the Organizational Domain for itself and its subdomains. 
 
     u:
-    : The default indicates that the DMARC policy record is published for a domain
+    : The default indicates that the DMARC Policy Record is published for a domain
       that is not a PSD, and may or may not be an Organizational Domain for itself and
       its subdomains. Use the mechanism described in (#dns-tree-walk) for determining
       the Organizational Domain for this domain. There is no need to explicitly publish
