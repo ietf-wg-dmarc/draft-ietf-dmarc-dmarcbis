@@ -642,7 +642,7 @@ p:
     The policy applies to the domain queried and to subdomains, unless the
     subdomain policy is explicitly described using the "sp" or "np" tags.
     If this tag is not present in an otherwise syntactically valid DMARC
-    record, then the record is treated as if it included "p=none" (see
+    Policy Record, then the record is treated as if it included "p=none" (see
     (#dmarc-policy-discovery)). This tag is not applicable for third-party
     reporting records (see [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting])
     Possible values are as follows:
@@ -1067,7 +1067,7 @@ to the shortest:
 2. If a valid DMARC Policy Record, other than the one for the domain where the tree
    walk started, contains the psd= tag set to 'y' (psd=y), the Organizational
    Domain is the domain one label below this one in the DNS hierarchy, and the 
-   selection process is complete. For example, if in the course of a tree walk a DMARC
+   selection process is complete. For example, if in the course of a tree walk a DMARC Policy
    record is queried for at first \_dmarc.mail.example.com and then \_dmarc.example.com, 
    and a valid DMARC Policy Record containing the psd= tag set to 'y' is found at 
    \_dmarc.example.com, then "mail.example.com" is the domain one label below "example.com"
@@ -1745,7 +1745,7 @@ reports) can drive a need for additional controls.  As an example, a
 company may be legally restricted from receiving data related to a specific
 subsidiary.  Before requesting failure reports, any such data spillage risks
 have to be addressed through data management controls or publishing DMARC
-records for relevant subdomains to prevent reporting on data related to
+Policy Records for relevant subdomains to prevent reporting on data related to
 their emails.
 
 Due to the nature of the email contents which may be shared through Failure
@@ -2848,7 +2848,7 @@ This document in (#dmarc-uris) says:
 
 ~~~
   A report **SHOULD** be sent to each listed URI provided in the DMARC 
-  record.
+  Policy Record.
 ~~~
 
 ##  Removal of RFC 7489 Appendix A.5
