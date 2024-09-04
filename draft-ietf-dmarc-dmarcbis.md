@@ -504,7 +504,7 @@ failure reports.
 
 DMARC Policy Records are stored as DNS TXT records in subdomains named "\_dmarc". 
 For example, the Domain Owner of "example.com" would publish a DMARC Policy
-Record at the name "\_dmarc.example.com". Similarly, a [Mail Receiver](#mail-receiver)
+Record at the name "\_dmarc.example.com". A [Mail Receiver](#mail-receiver)
 wishing to find the DMARC Policy Record for mail with an [Author Domain](#author-domain)
 of "example.com" would issue a TXT query to the DNS for the subdomain of
 "\_dmarc.example.com".  A Domain Owner or PSO may choose not to participate in 
