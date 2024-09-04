@@ -379,8 +379,8 @@ about received messages using the Author Domain for periodic aggregate reports
 to the Domain Owner or PSO. The parameters and format for such reports are 
 discussed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-A Mail Receiver participating in DMARC might also generate per-message reports
-that contain information related to individual messages that fail DMARC
+A Mail Receiver participating in DMARC might also generate per-message failure
+reports that contain information related to individual messages that fail DMARC
 validation checks. Per-message failure reports are a useful source of
 information when debugging deployments (if messages can be determined
 to be legitimate even though failing validation) or in analyzing
@@ -2295,7 +2295,7 @@ creates an entry like the following in the appropriate zone file
                    "rua=mailto:dmarc-feedback@example.com" )
 ~~~
 
-###  Entire Domain, Monitoring Mode, Per-Message Reports {#entire-domain-monitoring-mode-per-message-reports}
+###  Entire Domain, Monitoring Mode, Per-Message Failure Reports {#entire-domain-monitoring-mode-per-message-failure-reports}
 
 The Domain Owner from the previous example has used the aggregate
 reporting to discover some messaging systems that had not yet
@@ -2346,7 +2346,7 @@ Again, not all Mail Receivers will honor this request, but those that
 do **MUST** implement additional checks to validate that the third party authorizes
 reception of failure reports on behalf of this domain.
 
-The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-reports)
+The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-failure-reports)
 as follows:
 
 *  Per-message failure reports are sent via email to the
