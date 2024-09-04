@@ -804,8 +804,6 @@ and [@!RFC7405, RFC 7405, Case-Sensitive String Support in ABNF], is as follows:
 
 ~~~
 
-"Keyword" is imported from [@!RFC5321, section 4.1.2].
-
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
 The ABNF rule for each dmarc-value is specified in the following table:
 
