@@ -972,7 +972,7 @@ name created by prepending the label "\_dmarc" to the Author Domain of the
 message being evaluated. If a valid DMARC Policy Record is found there, then this is the
 DMARC Policy Record to be applied to the message; however, this does not necessarily mean
 that the Author Domain is the Organizational Domain to be used in Identifier
-Alignment checks. Whether this is the also the Organizational Domain is dependent
+Alignment checks. Whether this is also the Organizational Domain is dependent
 on the value of the 'psd' tag, if present, or some conditions described in 
 (#identifier-alignment-evaluation).
 
