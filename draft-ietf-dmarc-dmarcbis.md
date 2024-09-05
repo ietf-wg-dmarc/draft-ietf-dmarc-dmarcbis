@@ -1897,7 +1897,7 @@ The URIs identified there are thus more attractive targets for
 intrusion attempts than those found in the "rua" tag. Moreover,
 attacking the DNS of the subject domain to cause failure data to be
 routed fraudulently to an attacker's systems may be an attractive
-prospect. Deployment of [@RFC4033] is advisable if this is a concern.
+prospect. Deployment of DNSSEC [@RFC4033] is advisable if this is a concern.
 
 ##  Secure Protocols {#secure-protocols}
 
