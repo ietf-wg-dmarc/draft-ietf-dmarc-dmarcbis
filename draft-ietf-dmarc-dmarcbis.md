@@ -2343,8 +2343,8 @@ might create an entry like the following in the appropriate zone file
 The Domain Owner from the previous example is maintaining the same
 policy but now wishes to have a third party serve as a Report Consumer.
 Again, not all Mail Receivers will honor this request, but those that 
-do may implement additional checks to validate that the third party wishes 
-to receive the failure reports for this domain.
+do may implement additional checks to validate that the third party authorizes
+reception of failure reports on behalf of this domain.
 
 The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-reports)
 as follows:
@@ -2385,7 +2385,7 @@ publish an additional DMARC Policy Record as follows:
    "\_dmarc.example.com", the DNS administrator for the Report Consumer
    will need to publish a TXT resource record at
    "example.com.\_report.\_dmarc.thirdparty.example.net" with the value
-   "v=DMARC1;".
+   "v=DMARC1;" to authorize receipt of the reports.
 
 The resulting DMARC Policy Record might look like this when retrieved using a
 common command-line tool:
