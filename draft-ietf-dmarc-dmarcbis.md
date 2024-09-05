@@ -2456,7 +2456,7 @@ line but is wrapped here for publication):
 
 To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
-file:
+file (following the conventional zone file format):
 
 ~~~
   ; DMARC Policy Record for the domain test.example.com
@@ -2487,7 +2487,7 @@ line but is wrapped here for publication):
 
 To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
-file:
+file (following the conventional zone file format):
 
 ~~~
   ; DMARC Policy Record for the domain test.example.com
