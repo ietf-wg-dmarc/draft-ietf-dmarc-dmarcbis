@@ -2406,6 +2406,56 @@ create an entry like the following in the appropriate zone file
   example.com._report._dmarc   IN   TXT    "v=DMARC1;"
 ~~~
 
+### Overriding destination addresses {#overriding-destination-addresses}
+
+The third party Report Consumer can also publish rua= and ruf= tags in
+order to override the specific address published by example.com with a
+different address in the same third party domain.  This may be necessary
+if the third party Report Consumer has changed its email address,
+or want to guard against typos in the DMARC Policy Record of the
+Author Domain.  Intermediaries and other third parties should refer to
+[@!I-D.ietf-dmarc-aggregate-reporting, section 3] for the full details
+of this mechanism.
+
+The third party Report Consumer accomplishes this by adding the following
+to its DMARC Policy Record from (#per-message-failure-reports-directed-to-third-party):
+
+*  The override address for aggregate reports is
+   "aggregate-reports@thirdparty.example.net"
+   `("rua=mailto:aggregate-reports@thirdparty.example.net")`
+*  The override address for failure reports is
+   "failure-reports@thirdparty.example.net"
+   `("ruf=mailto:failure-reports@thirdparty.example.net")`
+
+The DMARC Policy Record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):
+
+~~~
+  % dig +short TXT example.com._report._dmarc.thirdparty.example.net
+  "v=DMARC1; rua=mailto:aggregate-reports@thirdparty.example.net;
+   ruf=mailto:failure-reports@thirdparty.example.net"
+~~~
+
+To publish such a record, the DNS administrator for example.net might
+create an entry like the following in the appropriate zone file
+(following the conventional zone file format):
+
+~~~
+  ; zone file for thirdparty.example.net
+  ; Accept DMARC reports on behalf of example.com
+  ; Override destination mailboxes
+
+  example.com._report._dmarc   IN   TXT    (
+          "v=DMARC1; "
+          "rua=mailto:aggregate-reports@thirdparty.example.net; "
+          "ruf=mailto:failure-reports@thirdparty.example.net" )
+~~~
+
+In this case only the ruf= tag is actually overridden, because, in the
+previous example, failure reporting is the only reporting type that was
+directed to the third party Report Consumer.
+
 ###  Subdomain, Testing, and Multiple Aggregate Report URIs {#subdomain-sampling-and-multiple-aggregate-report-uris}
 
 The Domain Owner has implemented SPF and DKIM in a subdomain used for
