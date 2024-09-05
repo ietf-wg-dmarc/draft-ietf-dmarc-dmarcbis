@@ -2401,7 +2401,7 @@ create an entry like the following in the appropriate zone file
 
 ~~~
   ; zone file for thirdparty.example.net
-  ; Accept DMARC failure reports on behalf of example.com
+  ; Accept DMARC aggregate and failure reports on behalf of example.com
 
   example.com._report._dmarc   IN   TXT    "v=DMARC1;"
 ~~~
