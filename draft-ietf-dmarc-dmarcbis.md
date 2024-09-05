@@ -1861,7 +1861,7 @@ appropriately.
 The case of a syntactically valid multi-valued RFC5322.From field presents a
 particular challenge. Experience has shown that most such messages are abusive
 and/or unwanted by their recipients, and given this fact, a Mail Receiver may make a
-negative disposition decision for the message prior to and instead of its being
+negative disposition decision for the message prior to and instead of it being
 subjected to DMARC processing. However, in a case where a Mail Receiver requires
 that the message be subject to DMARC validation, a recommended approach as per
 [@!RFC7489] is to apply the DMARC mechanism to each domain found in the RFC5322.From
