@@ -198,9 +198,8 @@ This section defines terms used in the rest of the document.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in BCP 14 [@!RFC2119] and 
-[@RFC8174, RFC 8174, Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words] when, and 
-only when, they appear in all capitals, as shown here.
+document are to be interpreted as described in BCP 14 [@!RFC2119] [@RFC8174] 
+when, and only when, they appear in all capitals, as shown here.
 
 Readers are encouraged to be familiar with the contents of
 [@RFC5598, RFC 5598, Internet Mail Architecture].  In particular, that document 
@@ -379,8 +378,8 @@ about received messages using the Author Domain for periodic aggregate reports
 to the Domain Owner or PSO. The parameters and format for such reports are 
 discussed in [@!I-D.ietf-dmarc-aggregate-reporting]
 
-A Mail Receiver participating in DMARC might also generate per-message reports
-that contain information related to individual messages that fail DMARC
+A Mail Receiver participating in DMARC might also generate per-message failure
+reports that contain information related to individual messages that fail DMARC
 validation checks. Per-message failure reports are a useful source of
 information when debugging deployments (if messages can be determined
 to be legitimate even though failing validation) or in analyzing
@@ -504,7 +503,7 @@ failure reports.
 
 DMARC Policy Records are stored as DNS TXT records in subdomains named "\_dmarc". 
 For example, the Domain Owner of "example.com" would publish a DMARC Policy
-Record at the name "\_dmarc.example.com". Similarly, a [Mail Receiver](#mail-receiver)
+Record at the name "\_dmarc.example.com", and a [Mail Receiver](#mail-receiver)
 wishing to find the DMARC Policy Record for mail with an [Author Domain](#author-domain)
 of "example.com" would issue a TXT query to the DNS for the subdomain of
 "\_dmarc.example.com".  A Domain Owner or PSO may choose not to participate in 
@@ -529,9 +528,9 @@ an extremely well-established operations, administration, and management
 infrastructure, rather than creating a new one.
 
 Per [@!RFC1035, RFC 1035, Domain Names - Implementation and Specification], a TXT record 
-can comprise multiple "character-string" objects, each with the same name. Where this is 
-the case, the module performing DMARC evaluation **MUST** concatenate these strings by joining 
-together the objects in order and parsing the result as a single string.
+can comprise multiple "character-string" objects. Where this is the case, the module performing
+DMARC evaluation **MUST** concatenate these strings by joining together the objects in order
+and parsing the result as a single string.
 
 A Domain Owner can choose not to have some underlying authentication mechanisms 
 apply to DMARC evaluation of its Author Domain(s). For example, if a Domain Owner
@@ -642,7 +641,7 @@ p:
     The policy applies to the domain queried and to subdomains, unless the
     subdomain policy is explicitly described using the "sp" or "np" tags.
     If this tag is not present in an otherwise syntactically valid DMARC
-    record, then the record is treated as if it included "p=none" (see
+    Policy Record, then the record is treated as if it included "p=none" (see
     (#dmarc-policy-discovery)). This tag is not applicable for third-party
     reporting records (see [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting])
     Possible values are as follows:
@@ -670,11 +669,11 @@ psd:
       Domain and policy domain applicable to the message in question.
 
     n:
-    : The DMARC policy record is published for a domain that is not a PSD, but it is 
+    : The DMARC Policy Record is published for a domain that is not a PSD, but it is 
       the Organizational Domain for itself and its subdomains. 
 
     u:
-    : The default indicates that the DMARC policy record is published for a domain
+    : The default indicates that the DMARC Policy Record is published for a domain
       that is not a PSD, and may or may not be an Organizational Domain for itself and
       its subdomains. Use the mechanism described in (#dns-tree-walk) for determining
       the Organizational Domain for this domain. There is no need to explicitly publish
@@ -803,8 +802,6 @@ and [@!RFC7405, RFC 7405, Case-Sensitive String Support in ABNF], is as follows:
   dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d"
 
 ~~~
-
-"Keyword" is imported from [@!RFC5321, section 4.1.2].
 
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
 The ABNF rule for each dmarc-value is specified in the following table:
@@ -974,7 +971,7 @@ name created by prepending the label "\_dmarc" to the Author Domain of the
 message being evaluated. If a valid DMARC Policy Record is found there, then this is the
 DMARC Policy Record to be applied to the message; however, this does not necessarily mean
 that the Author Domain is the Organizational Domain to be used in Identifier
-Alignment checks. Whether this is the also the Organizational Domain is dependent
+Alignment checks. Whether this is also the Organizational Domain is dependent
 on the value of the 'psd' tag, if present, or some conditions described in 
 (#identifier-alignment-evaluation).
 
@@ -1039,8 +1036,8 @@ at any of the following locations:
 * Any DKIM-Authenticated Identifier if one or more DKIM pass results exist for
   the message being evaluated.
 
-Note: There is no need to perform Tree Walk searches for Organizational Domains
-under any of the following conditions:
+Note: There is no need to perform Identifier Alignment Evaluations under any of 
+the following conditions:
 
 * The Author Domain and the Authenticated Identifier(s) are all the
   same domain, and there is a DMARC Policy Record published for that domain. 
@@ -1068,7 +1065,7 @@ to the shortest:
    walk started, contains the psd= tag set to 'y' (psd=y), the Organizational
    Domain is the domain one label below this one in the DNS hierarchy, and the 
    selection process is complete. For example, if in the course of a tree walk a DMARC
-   record is queried for at first \_dmarc.mail.example.com and then \_dmarc.example.com, 
+   Policy Record is queried for at first \_dmarc.mail.example.com and then \_dmarc.example.com, 
    and a valid DMARC Policy Record containing the psd= tag set to 'y' is found at 
    \_dmarc.example.com, then "mail.example.com" is the domain one label below "example.com"
    in the DNS hierarchy and is thus the Organizational Domain.
@@ -1528,16 +1525,18 @@ cause interoperability problems to indirect message flows such as
 "alumni forwarders", role-based email aliases, and mailing lists
 across the Internet.
 
-A domain that expects to send only targeted messages to account holders
-- a bank, for example - could have account holders using addresses such
-as jones@alumni.example.edu (an address that relays the messages to
-another address with a real mailbox) or finance@association.example
-(a role-based address that does similar relaying for the current head
-of finance at the association).  When such mail is delivered to the
-actual recipient mailbox, it will necessarily fail SPF checks, as the
-incoming IP address will be that of example.edu or association.example,
-and not an address authorized for the sending domain.  DKIM signatures
-will generally remain valid in these relay situations.
+As an example of this, a bank might send only targeted messages to 
+account holders. Those account holders might have given their bank 
+addresses such as jones@alumni.example.edu (an address that relays 
+the messages to another address with a real mailbox) or 
+finance@association.example (a role-based address that does similar 
+relaying for the current head of finance at the association).  When 
+such mail is delivered to the actual recipient mailbox, it will 
+necessarily fail SPF checks if the RFC5321.MailFrom address is not 
+rewritten by the relaying MTA, as the incoming IP address will be that 
+of example.edu or association.example, and not an address authorized
+for the sending domain. DKIM signatures will generally remain valid
+in these relay situations.
 
 > It is therefore critical that domains that publish p=reject
 > **MUST NOT** rely solely on SPF to secure a DMARC pass, and 
@@ -1745,7 +1744,7 @@ reports) can drive a need for additional controls.  As an example, a
 company may be legally restricted from receiving data related to a specific
 subsidiary.  Before requesting failure reports, any such data spillage risks
 have to be addressed through data management controls or publishing DMARC
-records for relevant subdomains to prevent reporting on data related to
+Policy Records for relevant subdomains to prevent reporting on data related to
 their emails.
 
 Due to the nature of the email contents which may be shared through Failure
@@ -1825,9 +1824,9 @@ have an adverse impact on DNS traffic include:
 None of these threats are unique to DMARC, and they can be addressed using
 a variety of techniques, including, but not limited to:
 
-*  Signing DNS records with DNSSEC [@RFC4033], which enables recipients to
-   validate the integrity of DNS data and 
-   detect and discard forged responses.
+*  Signing DNS records with Domain Name System Security Extensions (DNSSEC) [@RFC4033], 
+   which enables recipients to validate the integrity of DNS data and detect and discard 
+   forged responses.
 
 *  DNS over TLS [@RFC7858] or DNS over HTTPS [@RFC8484] can mitigate snooping
    and forged responses.
@@ -2273,7 +2272,7 @@ indicating that:
 
 *  Aggregate feedback reports are sent via email to the address
    "dmarc-feedback@example.com"
-   ("rua=mailto:dmarc-feedback@example.com")
+   `("rua=mailto:dmarc-feedback@example.com")`
 
 *  All messages from this Organizational Domain are subject to this
    policy (no "t" tag present, so the default of "n" applies).
@@ -2297,7 +2296,7 @@ creates an entry like the following in the appropriate zone file
                    "rua=mailto:dmarc-feedback@example.com" )
 ~~~
 
-###  Entire Domain, Monitoring Mode, Per-Message Reports {#entire-domain-monitoring-mode-per-message-reports}
+###  Entire Domain, Monitoring Mode, Per-Message Failure Reports {#entire-domain-monitoring-mode-per-message-failure-reports}
 
 The Domain Owner from the previous example has used the aggregate
 reporting to discover some messaging systems that had not yet
@@ -2308,7 +2307,7 @@ authentication failures occur.
 
 Not all Mail Receivers will honor such a request, but the Domain Owner
 feels that any reports it does receive will be helpful enough to
-justify publishing this record. The default per-message report
+justify publishing this record. The default per-message failure report
 format ([@!RFC6591]) meets the Domain Owner's needs in this scenario.
 
 The Domain Owner accomplishes this by adding the following to its
@@ -2316,7 +2315,7 @@ DMARC Policy Record from (#entire-domain-monitoring-mode):
 
 *  Per-message failure reports are sent via email to the
    address "auth-reports@example.com"
-   ("ruf=mailto:auth-reports@example.com")
+   `("ruf=mailto:auth-reports@example.com")`	
 
 The DMARC Policy Record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
@@ -2336,8 +2335,8 @@ might create an entry like the following in the appropriate zone file
   ; DMARC Policy Record for the domain example.com
 
   _dmarc  IN TXT ( "v=DMARC1; p=none; "
-                    "rua=mailto:dmarc-feedback@example.com; "
-                    "ruf=mailto:auth-reports@example.com" )
+                   "rua=mailto:dmarc-feedback@example.com; "
+                   "ruf=mailto:auth-reports@example.com" )
 ~~~
 
 ###  Per-Message Failure Reports Directed to Third Party {#per-message-failure-reports-directed-to-third-party}
@@ -2345,15 +2344,15 @@ might create an entry like the following in the appropriate zone file
 The Domain Owner from the previous example is maintaining the same
 policy but now wishes to have a third party serve as a Report Consumer.
 Again, not all Mail Receivers will honor this request, but those that 
-do may implement additional checks to validate that the third party wishes 
-to receive the failure reports for this domain.
+do **MUST** implement additional checks to validate that the third party
+authorizes reception of failure reports on behalf of this domain.
 
-The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-reports)
+The Domain Owner needs to alter its DMARC Policy Record from (#entire-domain-monitoring-mode-per-message-failure-reports)
 as follows:
 
 *  Per-message failure reports are sent via email to the
    address "auth-reports@thirdparty.example.net"
-   ("ruf=mailto:auth-reports@thirdparty.example.net")
+   `("ruf=mailto:auth-reports@thirdparty.example.net")`
 
 The DMARC Policy Record might look like this when retrieved using a
 common command-line tool (the output shown would appear on a single
@@ -2378,7 +2377,7 @@ might create an entry like the following in the appropriate zone file
 ~~~
 
 Because the address used in the "ruf" tag is outside the Organizational Domain 
-in which this record is published, conforming Mail Receivers will implement 
+in which this record is published, conforming Mail Receivers **MUST** implement 
 additional checks as described in [@!I-D.ietf-dmarc-aggregate-reporting, section 3]. 
 To pass these additional checks, the Report Consumer's Domain Owner will need to 
 publish an additional DMARC Policy Record as follows:
@@ -2387,7 +2386,7 @@ publish an additional DMARC Policy Record as follows:
    "\_dmarc.example.com", the DNS administrator for the Report Consumer
    will need to publish a TXT resource record at
    "example.com.\_report.\_dmarc.thirdparty.example.net" with the value
-   "v=DMARC1;".
+   "v=DMARC1;" to authorize receipt of the reports.
 
 The resulting DMARC Policy Record might look like this when retrieved using a
 common command-line tool:
@@ -2403,10 +2402,58 @@ create an entry like the following in the appropriate zone file
 
 ~~~
   ; zone file for thirdparty.example.net
-  ; Accept DMARC failure reports on behalf of example.com
+  ; Accept DMARC reports on behalf of example.com
 
   example.com._report._dmarc   IN   TXT    "v=DMARC1;"
 ~~~
+
+###  Overriding destination addresses {#overriding-destination-addresses}
+
+The third party Report Consumer can also publish rua= and ruf= tags in order
+to override the specific address published by example.com with a different
+address in the same third party domain. This may be necessary if the third
+party Report Consumer has changed its email address, or want to guard against
+typos in the DMARC Policy Record of the Author Domain. Intermediaries and other
+third parties should refer to [@!I-D.ietf-dmarc-aggregate-reporting, section 3]
+for the full details of this mechanism.
+
+The third party Report Consumer accomplishes this by adding the following to its
+DMARC Policy Record from (#per-message-failure-reports-directed-to-third-party):
+
+* The override address for aggregate reports is
+   "aggregate-reports@thirdparty.example.net"
+   `("rua=mailto:aggregate-reports@thirdparty.example.net")`
+*  The override address for failure reports is
+   "failure-reports@thirdparty.example.net"
+   `("ruf=mailto:failure-reports@thirdparty.example.net")`
+
+The DMARC Policy Record might look like this when retrieved using a
+common command-line tool (the output shown would appear on a single
+line but is wrapped here for publication):
+
+~~~
+  % dig +short TXT example.com._report._dmarc.thirdparty.example.net
+  "v=DMARC1; rua=mailto:aggregate-reports@thirdparty.example.net;
+   ruf=mailto:failure-reports@thirdparty.example.net"
+~~~
+
+To publish such a record, the DNS administrator for example.net might
+create an entry like the following in the appropriate zone file
+(following the conventional zone file format):
+
+~~~
+  ; zone file for thirdparty.example.net
+  ; Accept DMARC reports on behalf of example.com
+  ; Override destination mailboxes
+  example.com._report._dmarc   IN   TXT    (
+          "v=DMARC1; "
+          "rua=mailto:aggregate-reports@thirdparty.example.net; "
+          "ruf=mailto:failure-reports@thirdparty.example.net" )
+~~~
+
+In this case only the ruf= tag is actually overridden, because, in the
+previous example, failure reporting is the only reporting type that was
+directed to the third party Report Consumer.
 
 ###  Subdomain, Testing, and Multiple Aggregate Report URIs {#subdomain-sampling-and-multiple-aggregate-report-uris}
 
@@ -2437,8 +2484,8 @@ indicating that:
 *  Aggregate feedback reports are sent via email to the
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net"
-   ("rua=mailto:dmarc-feedback@example.com,
-     mailto:tld-test@thirdparty.example.net")
+   `("rua=mailto:dmarc-feedback@example.com,
+     mailto:tld-test@thirdparty.example.net")`
 
 *  The Domain Owner desires only that an actor performing a DMARC
    validation check apply any special handling rules it might have
@@ -2458,14 +2505,14 @@ line but is wrapped here for publication):
 
 To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
-file:
+file (following the conventional zone file format):
 
 ~~~
   ; DMARC Policy Record for the domain test.example.com
 
   _dmarc IN  TXT  ( "v=DMARC1; p=quarantine; "
                     "rua=mailto:dmarc-feedback@example.com,"
-                    "mailto:tld-test@thirdparty.example.net;"
+                    "mailto:tld-test@thirdparty.example.net; "
                     "t=y" )
 ~~~
 
@@ -2474,7 +2521,7 @@ give the Domain Owner confidence that all authorized email sent using
 the subdomain is properly authenticating and passing DMARC validation checks,
 then the Domain Owner can update the DMARC Policy Record to indicate that it considers
 validation failures to be a clear indication that use of the subdomain
-is not valid. It would do this by altering the record to advise Mail Receivers 
+is not valid. It would do this by altering the record to advise Mail Receivers
 of its position on such messages ("p=reject") and removing the testing flag ("t=y").
 
 After alteration, the DMARC Policy Record might look like this when retrieved
@@ -2489,7 +2536,7 @@ line but is wrapped here for publication):
 
 To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
-file:
+file (following the conventional zone file format):
 
 ~~~
   ; DMARC Policy Record for the domain test.example.com
@@ -2848,7 +2895,7 @@ This document in (#dmarc-uris) says:
 
 ~~~
   A report **SHOULD** be sent to each listed URI provided in the DMARC 
-  record.
+  Policy Record.
 ~~~
 
 ##  Removal of RFC 7489 Appendix A.5
