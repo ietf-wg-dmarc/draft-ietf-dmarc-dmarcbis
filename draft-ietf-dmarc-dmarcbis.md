@@ -83,11 +83,12 @@ if they are identical. The choice of required alignment mode is left to the
 A DMARC pass for a message indicates only that the use of the Author Domain has been
 validated for that message as authorized by the Domain Owner.  Such authorization
 does not carry an explicit or implicit value assertion about that message or about
-the Domain Owner, and so a DMARC pass by itself does not guarantee delivery of the
-message to the recipient's Inbox.  Furthermore, a mail-receiving organization that 
-performs DMARC validation can choose to honor the Domain Owner's requested message
-handling for validation failures, but it is not required to do so; it might
-choose different actions entirely.
+the Domain Owner, and so a DMARC pass by itself does not guarantee that delivery to
+the recipient's Inbox would be safe or desirable.  Furthermore, a mail-receiving organization 
+that performs DMARC validation can choose to honor the Domain Owner's requested message
+handling for validation failures, but it is not required to do so. DMARC is commonly used
+as one input to more complex filtering decisions, and so the mail-receiving organization
+might choose different actions entirely.
 
 For a mail-receiving organization participating in DMARC, a message that
 passes DMARC validation is part of a message stream reliably associated
@@ -103,7 +104,7 @@ Domains for which a DMARC Policy Record exists; those reports are sent to the
 address(es) specified by the Domain Owner in the DMARC Policy Record. Domain Owners 
 can use these reports, especially the aggregate reports, not only to identify 
 sources of mail attempting to fraudulently use their domain, but also (and perhaps
-more importantly) to flag and fix gaps in their authentication practices.  However,
+more importantly) to flag and fix gaps in their own authentication practices.  However,
 as with honoring the Domain Owner's stated mail handling preference, a mail-receiving
 organization supporting DMARC is under no obligation to send requested reports, although
 it is recommended that they do send aggregate reports.
@@ -121,15 +122,13 @@ The following sections describe topics that guide the specification of DMARC.
 DMARC has the following high-level goals:
 
 *  Allow [Domain Owners](#domain-owner) and [Public Suffix Operators (PSOs)]
-   (#public-suffix-operator) to validate their email authentication deployment.
+   (#public-suffix-operator) to validate their email authentication deployments.
 
 *  Allow Domain Owners and PSOs to assert their desired message handling
-   for validation failures for messages purporting to have authorship
+   for validation failures on messages purporting to have authorship
    within the domain.
 
-*  Minimize implementation complexity for both senders and receivers,
-   as well as the impact on handling and delivery of legitimate
-   messages.
+*  Minimize implementation complexity for both senders and receivers.
 
 *  Reduce the amount of successfully delivered spoofed emails.
 
@@ -229,8 +228,8 @@ The domain name of the apparent author as extracted from the RFC5322.From header
 A DNS TXT record published by a [Domain Owner](#domain-owner) or [Public Suffix
 Operator (PSO)](#public-suffix-operator) to enable validation of an [Author 
 Domain's](#author-domain) use, to indicate the Domain Owner's or PSO's message 
-handling preference regarding failed validation, and to request reports about the
-use of the Author Domain.
+handling preference regarding failed validation, and optionally to request reports 
+about the use of the Author Domain.
 
 ### Domain Owner {#domain-owner}
 
@@ -285,7 +284,7 @@ When the [Author Domain](#author-domain) is identical to an [Authenticated Ident
 ### Mail Receiver {#mail-receiver}
 
 The entity or organization that receives and processes email. Mail
-Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).
+Receivers operate one or more Internet-facing Message Transfer Agents (MTAs).
 
 ### Monitoring Mode {#monitoring-mode}
 
@@ -312,14 +311,14 @@ The Organizational Domain for any domain is akin to the ADMD described in
 [@RFC5598]. A domain's Organizational Domain is the domain at the top of 
 the namespace hierarchy for that domain while having the same administrative 
 authority as the domain. An Organizational Domain is determined by applying 
-the algorithm found in (#dns-tree-walk)
+the algorithm found in (#dns-tree-walk).
 
 ### Public Suffix Domain (PSD) {#public-suffix-domain}
 
 Some domains allow the registration of subdomains that are
 "owned" by independent organizations.  Real-world examples of
 these domains are ".com", ".org", ".us", and ".co.uk", to name just a few.
-These domains are called "Public Suffix Domains (PSDs)".
+These domains are called "Public Suffix Domains" (PSDs).
 For example, "ietf.org" is a registered domain name, and ".org" is its PSD.
 
 ### Public Suffix Operator (PSO) {#public-suffix-operator}
@@ -356,7 +355,7 @@ DMARC permits a [Domain Owner](#domain-owner) or [PSO](#public-suffix-operator) 
 validation of an [Author Domain's](#author-domain) use in an email message, to indicate
 the Domain Owner's or PSO's message handling preference regarding failed validation, and
 to request reports about use of the Author Domain. A domain's [DMARC Policy Record]
-(#dmarc-policy-record) is published in DNS as a TXT record at the name created by prepending 
+(#dmarc-policy-record) is published in the DNS as a TXT record at the name created by prepending 
 the label "\_dmarc" to the domain name and is retrieved through normal DNS queries.
 
 DMARC's validation mechanism produces a "pass" result if a DMARC Policy Record exists for
@@ -376,7 +375,7 @@ implicit value assertion about that message or about the Domain Owner.
 DMARC's reporting component involves the collection of information
 about received messages using the Author Domain for periodic aggregate reports 
 to the Domain Owner or PSO. The parameters and format for such reports are 
-discussed in [@!I-D.ietf-dmarc-aggregate-reporting]
+discussed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 A Mail Receiver participating in DMARC might also generate per-message failure
 reports that contain information related to individual messages that fail DMARC
@@ -433,9 +432,9 @@ The following table is meant to illustrate possible alignment conditions.
 {align="left"}
 Authenticated Identifier|Author Domain      |Identifier Alignment
 ------------------------|-------------------|--------------------
-foo.example.com         |news.example.com   |relaxed; the two have the same organizational domain, example.com
+foo.example.com         |news.example.com   |relaxed; the two have the same Organizational Domain, example.com
 news.example.com        |news.example.com   |strict; the two are identical
-foo.example.net         |news.example.com   |none; the two do not share a common organizational domain
+foo.example.net         |news.example.com   |none; the two do not share a common Organizational Domain
 Table: "Alignment Examples"
 
 It is important to note that Identifier Alignment cannot occur with a
@@ -488,7 +487,7 @@ of the Author Domain has been authorized by its Domain Owner.
 
 If in the future DMARC is extended to include the use of other authentication
 mechanisms, the extensions **MUST** allow for the assignment of a domain
-as an Authenticated Identified so that alignment with the Author Domain
+as an Authenticated Identifier so that alignment with the Author Domain
 can be validated.
 
 ##  DMARC Policy Record Explained {#dmarc-policy-record-explained}
@@ -498,7 +497,7 @@ DMARC participation of one or more of its domains by publishing [DMARC Policy Re
 (#dmarc-policy-record) that will apply to those domains. In doing so, Domain Owners 
 and PSOs indicate their handling preference regarding failed validation for email 
 messages using their domain in the RFC5322.From header field as well as their 
-desire to receive feedback about such messages in the form of aggregate and/or
+desire (if any) to receive feedback about such messages in the form of aggregate and/or
 failure reports. 
 
 DMARC Policy Records are stored as DNS TXT records in subdomains named "\_dmarc". 
@@ -1532,11 +1531,11 @@ the messages to another address with a real mailbox) or
 finance@association.example (a role-based address that does similar 
 relaying for the current head of finance at the association).  When 
 such mail is delivered to the actual recipient mailbox, it will 
-necessarily fail SPF checks if the RFC5321.MailFrom address is not 
+most likely fail SPF checks unless the RFC5321.MailFrom address is 
 rewritten by the relaying MTA, as the incoming IP address will be that 
-of example.edu or association.example, and not an address authorized
-for the sending domain. DKIM signatures will generally remain valid
-in these relay situations.
+of example.edu or association.example, and not an IP address authorized
+by the originating RFC5321.MailFrom domain. DKIM signatures will generally 
+remain valid in these relay situations.
 
 > It is therefore critical that domains that publish p=reject
 > **MUST NOT** rely solely on SPF to secure a DMARC pass, and 
@@ -1898,7 +1897,7 @@ The URIs identified there are thus more attractive targets for
 intrusion attempts than those found in the "rua" tag. Moreover,
 attacking the DNS of the subject domain to cause failure data to be
 routed fraudulently to an attacker's systems may be an attractive
-prospect. Deployment of [@RFC4033] is advisable if this is a concern.
+prospect. Deployment of DNSSEC [@RFC4033] is advisable if this is a concern.
 
 ##  Secure Protocols {#secure-protocols}
 

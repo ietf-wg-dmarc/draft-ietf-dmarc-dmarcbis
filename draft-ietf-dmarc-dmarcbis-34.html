@@ -1212,11 +1212,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DMARCbis</td>
-<td class="right">September 2024</td>
+<td class="right">October 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 14 March 2025</td>
+<td class="center">Expires 6 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-09-10" class="published">10 September 2024</time>
+<time datetime="2024-10-03" class="published">3 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-03-14">14 March 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-06">6 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1283,7 +1283,7 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1789,11 +1789,12 @@ if they are identical. The choice of required alignment mode is left to the
 <p id="section-1-4">A DMARC pass for a message indicates only that the use of the Author Domain has been
 validated for that message as authorized by the Domain Owner.  Such authorization
 does not carry an explicit or implicit value assertion about that message or about
-the Domain Owner, and so a DMARC pass by itself does not guarantee delivery of the
-message to the recipient's Inbox.  Furthermore, a mail-receiving organization that
-performs DMARC validation can choose to honor the Domain Owner's requested message
-handling for validation failures, but it is not required to do so; it might
-choose different actions entirely.<a href="#section-1-4" class="pilcrow">¶</a></p>
+the Domain Owner, and so a DMARC pass by itself does not guarantee that delivery to
+the recipient's Inbox would be safe or desirable.  Furthermore, a mail-receiving organization
+that performs DMARC validation can choose to honor the Domain Owner's requested message
+handling for validation failures, but it is not required to do so. DMARC is commonly used
+as one input to more complex filtering decisions, and so the mail-receiving organization
+might choose different actions entirely.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">For a mail-receiving organization participating in DMARC, a message that
 passes DMARC validation is part of a message stream reliably associated
 with the Author Domain. Therefore, reputation assessment of that stream by
@@ -1807,7 +1808,7 @@ Domains for which a DMARC Policy Record exists; those reports are sent to the
 address(es) specified by the Domain Owner in the DMARC Policy Record. Domain Owners
 can use these reports, especially the aggregate reports, not only to identify
 sources of mail attempting to fraudulently use their domain, but also (and perhaps
-more importantly) to flag and fix gaps in their authentication practices.  However,
+more importantly) to flag and fix gaps in their own authentication practices.  However,
 as with honoring the Domain Owner's stated mail handling preference, a mail-receiving
 organization supporting DMARC is under no obligation to send requested reports, although
 it is recommended that they do send aggregate reports.<a href="#section-1-6" class="pilcrow">¶</a></p>
@@ -1830,17 +1831,15 @@ can cause mail to be rejected. These are discussed in <a href="#other-topics" cl
 <p id="section-2.1-1">DMARC has the following high-level goals:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.1">
-            <p id="section-2.1-2.1.1">Allow <a href="#domain-owner">Domain Owners</a> and <a href="#public-suffix-operator">Public Suffix Operators (PSOs)</a> to validate their email authentication deployment.<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-2.1.1">Allow <a href="#domain-owner">Domain Owners</a> and <a href="#public-suffix-operator">Public Suffix Operators (PSOs)</a> to validate their email authentication deployments.<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
             <p id="section-2.1-2.2.1">Allow Domain Owners and PSOs to assert their desired message handling
-for validation failures for messages purporting to have authorship
+for validation failures on messages purporting to have authorship
 within the domain.<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.3">
-            <p id="section-2.1-2.3.1">Minimize implementation complexity for both senders and receivers,
-as well as the impact on handling and delivery of legitimate
-messages.<a href="#section-2.1-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-2.3.1">Minimize implementation complexity for both senders and receivers.<a href="#section-2.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.4">
             <p id="section-2.1-2.4.1">Reduce the amount of successfully delivered spoofed emails.<a href="#section-2.1-2.4.1" class="pilcrow">¶</a></p>
@@ -1985,8 +1984,8 @@ use is validated using a supported <a href="#authentication-mechanisms">authenti
 <p id="section-3.2.3-1">A DNS TXT record published by a <a href="#domain-owner">Domain Owner</a> or <a href="#public-suffix-operator">Public Suffix
 Operator (PSO)</a> to enable validation of an <a href="#author-domain">Author
 Domain's</a> use, to indicate the Domain Owner's or PSO's message
-handling preference regarding failed validation, and to request reports about the
-use of the Author Domain.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+handling preference regarding failed validation, and optionally to request reports
+about the use of the Author Domain.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="domain-owner">
@@ -2066,7 +2065,7 @@ in relaxed alignment.<a href="#section-3.2.7.1-1" class="pilcrow">¶</a></p>
 <a href="#section-3.2.8" class="section-number selfRef">3.2.8. </a><a href="#name-mail-receiver" class="section-name selfRef">Mail Receiver</a>
           </h4>
 <p id="section-3.2.8-1">The entity or organization that receives and processes email. Mail
-Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).<a href="#section-3.2.8-1" class="pilcrow">¶</a></p>
+Receivers operate one or more Internet-facing Message Transfer Agents (MTAs).<a href="#section-3.2.8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="monitoring-mode">
@@ -2104,7 +2103,7 @@ and any possible subdomains do not exist.<a href="#section-3.2.10-1" class="pilc
 <span>[<a href="#RFC5598" class="cite xref">RFC5598</a>]</span>. A domain's Organizational Domain is the domain at the top of
 the namespace hierarchy for that domain while having the same administrative
 authority as the domain. An Organizational Domain is determined by applying
-the algorithm found in <a href="#dns-tree-walk" class="auto internal xref">Section 4.10</a><a href="#section-3.2.11-1" class="pilcrow">¶</a></p>
+the algorithm found in <a href="#dns-tree-walk" class="auto internal xref">Section 4.10</a>.<a href="#section-3.2.11-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="public-suffix-domain">
@@ -2115,7 +2114,7 @@ the algorithm found in <a href="#dns-tree-walk" class="auto internal xref">Secti
 <p id="section-3.2.12-1">Some domains allow the registration of subdomains that are
 "owned" by independent organizations.  Real-world examples of
 these domains are ".com", ".org", ".us", and ".co.uk", to name just a few.
-These domains are called "Public Suffix Domains (PSDs)".
+These domains are called "Public Suffix Domains" (PSDs).
 For example, "ietf.org" is a registered domain name, and ".org" is its PSD.<a href="#section-3.2.12-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2173,7 +2172,7 @@ of the DMARC environment.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-1">DMARC permits a <a href="#domain-owner">Domain Owner</a> or <a href="#public-suffix-operator">PSO</a> to enable
 validation of an <a href="#author-domain">Author Domain's</a> use in an email message, to indicate
 the Domain Owner's or PSO's message handling preference regarding failed validation, and
-to request reports about use of the Author Domain. A domain's <a href="#dmarc-policy-record">DMARC Policy Record</a> is published in DNS as a TXT record at the name created by prepending
+to request reports about use of the Author Domain. A domain's <a href="#dmarc-policy-record">DMARC Policy Record</a> is published in the DNS as a TXT record at the name created by prepending
 the label "_dmarc" to the domain name and is retrieved through normal DNS queries.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">DMARC's validation mechanism produces a "pass" result if a DMARC Policy Record exists for
 the Author Domain of an email message and the Author Domain is <a href="#identifier-alignment">aligned</a>
@@ -2190,7 +2189,7 @@ implicit value assertion about that message or about the Domain Owner.<a href="#
 <p id="section-4.1-4">DMARC's reporting component involves the collection of information
 about received messages using the Author Domain for periodic aggregate reports
 to the Domain Owner or PSO. The parameters and format for such reports are
-discussed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-4.1-4" class="pilcrow">¶</a></p>
+discussed in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1-5">A Mail Receiver participating in DMARC might also generate per-message failure
 reports that contain information related to individual messages that fail DMARC
 validation checks. Per-message failure reports are a useful source of
@@ -2272,7 +2271,7 @@ in this context are case-insensitive, per <a href="https://rfc-editor.org/rfc/rf
             <tr>
               <td class="text-left" rowspan="1" colspan="1">foo.example.com</td>
               <td class="text-left" rowspan="1" colspan="1">news.example.com</td>
-              <td class="text-left" rowspan="1" colspan="1">relaxed; the two have the same organizational domain, example.com</td>
+              <td class="text-left" rowspan="1" colspan="1">relaxed; the two have the same Organizational Domain, example.com</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">news.example.com</td>
@@ -2282,7 +2281,7 @@ in this context are case-insensitive, per <a href="https://rfc-editor.org/rfc/rf
             <tr>
               <td class="text-left" rowspan="1" colspan="1">foo.example.net</td>
               <td class="text-left" rowspan="1" colspan="1">news.example.com</td>
-              <td class="text-left" rowspan="1" colspan="1">none; the two do not share a common organizational domain</td>
+              <td class="text-left" rowspan="1" colspan="1">none; the two do not share a common Organizational Domain</td>
             </tr>
           </tbody>
         </table>
@@ -2343,7 +2342,7 @@ of the Author Domain has been authorized by its Domain Owner.<a href="#section-4
           </h4>
 <p id="section-4.4.3-1">If in the future DMARC is extended to include the use of other authentication
 mechanisms, the extensions <span class="bcp14">MUST</span> allow for the assignment of a domain
-as an Authenticated Identified so that alignment with the Author Domain
+as an Authenticated Identifier so that alignment with the Author Domain
 can be validated.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2358,7 +2357,7 @@ can be validated.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 DMARC participation of one or more of its domains by publishing <a href="#dmarc-policy-record">DMARC Policy Records</a> that will apply to those domains. In doing so, Domain Owners
 and PSOs indicate their handling preference regarding failed validation for email
 messages using their domain in the RFC5322.From header field as well as their
-desire to receive feedback about such messages in the form of aggregate and/or
+desire (if any) to receive feedback about such messages in the form of aggregate and/or
 failure reports.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.5-2">DMARC Policy Records are stored as DNS TXT records in subdomains named "_dmarc".
 For example, the Domain Owner of "example.com" would publish a DMARC Policy
@@ -3632,11 +3631,11 @@ the messages to another address with a real mailbox) or
 finance@association.example (a role-based address that does similar
 relaying for the current head of finance at the association).  When
 such mail is delivered to the actual recipient mailbox, it will
-necessarily fail SPF checks if the RFC5321.MailFrom address is not
+most likely fail SPF checks unless the RFC5321.MailFrom address is
 rewritten by the relaying MTA, as the incoming IP address will be that
-of example.edu or association.example, and not an address authorized
-for the sending domain. DKIM signatures will generally remain valid
-in these relay situations.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
+of example.edu or association.example, and not an IP address authorized
+by the originating RFC5321.MailFrom domain. DKIM signatures will generally
+remain valid in these relay situations.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
 <blockquote id="section-7.5-3">
           <p id="section-7.5-3.1">It is therefore critical that domains that publish p=reject
 <span class="bcp14">MUST NOT</span> rely solely on SPF to secure a DMARC pass, and
@@ -4273,7 +4272,7 @@ The URIs identified there are thus more attractive targets for
 intrusion attempts than those found in the "rua" tag. Moreover,
 attacking the DNS of the subject domain to cause failure data to be
 routed fraudulently to an attacker's systems may be an attractive
-prospect. Deployment of <span>[<a href="#RFC4033" class="cite xref">RFC4033</a>]</span> is advisable if this is a concern.<a href="#section-10.6-4" class="pilcrow">¶</a></p>
+prospect. Deployment of DNSSEC <span>[<a href="#RFC4033" class="cite xref">RFC4033</a>]</span> is advisable if this is a concern.<a href="#section-10.6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="secure-protocols">
@@ -4336,7 +4335,7 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <dd class="break"></dd>
 <dt id="I-D.ietf-dmarc-failure-reporting">[I-D.ietf-dmarc-failure-reporting]</dt>
       <dd>
-<span class="refAuthor">Jones, S. M.</span> and <span class="refAuthor">A. Vesely</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Failure Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-failure-reporting-10</span>, <time datetime="2024-03-17" class="refDate">17 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-10">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-10</a>&gt;</span>. </dd>
+<span class="refAuthor">Jones, S. M.</span> and <span class="refAuthor">A. Vesely</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Failure Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-failure-reporting-11</span>, <time datetime="2024-09-10" class="refDate">10 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-11">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
       <dd>
