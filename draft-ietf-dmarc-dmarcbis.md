@@ -223,6 +223,11 @@ use is validated using a supported [authentication mechanism](#authentication-me
 
 The domain name of the apparent author as extracted from the RFC5322.From header field.
 
+### DMARC Policy Domain {#dmarc-policy-domain}
+
+The domain name at which an applicable [DMARC Policy Record](#dmarc-policy-record) is discovered 
+for the [Author Domain](#author-domain) of an email message.
+
 ### DMARC Policy Record {#dmarc-policy-record}
 
 A DNS TXT record published by a [Domain Owner](#domain-owner) or [Public Suffix
@@ -500,14 +505,13 @@ messages using their domain in the RFC5322.From header field as well as their
 desire (if any) to receive feedback about such messages in the form of aggregate and/or
 failure reports. 
 
-DMARC Policy Records are stored as DNS TXT records in subdomains named "\_dmarc". 
-For example, the Domain Owner of "example.com" would publish a DMARC Policy
-Record at the name "\_dmarc.example.com", and a [Mail Receiver](#mail-receiver)
+DMARC Policy Records are stored as DNS TXT records with names starting with
+the label "\_dmarc".  For example, the Domain Owner of "example.com" would publish 
+a DMARC Policy Record at the name "\_dmarc.example.com", and a [Mail Receiver](#mail-receiver)
 wishing to find the DMARC Policy Record for mail with an [Author Domain](#author-domain)
-of "example.com" would issue a TXT query to the DNS for the subdomain of
-"\_dmarc.example.com".  A Domain Owner or PSO may choose not to participate in 
-DMARC validation by Mail Receivers simply by not publishing a DMARC Policy Record 
-for its Author Domain(s). 
+of "example.com" would issue a TXT query to the DNS for the name "\_dmarc.example.com".
+A Domain Owner or PSO may choose not to participate in DMARC validation by Mail Receivers
+simply by not publishing a DMARC Policy Record for its Author Domain(s). 
 
 DMARC Policy Records can also apply to subdomains of the name at which they 
 are published in the DNS, if the record is published at an [Organizational 
@@ -551,13 +555,9 @@ are discussed below in (#policy-enforcement-considerations).
 
 [@!RFC3986, RFC 3986, URI Generic Syntax] defines a syntax for identifying a resource. The DMARC
 mechanism uses this as the format by which a [Domain Owner](#domain-owner) 
-or [PSO](#public-suffix-organization) specifies the destination for the two
-report types that are supported.
-
-The place such URIs are specified (see (#policy-record-format)) allows
-a list of these to be provided. The list of URIs is separated by commas
-(ASCII 0x2c). A report **SHOULD** be sent to each listed URI provided in
-the DMARC Policy Record.
+or [PSO](#public-suffix-organization) specifies the destination(s) for the two
+report types that are supported. The [DMARC Poilcy Record format](#policy-record-format) 
+allows for a list of these URIs to be provided, with each URI separated by commas (ASCII 0x2c). 
 
 A formal definition is provided in (#formal-definition).
 
@@ -642,7 +642,7 @@ p:
     If this tag is not present in an otherwise syntactically valid DMARC
     Policy Record, then the record is treated as if it included "p=none" (see
     (#dmarc-policy-discovery)). This tag is not applicable for third-party
-    reporting records (see [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting])
+    reporting records (see [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting]).
     Possible values are as follows:
 
     none:
@@ -659,13 +659,13 @@ p:
 
 psd:
 :   A flag indicating whether the domain is a PSD. (plain-text; **OPTIONAL**;
-    default is 'u'). Possible values are:
+    default is "u"). Possible values are:
 
     y:
-    : PSOs include this tag with a value of 'y' to indicate that the domain 
-      is a PSD. If a record containing this tag with a value of 'y' is found during 
+    : PSOs include this tag with a value of "y" to indicate that the domain 
+      is a PSD. If a record containing this tag with a value of "y" is found during 
       policy discovery, this information will be used to determine the Organizational
-      Domain and policy domain applicable to the message in question.
+      Domain and DMARC Policy Domain applicable to the message in question.
 
     n:
     : The DMARC Policy Record is published for a domain that is not a PSD, but it is 
@@ -675,8 +675,7 @@ psd:
     : The default indicates that the DMARC Policy Record is published for a domain
       that is not a PSD, and may or may not be an Organizational Domain for itself and
       its subdomains. Use the mechanism described in (#dns-tree-walk) for determining
-      the Organizational Domain for this domain. There is no need to explicitly publish
-      psd=u in a DMARC Policy Record.
+      the Organizational Domain for this domain. 
 
 rua:
 :  Addresses to which aggregate feedback reports are to be sent (comma-separated plain-text
@@ -685,7 +684,7 @@ rua:
    to the URIs listed.  Any valid URI can be specified. A Mail Receiver **MUST** implement support 
    for a "mailto:" URI, i.e., the ability to send a DMARC report via electronic mail. If the 
    tag is not provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for 
-   the domain.  URIs not supported by Mail Receivers **MUST** be ignored. 
+   the domain.  URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
    [@!I-D.ietf-dmarc-aggregate-reporting] also discusses considerations that apply when the
    domain name of a URI differs from the domain publishing the DMARC Policy Record. See
    (#external-report-addresses) for additional considerations. 
@@ -700,7 +699,7 @@ ruf:
    valid URI can be specified. A Mail Receiver **MUST** implement support for a "mailto:" 
    URI, i.e., the ability to send message-specific failure information via electronic mail.
    If the tag is not provided, Mail Receivers **MUST NOT** generate failure reports for the
-   domain. URIs not supported by Mail Receivers **MUST** be ignored. 
+   domain. URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
    [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
    the domain name of a URI differs from that of the domain advertising the policy.
    See (#external-report-addresses) for additional considerations. 
@@ -718,26 +717,26 @@ sp:
    to the effect of the [DMARC Policy Discovery](#dmarc-policy-discovery).
 
 t:
-:  DMARC policy test mode (plain-text; **OPTIONAL**; default is 'n'). For
+:  DMARC policy test mode (plain-text; **OPTIONAL**; default is "n"). For
    the Author Domain to which the DMARC Policy Record applies, the "t" tag serves 
    as a signal to the actor performing DMARC validation checks as to whether or not 
    the Domain Owner wishes the Domain Owner Assessment Policy declared in the "p=", 
    "sp=", and/or "np=" tags to actually be applied. This tag does not affect the 
    generation of DMARC reports, and it has no effect on any policy (p=, sp=, or np=)
-   that is 'none'.  See (#removal-of-the-pct-tag) for further discussion of the use 
+   that is "none".  See (#removal-of-the-pct-tag) for further discussion of the use 
    of this tag.  Possible values are as follows:
 
     y:
     :  A request that the actor performing the DMARC validation check not
     apply the policy, but instead apply any special handling rules it might have
-    in place, such as rewriting the RFC5322.From header field. The Domain Owner is
-    currently testing its specified DMARC assessment policy, and has an expectation
-    that the policy applied to any failing messages will be one level below the 
-    specified policy. That is, if the policy is 'quarantine' and the value of the 't'
-    tag is 'y', a policy of 'none' will be applied to failing messages; if the policy
-    is 'reject' and the value of the 't' tag is 'y', a policy of 'quarantine' will be
+    in place, such as rewriting the RFC5322.From header field (see (#removal-of-the-pct-tag)).
+    The Domain Owner is currently testing its specified DMARC assessment policy, and has
+    an expectation that the policy applied to any failing messages will be one level below the 
+    specified policy. That is, if the policy is "quarantine" and the value of the "t"
+    tag is "y", a policy of "none" will be applied to failing messages; if the policy
+    is "reject" and the value of the "t" tag is "y", a policy of "quarantine" will be
     applied to failing messages, irrespective of any other special handling rules that
-    might be triggered by the 't' tag having a value of 'y'.
+    might be triggered by the "t" tag having a value of "y".
 
     n:
     :  The default is a request to apply the Domain Owner Assessment Policy as specified 
@@ -778,7 +777,7 @@ and [@!RFC7405, RFC 7405, Case-Sensitive String Support in ABNF], is as follows:
 
   equals        = *WSP "=" *WSP
 
-  dmarc-record  = dmarc-version *(dmarc-sep dmarc-tag) [dmarc-sep] *WSP
+  dmarc-record  = dmarc-version *(dmarc-sep dmarc-tag) [dmarc-sep]
 
   dmarc-tag     = 1*ALPHA equals 1*dmarc-value
 
@@ -853,7 +852,7 @@ Table: "Tag Names and Values"
   MDA = Mail Delivery Agent
 ~~~
 
-The above diagram shows a simple flow of messages through a
+The above diagram shows a typical flow of messages through a
 DMARC-aware system. Dashed lines (e.g., -->) denote the actual message
 flow, dotted lines (e.g., < . . >) represent DNS queries used to retrieve
 message policy related to the supported message authentication schemes,
@@ -888,12 +887,12 @@ depending on the context:
 defined an Organizational Domain as "The domain that was registered
 with a domain name registrar." This update to that document offers more 
 flexibility to Domain Owners, especially those with large, complex organizations
-that might want to applying decentralized management to their DNS and their 
+that might want to apply decentralized management to their DNS and their 
 DMARC Policy Records. Rather than just searching the Public Suffix List to identify
 an Organizational Domain, this update defines a discovery technique known 
-colloquially as the "DNS Tree Walk". The target of any DNS Tree Walk is a
-valid DMARC Policy Record, and its use in determining an Organizational Domain
-allows for publishing DMARC Policy Records at multiple points in the namespace.
+colloquially as the "DNS Tree Walk". The target of any DNS Tree Walk is
+discovry of a valid DMARC Policy Record, and its use in determining an Organizational
+Domain allows for publishing DMARC Policy Records at multiple points in the namespace.
 
 This flexibility comes at a possible cost, however. Since the DNS Tree Walk
 relies on the Mail Receiver making a series of DNS queries, the potential
@@ -908,10 +907,11 @@ future expansion of the name space that did not require updating this document.
 
 The generic steps for a DNS Tree Walk are as follows:
 
-1. Query the DNS for a DMARC Policy Record at the starting point for the Tree Walk. 
-   The starting point for the DNS Tree Walk will depend on the ultimate target of 
-   the DNS Tree Walk. (#dmarc-policy-discovery) and (#identifier-alignment-evaluation) 
-   describe the possible starting points. A possibly empty set of records is returned.
+1. Query the DNS for a TXT record that matches the format of a DMARC Policy Record at 
+   the starting point for the Tree Walk.  The starting point for the DNS Tree Walk will 
+   depend on the ultimate target of the DNS Tree Walk. (#dmarc-policy-discovery) and 
+   (#identifier-alignment-evaluation) describe the possible starting points. A possibly 
+   empty set of records is returned.
 
 2. Records that do not start with a "v=" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
@@ -971,7 +971,7 @@ message being evaluated. If a valid DMARC Policy Record is found there, then thi
 DMARC Policy Record to be applied to the message; however, this does not necessarily mean
 that the Author Domain is the Organizational Domain to be used in Identifier
 Alignment checks. Whether this is also the Organizational Domain is dependent
-on the value of the 'psd' tag, if present, or some conditions described in 
+on the value of the "psd" tag, if present, or some conditions described in 
 (#identifier-alignment-evaluation).
 
 If no valid DMARC Policy Record is found by the first query, then perform a DNS 
@@ -982,7 +982,7 @@ follows:
 * If the Author Domain has eight or fewer labels, the starting point will be
   the immediate parent domain of the Author Domain. 
 * Otherwise, the starting point will be the name produced by shortening the Author
-  Domain as described starting in step 3 of the (#dns-tree-walk).
+  Domain as described starting in step 3 of (#dns-tree-walk).
 
 If the DMARC Policy Record to be applied is that of the Author Domain, then the
 Domain Owner Assessment Policy is taken from the p= tag of the record. 
@@ -1057,15 +1057,15 @@ For each Tree Walk that retrieved valid DMARC Policy Records, select the Organiz
 Domain from the domains for which valid DMARC Policy Records were retrieved from the longest
 to the shortest:
        
-1. If a valid DMARC Policy Record contains the psd= tag set to 'n' (psd=n), this is the 
+1. If a valid DMARC Policy Record contains the psd= tag set to "n" (psd=n), this is the 
    Organizational Domain, and the selection process is complete.
           
 2. If a valid DMARC Policy Record, other than the one for the domain where the tree
-   walk started, contains the psd= tag set to 'y' (psd=y), the Organizational
+   walk started, contains the psd= tag set to "y" (psd=y), the Organizational
    Domain is the domain one label below this one in the DNS hierarchy, and the 
    selection process is complete. For example, if in the course of a tree walk a DMARC
    Policy Record is queried for at first \_dmarc.mail.example.com and then \_dmarc.example.com, 
-   and a valid DMARC Policy Record containing the psd= tag set to 'y' is found at 
+   and a valid DMARC Policy Record containing the psd= tag set to "y" is found at 
    \_dmarc.example.com, then "mail.example.com" is the domain one label below "example.com"
    in the DNS hierarchy and is thus the Organizational Domain.
    
@@ -1085,7 +1085,7 @@ If there are DMARC Policy Records published at "\_dmarc.mail.example.com" and
 
 As another example, given the starting domain "a.mail.example.com", if a 
 search for the Organizational Domain yields a DMARC Policy Record at "\_dmarc.mail.example.com"
-with the psd= tag set to 'n', then the Organizational Domain for this domain would
+with the psd= tag set to "n", then the Organizational Domain for this domain would
 be "mail.example.com".
 
 As a last example, given the starting domain "a.mail.example.com", if a
@@ -1192,9 +1192,9 @@ issues are discussed in detail in (#interoperability-considerations)
 Large, complex organizations frequently adopt a decentralized model for
 DNS management, whereby management of a subtree of the name space is delegated
 to a local department by the central IT organization. In such situations, the 
-'psd' tag makes it possible for those local departments to declare any arbitrary
+"psd" tag makes it possible for those local departments to declare any arbitrary
 node in their subtree as an Organizational Domain. This would be accomplished by
-publishing a DMARC Policy Record at that node with the psd tag set to 'n'. The
+publishing a DMARC Policy Record at that node with the psd tag set to "n". The
 reasons that departments might declare their own Organizational Domains include a
 desire to have different policy settings or reporting URIs than the DMARC Policy Record
 published for the apex domain.
@@ -1231,7 +1231,7 @@ In the above example, this would mean publishing a DMARC Policy Record at the na
 
 In addition to the DMARC Domain Owner actions, if a [PSO](#public-suffix-operator) 
 publishes a DMARC Policy Record it **MUST** include the psd tag (see (#policy-record-format))
-with a value of 'y' ("psd=y").
+with a value of "y" ("psd=y").
 
 ##  Mail Receiver Actions {#mail-receiver-actions}
 
@@ -1780,7 +1780,7 @@ To avoid this risk one must ensure that no unauthorized source can add
 DKIM signatures to the domain's mail or transmit mail which will evaluate
 as SPF pass. If, nonetheless, a Domain Owner wishes to include a
 permissive source in a domain's SPF record, the source can be excluded
-from DMARC consideration by using the '?' qualifier on the SPF record
+from DMARC consideration by using the "?" qualifier on the SPF record
 mechanism associated with that source.
 
 ##  Attacks on Reporting URIs {#attacks-on-reporting-uris}
@@ -2095,7 +2095,7 @@ An earlier informational version of the DMARC mechanism [@!RFC7489]
 included a "pct" tag and specified all integers from 0 to 100 inclusive
 as valid values for the tag. The intent of the tag was to provide domain
 owners with a method to gradually change their preferred Domain Owner Assessment
-Policy (the p= tag) from 'none' to 'quarantine' or from 'quarantine' to 'reject'
+Policy (the p= tag) from "none" to "quarantine" or from "quarantine" to "reject"
 by requesting the stricter treatment for just a percentage of messages
 that produced DMARC results of "fail".
 
@@ -2829,7 +2829,7 @@ These definitions were updated:
 *   Organizational Domain
 *   Report Receiver (renamed to Report Consumer)
 
-##  Policy Discovery and Organizational Domain Determination
+##  Policy Discovery and Organizational Domain Determination {#policy-determination}
 
 The algorithms for DMARC policy discovery and for determining the Organizational Domain
 have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
