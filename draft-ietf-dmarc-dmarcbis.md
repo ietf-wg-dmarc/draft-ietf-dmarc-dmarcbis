@@ -1435,9 +1435,12 @@ fails SPF authentication checks.  Domain Owners choosing to use "-all" to termin
 SPF records should be aware of this, and should understand that messages that
 might otherwise pass DMARC due to an aligned [DKIM-Authenticated Identifier]
 (#dkim-authenticated-identifiers) could be rejected solely due to an SPF fail. 
-Domain Owners and [Mail Receivers](#mail-receiver) can consult the following two 
-documents for more discussion of the topic and best practices regarding publishing
-SPF records and when to reject based solely on SPF failure:
+Moreover, messages rejected early in the SMTP transaction will never appear in
+aggregate DMARC reports, as the transaction will never proceed to the DATA phase
+and so the RFC5322.From domain will never be revealed and its DMARC policy will
+never be discovered.  Domain Owners and [Mail Receivers](#mail-receiver) can consult
+the following two documents for more discussion of the topic and best practices
+regarding publishing SPF records and when to reject based solely on SPF failure:
 
 * [M3AAWG Best Practices for Managing SPF Records](https://www.m3aawg.org/Managing-SPF-Records)
 * [M3AAWG Email Authentication Recommended Best Practices](https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf)
@@ -1447,7 +1450,7 @@ SPF records and when to reject based solely on SPF failure:
 [DMARC Policy Records](#dmarc-policy-record) are communicated using the DNS 
 and therefore inherit a number of considerations related to DNS caching. The inherent
 conflict between freshness and the impact of caching on the reduction
-of DNS-lookup overhead should be considered from the [Mail Receiver's]
+of DNS lookup overhead should be considered from the [Mail Receiver's]
 (#mail-receiver) point of view. If [Domain Owners](#domain-owner) or [PSOs]
 (#public-suffix-operator) publish a DMARC Policy Record with a very
 short TTL,  the injection of large volumes of messages could cause
@@ -1475,14 +1478,14 @@ address.
 
 This synchronous rejection is typically done in one of two ways:
 
-*  Full rejection, wherein the SMTP server issues a 5xy reply code as
-   an indication to the SMTP client that the transaction failed; the
-   SMTP client is then responsible for generating a notification that
+*  Full rejection, wherein the SMTP server issues a 5xy reply code to the
+   DATA command as an indication to the SMTP client that the transaction failed;
+   the SMTP client is then responsible for generating a notification that
    delivery failed (see [@!RFC5321, section 4.2.5]).
 
 *  A "silent discard", wherein the SMTP server returns a 2xy reply
    code implying to the client that delivery (or, at least, relay)
-   was successfully completed, but then simply discarding the message
+   was successfully completed, but then simply discards the message
    with no further action.
 
 Each of these has a cost. For instance, a silent discard can help to
@@ -1531,44 +1534,44 @@ to address authentication shortcomings.
 ##  Interoperability Considerations {#interoperability-considerations}
 
 As discussed in "Interoperability Issues between DMARC and Indirect
-Email Flows" [@!RFC7960], use of p=reject can be incompatible with and
+Email Flows" [@!RFC7960], use of "p=reject" can be incompatible with and
 cause interoperability problems to indirect message flows such as
 "alumni forwarders", role-based email aliases, and mailing lists
 across the Internet.
 
 As an example of this, a bank might send only targeted messages to 
 account holders. Those account holders might have given their bank 
-addresses such as jones@alumni.example.edu (an address that relays 
+addresses such as "jones@alumni.example.edu" (an address that relays 
 the messages to another address with a real mailbox) or 
-finance@association.example (a role-based address that does similar 
+"finance@association.example" (a role-based address that does similar 
 relaying for the current head of finance at the association).  When 
 such mail is delivered to the actual recipient mailbox, it will 
 most likely fail SPF checks unless the RFC5321.MailFrom address is 
 rewritten by the relaying MTA, as the incoming IP address will be that 
-of example.edu or association.example, and not an IP address authorized
+of "example.edu" or "association.example", and not an IP address authorized
 by the originating RFC5321.MailFrom domain. DKIM signatures will generally 
 remain valid in these relay situations.
 
-> It is therefore critical that domains that publish p=reject
+> It is therefore critical that domains that publish "p=reject"
 > **MUST NOT** rely solely on SPF to secure a DMARC pass, and 
 > **MUST** apply valid DKIM signatures to their messages.
 
 In the case of domains that have general users who send routine email,
 those that publish a [Domain Owner Assessment Policy](#domain-owner-policy) 
-of p=reject are likely to create significant interoperability
+of "p=reject" are likely to create significant interoperability
 issues. In particular, if users in such domains post messages to mailing
-lists on the Internet, those messages can cause operational problems for the
-mailing lists and for the subscribers to those lists, as explained below and
+lists on the Internet, those messages can cause significant operational problems
+for the mailing lists and for the subscribers to those lists, as explained below and
 in [@!RFC7960].
 
 > It is therefore critical that domains that host users who might
 > post messages to mailing lists **SHOULD NOT** publish Domain Owner Assessment Policies
-> of p=reject. Any such domains wishing to publish p=reject **SHOULD** first 
+> of "p=reject". Any such domains wishing to publish "p=reject" **SHOULD** first 
 > take advantage of DMARC aggregate report data for their domain to
 > determine the possible impact to their users, first by publishing
-> p=none for at least a month, followed by publishing p=quarantine for
+> "p=none" for at least a month, followed by publishing "p=quarantine" for
 > an equally long period of time, and comparing the message disposition
-> results. Domains that choose to publish p=reject **SHOULD** either
+> results. Domains that choose to publish "p=reject" **SHOULD** either
 > implement policies that their users not post to Internet mailing lists
 > and/or inform their users that their participation in mailing lists may
 > be hindered.
@@ -1576,7 +1579,7 @@ in [@!RFC7960].
 As noted in (#policy-enforcement-considerations), [Mail Receivers](#mail-receivers)
 need to apply more analysis than just DMARC validation in their
 disposition of incoming messages.  An example of the consequences of
-honoring a Domain Owner Assessment Policy of p=reject without further analysis 
+honoring a Domain Owner Assessment Policy of "p=reject" without further analysis 
 is that rejecting messages that have been relayed by a mailing list can cause 
 the Mail Receiver's users to have their subscriptions to that mailing list canceled 
 by the list software's automated handling of such rejections - it looks
@@ -1584,7 +1587,7 @@ to the list manager as though the recipient's email address is no
 longer working, so the address is automatically unsubscribed.
 
 > It is therefore critical that Mail Receivers **MUST NOT** reject
-> incoming messages solely on the basis of a p=reject policy by
+> incoming messages solely on the basis of a "p=reject" policy by
 > the sending domain.  Mail Receivers must use the DMARC
 > policy as part of their disposition decision, along with other
 > knowledge and analysis.
@@ -1596,9 +1599,9 @@ can result in trouble-desk calls and complaints from the Mail Receiver's
 employees, customers, and clients.
 
 As a final note, one possible mitigation to the problems caused by
-Domain Owners publishing a Domain Owner Assessment Policy of p=reject when 
+Domain Owners publishing a Domain Owner Assessment Policy of "p=reject" when 
 they should not or Mail Receivers rejecting messages solely on the basis of 
-a p=reject policy is the Authenticated Received Chain (ARC) protocol described 
+a "p=reject" policy is the Authenticated Received Chain (ARC) protocol described 
 in [@RFC8617].  However, as of this writing, use of ARC is nascent, as is industry
 experience with it in connection with DMARC.
 
@@ -1777,7 +1780,7 @@ are incorporated here by reference.
 
 Both of the email authentication methods that underlie DMARC provide some
 assurance that an email was transmitted by an MTA which is authorized to
-do so. SPF policies map domain names to sets of authorized MTAs [@!RFC7208, section 11.4].
+do so. SPF policies map domain names to sets of authorized MTAs (see [@!RFC7208, section 11.4]).
 Validated DKIM signatures indicate that an email was transmitted by an MTA with
 access to a private key that matches the published DKIM key record.
 
@@ -1819,7 +1822,7 @@ these addresses against various attacks, including but not limited to:
 
 ##  DNS Security {#dns-security}
 
-The DMARC mechanism and its underlying Authentication Mechanisms (SPF, DKIM)
+The DMARC mechanism and its underlying Authentication Mechanisms (SPF and DKIM)
 depend on the security of the DNS. Examples of how hostile parties can
 have an adverse impact on DNS traffic include:
 
@@ -1953,7 +1956,7 @@ For cases where Strict Alignment is not appropriate, this issue can be
 mitigated by periodically checking the DMARC Policy Records, if any, of [PSDs](#public-suffix-domain)
 above the Organizational Domain in the DNS tree and (for legacy [@!RFC7489] checking
 that appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record 
-without the appropriate psd=y tag, Organizational Domain owners can add psd=n to their 
+without the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their 
 Organizational Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will 
 not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.
 
@@ -1968,8 +1971,8 @@ with explanatory text regarding the decision.
 
 ##  S/MIME {#s-mime}
 
-S/MIME, or Secure Multipurpose Internet Mail Extensions, is a
-standard for encrypting and signing MIME data in a message. This
+S/MIME, or Secure Multipurpose Internet Mail Extensions [@RFC8551], 
+is a standard for encrypting and signing MIME data in a message. This
 was suggested and considered as a third security protocol for
 authenticating the source of a message.
 
@@ -2030,7 +2033,7 @@ It has been suggested in several message authentication efforts that
 the Sender header field be checked for an identifier of interest, as
 the standards indicate this as the proper way to indicate a
 re-mailing of content such as through a mailing list. Most recently,
-it was a protocol-level option for DomainKeys, but on evolution to
+it was a protocol-level option for DomainKeys [@RFC4870], but on evolution to
 DKIM, this property was removed.
 
 The DMARC development team considered this and decided not to include
@@ -2059,7 +2062,7 @@ The presence of the "np" tag in this specification seemingly implies that
 there would be an agreed-upon standard for determining a domain's existence.
 
 Since the DMARC mechanism is focused on email, one might think that the 
-definition of resolvable in [@!RFC5321] applies. Using that definition, only
+definition of "resolvable" in [@!RFC5321] applies. Using that definition, only
 names that resolve to MX Resource Records (RRs), A RRs, or AAAA RRs are deemed 
 to be resolvable and to exist in the DNS. This is a common practice among Mail 
 Receivers to determine whether or not to accept a mail message before performing 
@@ -2112,26 +2115,26 @@ by requesting the stricter treatment for just a percentage of messages
 that produced DMARC results of "fail".
 
 Operational experience showed that the pct tag was usually not accurately
-applied, unless the value specified was either "0" or "100" (the default),
-and the inaccuracies with other values varied widely from implementation to
-implementation. The default value was easily implemented, as it required no
+applied, unless the value specified was either 0 or 100 (the default),
+and the inaccuracies with other values varied widely from one implementation to
+another. The default value was easily implemented, as it required no
 special processing on the part of the Mail Receiver, while the value
-of "0" took on unintended significance as a value used by some intermediaries
+of 0 took on unintended significance as a value used by some intermediaries
 and mailbox providers as an indicator to deviate from standard handling of
 the message, usually by rewriting the RFC5322.From header field in an effort to
 avoid DMARC failures downstream.
 
-These custom actions when the "pct" tag was set to "0" proved valuable to the
+These custom actions when the "pct" tag was set to 0 proved valuable to the
 email community. In particular, header field rewriting by an intermediary meant
 that a Domain Owner's aggregate reports could reveal to the Domain Owner
 how much of its traffic was routing through intermediaries that don't rewrite
 the RFC5322.From header field. It required work on the part of the Domain Owner to
 compare aggregate reports from before and after the "p" value was changed
-and "pct" was included in the DMARC Policy Record with a value of "0", but
+and "pct" was included in the DMARC Policy Record with a value of 0, but
 the data was there. Consequently, knowing how much mail was subject to
 possible DMARC failure due to a lack of RFC5322.From header field rewriting by
-intermediaries could assist the Domain Owner in choosing whether or not
-to move from [Monitoring Mode](#monitoring-mode) to [Enforcement](#enforcement)
+intermediaries could assist the Domain Owner in choosing whether to move from 
+[Monitoring Mode](#monitoring-mode) to [Enforcement](#enforcement).
 Armed with this knowledge, the Domain Owner could make an informed decision
 regarding subjecting its mail traffic to possible DMARC failures based on
 the Domain Owner's tolerance for such things.
@@ -2152,9 +2155,9 @@ Receiver side of a DMARC exchange.
 ##  Identifier Alignment Examples {#identifier-alignment-examples}
 
 The following examples illustrate the DMARC mechanism's use of
-Identifier Alignment. For brevity's sake, only message header fields are
-shown, as message bodies are not considered when conducting DMARC
-checks.
+Identifier Alignment. For brevity's sake, only message header fields and
+relevant SMTP commands are shown, as message bodies are not considered 
+when conducting DMARC checks.
 
 ###  SPF {#spf}
 
@@ -2652,32 +2655,29 @@ discover the respective Organizational Domains to determine Identifier Alignment
 
 A Mail Receiver receives an email with:
 
-Author Domain
-: example.com
+* Author Domain: example.com
+* RFC5321.MailFrom Domain: example.com
+* DKIM-Authenticated Identifier: signing.example.com
 
-RFC5321.MailFrom domain
-: example.com
-
-DKIM signature d=
-: signing.example.com
-
-In this example, \_dmarc.example.com and \_dmarc.signing.example.com both
-have DMARC Policy Records while \_dmarc.com does not. If SPF or DKIM yield pass 
+In this example, "\_dmarc.example.com" and "\_dmarc.signing.example.com" both
+have DMARC Policy Records while "\_dmarc.com" does not. If SPF or DKIM yield pass 
 results, they still have to be aligned to support a DMARC pass. Since 
 not all domains are the same, if the alignment is relaxed then the tree 
-walk is performed to determine the Organizational Domain for each:
+walk is performed to determine the Organizational Domain for each.
 
-For the Author Domain, query \_dmarc.example.com and \_dmarc.com; 
-example.com is the last element of the DNS tree with a DMARC Policy Record, so 
-it is the Organizational Domain for example.com.
+To determine the Organizational Domain for the Author Domain, 
+query "\_dmarc.example.com" and "\_dmarc.com"; "example.com" is the last 
+element of the DNS tree with a DMARC Policy Record, so it is the Organizational
+Domain for "example.com".
 
 For the RFC5321.MailFrom domain, the Organizational Domain already found for 
-example.com is example.com, so SPF is aligned.
+"example.com" is "example.com", so SPF is aligned.
 
-For the DKIM signing domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
-and \_dmarc.com. Both signing.example.com and example.com have DMARC Policy Records,
-but example.com is the highest element in the tree with a DMARC Policy Record
-(it has the fewest labels), so example.com is the Organizational Domain. Since 
+To determine the Organizational Domain for the DKIM-Authenticated Identifier, 
+query "\_dmarc.signing.example.com", "\_dmarc.example.com", and "\_dmarc.com". 
+Both "signing.example.com" and "example.com" have DMARC Policy Records,
+but "example.com" is the highest element in the tree with a DMARC Policy Record
+(it has the fewest labels), so "example.com" is the Organizational Domain. Since 
 this is also the Organizational Domain for the Author Domain, DKIM is aligned 
 for relaxed alignment.
 
@@ -2691,38 +2691,34 @@ domain.
 
 A Mail Receiver receives an email with:
 
-Author Domain
-: a.b.c.d.e.f.g.h.i.j.k.example.com
+* Author Domain: a.b.c.d.e.f.g.h.i.j.k.example.com
+* RFC5321.MailFrom Domain: example.com
+* DKIM-Authenticated Identifier: signing.example.com
 
-RFC5321.MailFrom domain
-: example.com
-
-DKIM signature d=
-:  signing.example.com
-
-Both \_dmarc.example.com and \_dmarc.signing.example.com have DMARC Policy Records, 
-while \_dmarc.com does not. If SPF or DKIM yield pass results, they still have
+Both "\_dmarc.example.com" and "\_dmarc.signing.example.com" have DMARC Policy Records, 
+while "\_dmarc.com" does not. If SPF or DKIM yield pass results, they still have
 to be aligned to support a DMARC pass. Since not all domains are the same, if
 the alignment is relaxed then the tree walk is performed to determine the Organizational
-Domain for each:
+Domain for each.
 
-For the Author Domain, query \_dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com,
-skip to \_dmarc.g.h.i.j.k.example.com, then query \_dmarc.h.i.j.k.example.com,
-\_dmarc.i.j.k.example.com, \_dmarc.j.k.example.com, \_dmarc.k.example.com,
- \_dmarc.example.com, and \_dmarc.com. None of
-a.b.c.d.e.f.g.h.i.j.k.example.com, g.h.i.j.k.example.com, h.i.j.k.example.com,
-i.j.k.example.com, j.k.example.com, or k.example.com have a DMARC Policy Record.
+To determine the Organizational Domain For the Author Domain, query 
+"\_dmarc.a.b.c.d.e.f.g.h.i.j.k.example.com", then query "\_dmarc.g.h.i.j.k.example.com" (skipping
+the intermediate names), then query "\_dmarc.h.i.j.k.example.com",
+"\_dmarc.i.j.k.example.com", "\_dmarc.j.k.example.com", "\_dmarc.k.example.com",
+"\_dmarc.example.com", and "\_dmarc.com". None of
+"a.b.c.d.e.f.g.h.i.j.k.example.com", "g.h.i.j.k.example.com", "h.i.j.k.example.com",
+"i.j.k.example.com", "j.k.example.com", or "k.example.com" have a DMARC Policy Record.
 
-Since example.com is the last element of the DNS tree with a DMARC Policy Record, 
-it is the Organizational Domain for a.b.c.d.e.f.g.h.i.j.k.example.com.
+Since "example.com" is the last element of the DNS tree with a DMARC Policy Record, 
+it is the Organizational Domain for "a.b.c.d.e.f.g.h.i.j.k.example.com".
 
 For the RFC5321.MailFrom domain, the Organizational domain already found
-for example.com is example.com. SPF is aligned.
+for "example.com" is "example.com". SPF is aligned.
 
-For the DKIM signing domain, query \_dmarc.signing.example.com, \_dmarc.example.com,
-and \_dmarc.com. Both signing.example.com and example.com have DMARC Policy Records,
-but example.com is the highest element in the tree with a DMARC Policy Record, so
-example.com is the Organizational Domain. Since this is also the Organizational Domain 
+For the DKIM-Authenticated Identifier, query "\_dmarc.signing.example.com", "\_dmarc.example.com",
+and "\_dmarc.com". Both "signing.example.com" and "example.com" have DMARC Policy Records,
+but "example.com" is the highest element in the tree with a DMARC Policy Record, so
+"example.com" is the Organizational Domain. Since this is also the Organizational Domain 
 for the Author Domain, DKIM is aligned for relaxed alignment.
 
 Since both SPF and DKIM are aligned, they can be used to determine if the
