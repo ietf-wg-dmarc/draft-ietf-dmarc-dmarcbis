@@ -326,11 +326,14 @@ a PSO. PSO-controlled Domain Names may have one label (e.g., &quot;.com&quot;) o
 <t>A Report Consumer is an operator that receives reports from another operator
 implementing the reporting mechanisms described in the documents
 <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref> and <xref target="I-D.ietf-dmarc-failure-reporting"></xref>.
-Such an operator might be receiving reports about messages related to a domain
-for which it is the <eref target="#domain-owner">Domain Owner</eref> or <eref target="#public-suffix-operator">PSO</eref>
-or reports about messages related to another operator's domain.  This term applies
-collectively to the system components that receive and process these reports and
-the organizations that operate them.</t>
+This term applies collectively to the system components that receive and process
+these reports and the organizations that operate those components.</t>
+<t>Report Consumers can receive reports concerning domains for which the Report
+Consumer is also the <eref target="#domain-owner">Domain Owner</eref> or <eref target="#public-suffix-operator">PSO</eref>,
+or concerning domains that belong to another operator entirely. The DMARC mechanism
+permits a Domain Owner to act as a Report Consumer for its domain(s) and/or to
+designate third parties to so act. See <xref target="external-report-addresses"></xref> for further
+discussion of such designation.</t>
 </section>
 </section>
 </section>
@@ -453,11 +456,13 @@ the domain as the value of the &quot;d&quot; tag in a DKIM-Signature header fiel
 assertion of responsibility is validated through a cryptographic signature in
 the header field. If the cryptographic signature validates, then the DKIM Signing
 Domain is the DKIM-Authenticated Identifier.</t>
-<t>DMARC requires that Identifier Alignment is applied to the DKIM-Authenticated
-Identifier because a message can bear a valid signature from any domain, even
-one used by a bad actor. Therefore, a DKIM-Authenticated Identifier that does
-not have Identifier Alignment with the Author Domain is not enough to validate
-whether the use of the Author Domain has been authorized by its Domain Owner.</t>
+<t>There is currently no generally accepted mechanism by which a Domain Owner may
+assert a list of third-party DKIM Signing Domains that are authorized to sign on
+behalf of a given Author Domain. Therefore, DMARC requires that Identifier
+Alignment is applied to the DKIM-Authenticated Identifier because a message can
+bear a valid signature from any domain, even one used by a bad actor. A DKIM-Authenticated
+Identifier that does not have Identifier Alignment with the Author Domain is not enough
+to validate whether the use of the Author Domain has been authorized by its Domain Owner.</t>
 <t>A single email can contain multiple DKIM signatures, and it is considered to
 produce a DMARC &quot;pass&quot; result if any DKIM-Authenticated Identifier aligns with
 the Author Domain.</t>
@@ -469,12 +474,15 @@ the Author Domain.</t>
 identity). DMARC relies solely on SPF validation of the MAIL FROM identity.  If
 the use of the domain in the MAIL FROM identity is validated by SPF, then that
 domain is the SPF-Authenticated Identifier.</t>
-<t>DMARC requires that Identifier Alignment is applied to the SPF-Authenticated
-Identifier because any Domain Owner, even a bad actor, can publish an SPF
-record for its domain and send email that will obtain an SPF pass result.
-Therefore, an SPF-Authenticated Identifier that does not have Identifier
-Alignment with the Author Domain is not enough to validate whether the use
-of the Author Domain has been authorized by its Domain Owner.</t>
+<t>There is currently no generally accepted mechanism by which a Domain Owner may
+assert a list of third-party domains that are authorized for use as the MAIL FROM
+identity for mail using a given Author Domain. Therefore, DMARC requires
+that Identifier Alignment is applied to the SPF-Authenticated Identifier because
+any Domain Owner, even a bad actor, can publish an SPF record for its domain and
+send email that will obtain an SPF pass result. Therefore, an SPF-Authenticated
+Identifier that does not have Identifier Alignment with the Author Domain is not
+enough to validate whether the use of the Author Domain has been authorized by
+its Domain Owner.</t>
 </section>
 
 <section anchor="alignment-and-extension-technologies"><name>Alignment and Extension Technologies</name>
@@ -601,8 +609,10 @@ reporting is described in <xref target="RFC6652" sectionFormat="bare" relative="
 </dl></dd>
 <dt>np:</dt>
 <dd><t><eref target="#domain-owner-policy">Domain Owner Assessment Policy</eref> for non-existent subdomains
-of the given Organizational Domain (plain-text; <bcp14>OPTIONAL</bcp14>). Indicates the message
-handling preference of the Domain Owner or PSO for mail using non-existent subdomains
+of the given Organizational Domain (plain-text; <bcp14>OPTIONAL</bcp14>). For this tag, the definition
+of &quot;non-existent subdomain&quot; is the same as that used for &quot;Non-existent Domains&quot; in <xref target="non-existent-domains"></xref>.
+The policy expressed by this tag indicates the message handling preference of the Domain Owner
+or PSO for mail using non-existent subdomains
 of the prevailing Organizational Domain and not passing DMARC validation. It applies
 only to non-existent subdomains of the Organizational Domain queried and not to either
 existing subdomains or the domain itself. Its syntax is identical to that of the &quot;p&quot;
@@ -697,7 +707,7 @@ the Author Domain to which the DMARC Policy Record applies, the &quot;t&quot; ta
 as a signal to the actor performing DMARC validation checks as to whether or not
 the Domain Owner wishes the Domain Owner Assessment Policy declared in the &quot;p&quot;,
 &quot;sp&quot;, and/or &quot;np&quot; tags to actually be applied. This tag does not affect the
-generation of DMARC reports, and it has no effect on any policy (p=, sp=, or np=)
+generation of DMARC reports, and it has no effect on any policy (&quot;p&quot;, &quot;sp&quot;, or &quot;np&quot;)
 that is &quot;none&quot;.  See <xref target="removal-of-the-pct-tag"></xref> for further discussion of the use
 of this tag.  Possible values are as follows:</t>
 
@@ -1239,7 +1249,7 @@ performing a Tree Walk would only perform queries for these names:</t>
 <t>To avoid this circumstance, Domain Owners wishing to have a specific DMARC Policy
 Record applied to a given [Author Domain]{#author-domain) longer than eight labels
 <bcp14>MUST</bcp14> publish a DMARC Policy Record at that domain's location in the DNS namespace,
-as such records are always queried for by Mail Receivers that participate in DMARC before
+as such records are always queried by Mail Receivers that participate in DMARC before
 the Tree Walk begins.  In the above example, this would mean publishing a DMARC Policy
 Record at the name &quot;_dmarc.mail.a.b.c.d.e.f.g.example.com.&quot;.</t>
 </section>
@@ -1610,7 +1620,7 @@ registry:</t>
 <tbody>
 <tr>
 <td align="left">dmarc</td>
-<td align="left"><xref target="RFC7489"></xref></td>
+<td align="left">[this document]</td>
 <td align="left">header</td>
 <td align="left">from</td>
 <td align="left">the domain portion of the RFC5322.From header field</td>
@@ -1620,7 +1630,7 @@ registry:</t>
 
 <tr>
 <td align="left">dmarc</td>
-<td align="left"><xref target="RFC7489"></xref></td>
+<td align="left">[this document]</td>
 <td align="left">policy</td>
 <td align="left">dmarc</td>
 <td align="left">Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject.</td>
@@ -1648,35 +1658,35 @@ Names&quot; registry:</t>
 <tr>
 <td align="left">dmarc</td>
 <td align="left">fail</td>
-<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">[this document]</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">none</td>
-<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">[this document]</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">pass</td>
-<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">[this document]</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">permerror</td>
-<td align="left"><xref target="RFC7489"></xref> section 11.2</td>
+<td align="left">[this document]</td>
 <td align="left">active</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">temperror</td>
-<td align="left"><xref target="RFC7489"></xref></td>
+<td align="left">[this document]</td>
 <td align="left">active</td>
 </tr>
 </tbody>
@@ -1701,35 +1711,35 @@ registry:</t>
 <tbody>
 <tr>
 <td align="left">Identity-Alignment</td>
-<td align="left">indicates whether the message about which a report is being generated had any identifiers in alignment as defined in <xref target="RFC7489"></xref></td>
+<td align="left">indicates whether the message about which a report is being generated had any identifiers in alignment</td>
 <td align="left">No</td>
 <td align="left">auth-failure</td>
-<td align="left"><xref target="RFC7489"></xref></td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 </tr>
 </tbody>
 </table></section>
 
 <section anchor="dmarc-tag-registry"><name>DMARC Tag Registry</name>
-<t>A new registry tree called &quot;Domain-based Message Authentication,
-Reporting, and Conformance (DMARC) Parameters&quot; has been created.
-Within it, a new sub-registry called the &quot;DMARC Tag Registry&quot; has
-been created.</t>
-<t>Names of DMARC tags are registered with IANA in this new
-sub-registry. New entries are assigned only for values that have
-been documented in a manner that satisfies the terms of Specification
-Required, per
-<xref target="RFC8126" sectionFormat="bare" relative="#" section="RFC 8126, Guidelines for Writing an IANA Considerations Section in RFCs"></xref>.
-Each registration includes the tag name; the specification that
-defines it; a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;, or
-&quot;historic&quot;. The Designated Expert needs to confirm that the provided
+<t>A registry tree called &quot;Domain-based Message Authentication,
+Reporting, and Conformance (DMARC) Parameters&quot; exists, and it
+and any sub-registries thereunder should be updated to reference
+this document.  Within it, a new sub-registry called the &quot;DMARC
+Tag Registry&quot; exists.</t>
+<t>Names of DMARC tags are registered with IANA in this sub-registry. Entries
+are assigned only for values that have been documented in a manner that
+satisfies the terms of Specification Required, per [@RFC8126, RFC 8126,
+Guidelines for Writing an IANA Considerations Section in RFCs].  Each
+registration includes the tag name; the specification that defines it;
+a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;,
+or &quot;historic&quot;. The Designated Expert needs to confirm that the provided
 specification adequately describes the new tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.</t>
 <t>To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.</t>
-<t>The initial set of entries in this registry is as follows:</t>
+<t>The set of entries to be defined in this registry is as follows:</t>
 <table align="left"><name>&quot;DMARC Tag Registry&quot;
 </name>
 <thead>
@@ -1744,42 +1754,42 @@ when processed by implementations conforming to prior specifications.</t>
 <tbody>
 <tr>
 <td align="left">adkim</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">DKIM alignment mode</td>
 </tr>
 
 <tr>
 <td align="left">aspf</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">SPF alignment mode</td>
 </tr>
 
 <tr>
 <td align="left">fo</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Failure reporting options</td>
 </tr>
 
 <tr>
 <td align="left">np</td>
-<td align="left">RFC 9091</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Requested handling policy for non-existent subdomains</td>
 </tr>
 
 <tr>
 <td align="left">p</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Requested handling policy</td>
 </tr>
 
 <tr>
 <td align="left">pct</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">historic</td>
 <td align="left">Sampling rate</td>
 </tr>
@@ -1793,35 +1803,35 @@ when processed by implementations conforming to prior specifications.</t>
 
 <tr>
 <td align="left">rf</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">historic</td>
 <td align="left">Failure reporting format(s)</td>
 </tr>
 
 <tr>
 <td align="left">ri</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">historic</td>
 <td align="left">Aggregate Reporting interval</td>
 </tr>
 
 <tr>
 <td align="left">rua</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Reporting URI(s) for aggregate data</td>
 </tr>
 
 <tr>
 <td align="left">ruf</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Reporting URI(s) for failure data</td>
 </tr>
 
 <tr>
 <td align="left">sp</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Requested handling policy for subdomains</td>
 </tr>
@@ -1835,7 +1845,7 @@ when processed by implementations conforming to prior specifications.</t>
 
 <tr>
 <td align="left">v</td>
-<td align="left">RFC 7489</td>
+<td align="left">[this document]</td>
 <td align="left">current</td>
 <td align="left">Specification version</td>
 </tr>
@@ -1845,7 +1855,8 @@ when processed by implementations conforming to prior specifications.</t>
 <section anchor="dmarc-report-format-registry"><name>DMARC Report Format Registry</name>
 <t>Also, within &quot;Domain-based Message Authentication, Reporting, and
 Conformance (DMARC) Parameters&quot;, a new sub-registry called &quot;DMARC
-Report Format Registry&quot; has been created.</t>
+Report Format Registry&quot; exists and should be updated to reference
+this document.</t>
 <t>Names of DMARC failure reporting formats are registered with IANA
 in this registry. New entries are assigned only for values that
 satisfy the definition of Specification Required, per
@@ -1856,7 +1867,7 @@ brief description, and its status, which must be one of &quot;current&quot;,
 confirm that the provided specification adequately describes the
 report format and clearly presents how it would be used within the
 DMARC context by Domain Owners and Mail Receivers.</t>
-<t>The initial entry in this registry is as follows:</t>
+<t>The entry in this registry is as follows:</t>
 <table align="left"><name>&quot;DMARC Report Format Registry&quot;
 </name>
 <thead>
@@ -1871,7 +1882,7 @@ DMARC context by Domain Owners and Mail Receivers.</t>
 <tbody>
 <tr>
 <td>afrf</td>
-<td>RFC 7489</td>
+<td>[this document]</td>
 <td>current</td>
 <td>Authentication Failure Reporting Format (see <xref target="RFC6591"></xref>)</td>
 </tr>
@@ -1880,7 +1891,7 @@ DMARC context by Domain Owners and Mail Receivers.</t>
 
 <section anchor="underscored-and-globally-scoped-dns-node-names-registry"><name>Underscored and Globally Scoped DNS Node Names Registry</name>
 <t>Per <xref target="RFC8552" sectionFormat="bare" relative="#" section="RFC 8852, Scoped Interpretation of DNS Resource Records through 'Underscored' Naming of Attribute Leaves"></xref>,
-please add the following entry to the &quot;Underscored and Globally Scoped DNS Node Names&quot; registry:</t>
+please update the following entry to the &quot;Underscored and Globally Scoped DNS Node Names&quot; registry:</t>
 <table align="left"><name>&quot;Underscored and Globally Scoped DNS Node Names&quot; registry
 </name>
 <thead>
@@ -1895,7 +1906,7 @@ please add the following entry to the &quot;Underscored and Globally Scoped DNS 
 <tr>
 <td>TXT</td>
 <td>_dmarc</td>
-<td>RFC 7489</td>
+<td>[this document]</td>
 </tr>
 </tbody>
 </table></section>
@@ -1999,7 +2010,7 @@ have an adverse impact on DNS traffic include:</t>
 
 <ul>
 <li><t>If they can snoop on DNS traffic, they can get an idea of who is
-sending mail.</t>
+receiving mail using the domain(s) in question.</t>
 </li>
 <li><t>If they can block outgoing or reply DNS messages, they can prevent
 systems from discovering senders' DMARC policies.</t>
@@ -2023,7 +2034,7 @@ and forged responses.</t>
 </section>
 
 <section anchor="display-name-attacks"><name>Display Name Attacks</name>
-<t>A common attack in messaging abuse is the presentation of false
+<t>An increasingly common attack in messaging abuse is the presentation of false
 information in the display-name portion of the RFC5322.From header field.
 For example, it is possible for the email address in that field to be
 an arbitrary address or domain name while containing a well-known
@@ -2470,18 +2481,11 @@ of this DMARC Policy Record (&quot;p=none&quot;)</t>
 policy (no &quot;t&quot; tag present, so the default of &quot;n&quot; applies).</t>
 </li>
 </ul>
-<t>The DMARC Policy Record might look like this when retrieved using a
-common command-line tool:</t>
-
-<artwork>  % dig +short TXT _dmarc.example.com.
-  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 creates an entry like the following in the appropriate zone file
 (following the conventional zone file format):</t>
 
 <artwork>  ; DMARC Policy Record for the domain example.com
-
   _dmarc  IN TXT ( &quot;v=DMARC1; p=none; &quot;
                    &quot;rua=mailto:dmarc-feedback@example.com&quot; )
 </artwork>
@@ -2506,20 +2510,11 @@ DMARC Policy Record from <xref target="entire-domain-monitoring-mode"></xref>:</
 address &quot;auth-reports@example.com&quot;
 <tt>(&quot;ruf=mailto:auth-reports@example.com&quot;)</tt>	</li>
 </ul>
-<t>The DMARC Policy Record might look like this when retrieved using a
-common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):</t>
-
-<artwork>  % dig +short TXT _dmarc.example.com.
-  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com;
-   ruf=mailto:auth-reports@example.com&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone file
 (following the conventional zone file format):</t>
 
 <artwork>  ; DMARC Policy Record for the domain example.com
-
   _dmarc  IN TXT ( &quot;v=DMARC1; p=none; &quot;
                    &quot;rua=mailto:dmarc-feedback@example.com; &quot;
                    &quot;ruf=mailto:auth-reports@example.com&quot; )
@@ -2540,20 +2535,11 @@ as follows:</t>
 address &quot;auth-reports@thirdparty.example.net&quot;
 <tt>(&quot;ruf=mailto:auth-reports@thirdparty.example.net&quot;)</tt></li>
 </ul>
-<t>The DMARC Policy Record might look like this when retrieved using a
-common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):</t>
-
-<artwork>  % dig +short TXT _dmarc.example.com.
-  &quot;v=DMARC1; p=none; rua=mailto:dmarc-feedback@example.com;
-   ruf=mailto:auth-reports@thirdparty.example.net&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone file
 (following the conventional zone file format):</t>
 
 <artwork>  ; DMARC Policy Record for the domain example.com
-
   _dmarc IN TXT ( &quot;v=DMARC1; p=none; &quot;
                   &quot;rua=mailto:dmarc-feedback@example.com; &quot;
                   &quot;ruf=mailto:auth-reports@thirdparty.example.net&quot; )
@@ -2571,19 +2557,12 @@ will need to publish a TXT resource record at
 &quot;example.com._report._dmarc.thirdparty.example.net&quot; with the value
 &quot;v=DMARC1;&quot; to authorize receipt of the reports.</li>
 </ul>
-<t>The resulting DMARC Policy Record might look like this when retrieved using a
-common command-line tool:</t>
-
-<artwork>  % dig +short TXT example.com._report._dmarc.thirdparty.example.net
-  &quot;v=DMARC1;&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for example.net might
 create an entry like the following in the appropriate zone file
 (following the conventional zone file format):</t>
 
 <artwork>  ; zone file for thirdparty.example.net
   ; Accept DMARC reports on behalf of example.com
-
   example.com._report._dmarc   IN   TXT    &quot;v=DMARC1;&quot;
 </artwork>
 </section>
@@ -2607,14 +2586,6 @@ DMARC Policy Record from <xref target="per-message-failure-reports-directed-to-t
 &quot;failure-reports@thirdparty.example.net&quot;
 <tt>(&quot;ruf=mailto:failure-reports@thirdparty.example.net&quot;)</tt></li>
 </ul>
-<t>The DMARC Policy Record might look like this when retrieved using a
-common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):</t>
-
-<artwork>  % dig +short TXT example.com._report._dmarc.thirdparty.example.net
-  &quot;v=DMARC1; rua=mailto:aggregate-reports@thirdparty.example.net;
-   ruf=mailto:failure-reports@thirdparty.example.net&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for example.net might
 create an entry like the following in the appropriate zone file
 (following the conventional zone file format):</t>
@@ -2669,20 +2640,11 @@ Owner is testing its setup at this point and so does not want
 the handling policy to be applied. (&quot;t=y&quot;)</t>
 </li>
 </ul>
-<t>The DMARC Policy Record might look like this when retrieved using a
-common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):</t>
-
-<artwork>  % dig +short TXT _dmarc.test.example.com
-  &quot;v=DMARC1; p=quarantine; rua=mailto:dmarc-feedback@example.com,
-   mailto:tld-test@thirdparty.example.net; t=y&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
 file (following the conventional zone file format):</t>
 
 <artwork>  ; DMARC Policy Record for the domain test.example.com
-
   _dmarc IN  TXT  ( &quot;v=DMARC1; p=quarantine; &quot;
                     &quot;rua=mailto:dmarc-feedback@example.com,&quot;
                     &quot;mailto:tld-test@thirdparty.example.net; &quot;
@@ -2695,20 +2657,11 @@ then the Domain Owner can update the DMARC Policy Record to indicate that it con
 validation failures to be a clear indication that use of the subdomain
 is not valid. It would do this by altering the record to advise Mail Receivers
 of its position on such messages (&quot;p=reject&quot;) and removing the testing flag (&quot;t=y&quot;).</t>
-<t>After alteration, the DMARC Policy Record might look like this when retrieved
-using a common command-line tool (the output shown would appear on a single
-line but is wrapped here for publication):</t>
-
-<artwork>  % dig +short TXT _dmarc.test.example.com
-  &quot;v=DMARC1; p=reject; rua=mailto:dmarc-feedback@example.com,
-   mailto:tld-test@thirdparty.example.net&quot;
-</artwork>
 <t>To publish such a record, the DNS administrator for the Domain Owner
 might create an entry like the following in the appropriate zone
 file (following the conventional zone file format):</t>
 
 <artwork>  ; DMARC Policy Record for the domain test.example.com
-
   _dmarc IN  TXT  ( &quot;v=DMARC1; p=reject; &quot;
                     &quot;rua=mailto:dmarc-feedback@example.com,&quot;
                     &quot;mailto:tld-test@thirdparty.example.net&quot; )
@@ -2872,36 +2825,35 @@ example.com.</t>
 walk must take into account.</t>
 <t>A Mail Receiver receives an email with:</t>
 
-<dl spacing="compact">
-<dt>Author Domain</dt>
-<dd>giant.bank.example</dd>
-<dt>RFC5321.MailFrom domain</dt>
-<dd>mail.giant.bank.example</dd>
-<dt>DKIM signature d=</dt>
-<dd>mail.mega.bank.example</dd>
-</dl>
-<t>In this case, _dmarc.bank.example has a DMARC Policy Record which includes the psd=y tag,
-and _dmarc.example does not have a DMARC Policy Record.
-While _dmarc.giant.bank.example has a DMARC Policy Record without a psd tag,
-_dmarc.mega.bank.example and _dmarc.mail.mega.bank.example have no DMARC Policy Records.</t>
+<ul spacing="compact">
+<li>Author Domain: giant.bank.example</li>
+<li>RFC5321.MailFrom Domain: mail.giant.bank.example</li>
+<li>DKIM-Authenticated Identifier: mail.mega.bank.example</li>
+</ul>
+<t>In this case, &quot;_dmarc.bank.example&quot; has a DMARC Policy Record which includes the
+&quot;psd=y&quot; tag, and &quot;_dmarc.example&quot; does not have a DMARC Policy Record.
+While &quot;_dmarc.giant.bank.example&quot; has a DMARC Policy Record without a &quot;psd&quot; tag,
+&quot;_dmarc.mega.bank.example&quot; and &quot;_dmarc.mail.mega.bank.example&quot; have no DMARC Policy Records.</t>
 <t>Since the three domains are all different, tree walks find their Organizational Domains
 to see which are aligned.</t>
-<t>For the Author Domain giant.bank.example, the tree walk finds the DMARC Policy Record at _dmarc.giant.bank.example,
-then the DMARC Policy Record at _dmarc.bank.example, and stops because of the psd=y flag.
-The Organizational Domain is giant.bank.example because it is the domain directly below the one with psd=y.
-Since the Organizational Domain has a DMARC Policy Record, it is also the policy domain.</t>
-<t>For the RFC5321.MailFrom domain, the tree walk finds no DMARC Policy Record at _dmarc.mail.giant.bank.example,
-the DMARC Policy Record at _dmarc.giant.bank.example,
-then the DMARC Policy Record at _dmarc.bank.example, and stops because of the psd=y flag.
-Again the Organizational Domain is giant.bank.example because it is the domain directly below the one with psd=y.
-Since this is the same Organizational Domain as the Author Domain, SPF is aligned.</t>
-<t>For the DKIM signature domain mail.mega.bank.example, the tree walk finds no DMARC Policy Records at
-_dmarc.mail.mega.bank.example or _dmarc.mega.bank.example,
-then finds the DMARC Policy Record at _dmarc.bank.example and stops because of the psd=y flag.
-The Organizational Domain is mega.bank.example, so DKIM is not aligned.</t>
-<t>Since SPF is aligned, it can be used to determine if the
-message has a DMARC pass result.  If the result is not pass, then the policy
-domain's DMARC Policy Record is used to determine the appropriate policy.</t>
+<t>For the Author Domain &quot;giant.bank.example&quot;, the tree walk finds the DMARC Policy Record
+at &quot;_dmarc.giant.bank.example&quot;, then the DMARC Policy Record at &quot;_dmarc.bank.example&quot;, and
+stops because of the &quot;psd=y&quot; flag.  The Organizational Domain is &quot;giant.bank.example&quot; because
+it is the domain directly below the one with &quot;psd=y&quot;.  Since the Organizational Domain has a
+DMARC Policy Record, it is also the policy domain.</t>
+<t>For the RFC5321.MailFrom domain &quot;mail.giant.bank.example&quot;, the tree walk finds no DMARC Policy
+Record at &quot;_dmarc.mail.giant.bank.example&quot;, but does find both the DMARC Policy Record at
+&quot;_dmarc.giant.bank.example&quot; and then the DMARC Policy Record at &quot;_dmarc.bank.example&quot;, and
+stops because of the &quot;psd=y&quot; flag.  Again the Organizational Domain is &quot;giant.bank.example&quot; because
+it is the domain directly below the one with &quot;psd=y&quot;.  Since this is the same Organizational Domain
+as the Author Domain, SPF is aligned.</t>
+<t>For the DKIM-Authenticated Identifier &quot;mail.mega.bank.example&quot;, the tree walk finds no DMARC Policy
+Records at &quot;_dmarc.mail.mega.bank.example&quot; or &quot;_dmarc.mega.bank.example&quot;, then finds the DMARC
+Policy Record at &quot;_dmarc.bank.example&quot; and stops because of the &quot;psd=y&quot; flag.
+The Organizational Domain is &quot;mega.bank.example&quot;, so DKIM is not aligned.</t>
+<t>Since SPF is aligned, it can be used to determine if the message has a DMARC pass result.  If the
+result is not pass, then the policy domain's DMARC Policy Record is used to determine the appropriate
+policy.</t>
 </section>
 </section>
 
@@ -2939,10 +2891,11 @@ come to an understanding of how its domain is being misused.</t>
 that means there are significant differences between RFC 7489 and this
 document. This section will summarize those changes.</t>
 
-<section anchor="ietf-category"><name>IETF Category</name>
-<t>RFC 7489 was not an Internet Standards Track specification; it was instead
-published in the Informational Category. This document, by contrast, is intended
-to be Internet Standards Track.</t>
+<section anchor="informational-vs-standards-track"><name>Informational vs. Standards Track</name>
+<t>RFC 7489 was not the product of any IETF work stream, but was instead published into
+the RFC series by the Independent Submissions Editor and is classified as an Informational
+RFC.</t>
+<t>This document, by contrast, is intended to be Internet Standards Track.</t>
 </section>
 
 <section anchor="changes-to-terminology-and-definitions"><name>Changes to Terminology and Definitions</name>
@@ -2993,7 +2946,7 @@ dedicated to the topics.</t>
 <t>Several tags have been added to the &quot;DMARC Policy Record Format&quot; section of this document since
 RFC 7489 was published, and at the same time, several others were removed.</t>
 
-<section anchor="tags-added"><name>Tags Added:</name>
+<section anchor="tags-added"><name>Tags Added</name>
 
 <ul spacing="compact">
 <li>np - Policy for non-existent domains (Imported from <xref target="RFC9091"></xref>)</li>
@@ -3002,10 +2955,10 @@ RFC 7489 was published, and at the same time, several others were removed.</t>
 </ul>
 </section>
 
-<section anchor="tags-removed"><name>Tags Removed:</name>
+<section anchor="tags-removed"><name>Tags Removed</name>
 
 <ul spacing="compact">
-<li>pct - Tag requesting application of DMARC policy to only a percentage of messages</li>
+<li>pct - Tag requesting application of DMARC policy to only a percentage of messages. See <xref target="removal-of-the-pct-tag"></xref> for discussion</li>
 <li>rf - Tag specifying requested format of failure reports</li>
 <li>ri - Tag specifying requested interval between aggregate reports</li>
 </ul>
