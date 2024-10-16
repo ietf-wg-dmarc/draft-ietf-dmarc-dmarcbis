@@ -498,13 +498,12 @@ domain is the SPF-Authenticated Identifier.
 
 There is currently no generally accepted mechanism by which a Domain Owner may 
 assert a list of third-party domains that are authorized for use as the MAIL FROM 
-identity for mail using a given Author Domain. Therefore, DMARC requires
-that Identifier Alignment is applied to the SPF-Authenticated Identifier because
-any Domain Owner, even a bad actor, can publish an SPF record for its domain and
-send email that will obtain an SPF pass result. Therefore, an SPF-Authenticated
-Identifier that does not have Identifier Alignment with the Author Domain is not
-enough to validate whether the use of the Author Domain has been authorized by
-its Domain Owner.
+identity for mail using a given Author Domain. Therefore, DMARC requires that Identifier Alignment 
+is applied to the SPF-Authenticated Identifier because any Domain Owner, even a bad 
+actor, can publish an SPF record for its domain and send email that will obtain an 
+SPF pass result. An SPF-Authenticated Identifier that does not have Identifier 
+Alignment with the Author Domain is not enough to validate whether the use of the Author 
+Domain has been authorized by its Domain Owner.
 
 ###  Alignment and Extension Technologies {#alignment-and-extension-technologies}
 
@@ -904,15 +903,25 @@ depending on the context:
   (#identifier-alignment-evaluation)).
 
 [@!RFC7489, RFC 7489, Domain-based Message Authentication, Reporting, and Conformance (DMARC)]
-defined an Organizational Domain as "The domain that was registered
-with a domain name registrar." This update to that document offers more 
-flexibility to Domain Owners, especially those with large, complex organizations
-that might want to apply decentralized management to their DNS and their 
-DMARC Policy Records. Rather than just searching the Public Suffix List to identify
-an Organizational Domain, this update defines a discovery technique known 
-colloquially as the "DNS Tree Walk". The target of any DNS Tree Walk is
-discovry of a valid DMARC Policy Record, and its use in determining an Organizational
-Domain allows for publishing DMARC Policy Records at multiple points in the namespace.
+defined an Organizational Domain as "The domain that was registered with a domain
+name registrar." RFC 7489 discussed using a "public suffix" list (PSL) as the authoritative
+list of the parent domains for Organizational Domains, and further described a method for
+determining the Organizational Domain of an Author Domain or an Authenticated Identifier.
+However, RFC 7489 mandated no requirement for a specific PSL for Mail Receivers to use 
+(though it did suggest the one found at <https://publicsuffix.org/>) nor did it provide
+any guidance for the frequency of regular retrieval of the PSL by Mail Receivers participating
+in DMARC. RFC 7489 acknowledged the possibility of interoperability issues caused by Mail
+Receivers choosing different PSLs, and even suggested that if a more reliable and secure
+method for determining the Organizational Domain could be created, that method should
+replace reliance on a public suffix list.
+
+This update to DMARC offers more flexibility to Domain Owners, especially those with large, 
+complex organizations that might want to apply decentralized management to their DNS and their 
+DMARC Policy Records. Rather than just using a public suffix list to help identify
+an Organizational Domain, this update defines a discovery technique known colloquially as 
+the "DNS Tree Walk". The target of any DNS Tree Walk is discovry of a valid DMARC Policy Record, 
+and its use in determining an Organizational Domain allows for publishing DMARC Policy Records 
+at multiple points in the namespace.
 
 This flexibility comes at a possible cost, however. Since the DNS Tree Walk
 relies on the Mail Receiver making a series of DNS queries, the potential
@@ -938,29 +947,26 @@ The generic steps for a DNS Tree Walk are as follows:
    returned, they are all discarded. If a single record remains and it 
    contains a "psd=n" tag, stop.
 
-3. Determine the target for additional queries (if needed; see the note
-   in (#identifier-alignment-evaluation)), using steps 4 through 8 below.
-
-4. Break the subject DNS domain name into a set of ordered labels. Assign
+3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
    for "a.mail.example.com", "x" would be assigned the value 4, "com" would be
    label 1, "example" would be label 2, "mail" would be label 3, and so forth.
 
-5. If x < 8, remove the left-most (highest-numbered) label from the subject
+4. If x < 8, remove the left-most (highest-numbered) label from the subject
    domain. If x >= 8, remove the left-most (highest-numbered) labels from the
    subject domain until 7 labels remain. The resulting DNS domain name is the 
    new target for the next lookup.
 
-6. Query the DNS for a DMARC Policy Record at the DNS domain name matching this
+5. Query the DNS for a DMARC Policy Record at the DNS domain name matching this
    new target. A possibly empty set of records is returned.
 
-7. Records that do not start with a "v" tag that identifies the current
+6. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are returned for
    a single target, they are all discarded. If a single record remains and it
    contains a "psd=n" or "psd=y" tag, stop.
 
-8. Determine the target for the next query by removing the left-most label
-   from the target of the previous query. Repeat steps 6, 7, and 8 until the 
+7. Determine the target for the next query by removing the left-most label
+   from the target of the previous query. Repeat steps 5, 6, and 7 until the 
    process stops or there are no more labels remaining.
 
 To illustrate, for a message with the arbitrary Author Domain of
@@ -1132,19 +1138,15 @@ reports. The following sections describe how to achieve this.
 
 To configure SPF for DMARC, the Domain Owner **MUST** send mail that has
 an RFC5321.MailFrom domain that will produce an [SPF-Authenticated
-Identifier](#spf-authenticated-identifier) that aligns with the
-Author Domain. The SPF record for the RFC5321.MailFrom domain **MUST** be
-constructed at a minimum to ensure an SPF pass verdict for all sources of
-mail that are authorized to use RFC5321.MailFrom domain, and **SHOULD** be
-constructed to ensure that [only those authorized sources can get an SPF 
-pass verdict](#authentication-methods).
+Identifier](#spf-identifiers) that has [Identifier Alignment](#identifier-alignment-explained) 
+with the Author Domain. 
 
 ### Configure Sending System for DKIM Signing Using an Aligned Domain
 
 To configure DKIM for DMARC, the Domain Owner **MUST** send mail that
 has a [DKIM Signing Domain](#dkim-signing-domain) that will produce a 
-[DKIM-Aligned Identifier](#dkim-authenticated-identifier) that aligns 
-with the Author Domain.
+[DKIM-Authenticated Identifier](#dkim-identifiers) that 
+has [Identifier Alignment](#identifier-alignment-explained) with the Author Domain. 
 
 ### Set Up a Mailbox to Receive Aggregate Reports
 
@@ -1347,9 +1349,9 @@ See (#rejecting-messages) for further discussion of topics regarding rejecting m
 
 ### Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
-Results obtained from the application of the DMARC mechanism by the Mail Receiver
-**SHOULD** be stored for eventual presentation back to the Domain Owner in the form of
-aggregate feedback reports.  (#policy-record-format) and
+If the Mail Receiver intends to fully participate in DMARC, then results obtained from 
+the application of the DMARC mechanism by the Mail Receiver **MUST** be stored for eventual
+presentation back to the Domain Owner in the form of aggregate feedback reports.  (#policy-record-format) and
 [@!I-D.ietf-dmarc-aggregate-reporting] discuss aggregate feedback.
 
 ### Send Aggregate Reports {#send-aggregate-reports}
@@ -1360,6 +1362,10 @@ of at least once every 24 hours. Such reports provide Domain Owners with
 insight into all mail streams using Author Domains under the Domain Owner's
 control, and aid the Domain Owner in determining whether and when to transition
 from [Monitoring Mode](#monitoring-mode) to [Enforcement](#enforcement).
+
+The most common reasons for a Mail Receiver to opt out of sending aggregate
+reports include resource constraints, local policy against sharing data, and
+concerns about user privacy.
 
 ### Optionally Send Failure Reports {#send-failure-reports}
 
@@ -1445,7 +1451,7 @@ the SMTP transaction, before any DMARC processing takes place, if the message
 fails SPF authentication checks.  Domain Owners choosing to use "-all" to terminate
 SPF records should be aware of this, and should understand that messages that
 might otherwise pass DMARC due to an aligned [DKIM-Authenticated Identifier]
-(#dkim-authenticated-identifiers) could be rejected solely due to an SPF fail. 
+(#dkim-identifiers) could be rejected solely due to an SPF fail. 
 Moreover, messages rejected early in the SMTP transaction will never appear in
 aggregate DMARC reports, as the transaction will never proceed to the DATA phase
 and so the RFC5322.From domain will never be revealed and its DMARC policy will
@@ -1945,10 +1951,14 @@ to validate authorized use of an [Author Domain](#author-domain) on behalf of a 
 records for a subdomain of the Organizational Domain, the subdomain can be used to generate email 
 that achieves a DMARC pass on behalf of the Organizational Domain.
 
-For example, an attacker who controls the SPF record for "evil.example.com" can send mail 
-that produces an SPF-Authenticated Identifier of "evil.example.com" with an RFC5322.From header 
-field containing "foo@example.com" that can produce a DMARC pass for mail using the Organizational 
-Domain ("example.com") as the Author Domain.
+A scenario such as this could occur under the following conditions:
+
+* A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain
+* An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain
+* The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"
+
+Although this email was not authorized by the Domain Owner, it can produce a DMARC pass because the SPF-Authenticated Identifier 
+("evil.example.com") has Identifier Alignment with the Author Domain ("example.com").
 
 The Organizational Domain Owner should be careful not to delegate control of subdomains if this is an
 issue, and consider using the [Strict Alignment](#strict-alignment) option if appropriate.
@@ -2140,16 +2150,16 @@ These custom actions when the "pct" tag was set to 0 proved valuable to the
 email community. In particular, header field rewriting by an intermediary meant
 that a Domain Owner's aggregate reports could reveal to the Domain Owner
 how much of its traffic was routing through intermediaries that don't rewrite
-the RFC5322.From header field. It required work on the part of the Domain Owner to
-compare aggregate reports from before and after the "p" value was changed
-and "pct" was included in the DMARC Policy Record with a value of 0, but
-the data was there. Consequently, knowing how much mail was subject to
-possible DMARC failure due to a lack of RFC5322.From header field rewriting by
-intermediaries could assist the Domain Owner in choosing whether to move from 
-[Monitoring Mode](#monitoring-mode) to [Enforcement](#enforcement).
-Armed with this knowledge, the Domain Owner could make an informed decision
-regarding subjecting its mail traffic to possible DMARC failures based on
-the Domain Owner's tolerance for such things.
+the RFC5322.From header field. Such information wasn't explicit in the aggregate
+reports received; rather, sussing it out required work on the part of the Domain
+Owner to compare aggregate reports from before and after the "p" value was changed
+and "pct=0" was included in the DMARC Policy Record, but the data was there. 
+Consequently, knowing how much mail was subject to possible DMARC failure due to 
+a lack of RFC5322.From header field rewriting by intermediaries could assist the 
+Domain Owner in choosing whether to move from [Monitoring Mode](#monitoring-mode) 
+to [Enforcement](#enforcement).  Armed with this knowledge, the Domain Owner could 
+make an informed decision regarding subjecting its mail traffic to possible DMARC 
+failures based on the Domain Owner's tolerance for such things.
 
 Because of the value provided by "pct=0" to Domain Owners, it was logical
 to keep this functionality in the protocol; at the same time, it didn't make

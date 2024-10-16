@@ -1216,7 +1216,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 18 April 2025</td>
+<td class="center">Expires 19 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-15" class="published">15 October 2024</time>
+<time datetime="2024-10-16" class="published">16 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-18">18 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-19">19 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1283,7 +1283,7 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2368,13 +2368,12 @@ the use of the domain in the MAIL FROM identity is validated by SPF, then that
 domain is the SPF-Authenticated Identifier.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.4.2-2">There is currently no generally accepted mechanism by which a Domain Owner may
 assert a list of third-party domains that are authorized for use as the MAIL FROM
-identity for mail using a given Author Domain. Therefore, DMARC requires
-that Identifier Alignment is applied to the SPF-Authenticated Identifier because
-any Domain Owner, even a bad actor, can publish an SPF record for its domain and
-send email that will obtain an SPF pass result. Therefore, an SPF-Authenticated
-Identifier that does not have Identifier Alignment with the Author Domain is not
-enough to validate whether the use of the Author Domain has been authorized by
-its Domain Owner.<a href="#section-4.4.2-2" class="pilcrow">¶</a></p>
+identity for mail using a given Author Domain. Therefore, DMARC requires that Identifier Alignment
+is applied to the SPF-Authenticated Identifier because any Domain Owner, even a bad
+actor, can publish an SPF record for its domain and send email that will obtain an
+SPF pass result. An SPF-Authenticated Identifier that does not have Identifier
+Alignment with the Author Domain is not enough to validate whether the use of the Author
+Domain has been authorized by its Domain Owner.<a href="#section-4.4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="alignment-and-extension-technologies">
@@ -2882,16 +2881,25 @@ and the Author Domain are used in determining Identifier Alignment between the t
 </li>
         </ul>
 <p id="section-4.10-3"><a href="https://rfc-editor.org/rfc/rfc7489" class="relref">RFC 7489, Domain-based Message Authentication, Reporting, and Conformance (DMARC)</a>
-defined an Organizational Domain as "The domain that was registered
-with a domain name registrar." This update to that document offers more
-flexibility to Domain Owners, especially those with large, complex organizations
-that might want to apply decentralized management to their DNS and their
-DMARC Policy Records. Rather than just searching the Public Suffix List to identify
-an Organizational Domain, this update defines a discovery technique known
-colloquially as the "DNS Tree Walk". The target of any DNS Tree Walk is
-discovry of a valid DMARC Policy Record, and its use in determining an Organizational
-Domain allows for publishing DMARC Policy Records at multiple points in the namespace.<a href="#section-4.10-3" class="pilcrow">¶</a></p>
-<p id="section-4.10-4">This flexibility comes at a possible cost, however. Since the DNS Tree Walk
+defined an Organizational Domain as "The domain that was registered with a domain
+name registrar." RFC 7489 discussed using a "public suffix" list (PSL) as the authoritative
+list of the parent domains for Organizational Domains, and further described a method for
+determining the Organizational Domain of an Author Domain or an Authenticated Identifier.
+However, RFC 7489 mandated no requirement for a specific PSL for Mail Receivers to use
+(though it did suggest the one found at <a href="https://publicsuffix.org/">https://publicsuffix.org/</a>) nor did it provide
+any guidance for the frequency of regular retrieval of the PSL by Mail Receivers participating
+in DMARC. RFC 7489 acknowledged the possibility of interoperability issues caused by Mail
+Receivers choosing different PSLs, and even suggested that if a more reliable and secure
+method for determining the Organizational Domain could be created, that method should
+replace reliance on a public suffix list.<a href="#section-4.10-3" class="pilcrow">¶</a></p>
+<p id="section-4.10-4">This update to DMARC offers more flexibility to Domain Owners, especially those with large,
+complex organizations that might want to apply decentralized management to their DNS and their
+DMARC Policy Records. Rather than just using a public suffix list to help identify
+an Organizational Domain, this update defines a discovery technique known colloquially as
+the "DNS Tree Walk". The target of any DNS Tree Walk is discovry of a valid DMARC Policy Record,
+and its use in determining an Organizational Domain allows for publishing DMARC Policy Records
+at multiple points in the namespace.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
+<p id="section-4.10-5">This flexibility comes at a possible cost, however. Since the DNS Tree Walk
 relies on the Mail Receiver making a series of DNS queries, the potential
 exists for an ill-intentioned Domain Owner to send mail with Author Domains
 with tens or even hundreds of labels for the purpose of executing a Denial
@@ -2900,73 +2908,69 @@ DNS, a shortcut is built into the process so that Author Domains with more
 than eight labels do not result in more than eight DNS queries. Observed data
 at the time of publication showed that Author Domains with up to seven labels
 were in usage, and so eight was chosen as the query limit to allow for some
-future expansion of the name space that did not require updating this document.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
-<p id="section-4.10-5">The generic steps for a DNS Tree Walk are as follows:<a href="#section-4.10-5" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4.10-6">
-<li id="section-4.10-6.1">
-            <p id="section-4.10-6.1.1">Query the DNS for a TXT record that matches the format of a DMARC Policy Record at
+future expansion of the name space that did not require updating this document.<a href="#section-4.10-5" class="pilcrow">¶</a></p>
+<p id="section-4.10-6">The generic steps for a DNS Tree Walk are as follows:<a href="#section-4.10-6" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.10-7">
+<li id="section-4.10-7.1">
+            <p id="section-4.10-7.1.1">Query the DNS for a TXT record that matches the format of a DMARC Policy Record at
 the starting point for the Tree Walk.  The starting point for the DNS Tree Walk will
 depend on the ultimate target of the DNS Tree Walk. <a href="#dmarc-policy-discovery" class="auto internal xref">Section 4.10.1</a> and
 <a href="#identifier-alignment-evaluation" class="auto internal xref">Section 4.10.2</a> describe the possible starting points. A possibly
-empty set of records is returned.<a href="#section-4.10-6.1.1" class="pilcrow">¶</a></p>
+empty set of records is returned.<a href="#section-4.10-7.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.2">
-            <p id="section-4.10-6.2.1">Records that do not start with a "v" tag that identifies the current
+          <li id="section-4.10-7.2">
+            <p id="section-4.10-7.2.1">Records that do not start with a "v" tag that identifies the current
 version of DMARC are discarded. If multiple DMARC Policy Records are
 returned, they are all discarded. If a single record remains and it
-contains a "psd=n" tag, stop.<a href="#section-4.10-6.2.1" class="pilcrow">¶</a></p>
+contains a "psd=n" tag, stop.<a href="#section-4.10-7.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.3">
-            <p id="section-4.10-6.3.1">Determine the target for additional queries (if needed; see the note
-in <a href="#identifier-alignment-evaluation" class="auto internal xref">Section 4.10.2</a>), using steps 4 through 8 below.<a href="#section-4.10-6.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li id="section-4.10-6.4">
-            <p id="section-4.10-6.4.1">Break the subject DNS domain name into a set of ordered labels. Assign
+          <li id="section-4.10-7.3">
+            <p id="section-4.10-7.3.1">Break the subject DNS domain name into a set of ordered labels. Assign
 the count of labels to "x", and number the labels from right to left; e.g.,
 for "a.mail.example.com", "x" would be assigned the value 4, "com" would be
-label 1, "example" would be label 2, "mail" would be label 3, and so forth.<a href="#section-4.10-6.4.1" class="pilcrow">¶</a></p>
+label 1, "example" would be label 2, "mail" would be label 3, and so forth.<a href="#section-4.10-7.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.5">
-            <p id="section-4.10-6.5.1">If x &lt; 8, remove the left-most (highest-numbered) label from the subject
+          <li id="section-4.10-7.4">
+            <p id="section-4.10-7.4.1">If x &lt; 8, remove the left-most (highest-numbered) label from the subject
 domain. If x &gt;= 8, remove the left-most (highest-numbered) labels from the
 subject domain until 7 labels remain. The resulting DNS domain name is the
-new target for the next lookup.<a href="#section-4.10-6.5.1" class="pilcrow">¶</a></p>
+new target for the next lookup.<a href="#section-4.10-7.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.6">
-            <p id="section-4.10-6.6.1">Query the DNS for a DMARC Policy Record at the DNS domain name matching this
-new target. A possibly empty set of records is returned.<a href="#section-4.10-6.6.1" class="pilcrow">¶</a></p>
+          <li id="section-4.10-7.5">
+            <p id="section-4.10-7.5.1">Query the DNS for a DMARC Policy Record at the DNS domain name matching this
+new target. A possibly empty set of records is returned.<a href="#section-4.10-7.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.7">
-            <p id="section-4.10-6.7.1">Records that do not start with a "v" tag that identifies the current
+          <li id="section-4.10-7.6">
+            <p id="section-4.10-7.6.1">Records that do not start with a "v" tag that identifies the current
 version of DMARC are discarded. If multiple DMARC Policy Records are returned for
 a single target, they are all discarded. If a single record remains and it
-contains a "psd=n" or "psd=y" tag, stop.<a href="#section-4.10-6.7.1" class="pilcrow">¶</a></p>
+contains a "psd=n" or "psd=y" tag, stop.<a href="#section-4.10-7.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li id="section-4.10-6.8">
-            <p id="section-4.10-6.8.1">Determine the target for the next query by removing the left-most label
-from the target of the previous query. Repeat steps 6, 7, and 8 until the
-process stops or there are no more labels remaining.<a href="#section-4.10-6.8.1" class="pilcrow">¶</a></p>
+          <li id="section-4.10-7.7">
+            <p id="section-4.10-7.7.1">Determine the target for the next query by removing the left-most label
+from the target of the previous query. Repeat steps 5, 6, and 7 until the
+process stops or there are no more labels remaining.<a href="#section-4.10-7.7.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
-<p id="section-4.10-7">To illustrate, for a message with the arbitrary Author Domain of
+<p id="section-4.10-8">To illustrate, for a message with the arbitrary Author Domain of
 "a.b.c.d.e.f.g.h.i.j.mail.example.com", a full DNS Tree Walk would require the following
-eight queries to potentially locate the DMARC Policy Record or Organizational Domain:<a href="#section-4.10-7" class="pilcrow">¶</a></p>
+eight queries to potentially locate the DMARC Policy Record or Organizational Domain:<a href="#section-4.10-8" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-4.10-8.1">_dmarc.a.b.c.d.e.f.g.h.i.j.mail.example.com<a href="#section-4.10-8.1" class="pilcrow">¶</a>
+<li class="compact" id="section-4.10-9.1">_dmarc.a.b.c.d.e.f.g.h.i.j.mail.example.com<a href="#section-4.10-9.1" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.2">_dmarc.g.h.i.j.mail.example.com<a href="#section-4.10-8.2" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.2">_dmarc.g.h.i.j.mail.example.com<a href="#section-4.10-9.2" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.3">_dmarc.h.i.j.mail.example.com<a href="#section-4.10-8.3" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.3">_dmarc.h.i.j.mail.example.com<a href="#section-4.10-9.3" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.4">_dmarc.i.j.mail.example.com<a href="#section-4.10-8.4" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.4">_dmarc.i.j.mail.example.com<a href="#section-4.10-9.4" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.5">_dmarc.j.mail.example.com<a href="#section-4.10-8.5" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.5">_dmarc.j.mail.example.com<a href="#section-4.10-9.5" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.6">_dmarc.mail.example.com<a href="#section-4.10-8.6" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.6">_dmarc.mail.example.com<a href="#section-4.10-9.6" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.7">_dmarc.example.com<a href="#section-4.10-8.7" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.7">_dmarc.example.com<a href="#section-4.10-9.7" class="pilcrow">¶</a>
 </li>
-          <li class="compact" id="section-4.10-8.8">_dmarc.com<a href="#section-4.10-8.8" class="pilcrow">¶</a>
+          <li class="compact" id="section-4.10-9.8">_dmarc.com<a href="#section-4.10-9.8" class="pilcrow">¶</a>
 </li>
         </ul>
 <div id="dmarc-policy-discovery">
@@ -3151,13 +3155,9 @@ reports. The following sections describe how to achieve this.<a href="#section-5
 <a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-publish-an-spf-record-for-a" class="section-name selfRef">Publish an SPF Record for an Aligned Domain</a>
           </h4>
 <p id="section-5.1.1-1">To configure SPF for DMARC, the Domain Owner <span class="bcp14">MUST</span> send mail that has
-an RFC5321.MailFrom domain that will produce an <a href="#spf-authenticated-identifier">SPF-Authenticated
-Identifier</a> that aligns with the
-Author Domain. The SPF record for the RFC5321.MailFrom domain <span class="bcp14">MUST</span> be
-constructed at a minimum to ensure an SPF pass verdict for all sources of
-mail that are authorized to use RFC5321.MailFrom domain, and <span class="bcp14">SHOULD</span> be
-constructed to ensure that <a href="#authentication-methods">only those authorized sources can get an SPF
-pass verdict</a>.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+an RFC5321.MailFrom domain that will produce an <a href="#spf-identifiers">SPF-Authenticated
+Identifier</a> that has <a href="#identifier-alignment-explained">Identifier Alignment</a>
+with the Author Domain.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="configure-sending-system-for-dkim-signing-using-an-aligned-domain">
@@ -3167,8 +3167,8 @@ pass verdict</a>.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-5.1.2-1">To configure DKIM for DMARC, the Domain Owner <span class="bcp14">MUST</span> send mail that
 has a <a href="#dkim-signing-domain">DKIM Signing Domain</a> that will produce a
-<a href="#dkim-authenticated-identifier">DKIM-Aligned Identifier</a> that aligns
-with the Author Domain.<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
+<a href="#dkim-identifiers">DKIM-Authenticated Identifier</a> that
+has <a href="#identifier-alignment-explained">Identifier Alignment</a> with the Author Domain.<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="set-up-a-mailbox-to-receive-aggregate-reports">
@@ -3435,9 +3435,9 @@ decisions for the message are left to the discretion of the Mail Receiver.<a hre
           <h4 id="name-store-results-of-dmarc-proc">
 <a href="#section-5.3.7" class="section-number selfRef">5.3.7. </a><a href="#name-store-results-of-dmarc-proc" class="section-name selfRef">Store Results of DMARC Processing</a>
           </h4>
-<p id="section-5.3.7-1">Results obtained from the application of the DMARC mechanism by the Mail Receiver
-<span class="bcp14">SHOULD</span> be stored for eventual presentation back to the Domain Owner in the form of
-aggregate feedback reports.  <a href="#policy-record-format" class="auto internal xref">Section 4.7</a> and
+<p id="section-5.3.7-1">If the Mail Receiver intends to fully participate in DMARC, then results obtained from
+the application of the DMARC mechanism by the Mail Receiver <span class="bcp14">MUST</span> be stored for eventual
+presentation back to the Domain Owner in the form of aggregate feedback reports.  <a href="#policy-record-format" class="auto internal xref">Section 4.7</a> and
 <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span> discuss aggregate feedback.<a href="#section-5.3.7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3452,6 +3452,9 @@ of at least once every 24 hours. Such reports provide Domain Owners with
 insight into all mail streams using Author Domains under the Domain Owner's
 control, and aid the Domain Owner in determining whether and when to transition
 from <a href="#monitoring-mode">Monitoring Mode</a> to <a href="#enforcement">Enforcement</a>.<a href="#section-5.3.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.3.8-2">The most common reasons for a Mail Receiver to opt out of sending aggregate
+reports include resource constraints, local policy against sharing data, and
+concerns about user privacy.<a href="#section-5.3.8-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="send-failure-reports">
@@ -3551,7 +3554,7 @@ on a sender's SPF mechanism, such as "-all", could cause a message to be rejecte
 the SMTP transaction, before any DMARC processing takes place, if the message
 fails SPF authentication checks.  Domain Owners choosing to use "-all" to terminate
 SPF records should be aware of this, and should understand that messages that
-might otherwise pass DMARC due to an aligned <a href="#dkim-authenticated-identifiers">DKIM-Authenticated Identifier</a> could be rejected solely due to an SPF fail.
+might otherwise pass DMARC due to an aligned <a href="#dkim-identifiers">DKIM-Authenticated Identifier</a> could be rejected solely due to an SPF fail.
 Moreover, messages rejected early in the SMTP transaction will never appear in
 aggregate DMARC reports, as the transaction will never proceed to the DATA phase
 and so the RFC5322.From domain will never be revealed and its DMARC policy will
@@ -4332,28 +4335,35 @@ could reveal private information.<a href="#section-10.7-2" class="pilcrow">¶</a
 to validate authorized use of an <a href="#author-domain">Author Domain</a> on behalf of a <a href="#domain-owner">Domain Owner</a>.  If malicious or unaware users can gain control of the SPF record or DKIM selector
 records for a subdomain of the Organizational Domain, the subdomain can be used to generate email
 that achieves a DMARC pass on behalf of the Organizational Domain.<a href="#section-10.8-1" class="pilcrow">¶</a></p>
-<p id="section-10.8-2">For example, an attacker who controls the SPF record for "evil.example.com" can send mail
-that produces an SPF-Authenticated Identifier of "evil.example.com" with an RFC5322.From header
-field containing "foo@example.com" that can produce a DMARC pass for mail using the Organizational
-Domain ("example.com") as the Author Domain.<a href="#section-10.8-2" class="pilcrow">¶</a></p>
-<p id="section-10.8-3">The Organizational Domain Owner should be careful not to delegate control of subdomains if this is an
-issue, and consider using the <a href="#strict-alignment">Strict Alignment</a> option if appropriate.<a href="#section-10.8-3" class="pilcrow">¶</a></p>
-<p id="section-10.8-4">DMARC evaluation for relaxed alignment is also highly sensitive to errors in
+<p id="section-10.8-2">A scenario such as this could occur under the following conditions:<a href="#section-10.8-2" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="section-10.8-3.1">A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain<a href="#section-10.8-3.1" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-3.2">An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain<a href="#section-10.8-3.2" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-3.3">The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"<a href="#section-10.8-3.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-10.8-4">Although this email was not authorized by the Domain Owner, it can produce a DMARC pass because the SPF-Authenticated Identifier
+("evil.example.com") has Identifier Alignment with the Author Domain ("example.com").<a href="#section-10.8-4" class="pilcrow">¶</a></p>
+<p id="section-10.8-5">The Organizational Domain Owner should be careful not to delegate control of subdomains if this is an
+issue, and consider using the <a href="#strict-alignment">Strict Alignment</a> option if appropriate.<a href="#section-10.8-5" class="pilcrow">¶</a></p>
+<p id="section-10.8-6">DMARC evaluation for relaxed alignment is also highly sensitive to errors in
 determining the Organizational Domain if the Author Domain does not have a published
 <a href="#dmarc-policy-record">DMARC Policy Record</a>. If an incorrectly selected Organizational
 Domain is a parent of the correct Organizational Domain, then relaxed alignment could
 potentially allow a malicious sender to send mail that achieves a DMARC pass verdict.
 This potential exists for both the legacy <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> and current methods for determining
-the organizational domain, the latter described in <a href="#identifier-alignment-evaluation" class="auto internal xref">Section 4.10.2</a>.<a href="#section-10.8-4" class="pilcrow">¶</a></p>
-<p id="section-10.8-5">This issue is entirely avoided by the use of Strict Alignment and publishing explicit
-DMARC Policy Records for all Author Domains used in an organization's email.<a href="#section-10.8-5" class="pilcrow">¶</a></p>
-<p id="section-10.8-6">For cases where Strict Alignment is not appropriate, this issue can be
+the organizational domain, the latter described in <a href="#identifier-alignment-evaluation" class="auto internal xref">Section 4.10.2</a>.<a href="#section-10.8-6" class="pilcrow">¶</a></p>
+<p id="section-10.8-7">This issue is entirely avoided by the use of Strict Alignment and publishing explicit
+DMARC Policy Records for all Author Domains used in an organization's email.<a href="#section-10.8-7" class="pilcrow">¶</a></p>
+<p id="section-10.8-8">For cases where Strict Alignment is not appropriate, this issue can be
 mitigated by periodically checking the DMARC Policy Records, if any, of <a href="#public-suffix-domain">PSDs</a>
 above the Organizational Domain in the DNS tree and (for legacy <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> checking
 that appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record
 without the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their
 Organizational Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will
-not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.<a href="#section-10.8-6" class="pilcrow">¶</a></p>
+not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.<a href="#section-10.8-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4698,16 +4708,16 @@ avoid DMARC failures downstream.<a href="#appendix-A.6-2" class="pilcrow">¶</a>
 email community. In particular, header field rewriting by an intermediary meant
 that a Domain Owner's aggregate reports could reveal to the Domain Owner
 how much of its traffic was routing through intermediaries that don't rewrite
-the RFC5322.From header field. It required work on the part of the Domain Owner to
-compare aggregate reports from before and after the "p" value was changed
-and "pct" was included in the DMARC Policy Record with a value of 0, but
-the data was there. Consequently, knowing how much mail was subject to
-possible DMARC failure due to a lack of RFC5322.From header field rewriting by
-intermediaries could assist the Domain Owner in choosing whether to move from
-<a href="#monitoring-mode">Monitoring Mode</a> to <a href="#enforcement">Enforcement</a>.
-Armed with this knowledge, the Domain Owner could make an informed decision
-regarding subjecting its mail traffic to possible DMARC failures based on
-the Domain Owner's tolerance for such things.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
+the RFC5322.From header field. Such information wasn't explicit in the aggregate
+reports received; rather, sussing it out required work on the part of the Domain
+Owner to compare aggregate reports from before and after the "p" value was changed
+and "pct=0" was included in the DMARC Policy Record, but the data was there.
+Consequently, knowing how much mail was subject to possible DMARC failure due to
+a lack of RFC5322.From header field rewriting by intermediaries could assist the
+Domain Owner in choosing whether to move from <a href="#monitoring-mode">Monitoring Mode</a>
+to <a href="#enforcement">Enforcement</a>.  Armed with this knowledge, the Domain Owner could
+make an informed decision regarding subjecting its mail traffic to possible DMARC
+failures based on the Domain Owner's tolerance for such things.<a href="#appendix-A.6-3" class="pilcrow">¶</a></p>
 <p id="appendix-A.6-4">Because of the value provided by "pct=0" to Domain Owners, it was logical
 to keep this functionality in the protocol; at the same time, it didn't make
 sense to support a tag named "pct" that had only two valid values. This version
