@@ -1216,7 +1216,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 20 April 2025</td>
+<td class="center">Expires 21 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-17" class="published">17 October 2024</time>
+<time datetime="2024-10-18" class="published">18 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-20">20 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-21">21 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1283,7 +1283,7 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1799,17 +1799,20 @@ if they are identical. The choice of required alignment mode is left to the
 validated for that message as authorized by the Domain Owner.  Such authorization
 does not carry an explicit or implicit value assertion about that message or about
 the Domain Owner, and so a DMARC pass by itself does not guarantee that delivery to
-the recipient's Inbox would be safe or desirable.  Furthermore, a mail-receiving organization
-that performs DMARC validation can choose to honor the Domain Owner's requested message
-handling for validation failures, but it is not required to do so. DMARC is commonly used
-as one input to more complex filtering decisions, and so the mail-receiving organization
-might choose different actions entirely.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">For a mail-receiving organization participating in DMARC, a message that
-passes DMARC validation is part of a message stream reliably associated
-with the Author Domain. Therefore, reputation assessment of that stream by
-the mail-receiving organization can assume the use of that Author Domain is
-authorized by the Domain Owner.  A message that fails this validation is not
-necessarily associated with the Author Domain and should not affect its reputation.<a href="#section-1-5" class="pilcrow">¶</a></p>
+the recipient's Inbox would be safe or desirable.  For a mail-receiving organization
+participating in DMARC, a message that passes DMARC validation is part of a message
+stream reliably associated with the Author Domain. Therefore, reputation assessment
+of that stream by the mail-receiving organization can assume the use of that Author
+Domain is authorized by the Domain Owner.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">On the other hand, a message that fails this validation is not necessarily associated
+with the Author Domain and so should not affect the Author Domain's reputation. The phrase
+"not necessarily associated" was purposely chosen here, as it is importatnt to understand
+that some messages making authorized use of the Author Domain can still fail DMARC validation
+checks.  <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span> and <a href="#other-topics" class="auto internal xref">Section 7</a> of this document both discuss reasons
+why such failures may happen.  Because of this, a mail-receiving organization that performs
+DMARC validation can choose to honor the Domain Owner's requested message handling for validation
+failures, but it is not required to do so. DMARC is commonly used as one input to more complex
+filtering decisions, and so the mail-receiving organization might choose different actions entirely.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">DMARC, in the associated <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span> and <span>[<a href="#I-D.ietf-dmarc-failure-reporting" class="cite xref">I-D.ietf-dmarc-failure-reporting</a>]</span>
 documents, also specifies a reporting framework. Using it, a mail-receiving
 organization can generate regular reports about messages that use Author
@@ -3553,16 +3556,8 @@ Moreover, messages rejected early in the SMTP transaction will never appear in
 aggregate DMARC reports, as the transaction will never proceed to the DATA phase
 and so the RFC5322.From domain will never be revealed and its DMARC policy will
 never be discovered.  Domain Owners and <a href="#mail-receiver">Mail Receivers</a> can consult
-the following two documents for more discussion of the topic and best practices
+<span>[<a href="#M3SPF" class="cite xref">M3SPF</a>]</span> and <span>[<a href="#M3AUTH" class="cite xref">M3AUTH</a>]</span> for more discussion of the topic and best practices
 regarding publishing SPF records and when to reject based solely on SPF failure:<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="section-7.1-3.1">
-            <a href="https://www.m3aawg.org/Managing-SPF-Records">M3AAWG Best Practices for Managing SPF Records</a><a href="#section-7.1-3.1" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-7.1-3.2">
-            <a href="https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf">M3AAWG Email Authentication Recommended Best Practices</a><a href="#section-7.1-3.2" class="pilcrow">¶</a>
-</li>
-        </ul>
 </section>
 </div>
 <div id="dns-load-and-caching">
@@ -3710,7 +3705,9 @@ is that rejecting messages that have been relayed by a mailing list can cause
 the Mail Receiver's users to have their subscriptions to that mailing list canceled
 by the list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
-longer working, so the address is automatically unsubscribed.<a href="#section-7.5-6" class="pilcrow">¶</a></p>
+longer working, so the address is automatically unsubscribed. An example of this
+scenario, albeit with DKIM Author Domain Signing Practices (ADSP) rather than DMARC,
+can be found in <span><a href="https://rfc-editor.org/rfc/rfc6377" class="relref">Section 5.2</a> of [<a href="#RFC6377" class="cite xref">RFC6377</a>]</span>.<a href="#section-7.5-6" class="pilcrow">¶</a></p>
 <blockquote id="section-7.5-7">
           <p id="section-7.5-7.1">It is therefore critical that Mail Receivers <span class="bcp14">MUST NOT</span> reject
 incoming messages solely on the basis of a "p=reject" policy by
@@ -4410,6 +4407,10 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
       <dd>
 <span class="refAuthor">Crocker, D., Ed.</span>, <span class="refAuthor">Hansen, T., Ed.</span>, and <span class="refAuthor">M. Kucherawy, Ed.</span>, <span class="refTitle">"DomainKeys Identified Mail (DKIM) Signatures"</span>, <span class="seriesInfo">STD 76</span>, <span class="seriesInfo">RFC 6376</span>, <span class="seriesInfo">DOI 10.17487/RFC6376</span>, <time datetime="2011-09" class="refDate">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6376">https://www.rfc-editor.org/info/rfc6376</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6377">[RFC6377]</dt>
+      <dd>
+<span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"DomainKeys Identified Mail (DKIM) and Mailing Lists"</span>, <span class="seriesInfo">BCP 167</span>, <span class="seriesInfo">RFC 6377</span>, <span class="seriesInfo">DOI 10.17487/RFC6377</span>, <time datetime="2011-09" class="refDate">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6377">https://www.rfc-editor.org/info/rfc6377</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6591">[RFC6591]</dt>
       <dd>
 <span class="refAuthor">Fontana, H.</span>, <span class="refTitle">"Authentication Failure Reporting Using the Abuse Reporting Format"</span>, <span class="seriesInfo">RFC 6591</span>, <span class="seriesInfo">DOI 10.17487/RFC6591</span>, <time datetime="2012-04" class="refDate">April 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6591">https://www.rfc-editor.org/info/rfc6591</a>&gt;</span>. </dd>
@@ -4453,6 +4454,14 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <a href="#section-12" class="section-number selfRef">12. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
       </h2>
 <dl class="references">
+<dt id="M3AUTH">[M3AUTH]</dt>
+      <dd>
+<span class="refTitle">"M3AAWG Email Authentication Recommended Best Practices"</span>, <span>&lt;<a href="https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf">https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="M3SPF">[M3SPF]</dt>
+      <dd>
+<span class="refTitle">"M3AAWG Best Practices for Managing SPF Records"</span>, <span>&lt;<a href="https://www.m3aawg.org/Managing-SPF-Records">https://www.m3aawg.org/Managing-SPF-Records</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2142">[RFC2142]</dt>
       <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Mailbox Names for Common Services, Roles and Functions"</span>, <span class="seriesInfo">RFC 2142</span>, <span class="seriesInfo">DOI 10.17487/RFC2142</span>, <time datetime="1997-05" class="refDate">May 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2142">https://www.rfc-editor.org/info/rfc2142</a>&gt;</span>. </dd>
@@ -4476,10 +4485,6 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <dt id="RFC5598">[RFC5598]</dt>
       <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Internet Mail Architecture"</span>, <span class="seriesInfo">RFC 5598</span>, <span class="seriesInfo">DOI 10.17487/RFC5598</span>, <time datetime="2009-07" class="refDate">July 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5598">https://www.rfc-editor.org/info/rfc5598</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC6377">[RFC6377]</dt>
-      <dd>
-<span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"DomainKeys Identified Mail (DKIM) and Mailing Lists"</span>, <span class="seriesInfo">BCP 167</span>, <span class="seriesInfo">RFC 6377</span>, <span class="seriesInfo">DOI 10.17487/RFC6377</span>, <time datetime="2011-09" class="refDate">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6377">https://www.rfc-editor.org/info/rfc6377</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7858">[RFC7858]</dt>
       <dd>

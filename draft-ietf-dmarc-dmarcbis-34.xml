@@ -58,17 +58,20 @@ if they are identical. The choice of required alignment mode is left to the
 validated for that message as authorized by the Domain Owner.  Such authorization
 does not carry an explicit or implicit value assertion about that message or about
 the Domain Owner, and so a DMARC pass by itself does not guarantee that delivery to
-the recipient's Inbox would be safe or desirable.  Furthermore, a mail-receiving organization
-that performs DMARC validation can choose to honor the Domain Owner's requested message
-handling for validation failures, but it is not required to do so. DMARC is commonly used
-as one input to more complex filtering decisions, and so the mail-receiving organization
-might choose different actions entirely.</t>
-<t>For a mail-receiving organization participating in DMARC, a message that
-passes DMARC validation is part of a message stream reliably associated
-with the Author Domain. Therefore, reputation assessment of that stream by
-the mail-receiving organization can assume the use of that Author Domain is
-authorized by the Domain Owner.  A message that fails this validation is not
-necessarily associated with the Author Domain and should not affect its reputation.</t>
+the recipient's Inbox would be safe or desirable.  For a mail-receiving organization
+participating in DMARC, a message that passes DMARC validation is part of a message
+stream reliably associated with the Author Domain. Therefore, reputation assessment
+of that stream by the mail-receiving organization can assume the use of that Author
+Domain is authorized by the Domain Owner.</t>
+<t>On the other hand, a message that fails this validation is not necessarily associated
+with the Author Domain and so should not affect the Author Domain's reputation. The phrase
+&quot;not necessarily associated&quot; was purposely chosen here, as it is importatnt to understand
+that some messages making authorized use of the Author Domain can still fail DMARC validation
+checks.  <xref target="RFC7960"></xref> and <xref target="other-topics"></xref> of this document both discuss reasons
+why such failures may happen.  Because of this, a mail-receiving organization that performs
+DMARC validation can choose to honor the Domain Owner's requested message handling for validation
+failures, but it is not required to do so. DMARC is commonly used as one input to more complex
+filtering decisions, and so the mail-receiving organization might choose different actions entirely.</t>
 <t>DMARC, in the associated <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref> and <xref target="I-D.ietf-dmarc-failure-reporting"></xref>
 documents, also specifies a reporting framework. Using it, a mail-receiving
 organization can generate regular reports about messages that use Author
@@ -1441,13 +1444,8 @@ Moreover, messages rejected early in the SMTP transaction will never appear in
 aggregate DMARC reports, as the transaction will never proceed to the DATA phase
 and so the RFC5322.From domain will never be revealed and its DMARC policy will
 never be discovered.  Domain Owners and <eref target="#mail-receiver">Mail Receivers</eref> can consult
-the following two documents for more discussion of the topic and best practices
+<xref target="M3SPF"></xref> and <xref target="M3AUTH"></xref> for more discussion of the topic and best practices
 regarding publishing SPF records and when to reject based solely on SPF failure:</t>
-
-<ul spacing="compact">
-<li><eref target="https://www.m3aawg.org/Managing-SPF-Records">M3AAWG Best Practices for Managing SPF Records</eref></li>
-<li><eref target="https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf">M3AAWG Email Authentication Recommended Best Practices</eref></li>
-</ul>
 </section>
 
 <section anchor="dns-load-and-caching"><name>DNS Load and Caching</name>
@@ -1573,7 +1571,9 @@ is that rejecting messages that have been relayed by a mailing list can cause
 the Mail Receiver's users to have their subscriptions to that mailing list canceled
 by the list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
-longer working, so the address is automatically unsubscribed.</t>
+longer working, so the address is automatically unsubscribed. An example of this
+scenario, albeit with DKIM Author Domain Signing Practices (ADSP) rather than DMARC,
+can be found in <xref target="RFC6377" sectionFormat="of" relative="#" section="5.2"></xref>.</t>
 <blockquote><t>It is therefore critical that Mail Receivers <bcp14>MUST NOT</bcp14> reject
 incoming messages solely on the basis of a &quot;p=reject&quot; policy by
 the sending domain.  Mail Receivers must use the DMARC
@@ -2153,6 +2153,7 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5322.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5890.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6376.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6377.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6591.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6651.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6652.xml"/>
@@ -2164,13 +2165,24 @@ not be incorrectly interpreted to indicate that the PSD is the Organizational Do
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 </references>
 <references><name>Informative References</name>
+<reference anchor="M3AUTH" target="https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf">
+  <front>
+    <title>M3AAWG Email Authentication Recommended Best Practices</title>
+    <author></author>
+  </front>
+</reference>
+<reference anchor="M3SPF" target="https://www.m3aawg.org/Managing-SPF-Records">
+  <front>
+    <title>M3AAWG Best Practices for Managing SPF Records</title>
+    <author></author>
+  </front>
+</reference>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2142.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2308.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3464.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4870.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6377.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>

@@ -84,18 +84,21 @@ A DMARC pass for a message indicates only that the use of the Author Domain has 
 validated for that message as authorized by the Domain Owner.  Such authorization
 does not carry an explicit or implicit value assertion about that message or about
 the Domain Owner, and so a DMARC pass by itself does not guarantee that delivery to
-the recipient's Inbox would be safe or desirable.  Furthermore, a mail-receiving organization 
-that performs DMARC validation can choose to honor the Domain Owner's requested message
-handling for validation failures, but it is not required to do so. DMARC is commonly used
-as one input to more complex filtering decisions, and so the mail-receiving organization
-might choose different actions entirely.
+the recipient's Inbox would be safe or desirable.  For a mail-receiving organization 
+participating in DMARC, a message that passes DMARC validation is part of a message 
+stream reliably associated with the Author Domain. Therefore, reputation assessment 
+of that stream by the mail-receiving organization can assume the use of that Author 
+Domain is authorized by the Domain Owner.  
 
-For a mail-receiving organization participating in DMARC, a message that
-passes DMARC validation is part of a message stream reliably associated
-with the Author Domain. Therefore, reputation assessment of that stream by 
-the mail-receiving organization can assume the use of that Author Domain is 
-authorized by the Domain Owner.  A message that fails this validation is not
-necessarily associated with the Author Domain and should not affect its reputation.
+On the other hand, a message that fails this validation is not necessarily associated 
+with the Author Domain and so should not affect the Author Domain's reputation. The phrase 
+"not necessarily associated" was purposely chosen here, as it is importatnt to understand
+that some messages making authorized use of the Author Domain can still fail DMARC validation
+checks.  [@!RFC7960] and (#other-topics) of this document both discuss reasons
+why such failures may happen.  Because of this, a mail-receiving organization that performs 
+DMARC validation can choose to honor the Domain Owner's requested message handling for validation 
+failures, but it is not required to do so. DMARC is commonly used as one input to more complex
+filtering decisions, and so the mail-receiving organization might choose different actions entirely.
 
 DMARC, in the associated [@!I-D.ietf-dmarc-aggregate-reporting] and [@!I-D.ietf-dmarc-failure-reporting] 
 documents, also specifies a reporting framework. Using it, a mail-receiving
@@ -1450,11 +1453,8 @@ Moreover, messages rejected early in the SMTP transaction will never appear in
 aggregate DMARC reports, as the transaction will never proceed to the DATA phase
 and so the RFC5322.From domain will never be revealed and its DMARC policy will
 never be discovered.  Domain Owners and [Mail Receivers](#mail-receiver) can consult
-the following two documents for more discussion of the topic and best practices
+[@M3SPF] and [@M3AUTH] for more discussion of the topic and best practices
 regarding publishing SPF records and when to reject based solely on SPF failure:
-
-* [M3AAWG Best Practices for Managing SPF Records](https://www.m3aawg.org/Managing-SPF-Records)
-* [M3AAWG Email Authentication Recommended Best Practices](https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf)
 
 ##  DNS Load and Caching {#dns-load-and-caching}
 
@@ -1593,7 +1593,9 @@ is that rejecting messages that have been relayed by a mailing list can cause
 the Mail Receiver's users to have their subscriptions to that mailing list canceled 
 by the list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
-longer working, so the address is automatically unsubscribed.
+longer working, so the address is automatically unsubscribed. An example of this
+scenario, albeit with DKIM Author Domain Signing Practices (ADSP) rather than DMARC, 
+can be found in [@!RFC6377, section 5.2].
 
 > It is therefore critical that Mail Receivers **MUST NOT** reject
 > incoming messages solely on the basis of a "p=reject" policy by
@@ -1976,6 +1978,21 @@ Organizational Domain's DMARC Policy Record so that the PSD's DMARC Policy Recor
 not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.
 
 {backmatter}
+
+<reference anchor="M3SPF" target="https://www.m3aawg.org/Managing-SPF-Records">
+    <front>
+       <title>M3AAWG Best Practices for Managing SPF Records</title>
+       <author>M3AAWG</author>
+    </front>
+</reference>
+
+<reference anchor="M3AUTH"
+     target="https://www.m3aawg.org/sites/default/files/m3aawg-email-authentication-recommended-best-practices-09-2020.pdf">
+    <front>
+       <title>M3AAWG Email Authentication Recommended Best Practices</title>
+       <author>M3AAWG</author>
+    </front>
+</reference>
 
 # Technology Considerations {#technology-considerations}
 
