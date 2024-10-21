@@ -1216,7 +1216,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 21 April 2025</td>
+<td class="center">Expires 24 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-18" class="published">18 October 2024</time>
+<time datetime="2024-10-21" class="published">21 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-21">21 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-24">24 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1283,7 +1283,7 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1535,16 +1535,13 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-issues-specific-to-spf" class="internal xref">Issues Specific to SPF</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-dns-load-and-caching" class="internal xref">DNS Load and Caching</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-rejecting-messages" class="internal xref">Rejecting Messages</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-rejecting-messages" class="internal xref">Rejecting Messages</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-interoperability-issues" class="internal xref">Interoperability Issues</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-interoperability-issues" class="internal xref">Interoperability Issues</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
-                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-interoperability-considerat" class="internal xref">Interoperability Considerations</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-interoperability-considerat" class="internal xref">Interoperability Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -2577,7 +2574,7 @@ the mail is valid, although the failure creates a significant concern.<a href="#
               <dd class="break"></dd>
 <dt id="section-4.7-4.10.2.5">reject:</dt>
               <dd style="margin-left: 1.5em" id="section-4.7-4.10.2.6">The Domain Owner considers all such failures to be a clear indication
-that the use of the domain name is not valid. See <a href="#rejecting-messages" class="auto internal xref">Section 7.3</a>
+that the use of the domain name is not valid. See <a href="#rejecting-messages" class="auto internal xref">Section 7.2</a>
 for some discussion of SMTP rejection methods and their implications.<a href="#section-4.7-4.10.2.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
@@ -3249,7 +3246,7 @@ on its needs.<a href="#section-5.1.7-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.7-2">In making this decision it is important to understand the
 interoperability issues involved and problems that can result for
 mailing lists and for delivery of legitimate mail. Those
-issues are discussed in detail in <a href="#interoperability-considerations" class="auto internal xref">Section 7.5</a><a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
+issues are discussed in detail in <a href="#interoperability-considerations" class="auto internal xref">Section 7.4</a><a href="#section-5.1.7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="a-note-on-large-complex-organizations-and-decentralized-dns-management">
@@ -3426,7 +3423,7 @@ do not complete due to temporary or permanent DNS errors, the message cannot be
 considered to pass or fail the DMARC mechanism check. In such cases, the Domain
 Owner Assessment Policy cannot be applied to the message, and any other handling
 decisions for the message are left to the discretion of the Mail Receiver.<a href="#section-5.3.6-2" class="pilcrow">¶</a></p>
-<p id="section-5.3.6-3">See <a href="#rejecting-messages" class="auto internal xref">Section 7.3</a> for further discussion of topics regarding rejecting messages.<a href="#section-5.3.6-3" class="pilcrow">¶</a></p>
+<p id="section-5.3.6-3">See <a href="#rejecting-messages" class="auto internal xref">Section 7.2</a> for further discussion of topics regarding rejecting messages.<a href="#section-5.3.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="store-results-of-dmarc-processing">
@@ -3488,7 +3485,7 @@ DMARC-enabled criminal campaigns.<a href="#section-5.4-2" class="pilcrow">¶</a>
 <p id="section-5.4-3">Mail Receivers <span class="bcp14">MAY</span> choose to accept email that fails the DMARC
 validation check even if the published Domain Owner Assessment Policy
 is "reject". In particular, because of the considerations discussed
-in <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span> and in <a href="#interoperability-considerations" class="auto internal xref">Section 7.5</a> of this document, it is important that Mail
+in <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span> and in <a href="#interoperability-considerations" class="auto internal xref">Section 7.4</a> of this document, it is important that Mail
 Receivers <span class="bcp14">SHOULD NOT</span> reject messages solely because of a published policy of "reject",
 but that they apply other knowledge and analysis to avoid situations such as rejection
 of legitimate messages sent in ways that DMARC cannot describe, harm to the operation of
@@ -3517,10 +3514,11 @@ modify existing mail handling processes.<a href="#section-5.4-6" class="pilcrow"
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-dmarc-feedback" class="section-name selfRef">DMARC Feedback</a>
       </h2>
 <p id="section-6-1">DMARC Feedback is described in <span>[<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span><a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">Operational note for PSD DMARC: For PSOs, feedback for non-existent
-domains is desirable and useful, just as it is for org-level DMARC
-operators. See <a href="#privacy-considerations" class="auto internal xref">Section 9</a> for discussion of
-Privacy Considerations for PSD DMARC.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-2">As an operational note for Public Suffix Operators, feedback for non-existent
+domains can be desirable and useful, just as it can be for Organizational
+Domains. Therefore, both such entities should consider including "rua=" tags
+in any DMARC Policy Records they publish for themselves. See <a href="#privacy-considerations" class="auto internal xref">Section 9</a>
+for discussion of Privacy Considerations.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="other-topics">
@@ -3560,107 +3558,85 @@ never be discovered.  Domain Owners and <a href="#mail-receiver">Mail Receivers<
 regarding publishing SPF records and when to reject based solely on SPF failure:<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="dns-load-and-caching">
-<section id="section-7.2">
-        <h3 id="name-dns-load-and-caching">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-dns-load-and-caching" class="section-name selfRef">DNS Load and Caching</a>
-        </h3>
-<p id="section-7.2-1"><a href="#dmarc-policy-record">DMARC Policy Records</a> are communicated using the DNS
-and therefore inherit a number of considerations related to DNS caching. The inherent
-conflict between freshness and the impact of caching on the reduction
-of DNS lookup overhead should be considered from the <a href="#mail-receiver">Mail Receiver's</a> point of view. If <a href="#domain-owner">Domain Owners</a> or <a href="#public-suffix-operator">PSOs</a> publish a DMARC Policy Record with a very
-short TTL,  the injection of large volumes of messages could cause
-Mail Receivers to overwhelm the Domain Owner's DNS hosting provider.
-Although this is not a concern specific to DMARC, the implications of
-a very short TTL should be considered when publishing DMARC Policy
-Records.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">Conversely, long TTLs will cause records to be cached for long
-periods. This can cause a critical change to a DMARC Policy Record
-to go unnoticed for the length of the TTL (while waiting for DNS caches
-to expire). Avoiding this problem can mean shorter TTLs, with the potential
-problems described above. A balance should be sought to maintain responsiveness
-of DMARC Policy Record changes while preserving the benefits of DNS caching.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="rejecting-messages">
-<section id="section-7.3">
+<section id="section-7.2">
         <h3 id="name-rejecting-messages">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-rejecting-messages" class="section-name selfRef">Rejecting Messages</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-rejecting-messages" class="section-name selfRef">Rejecting Messages</a>
         </h3>
-<p id="section-7.3-1">The DMARC mechanism calls for rejection of a message during the SMTP
+<p id="section-7.2-1">The DMARC mechanism calls for rejection of a message during the SMTP
 session under certain circumstances. This is preferable to
 generation of a Delivery Status Notification
 <span>[<a href="#RFC3464" class="cite xref">RFC3464</a>]</span>, since fraudulent messages caught and rejected using the DMARC
 mechanism would then result in the annoying generation of such failure reports
-that go back to the RFC5321.MailFrom address.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">This synchronous rejection is typically done in one of two ways:<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+that go back to the RFC5321.MailFrom address.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">This synchronous rejection is typically done in one of two ways:<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-7.3-3.1">
-            <p id="section-7.3-3.1.1">Full rejection, wherein the SMTP server issues a 5xy reply code to the
+<li class="normal" id="section-7.2-3.1">
+            <p id="section-7.2-3.1.1">Full rejection, wherein the SMTP server issues a 5xy reply code to the
 DATA command as an indication to the SMTP client that the transaction failed;
 the SMTP client is then responsible for generating a notification that
-delivery failed (see <span><a href="https://rfc-editor.org/rfc/rfc5321" class="relref">Section 4.2.5</a> of [<a href="#RFC5321" class="cite xref">RFC5321</a>]</span>).<a href="#section-7.3-3.1.1" class="pilcrow">¶</a></p>
+delivery failed (see <span><a href="https://rfc-editor.org/rfc/rfc5321" class="relref">Section 4.2.5</a> of [<a href="#RFC5321" class="cite xref">RFC5321</a>]</span>).<a href="#section-7.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-7.3-3.2">
-            <p id="section-7.3-3.2.1">A "silent discard", wherein the SMTP server returns a 2xy reply
+          <li class="normal" id="section-7.2-3.2">
+            <p id="section-7.2-3.2.1">A "silent discard", wherein the SMTP server returns a 2xy reply
 code implying to the client that delivery (or, at least, relay)
 was successfully completed, but then simply discards the message
-with no further action.<a href="#section-7.3-3.2.1" class="pilcrow">¶</a></p>
+with no further action.<a href="#section-7.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-7.3-4">Each of these has a cost. For instance, a silent discard can help to
+<p id="section-7.2-4">Each of these has a cost. For instance, a silent discard can help to
 prevent backscatter, but it also effectively means that the SMTP
 server has to be programmed to give a false result, which can
-confound external debugging efforts.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
-<p id="section-7.3-5">Similarly, the text portion of the SMTP reply may be important to
+confound external debugging efforts.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.2-5">Similarly, the text portion of the SMTP reply may be important to
 consider. For example, when rejecting a message, revealing the
 reason for the rejection might give an attacker enough information to
 bypass those efforts on a later attempt, though it might also assist
 a legitimate client to determine the source of some local issue that
-caused the rejection.<a href="#section-7.3-5" class="pilcrow">¶</a></p>
-<p id="section-7.3-6">In the latter case, when doing an SMTP rejection, providing a clear
+caused the rejection.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
+<p id="section-7.2-6">In the latter case, when doing an SMTP rejection, providing a clear
 hint can be useful in resolving issues. A <a href="#mail-receiver">Mail Receiver</a>
 might indicate in plain text the reason for the rejection by using the
-word "DMARC" somewhere in the reply text. For example:<a href="#section-7.3-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.3-7">
+word "DMARC" somewhere in the reply text. For example:<a href="#section-7.2-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.2-7">
 <pre>550 5.7.1 Email rejected per DMARC policy for example.com
-</pre><a href="#section-7.3-7" class="pilcrow">¶</a>
+</pre><a href="#section-7.2-7" class="pilcrow">¶</a>
 </div>
-<p id="section-7.3-8">Many systems are able to scan the SMTP reply text to determine the nature
+<p id="section-7.2-8">Many systems are able to scan the SMTP reply text to determine the nature
 of the rejection. Thus, providing a machine-detectable reason for rejection
-allows the problems causing rejections to be properly addressed by automated systems.<a href="#section-7.3-8" class="pilcrow">¶</a></p>
-<p id="section-7.3-9">If a Mail Receiver elects to defer delivery due to the inability to
+allows the problems causing rejections to be properly addressed by automated systems.<a href="#section-7.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.2-9">If a Mail Receiver elects to defer delivery due to the inability to
 retrieve or apply DMARC policy, this is best done with a 4xy SMTP
-reply code.<a href="#section-7.3-9" class="pilcrow">¶</a></p>
+reply code.<a href="#section-7.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="interoperability-issues">
-<section id="section-7.4">
+<section id="section-7.3">
         <h3 id="name-interoperability-issues">
-<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-interoperability-issues" class="section-name selfRef">Interoperability Issues</a>
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-interoperability-issues" class="section-name selfRef">Interoperability Issues</a>
         </h3>
-<p id="section-7.4-1">DMARC limits which end-to-end scenarios can achieve a "pass" result.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
-<p id="section-7.4-2">Because DMARC relies on SPF <span>[<a href="#RFC7208" class="cite xref">RFC7208</a>]</span> and/or DKIM <span>[<a href="#RFC6376" class="cite xref">RFC6376</a>]</span> to achieve
-a "pass", their limitations also apply.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
-<p id="section-7.4-3">Issues specific to the use of policy mechanisms alongside DKIM are
-further discussed in <span>[<a href="#RFC6377" class="cite xref">RFC6377</a>]</span>, particularly Section 5.2.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
-<p id="section-7.4-4">Mail that is sent by authorized, independent third parties might not be
+<p id="section-7.3-1">DMARC limits which end-to-end scenarios can achieve a "pass" result.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">Because DMARC relies on SPF <span>[<a href="#RFC7208" class="cite xref">RFC7208</a>]</span> and/or DKIM <span>[<a href="#RFC6376" class="cite xref">RFC6376</a>]</span> to achieve
+a "pass", their limitations also apply.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">Issues specific to the use of policy mechanisms alongside DKIM are
+further discussed in <span>[<a href="#RFC6377" class="cite xref">RFC6377</a>]</span>, particularly Section 5.2.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+<p id="section-7.3-4">Mail that is sent by authorized, independent third parties might not be
 sent with Identifier Alignment, also preventing a "pass" result. A Domain
 Owner can use DMARC aggregate reports to identify this mail and take steps
-to address authentication shortcomings.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
+to address authentication shortcomings.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="interoperability-considerations">
-<section id="section-7.5">
+<section id="section-7.4">
         <h3 id="name-interoperability-considerat">
-<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-interoperability-considerat" class="section-name selfRef">Interoperability Considerations</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-interoperability-considerat" class="section-name selfRef">Interoperability Considerations</a>
         </h3>
-<p id="section-7.5-1">As discussed in "Interoperability Issues between DMARC and Indirect
+<p id="section-7.4-1">As discussed in "Interoperability Issues between DMARC and Indirect
 Email Flows" <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span>, use of "p=reject" can be incompatible with and
 cause interoperability problems to indirect message flows such as
 "alumni forwarders", role-based email aliases, and mailing lists
-across the Internet.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
-<p id="section-7.5-2">As an example of this, a bank might send only targeted messages to
+across the Internet.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-2">As an example of this, a bank might send only targeted messages to
 account holders. Those account holders might have given their bank
 addresses such as "jones@alumni.example.edu" (an address that relays
 the messages to another address with a real mailbox) or
@@ -3671,21 +3647,21 @@ most likely fail SPF checks unless the RFC5321.MailFrom address is
 rewritten by the relaying MTA, as the incoming IP address will be that
 of "example.edu" or "association.example", and not an IP address authorized
 by the originating RFC5321.MailFrom domain. DKIM signatures will generally
-remain valid in these relay situations.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
-<blockquote id="section-7.5-3">
-          <p id="section-7.5-3.1">It is therefore critical that domains that publish "p=reject"
+remain valid in these relay situations.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
+<blockquote id="section-7.4-3">
+          <p id="section-7.4-3.1">It is therefore critical that domains that publish "p=reject"
 <span class="bcp14">MUST NOT</span> rely solely on SPF to secure a DMARC pass, and
-<span class="bcp14">MUST</span> apply valid DKIM signatures to their messages.<a href="#section-7.5-3.1" class="pilcrow">¶</a></p>
+<span class="bcp14">MUST</span> apply valid DKIM signatures to their messages.<a href="#section-7.4-3.1" class="pilcrow">¶</a></p>
 </blockquote>
-<p id="section-7.5-4">In the case of domains that have general users who send routine email,
+<p id="section-7.4-4">In the case of domains that have general users who send routine email,
 those that publish a <a href="#domain-owner-policy">Domain Owner Assessment Policy</a>
 of "p=reject" are likely to create significant interoperability
 issues. In particular, if users in such domains post messages to mailing
 lists on the Internet, those messages can cause significant operational problems
 for the mailing lists and for the subscribers to those lists, as explained below and
-in <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span>.<a href="#section-7.5-4" class="pilcrow">¶</a></p>
-<blockquote id="section-7.5-5">
-          <p id="section-7.5-5.1">It is therefore critical that domains that host users who might
+in <span>[<a href="#RFC7960" class="cite xref">RFC7960</a>]</span>.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
+<blockquote id="section-7.4-5">
+          <p id="section-7.4-5.1">It is therefore critical that domains that host users who might
 post messages to mailing lists <span class="bcp14">SHOULD NOT</span> publish Domain Owner Assessment Policies
 of "p=reject". Any such domains wishing to publish "p=reject" <span class="bcp14">SHOULD</span> first
 take advantage of DMARC aggregate report data for their domain to
@@ -3695,9 +3671,9 @@ an equally long period of time, and comparing the message disposition
 results. Domains that choose to publish "p=reject" <span class="bcp14">SHOULD</span> either
 implement policies that their users not post to Internet mailing lists
 and/or inform their users that their participation in mailing lists may
-be hindered.<a href="#section-7.5-5.1" class="pilcrow">¶</a></p>
+be hindered.<a href="#section-7.4-5.1" class="pilcrow">¶</a></p>
 </blockquote>
-<p id="section-7.5-6">As noted in <a href="#policy-enforcement-considerations" class="auto internal xref">Section 5.4</a>, <a href="#mail-receivers">Mail Receivers</a>
+<p id="section-7.4-6">As noted in <a href="#policy-enforcement-considerations" class="auto internal xref">Section 5.4</a>, <a href="#mail-receivers">Mail Receivers</a>
 need to apply more analysis than just DMARC validation in their
 disposition of incoming messages.  An example of the consequences of
 honoring a Domain Owner Assessment Policy of "p=reject" without further analysis
@@ -3707,9 +3683,9 @@ by the list software's automated handling of such rejections - it looks
 to the list manager as though the recipient's email address is no
 longer working, so the address is automatically unsubscribed. An example of this
 scenario, albeit with DKIM Author Domain Signing Practices (ADSP) rather than DMARC,
-can be found in <span><a href="https://rfc-editor.org/rfc/rfc6377" class="relref">Section 5.2</a> of [<a href="#RFC6377" class="cite xref">RFC6377</a>]</span>.<a href="#section-7.5-6" class="pilcrow">¶</a></p>
-<blockquote id="section-7.5-7">
-          <p id="section-7.5-7.1">It is therefore critical that Mail Receivers <span class="bcp14">MUST NOT</span> reject
+can be found in <span><a href="https://rfc-editor.org/rfc/rfc6377" class="relref">Section 5.2</a> of [<a href="#RFC6377" class="cite xref">RFC6377</a>]</span>.<a href="#section-7.4-6" class="pilcrow">¶</a></p>
+<blockquote id="section-7.4-7">
+          <p id="section-7.4-7.1">It is therefore critical that Mail Receivers <span class="bcp14">MUST NOT</span> reject
 incoming messages solely on the basis of a "p=reject" policy by
 the sending domain.  Mail Receivers must use the DMARC
 policy as part of their disposition decision, along with other
@@ -3717,19 +3693,19 @@ knowledge and analysis. "Other knowledge and analysis" here might
 refer to observed sending patterns for properly-authenticated mail
 using the sending domain, content filtering, etc. In the absence of
 other knowledge and analysis, Mail Receivers <span class="bcp14">MUST</span> treat such failing
-mail as if the policy were "p=quarantine" rather than "p=reject".<a href="#section-7.5-7.1" class="pilcrow">¶</a></p>
+mail as if the policy were "p=quarantine" rather than "p=reject".<a href="#section-7.4-7.1" class="pilcrow">¶</a></p>
 </blockquote>
-<p id="section-7.5-8">Failure to understand and abide by these considerations can cause
+<p id="section-7.4-8">Failure to understand and abide by these considerations can cause
 legitimate, sometimes important email to be rejected, can cause
 operational damage to mailing lists throughout the Internet, and
 can result in trouble-desk calls and complaints from the Mail Receiver's
-employees, customers, and clients.<a href="#section-7.5-8" class="pilcrow">¶</a></p>
-<p id="section-7.5-9">As a final note, one possible mitigation to the problems caused by
+employees, customers, and clients.<a href="#section-7.4-8" class="pilcrow">¶</a></p>
+<p id="section-7.4-9">As a final note, one possible mitigation to the problems caused by
 Domain Owners publishing a Domain Owner Assessment Policy of "p=reject" when
 they should not or Mail Receivers rejecting messages solely on the basis of
 a "p=reject" policy is the Authenticated Received Chain (ARC) protocol described
 in <span>[<a href="#RFC8617" class="cite xref">RFC8617</a>]</span>.  However, as of this writing, use of ARC is nascent, as is industry
-experience with it in connection with DMARC.<a href="#section-7.5-9" class="pilcrow">¶</a></p>
+experience with it in connection with DMARC.<a href="#section-7.4-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4345,15 +4321,31 @@ Domain is a parent of the correct Organizational Domain, then relaxed alignment 
 potentially allow a malicious sender to send mail that achieves a DMARC pass verdict.
 This potential exists for both the legacy <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> and current methods for determining
 the organizational domain, the latter described in <a href="#identifier-alignment-evaluation" class="auto internal xref">Section 4.10.2</a>.<a href="#section-10.8-6" class="pilcrow">¶</a></p>
-<p id="section-10.8-7">This issue is entirely avoided by the use of Strict Alignment and publishing explicit
-DMARC Policy Records for all Author Domains used in an organization's email.<a href="#section-10.8-7" class="pilcrow">¶</a></p>
-<p id="section-10.8-8">For cases where Strict Alignment is not appropriate, this issue can be
-mitigated by periodically checking the DMARC Policy Records, if any, of <a href="#public-suffix-domain">PSDs</a>
-above the Organizational Domain in the DNS tree and (for legacy <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> checking
-that appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record
-without the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their
-Organizational Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will
-not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.<a href="#section-10.8-8" class="pilcrow">¶</a></p>
+<p id="section-10.8-7">The following example illustrates this possibility:<a href="#section-10.8-7" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="section-10.8-8.1">Mail is sent with an Author Domain of "a.mail.example.com" and Authenticated Identifiers of "mail.example.com"<a href="#section-10.8-8.1" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-8.2">There is no DMARC Policy Record published at "_dmarc.a.mail.example.com"<a href="#section-10.8-8.2" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-8.3">There is one published at "_dmarc.mail.example.com" and this is intended to be the Organizataional Domain for this message<a href="#section-10.8-8.3" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-8.4">There is also a DMARC Policy Record published at "_dmarc.example.com", with default alignment (relaxed)<a href="#section-10.8-8.4" class="pilcrow">¶</a>
+</li>
+          <li class="compact" id="section-10.8-8.5">An is able to send mail with the Author Domain of "evil.example.com" and an Authenticated Identifier of "mail.example.com"<a href="#section-10.8-8.5" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-10.8-9">In this scenario, if a Mail Receiver incorrectly determines the Organizational Domain to be "example.com",
+then the attacker's mail will pass DMARC validation checks.<a href="#section-10.8-9" class="pilcrow">¶</a></p>
+<p id="section-10.8-10">This issue is entirely avoided by the use of Strict Alignment and publishing explicit
+DMARC Policy Records for all Author Domains used in an organization's email.<a href="#section-10.8-10" class="pilcrow">¶</a></p>
+<p id="section-10.8-11">For cases where Strict Alignment is not appropriate, this issue can be mitigated by the Domain
+Owner periodically (perhaps weekly, or whatever frequency might be appropriate for a given organization's
+perational needs) checking the DMARC Policy Records, if any, of <a href="#public-suffix-domain">PSDs</a>
+above the Organizational Domain in the DNS tree and (for legacy <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span> checking that
+appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record without
+the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their Organizational
+Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will not be incorrectly
+interpreted to indicate that the PSD is the Organizational Domain.<a href="#section-10.8-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5428,13 +5420,19 @@ RFC.<a href="#appendix-C.1-1" class="pilcrow">¶</a></p>
 <a href="#appendix-C.3" class="section-number selfRef">C.3. </a><a href="#name-policy-discovery-and-organi" class="section-name selfRef">Policy Discovery and Organizational Domain Determination</a>
         </h3>
 <p id="appendix-C.3-1">The algorithms for DMARC policy discovery and for determining the Organizational Domain
-have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
+have been changed. Specifically, reliance on a Public Suffix List (PSL) has been replaced
 by a technique called a "DNS Tree Walk", and the methodology for the DNS Tree Walk is explained
 in detail in this document.<a href="#appendix-C.3-1" class="pilcrow">¶</a></p>
 <p id="appendix-C.3-2">The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in
 <span>[<a href="#RFC9091" class="cite xref">RFC9091</a>]</span>. That RFC was an Experimental RFC, and the results of that experiment were
 that the RFC was not implemented as written. Instead, this document redefines the
 algorithm for PSD policy discovery, and thus obsoletes <span>[<a href="#RFC9091" class="cite xref">RFC9091</a>]</span>.<a href="#appendix-C.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-3">These algorithm changes introduce the possibility of interoperability issues where a
+Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of
+DMARC and relying on a PSL might arrive at a different answer.<a href="#appendix-C.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-C.3-4">This issue is entirely avoided by the use of Strict Alignment and publishing explicit
+DMARC Policy Records for all Author Domains used in an organization's email.<a href="#appendix-C.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="reporting">
@@ -5498,7 +5496,7 @@ providing guidance to domain owners on just how to implement DMARC.<a href="#app
 focusing not just on what to do to implement DMARC, but also on the reasons for
 each step and the repercussions of each decision.<a href="#appendix-C.6-2" class="pilcrow">¶</a></p>
 <p id="appendix-C.6-3">In particular, this document makes explicit that domains for general-purpose
-email <span class="bcp14">SHOULD NOT</span> deploy a DMARC policy of p=reject. See <a href="#interoperability-considerations" class="auto internal xref">Section 7.5</a>
+email <span class="bcp14">SHOULD NOT</span> deploy a DMARC policy of p=reject. See <a href="#interoperability-considerations" class="auto internal xref">Section 7.4</a>
 for further discussion of this topic.<a href="#appendix-C.6-3" class="pilcrow">¶</a></p>
 </section>
 </div>

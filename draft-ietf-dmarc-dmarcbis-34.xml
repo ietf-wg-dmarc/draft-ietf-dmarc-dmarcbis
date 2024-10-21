@@ -1412,10 +1412,11 @@ modify existing mail handling processes.</t>
 
 <section anchor="dmarc-feedback"><name>DMARC Feedback</name>
 <t>DMARC Feedback is described in <xref target="I-D.ietf-dmarc-aggregate-reporting"></xref></t>
-<t>Operational note for PSD DMARC: For PSOs, feedback for non-existent
-domains is desirable and useful, just as it is for org-level DMARC
-operators. See <xref target="privacy-considerations"></xref> for discussion of
-Privacy Considerations for PSD DMARC.</t>
+<t>As an operational note for Public Suffix Operators, feedback for non-existent
+domains can be desirable and useful, just as it can be for Organizational
+Domains. Therefore, both such entities should consider including &quot;rua=&quot; tags
+in any DMARC Policy Records they publish for themselves. See <xref target="privacy-considerations"></xref>
+for discussion of Privacy Considerations.</t>
 </section>
 
 <section anchor="other-topics"><name>Other Topics</name>
@@ -1446,24 +1447,6 @@ and so the RFC5322.From domain will never be revealed and its DMARC policy will
 never be discovered.  Domain Owners and <eref target="#mail-receiver">Mail Receivers</eref> can consult
 <xref target="M3SPF"></xref> and <xref target="M3AUTH"></xref> for more discussion of the topic and best practices
 regarding publishing SPF records and when to reject based solely on SPF failure:</t>
-</section>
-
-<section anchor="dns-load-and-caching"><name>DNS Load and Caching</name>
-<t><eref target="#dmarc-policy-record">DMARC Policy Records</eref> are communicated using the DNS
-and therefore inherit a number of considerations related to DNS caching. The inherent
-conflict between freshness and the impact of caching on the reduction
-of DNS lookup overhead should be considered from the <eref target="#mail-receiver">Mail Receiver's</eref> point of view. If <eref target="#domain-owner">Domain Owners</eref> or <eref target="#public-suffix-operator">PSOs</eref> publish a DMARC Policy Record with a very
-short TTL,  the injection of large volumes of messages could cause
-Mail Receivers to overwhelm the Domain Owner's DNS hosting provider.
-Although this is not a concern specific to DMARC, the implications of
-a very short TTL should be considered when publishing DMARC Policy
-Records.</t>
-<t>Conversely, long TTLs will cause records to be cached for long
-periods. This can cause a critical change to a DMARC Policy Record
-to go unnoticed for the length of the TTL (while waiting for DNS caches
-to expire). Avoiding this problem can mean shorter TTLs, with the potential
-problems described above. A balance should be sought to maintain responsiveness
-of DMARC Policy Record changes while preserving the benefits of DNS caching.</t>
 </section>
 
 <section anchor="rejecting-messages"><name>Rejecting Messages</name>
@@ -2126,15 +2109,27 @@ Domain is a parent of the correct Organizational Domain, then relaxed alignment 
 potentially allow a malicious sender to send mail that achieves a DMARC pass verdict.
 This potential exists for both the legacy <xref target="RFC7489"></xref> and current methods for determining
 the organizational domain, the latter described in <xref target="identifier-alignment-evaluation"></xref>.</t>
+<t>The following example illustrates this possibility:</t>
+
+<ul spacing="compact">
+<li>Mail is sent with an Author Domain of &quot;a.mail.example.com&quot; and Authenticated Identifiers of &quot;mail.example.com&quot;</li>
+<li>There is no DMARC Policy Record published at &quot;_dmarc.a.mail.example.com&quot;</li>
+<li>There is one published at &quot;_dmarc.mail.example.com&quot; and this is intended to be the Organizataional Domain for this message</li>
+<li>There is also a DMARC Policy Record published at &quot;_dmarc.example.com&quot;, with default alignment (relaxed)</li>
+<li>An is able to send mail with the Author Domain of &quot;evil.example.com&quot; and an Authenticated Identifier of &quot;mail.example.com&quot;</li>
+</ul>
+<t>In this scenario, if a Mail Receiver incorrectly determines the Organizational Domain to be &quot;example.com&quot;,
+then the attacker's mail will pass DMARC validation checks.</t>
 <t>This issue is entirely avoided by the use of Strict Alignment and publishing explicit
 DMARC Policy Records for all Author Domains used in an organization's email.</t>
-<t>For cases where Strict Alignment is not appropriate, this issue can be
-mitigated by periodically checking the DMARC Policy Records, if any, of <eref target="#public-suffix-domain">PSDs</eref>
-above the Organizational Domain in the DNS tree and (for legacy <xref target="RFC7489"></xref> checking
-that appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record
-without the appropriate &quot;psd=y&quot; tag, Organizational Domain owners can add &quot;psd=n&quot; to their
-Organizational Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will
-not be incorrectly interpreted to indicate that the PSD is the Organizational Domain.</t>
+<t>For cases where Strict Alignment is not appropriate, this issue can be mitigated by the Domain
+Owner periodically (perhaps weekly, or whatever frequency might be appropriate for a given organization's
+perational needs) checking the DMARC Policy Records, if any, of <eref target="#public-suffix-domain">PSDs</eref>
+above the Organizational Domain in the DNS tree and (for legacy <xref target="RFC7489"></xref> checking that
+appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record without
+the appropriate &quot;psd=y&quot; tag, Organizational Domain owners can add &quot;psd=n&quot; to their Organizational
+Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will not be incorrectly
+interpreted to indicate that the PSD is the Organizational Domain.</t>
 </section>
 </section>
 
@@ -2939,13 +2934,19 @@ RFC.</t>
 
 <section anchor="policy-determination"><name>Policy Discovery and Organizational Domain Determination</name>
 <t>The algorithms for DMARC policy discovery and for determining the Organizational Domain
-have been changed. Specifically, reliance on the Public Suffix List (PSL) has been replaced
+have been changed. Specifically, reliance on a Public Suffix List (PSL) has been replaced
 by a technique called a &quot;DNS Tree Walk&quot;, and the methodology for the DNS Tree Walk is explained
 in detail in this document.</t>
 <t>The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in
 <xref target="RFC9091"></xref>. That RFC was an Experimental RFC, and the results of that experiment were
 that the RFC was not implemented as written. Instead, this document redefines the
 algorithm for PSD policy discovery, and thus obsoletes <xref target="RFC9091"></xref>.</t>
+<t>These algorithm changes introduce the possibility of interoperability issues where a
+Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of
+DMARC and relying on a PSL might arrive at a different answer.</t>
+<t>This issue is entirely avoided by the use of Strict Alignment and publishing explicit
+DMARC Policy Records for all Author Domains used in an organization's email.</t>
 </section>
 
 <section anchor="reporting"><name>Reporting</name>
