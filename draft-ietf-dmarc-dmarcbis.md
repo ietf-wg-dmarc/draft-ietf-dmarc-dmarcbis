@@ -1440,7 +1440,7 @@ on behalf of the Domain Owner before publishing a DMARC Policy Record. Furthermo
 Domain Owners should periodically review their SPF records to ensure that
 the authorization conveyed by the records matches the domain's current needs.
 
-SPF was intended to be implemented early in the SMTP transaction, meaning it‘s 
+SPF was intended to be implemented early in the SMTP transaction, meaning it's 
 possible for a message to fail SPF validation prior to any message content being
 transmitted, and so some Mail Receiver architectures might implement SPF in 
 advance of any DMARC operations. This means that an SPF hard fail ("-") prefix 

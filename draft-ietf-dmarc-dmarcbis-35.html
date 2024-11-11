@@ -3541,7 +3541,7 @@ their SPF records to understand which networks are authorized to send
 on behalf of the Domain Owner before publishing a DMARC Policy Record. Furthermore,
 Domain Owners should periodically review their SPF records to ensure that
 the authorization conveyed by the records matches the domain's current needs.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">SPF was intended to be implemented early in the SMTP transaction, meaning it<span class="unicode">‘ (U+2018)</span>s
+<p id="section-7.1-2">SPF was intended to be implemented early in the SMTP transaction, meaning it's
 possible for a message to fail SPF validation prior to any message content being
 transmitted, and so some Mail Receiver architectures might implement SPF in
 advance of any DMARC operations. This means that an SPF hard fail ("-") prefix

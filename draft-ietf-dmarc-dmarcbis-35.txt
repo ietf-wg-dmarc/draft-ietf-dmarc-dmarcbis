@@ -2144,25 +2144,24 @@ Internet-Draft                  DMARCbis                   November 2024
    needs.
 
    SPF was intended to be implemented early in the SMTP transaction,
-   meaning it‘ (U+2018)s possible for a message to fail SPF validation
-   prior to any message content being transmitted, and so some Mail
-   Receiver architectures might implement SPF in advance of any DMARC
-   operations.  This means that an SPF hard fail ("-") prefix on a
-   sender's SPF mechanism, such as "-all", could cause a message to be
-   rejected early in the SMTP transaction, before any DMARC processing
-   takes place, if the message fails SPF authentication checks.  Domain
-   Owners choosing to use "-all" to terminate SPF records should be
-   aware of this, and should understand that messages that might
-   otherwise pass DMARC due to an aligned DKIM-Authenticated Identifier
-   (#dkim-identifiers) could be rejected solely due to an SPF fail.
-   Moreover, messages rejected early in the SMTP transaction will never
-   appear in aggregate DMARC reports, as the transaction will never
-   proceed to the DATA phase and so the RFC5322.From domain will never
-   be revealed and its DMARC policy will never be discovered.  Domain
-   Owners and Mail Receivers (#mail-receiver) can consult [M3SPF] and
-   [M3AUTH] for more discussion of the topic and best practices
-   regarding publishing SPF records and when to reject based solely on
-   SPF failure:
+   meaning it's possible for a message to fail SPF validation prior to
+   any message content being transmitted, and so some Mail Receiver
+   architectures might implement SPF in advance of any DMARC operations.
+   This means that an SPF hard fail ("-") prefix on a sender's SPF
+   mechanism, such as "-all", could cause a message to be rejected early
+   in the SMTP transaction, before any DMARC processing takes place, if
+   the message fails SPF authentication checks.  Domain Owners choosing
+   to use "-all" to terminate SPF records should be aware of this, and
+   should understand that messages that might otherwise pass DMARC due
+   to an aligned DKIM-Authenticated Identifier (#dkim-identifiers) could
+   be rejected solely due to an SPF fail.  Moreover, messages rejected
+   early in the SMTP transaction will never appear in aggregate DMARC
+   reports, as the transaction will never proceed to the DATA phase and
+   so the RFC5322.From domain will never be revealed and its DMARC
+   policy will never be discovered.  Domain Owners and Mail Receivers
+   (#mail-receiver) can consult [M3SPF] and [M3AUTH] for more discussion
+   of the topic and best practices regarding publishing SPF records and
+   when to reject based solely on SPF failure:
 
 7.2.  Rejecting Messages
 
@@ -2174,6 +2173,7 @@ Internet-Draft                  DMARCbis                   November 2024
    that go back to the RFC5321.MailFrom address.
 
    This synchronous rejection is typically done in one of two ways:
+
 
 
 
