@@ -22,7 +22,7 @@ surname = "Herr (ed)"
 organization = "Valimail"
 fullname = "Todd M. Herr"
   [author.address]
-   email = "todd.herr@valimail.com"
+   email = "todd@someguyinva.com"
 
 [[author]]
 initials = "J."
@@ -1593,20 +1593,20 @@ operational damage to mailing lists throughout the Internet, and
 can result in trouble-desk calls and complaints from the Mail Receiver's
 employees, customers, and clients.
 
-In practice, despite this advice, few Mail Receivers apply any mitigation techniques
-when receiving indirect mail flows, few organizations consider the effect of DMARC
-policies on their users' indirect mail, and it is unlikely that any advice in this document
-will change that.
-As a result, mail forwarded through mailing lists with unmodified From: header lines
-is frequently rejected due to a p=reject policy.
+In practice, despite this advice, few Mail Receivers apply any mitigation
+techniques when receiving indirect mail flows, few organizations consider
+the effect of DMARC policies on their users' indirect mail, and it is unlikely
+that any advice in this document will change that. As a result, mail forwarded
+through mailing lists with unmodified From: header lines is frequently rejected
+due to a p=reject policy.
+
 In the ten years since large consumer mail systems started publishing p=reject
-policies, mailing list software has all adopted workarounds to make the From: header
-line DMARC aligned.
-Some simply use the list's address, while others do per-address modifications intended
-to be reversible or to allow mail to be forwarded back to the original author, e.g.,
-bob@example.com turned into bob=example.com@user.somelist.example.
-While these workarounds are far from ideal, they are firmly established and list
-operators treat them as a fact of life.
+policies, mailing list software has all adopted workarounds to make the From:
+header line DMARC aligned. Some simply use the list's address, while others do
+per-address modifications intended to be reversible or to allow mail to be
+forwarded back to the original author, e.g., bob@example.com turned into
+bob=example.com@user.somelist.example. While these workarounds are far from
+ideal, they are firmly established and list operators treat them as a fact of life.
 
 Mail developers have been trying for a decade to invent technical methods
 to allow mailing lists to continue to work without modifying the From: header
