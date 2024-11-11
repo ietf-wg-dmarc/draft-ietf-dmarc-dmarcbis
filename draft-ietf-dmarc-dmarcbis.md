@@ -1593,12 +1593,27 @@ operational damage to mailing lists throughout the Internet, and
 can result in trouble-desk calls and complaints from the Mail Receiver's
 employees, customers, and clients.
 
-As a final note, one possible mitigation to the problems caused by
-Domain Owners publishing a Domain Owner Assessment Policy of "p=reject" when 
-they should not or Mail Receivers rejecting messages solely on the basis of 
-a "p=reject" policy is the Authenticated Received Chain (ARC) protocol described 
-in [@RFC8617].  However, as of this writing, use of ARC is nascent, as is industry
-experience with it in connection with DMARC.
+In practice, despite this advice, few Mail Receivers apply any mitigation techniques
+when receiving indirect mail flows, few organizations consider the effect of DMARC
+policies on their users' indirect mail, and it is unlikely that any advice in this document
+will change that.
+As a result, mail forwarded through mailing lists with unmodified From: header lines
+is frequently rejected due to a p=reject policy.
+In the ten years since large consumer mail systems started publishing p=reject
+policies, mailing list software has all adopted workarounds to make the From: header
+line DMARC aligned.
+Some simply use the list's address, while others do per-address modifications intended
+to be reversible or to allow mail to be forwarded back to the original author, e.g.,
+bob@example.com turned into bob=example.com@user.somelist.example.
+While these workarounds are far from ideal, they are firmly established and list
+operators treat them as a fact of life.
+
+Mail developers have been trying for a decade to invent technical methods
+to allow mailing lists to continue to work without modifying the From: header
+line, such as the Authenticated Received Chain (ARC) protocol described 
+in [@RFC8617].  While work continues, none of the methods have become widely
+used and there is little reason to believe that any future methods will be more
+successful.
 
 # IANA Considerations {#iana-considerations}
 
