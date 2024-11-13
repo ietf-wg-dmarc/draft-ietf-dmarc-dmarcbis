@@ -30,7 +30,7 @@ surname = "Levine (ed)"
 organization = "Standcore LLC"
 fullname = "John Levine"
   [author.address]
-   email = "standards@standore.com"
+   email = "standards@standcore.com"
 
 %%%
 
