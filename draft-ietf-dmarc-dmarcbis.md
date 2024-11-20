@@ -946,7 +946,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains a "psd=n" tag, stop.
+   contains either a "psd=y" tag or a "psd=n" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
@@ -1610,10 +1610,11 @@ ideal, they are firmly established and list operators treat them as a fact of li
 
 Mail developers have been trying for a decade to invent technical methods
 to allow mailing lists to continue to work without modifying the From: header
-line, such as the Authenticated Received Chain (ARC) protocol described 
-in [@RFC8617].  While work continues, none of the methods have become widely
-used and there is little reason to believe that any future methods will be more
-successful.
+line, with a prominent example being the Authenticated Received Chain (ARC) 
+protocol described in [@RFC8617].  While work continues, as of this document's 
+publication, none of the methods have become widely used. Should such a technical
+method achieve widespread adoption in the future, this document can be updated to
+reflect that.
 
 # IANA Considerations {#iana-considerations}
 
