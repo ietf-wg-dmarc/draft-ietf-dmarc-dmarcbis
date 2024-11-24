@@ -575,7 +575,7 @@ are discussed below in (#policy-enforcement-considerations).
 [@!RFC3986] defines a syntax for identifying a resource. The DMARC
 mechanism uses this as the format by which a [Domain Owner](#domain-owner) 
 or [PSO](#public-suffix-organization) specifies the destination(s) for the two
-report types that are supported. The [DMARC Poilcy Record format](#policy-record-format) 
+report types that are supported. The [DMARC Policy Record format](#policy-record-format) 
 allows for a list of these URIs to be provided, with each URI separated by commas (ASCII 0x2c). 
 
 A formal definition is provided in (#formal-definition).
@@ -920,7 +920,7 @@ This update to DMARC offers more flexibility to Domain Owners, especially those 
 complex organizations that might want to apply decentralized management to their DNS and their 
 DMARC Policy Records. Rather than just using a public suffix list to help identify
 an Organizational Domain, this update defines a discovery technique known colloquially as 
-the "DNS Tree Walk". The target of any DNS Tree Walk is discovry of a valid DMARC Policy Record, 
+the "DNS Tree Walk". The target of any DNS Tree Walk is discovery of a valid DMARC Policy Record, 
 and its use in determining an Organizational Domain allows for publishing DMARC Policy Records 
 at multiple points in the namespace.
 
@@ -1651,7 +1651,7 @@ Table: "Authentication-Results Result Registry Update"
 
 The following has been added to the "Feedback Report Header Fields"
 registry:
-| Field Name          | Description   | Multiple Apperances  | Related "Feedback-Type"  | Reference | Status | 
+| Field Name          | Description   | Multiple Appearances  | Related "Feedback-Type"  | Reference | Status | 
 |:--------------------|:-------|:----------|:-----------------------------|:-------|:--------|
 | Identity-Alignment  | indicates whether the message about which a report is being generated had any identifiers in alignment | No | auth-failure | [this document] | current |
 Table: "Feedback Report Header Fields"
@@ -1966,7 +1966,7 @@ The following example illustrates this possibility:
 
 * Mail is sent with an Author Domain of "a.mail.example.com" and Authenticated Identifiers of "mail.example.com"
 * There is no DMARC Policy Record published at "\_dmarc.a.mail.example.com"
-* There is one published at "\_dmarc.mail.example.com" and this is intended to be the Organizataional Domain for this message
+* There is one published at "\_dmarc.mail.example.com" and this is intended to be the Organizational Domain for this message
 * There is also a DMARC Policy Record published at "\_dmarc.example.com", with default alignment (relaxed)
 * An is able to send mail with the Author Domain of "evil.example.com" and an Authenticated Identifier of "mail.example.com"
 
@@ -1978,7 +1978,7 @@ DMARC Policy Records for all Author Domains used in an organization's email.
 
 For cases where Strict Alignment is not appropriate, this issue can be mitigated by the Domain 
 Owner periodically (perhaps weekly, or whatever frequency might be appropriate for a given organization's 
-perational needs) checking the DMARC Policy Records, if any, of [PSDs](#public-suffix-domain)
+operational needs) checking the DMARC Policy Records, if any, of [PSDs](#public-suffix-domain)
 above the Organizational Domain in the DNS tree and (for legacy [@!RFC7489] checking that
 appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record without
 the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their Organizational
