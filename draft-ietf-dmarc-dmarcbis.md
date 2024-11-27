@@ -2816,7 +2816,7 @@ that the RFC was not implemented as written. Instead, this document redefines th
 algorithm for PSD policy discovery, and thus obsoletes [@RFC9091].
 
 These algorithm changes introduce the possibility of interoperability issues where a
-Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
 the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of 
 DMARC and relying on a PSL might arrive at a different answer.
 
