@@ -946,7 +946,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains either a "psd=y" tag or a "psd=n" tag, stop.
+   contains a "psd=n" or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
