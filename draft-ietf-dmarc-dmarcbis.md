@@ -1944,7 +1944,7 @@ that achieves a DMARC pass on behalf of the Organizational Domain.
 
 A scenario such as this could occur under the following conditions:
 
-* A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain
+* A DMARC Policy Record exists for the domain "example.com", such that "example.com" is an Organizational Domain
 * An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain
 * The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"
 
