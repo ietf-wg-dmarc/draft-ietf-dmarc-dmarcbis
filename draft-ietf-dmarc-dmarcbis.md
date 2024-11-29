@@ -1073,7 +1073,7 @@ the following conditions:
   then "mail.example.com" is the Organizational Domain.
 * No applicable DMARC Policy Record is discovered for the Author Domain. In
   this case, the DMARC mechanism does not apply to the message in question. 
-* The DMARC Policy record for the Author Domain indicates strict alignment. In
+* The DMARC Policy Record for the Author Domain indicates strict alignment. In
   this case, a simple string comparison of the Author Domain and the Authenticated 
   Identifier(s) is all that is required.
 
