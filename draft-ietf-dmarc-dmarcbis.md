@@ -946,7 +946,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains either a "psd=y" tag or a "psd=n" tag, stop.
+   contains a "psd=n" or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
@@ -1073,7 +1073,7 @@ the following conditions:
   then "mail.example.com" is the Organizational Domain.
 * No applicable DMARC Policy Record is discovered for the Author Domain. In
   this case, the DMARC mechanism does not apply to the message in question. 
-* The DMARC Policy record for the Author Domain indicates strict alignment. In
+* The DMARC Policy Record for the Author Domain indicates strict alignment. In
   this case, a simple string comparison of the Author Domain and the Authenticated 
   Identifier(s) is all that is required.
 
@@ -1944,7 +1944,7 @@ that achieves a DMARC pass on behalf of the Organizational Domain.
 
 A scenario such as this could occur under the following conditions:
 
-* A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain
+* A DMARC Policy Record exists for the domain "example.com", such that "example.com" is an Organizational Domain
 * An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain
 * The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"
 
@@ -2486,7 +2486,7 @@ indicating that:
 
 *  Aggregate feedback reports are sent via email to the
    addresses "dmarc-feedback@example.com" and
-   "example-tld-test@thirdparty.example.net"
+   "tld-test@thirdparty.example.net"
    `("rua=mailto:dmarc-feedback@example.com,
      mailto:tld-test@thirdparty.example.net")`
 
@@ -2816,7 +2816,7 @@ that the RFC was not implemented as written. Instead, this document redefines th
 algorithm for PSD policy discovery, and thus obsoletes [@RFC9091].
 
 These algorithm changes introduce the possibility of interoperability issues where a
-Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
 the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of 
 DMARC and relying on a PSL might arrive at a different answer.
 
