@@ -2486,7 +2486,7 @@ indicating that:
 
 *  Aggregate feedback reports are sent via email to the
    addresses "dmarc-feedback@example.com" and
-   "example-tld-test@thirdparty.example.net"
+   "tld-test@thirdparty.example.net"
    `("rua=mailto:dmarc-feedback@example.com,
      mailto:tld-test@thirdparty.example.net")`
 
