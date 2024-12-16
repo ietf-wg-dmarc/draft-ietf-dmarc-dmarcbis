@@ -796,6 +796,10 @@ and [@!RFC7405], is as follows:
                 ; points (ASCII 0x21) MUST be 
                 ; encoded
 
+  obs-dmarc-uri = dmarc-uri "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
+                ; Obsolete syntax, reporters should ignore the
+                ; size if it is found in a DMARC Policy Record.
+
   dmarc-sep     = *WSP ";" *WSP
 
   equals        = *WSP "=" *WSP
@@ -818,7 +822,8 @@ and [@!RFC7405], is as follows:
 
   dmarc-rors    = "r" / "s"
 
-  dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
+  dmarc-urilist = ( dmarc-uri *(*WSP "," *WSP dmarc-uri) )
+                / ( obs-dmarc-uri *(*WSP "," *WSP obs-dmarc-uri) )
 
   dmarc-fo      = ("0" / "1") *(":" dmarc-afrf)
                 / dmarc-afrf [":" ("0" / "1")] [":" dmarc-afrf]
