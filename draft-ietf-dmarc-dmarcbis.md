@@ -948,7 +948,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains either a "psd=y" tag or a "psd=n" tag, stop.
+   contains a "psd=n" tag or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
@@ -1075,7 +1075,7 @@ the following conditions:
   then "mail.example.com" is the Organizational Domain.
 * No applicable DMARC Policy Record is discovered for the Author Domain. In
   this case, the DMARC mechanism does not apply to the message in question. 
-* The DMARC Policy record for the Author Domain indicates strict alignment. In
+* The DMARC Policy Record for the Author Domain indicates strict alignment. In
   this case, a simple string comparison of the Author Domain and the Authenticated 
   Identifier(s) is all that is required.
 
@@ -1304,8 +1304,8 @@ In the case where more than one domain is retrieved, the Mail Receiver
 ###  Determine If The DMARC Mechanism Applies {#determine-mechanism-applies}
 
 If precisely one Author Domain exists for the message, then perform the
-step described in [DMARC Policy Discovery] to determine if the DMARC 
-mechanism applies. If a [DMARC Policy Record](#dmarc-policy-record) is not
+step described in [DMARC Policy Discovery](#dmarc-policy-discovery) to determine
+if the DMARC mechanism applies. If a [DMARC Policy Record](#dmarc-policy-record) is not
 discovered during this step, then the DMARC mechanism does not apply and
 DMARC validation terminates for the message.
 
@@ -1956,7 +1956,7 @@ that achieves a DMARC pass on behalf of the Organizational Domain.
 
 A scenario such as this could occur under the following conditions:
 
-* A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain
+* A DMARC Policy Record exists for the domain "example.com", such that "example.com" is an Organizational Domain
 * An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain
 * The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"
 
@@ -2500,7 +2500,7 @@ indicating that:
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net"
    `("rua=mailto:dmarc-feedback@example.com,
-     mailto:tld-test@thirdparty.example.net")`
+     mailto:example-tld-test@thirdparty.example.net")`
 
 *  The Domain Owner desires only that an actor performing a DMARC
    validation check apply any special handling rules it might have
@@ -2830,7 +2830,7 @@ DNS Tree Walk defined in this document obviates the need for a PSD DMARC registr
 and that PSD DMARC regisry is what made RFC 9091 and Experimental RFC.
 
 These algorithm changes introduce the possibility of interoperability issues where a
-Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
 the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of 
 DMARC and relying on a PSL might arrive at a different answer.
 
@@ -2904,52 +2904,86 @@ discussion of ADSP's influence on DMARC was no longer relevant.
 
 ##  RFC 7489 Errata Summary
 
-Remove this before final submission:
-    (https://www.rfc-editor.org/styleguide/part2/#ref_errata says errata in the Reported
-     state should not be referenced; they are not considered stable.)
-
 This document and its companion documents ([@!I-D.ietf-dmarc-aggregate-reporting]
 and [@!I-D.ietf-dmarc-failure-reporting]) address the following errata
 filed against [@!RFC7489] since that document's publication in March,
 2015.  More details on each of these can be found at 
 <https://www.rfc-editor.org/errata_search.php?rfc=7489>
 
-[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5365>:
+### [RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid5365>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5371>:
+### [RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid5371>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid5440>:
+### [RFC Errata, Erratum ID 5440, RFC 7489, Sections 7.1, B.2.1, B.2.3, and B.2.4](<https://www.rfc-editor.org/errata/eid5440>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+This erratum references several mentions in RFC 7489 of the "v=" tag from the Domain Owner Assessment
+Policy and/or its value, specifically mentions that were not, but should have been, "v=DMARC1;". Some
+of those mentions are preserved in this document and those mentions have been addressed as per the 
+erratum. The rest have moved to [@!I-D.ietf-dmarc-aggregate-reporting] and are addressed there.
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 <https://www.rfc-editor.org/errata/eid5440>:
+### [RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1](<https://www.rfc-editor.org/errata/eid6439>)
 
-:   Addressed both in this document and in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid6439>:
+### [RFC Errata, Erratum ID 5221, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5221>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+The regular expression pattern for IP addresses has been removed from this document and from
+[@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid6485>:
+### [RFC Errata, Erratum ID 5229, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5229>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 <https://www.rfc-editor.org/errata/eid7835>:
+### [RFC Errata, Erratum 5495, RFC 7489, Section 6.6.3](<https://www.rfc-editor.org/errata/eid5495>)
 
-:   This erratum is in reference to the description of the process documented
-    in RFC 7489 for the applicable DMARC policy for an email message. The process
-    for doing this has drastically changed in DMARCbis, and so the text identified in
-    this erratum no longer exists.
+This erratum is in reference to the description of the process documented
+in RFC 7489 for the applicable DMARC policy for an email message. The process
+for doing this has drastically changed in DMARCbis, and so the text identified in
+this erratum no longer exists.
 
-[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 <https://www.rfc-editor.org/errata/eid5151>:
+### [RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid6485>)
 
-:   This erratum is in reference to the Introduction section of RFC 7489.
-    That section has been substantially rewritten in DMARCbis, and the text
-    at issue for this erratum no longer exists.
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 6729, RFC 7489, Section 3.2](<https://www.rfc-editor.org/errata/eid6729>)
+
+This erratum is in reference to a search of the Public Suffix List (PSL) as part of finding a DMARC
+Policy Record (a.k.a., Domain Owner Assessment Policy). The PSL is no longer relied upon for this
+practice, and the text at issue has been removed from this document.
+
+### [RFC Errata, Erratum ID 7099, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid7099>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 7100, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid7100>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3](<https://www.rfc-editor.org/errata/eid7835>)
+
+This erratum is in reference to the description of the process documented
+in RFC 7489 for the applicable DMARC policy for an email message. The process
+for doing this has drastically changed in DMARCbis, and so the text identified in
+this erratum no longer exists.
+
+### [RFC Errata, Erratum ID 7865, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid7865>)
+
+The regular expression pattern for IP addresses has been removed from this document and from
+[@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 5151, RFC 7489, Section 1](<https://www.rfc-editor.org/errata/eid5151>)
+
+This erratum is in reference to the Introduction section of RFC 7489.
+That section has been substantially rewritten in DMARCbis, and the text
+at issue for this erratum no longer exists.
+
+### [RFC Errata, Erratum ID 5774, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5774>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 ##  General Editing and Formatting
 
