@@ -619,9 +619,12 @@ fo:
 Provides requested options for the generation of failure reports.
 Report generators may choose to adhere to the requested options.
 This tag's content **MUST** be ignored if a "ruf" tag (below) is not
-also specified. This tag can include one or more of the values shown here;
-if more than one value is assigned to the tag, the list of values should be
-separated by colons (e.g., fo=0:d).  The valid values and their meanings are:
+also specified. This tag can include one or more of the values shown here,
+with the exception that "0" and "1" are mutually exclusive. If more than one
+value is assigned to the tag, the list of values should be separated by colons 
+(e.g., fo=0:d), and the values may appear in the list in any order.
+
+The valid values and their meanings are:
 
     0:
     : Generate a DMARC failure report if all underlying authentication
@@ -629,7 +632,7 @@ separated by colons (e.g., fo=0:d).  The valid values and their meanings are:
 
     1:
     : Generate a DMARC failure report if any underlying authentication
-      mechanism produced something other than an aligned "pass" result.
+      mechanism fails to produce an aligned "pass" result.
 
     d:
     : Generate a DKIM failure report if the message had a signature
@@ -818,7 +821,7 @@ and [@!RFC7405], is as follows:
 
   dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d"
+  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d" / "0:d" / "0:s" / "0:s:d" / "0:d:s" / "1:d" / "1:s" / "1:s:d" / "1:d:s" 
 
 ~~~
 
