@@ -148,9 +148,8 @@ commonly referred to as "phishing".
 
 DMARC can only be used to combat specific forms of exact-domain spoofing directly. DMARC 
 does not attempt to solve all problems with spoofed or otherwise fraudulent emails. In 
-particular, it does not address the use of visually similar domain names ("cousin domains")
-or abuse of the RFC5322.From human-readable display-name, as defined in
-[@!RFC5322, section 3.4].
+particular, it does not address the use of visually similar domain names or abuse of the
+RFC5322.From human-readable display-name, as defined in [@!RFC5322, section 3.4].
 
 ##  Scalability {#scalability}
 
@@ -619,9 +618,12 @@ fo:
 Provides requested options for the generation of failure reports.
 Report generators may choose to adhere to the requested options.
 This tag's content **MUST** be ignored if a "ruf" tag (below) is not
-also specified. This tag can include one or more of the values shown here;
-if more than one value is assigned to the tag, the list of values should be
-separated by colons (e.g., fo=0:d).  The valid values and their meanings are:
+also specified. This tag can include one or more of the values shown here,
+with the exception that "0" and "1" are mutually exclusive. If more than one
+value is assigned to the tag, the list of values should be separated by colons 
+(e.g., fo=0:d), and the values may appear in the list in any order.
+
+The valid values and their meanings are:
 
     0:
     : Generate a DMARC failure report if all underlying authentication
@@ -629,7 +631,7 @@ separated by colons (e.g., fo=0:d).  The valid values and their meanings are:
 
     1:
     : Generate a DMARC failure report if any underlying authentication
-      mechanism produced something other than an aligned "pass" result.
+      mechanism fails to produce an aligned "pass" result.
 
     d:
     : Generate a DKIM failure report if the message had a signature
@@ -702,12 +704,12 @@ rua:
 :  Addresses to which aggregate feedback reports are to be sent (comma-separated plain-text
    list of DMARC Reporting URIs; **OPTIONAL**). If present, the Domain Owner is requesting
    Mail Receivers to send aggregate feedback reports as defined in [@!I-D.ietf-dmarc-aggregate-reporting]
-   to the URIs listed.  Any valid URI can be specified. A Mail Receiver **MUST** implement support 
-   for a "mailto:" URI, i.e., the ability to send a DMARC report via electronic mail. If the 
-   tag is not provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for 
-   the domain.  URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
-   [@!I-D.ietf-dmarc-aggregate-reporting] also discusses considerations that apply when the
-   domain name of a URI differs from the domain publishing the DMARC Policy Record. See
+   to the URIs listed.  Any valid URI can be specified. A Mail Receiver that sends aggregate
+   feedback reports  **MUST** implement support for a "mailto:" URI, i.e., the ability to send a DMARC
+   report via electronic mail. If the tag is not provided, Mail Receivers **MUST NOT** generate
+   aggregate feedback reports for the domain.  URIs involving schemes not supported by Mail Receivers
+   **MUST** be ignored.  [@!I-D.ietf-dmarc-aggregate-reporting] also discusses considerations that
+   apply when the domain name of a URI differs from the domain publishing the DMARC Policy Record. See
    (#external-report-addresses) for additional considerations. 
 
 ruf:
@@ -717,13 +719,13 @@ ruf:
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above) to
    the URIs listed.  Depending on the value of the "fo" tag, the format for such reports
    is described in [@!I-D.ietf-dmarc-failure-reporting], [@!RFC6651], or [@!RFC6652]. Any 
-   valid URI can be specified. A Mail Receiver **MUST** implement support for a "mailto:" 
-   URI, i.e., the ability to send message-specific failure information via electronic mail.
-   If the tag is not provided, Mail Receivers **MUST NOT** generate failure reports for the
-   domain. URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
-   [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
-   the domain name of a URI differs from that of the domain advertising the policy.
-   See (#external-report-addresses) for additional considerations. 
+   valid URI can be specified. A Mail Receiver sending failure reports **MUST** implement
+   support for a "mailto:" URI, i.e., the ability to send message-specific failure information
+   via electronic mail. If the tag is not provided, Mail Receivers **MUST NOT** generate
+   failure reports for the domain. URIs involving schemes not supported by Mail Receivers
+   **MUST** be ignored.  [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations
+   that apply when the domain name of a URI differs from that of the domain advertising the
+   policy.  See (#external-report-addresses) for additional considerations. 
 
 sp:
 :  Domain Owner Assessment Policy for all subdomains of the given Organizational Domain
@@ -818,7 +820,7 @@ and [@!RFC7405], is as follows:
 
   dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d"
+  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d" / "0:d" / "0:s" / "0:s:d" / "0:d:s" / "1:d" / "1:s" / "1:s:d" / "1:d:s" 
 
 ~~~
 
@@ -946,7 +948,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains either a "psd=y" tag or a "psd=n" tag, stop.
+   contains a "psd=n" tag or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
@@ -1073,7 +1075,7 @@ the following conditions:
   then "mail.example.com" is the Organizational Domain.
 * No applicable DMARC Policy Record is discovered for the Author Domain. In
   this case, the DMARC mechanism does not apply to the message in question. 
-* The DMARC Policy record for the Author Domain indicates strict alignment. In
+* The DMARC Policy Record for the Author Domain indicates strict alignment. In
   this case, a simple string comparison of the Author Domain and the Authenticated 
   Identifier(s) is all that is required.
 
@@ -1132,8 +1134,11 @@ publish a [DMARC Policy Record](#dmarc-policy-record) to cover each [Author Doma
 (#author-domain) and corresponding [Organizational Domain](#organizational-domain) 
 to which DMARC validation should apply, send email that produces at least one, and 
 preferably two, [Authenticated Identifiers](#authenticated-identifiers) that align 
-with the Author Domain, and will receive and monitor the content of DMARC aggregate
-reports. The following sections describe how to achieve this.
+with the Author Domain, will receive and monitor the content of DMARC aggregate
+reports, and will correct any authentication shortcomings in mail making authorized
+use of its domains. 
+
+The following sections describe how to achieve this.
 
 ### Publish an SPF Record for an Aligned Domain
 
@@ -1190,10 +1195,14 @@ successful deployment.
 ### Remediate Unaligned or Unauthenticated Mail Streams
 
 DMARC aggregate reports can reveal to the Domain Owner mail streams using the 
-Author Domain that should be passing DMARC validation checks but are not. If
-the reason for the streams not passing is due to Authenticated Identifiers being 
-unaligned or missing entirely, then the Domain Owner wishing to fully participate
-in DMARC **MUST** take necessary steps to address these shortcomings.
+Author Domain but not passing DMARC validation checks. These mail streams may
+be a combination of illegitimate uses of the domain, such as spoofing or other 
+attempted abuse, and legitimate uses, as in the case of a mail stream created
+by an agent of the Domain Owner but one with is not passing is due to Authenticated
+Identifiers being unaligned or missing entirely. For such legitimate uses, these
+shortcomings **MUST** be addressed prior to any attempt by the Domain Owner to
+publish a [Domain Owner Assessment Policy](#domain-owner-policy) of 
+[Enforcement](#enforcement) for the Author Domain.
 
 ### Decide Whether to Update Domain Owner Assessment Policy to Enforcement
 
@@ -1262,9 +1271,10 @@ with a value of "y" ("psd=y").
 [Mail Receivers](#mail-receiver) wishing to fully participate in DMARC 
 will apply the DMARC mechanism to inbound email messages when a [DMARC
 Policy Record](#dmarc-policy-record) exists that applies to the [Author
-Domain](#author-domain), and will send aggregate reports to Domain
+Domain](#author-domain), and will send aggregate feedback reports to Domain
 Owners that request them. Mail Receivers might also send failure reports
-to Domain Owners that request them.
+to Domain Owners that request them. The following sections describe how
+to achieve this.
 
 The steps for applying the DMARC mechanism to an email message can take 
 place during the SMTP transaction, and should do so if the Mail Receiver 
@@ -1277,9 +1287,6 @@ where no DMARC Policy Record exists for the Author Domain of a given message,
 or where the Mail Receiver is not participating in DMARC. Nothing in this 
 section is intended to imply that the underlying Authentication Mechanisms
 should only be performed by Mail Receivers participating in DMARC. 
-
-The next sections describe the steps for a Mail Receiver wishing to fully
-participate in DMARC.
 
 ###  Extract Author Domain {#extract-author-domain}
 
@@ -1297,8 +1304,8 @@ In the case where more than one domain is retrieved, the Mail Receiver
 ###  Determine If The DMARC Mechanism Applies {#determine-mechanism-applies}
 
 If precisely one Author Domain exists for the message, then perform the
-step described in [DMARC Policy Discovery] to determine if the DMARC 
-mechanism applies. If a [DMARC Policy Record](#dmarc-policy-record) is not
+step described in [DMARC Policy Discovery](#dmarc-policy-discovery) to determine
+if the DMARC mechanism applies. If a [DMARC Policy Record](#dmarc-policy-record) is not
 discovered during this step, then the DMARC mechanism does not apply and
 DMARC validation terminates for the message.
 
@@ -1348,10 +1355,11 @@ See (#rejecting-messages) for further discussion of topics regarding rejecting m
 
 ### Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
-If the Mail Receiver intends to fully participate in DMARC, then results obtained from 
-the application of the DMARC mechanism by the Mail Receiver **MUST** be stored for eventual
-presentation back to the Domain Owner in the form of aggregate feedback reports.  (#policy-record-format) and
-[@!I-D.ietf-dmarc-aggregate-reporting] discuss aggregate feedback.
+If the Mail Receiver intends to send aggregate feedback reports and/or failure reports,
+then results obtained from the application of the DMARC mechanism by the Mail Receiver
+**MUST** be preserved for eventual presentation back to the Domain Owner in the form
+of such reports. (#policy-record-format) and [@!I-D.ietf-dmarc-aggregate-reporting]
+discuss aggregate feedback reports.
 
 ### Send Aggregate Reports {#send-aggregate-reports}
 
@@ -1806,7 +1814,11 @@ DKIM signatures to the domain's mail or transmit mail which will evaluate
 as SPF pass. If, nonetheless, a Domain Owner wishes to include a
 permissive source in a domain's SPF record, the source can be excluded
 from DMARC consideration by using the "?" qualifier on the SPF record
-mechanism associated with that source.
+mechanism associated with that source. The DMARC working group had a
+lively discussion about possibly eliminating SPF entirely as an underlying
+Authentication Mechanism for DMARC, but consensus was not reached, and
+the suggestion to use the "?" qualifier for permissive sources is presented
+here instead.
 
 ##  Attacks on Reporting URIs {#attacks-on-reporting-uris}
 
@@ -1944,7 +1956,7 @@ that achieves a DMARC pass on behalf of the Organizational Domain.
 
 A scenario such as this could occur under the following conditions:
 
-* A DMARC record exists for the domain "example.com", such that "example.com" is an Organizational Domain
+* A DMARC Policy Record exists for the domain "example.com", such that "example.com" is an Organizational Domain
 * An attacker controls DNS for the domain "evil.example.com" and publishes an SPF record for that domain
 * The attacker sends email with RFC5322.From header field containing "foo@example.com" and an SPF-Authenticated Identifier of "evil.example.com"
 
@@ -2488,7 +2500,7 @@ indicating that:
    addresses "dmarc-feedback@example.com" and
    "example-tld-test@thirdparty.example.net"
    `("rua=mailto:dmarc-feedback@example.com,
-     mailto:tld-test@thirdparty.example.net")`
+     mailto:example-tld-test@thirdparty.example.net")`
 
 *  The Domain Owner desires only that an actor performing a DMARC
    validation check apply any special handling rules it might have
@@ -2813,10 +2825,12 @@ in detail in this document.
 The DNS Tree Walk also incorporates PSD policy discovery, which was introduced in 
 [@RFC9091]. That RFC was an Experimental RFC, and the results of that experiment were 
 that the RFC was not implemented as written. Instead, this document redefines the 
-algorithm for PSD policy discovery, and thus obsoletes [@RFC9091].
+algorithm for PSD policy discovery, and thus obsoletes [@RFC9091]. Specifically, the 
+DNS Tree Walk defined in this document obviates the need for a PSD DMARC registry,
+and that PSD DMARC regisry is what made RFC 9091 and Experimental RFC.
 
 These algorithm changes introduce the possibility of interoperability issues where a
-Domain Owner expects a DMARC Policy or an Organizational Domain to be identified by
+Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
 the Tree Walk process, but a Mail Receiver using an RFC 7489-based implementation of 
 DMARC and relying on a PSL might arrive at a different answer.
 
@@ -2890,52 +2904,86 @@ discussion of ADSP's influence on DMARC was no longer relevant.
 
 ##  RFC 7489 Errata Summary
 
-Remove this before final submission:
-    (https://www.rfc-editor.org/styleguide/part2/#ref_errata says errata in the Reported
-     state should not be referenced; they are not considered stable.)
-
 This document and its companion documents ([@!I-D.ietf-dmarc-aggregate-reporting]
 and [@!I-D.ietf-dmarc-failure-reporting]) address the following errata
 filed against [@!RFC7489] since that document's publication in March,
 2015.  More details on each of these can be found at 
 <https://www.rfc-editor.org/errata_search.php?rfc=7489>
 
-[Err5365] RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5365>:
+### [RFC Errata, Erratum ID 5365, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid5365>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err5371] RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid5371>:
+### [RFC Errata, Erratum ID 5371, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid5371>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid5440>:
+### [RFC Errata, Erratum ID 5440, RFC 7489, Sections 7.1, B.2.1, B.2.3, and B.2.4](<https://www.rfc-editor.org/errata/eid5440>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+This erratum references several mentions in RFC 7489 of the "v=" tag from the Domain Owner Assessment
+Policy and/or its value, specifically mentions that were not, but should have been, "v=DMARC1;". Some
+of those mentions are preserved in this document and those mentions have been addressed as per the 
+erratum. The rest have moved to [@!I-D.ietf-dmarc-aggregate-reporting] and are addressed there.
 
-[Err5440] RFC Errata, Erratum ID 5440, RFC 7489, Sections B.2.1, B.2.3, and B.2.4 <https://www.rfc-editor.org/errata/eid5440>:
+### [RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1](<https://www.rfc-editor.org/errata/eid6439>)
 
-:   Addressed both in this document and in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err6439] RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1 <https://www.rfc-editor.org/errata/eid6439>:
+### [RFC Errata, Erratum ID 5221, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5221>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+The regular expression pattern for IP addresses has been removed from this document and from
+[@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err6485] RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1 <https://www.rfc-editor.org/errata/eid6485>:
+### [RFC Errata, Erratum ID 5229, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5229>)
 
-:   To be addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
-[Err7835] RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3 <https://www.rfc-editor.org/errata/eid7835>:
+### [RFC Errata, Erratum 5495, RFC 7489, Section 6.6.3](<https://www.rfc-editor.org/errata/eid5495>)
 
-:   This erratum is in reference to the description of the process documented
-    in RFC 7489 for the applicable DMARC policy for an email message. The process
-    for doing this has drastically changed in DMARCbis, and so the text identified in
-    this erratum no longer exists.
+This erratum is in reference to the description of the process documented
+in RFC 7489 for the applicable DMARC policy for an email message. The process
+for doing this has drastically changed in DMARCbis, and so the text identified in
+this erratum no longer exists.
 
-[Err5151] RFC Errata, Erratum ID 5151, RFC 7489, Section 1 <https://www.rfc-editor.org/errata/eid5151>:
+### [RFC Errata, Erratum ID 6485, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid6485>)
 
-:   This erratum is in reference to the Introduction section of RFC 7489.
-    That section has been substantially rewritten in DMARCbis, and the text
-    at issue for this erratum no longer exists.
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 6729, RFC 7489, Section 3.2](<https://www.rfc-editor.org/errata/eid6729>)
+
+This erratum is in reference to a search of the Public Suffix List (PSL) as part of finding a DMARC
+Policy Record (a.k.a., Domain Owner Assessment Policy). The PSL is no longer relied upon for this
+practice, and the text at issue has been removed from this document.
+
+### [RFC Errata, Erratum ID 7099, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid7099>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 7100, RFC 7489, Section 7.2.1.1](<https://www.rfc-editor.org/errata/eid7100>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3](<https://www.rfc-editor.org/errata/eid7835>)
+
+This erratum is in reference to the description of the process documented
+in RFC 7489 for the applicable DMARC policy for an email message. The process
+for doing this has drastically changed in DMARCbis, and so the text identified in
+this erratum no longer exists.
+
+### [RFC Errata, Erratum ID 7865, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid7865>)
+
+The regular expression pattern for IP addresses has been removed from this document and from
+[@!I-D.ietf-dmarc-aggregate-reporting].
+
+### [RFC Errata, Erratum ID 5151, RFC 7489, Section 1](<https://www.rfc-editor.org/errata/eid5151>)
+
+This erratum is in reference to the Introduction section of RFC 7489.
+That section has been substantially rewritten in DMARCbis, and the text
+at issue for this erratum no longer exists.
+
+### [RFC Errata, Erratum ID 5774, RFC 7489, Appendix C](<https://www.rfc-editor.org/errata/eid5774>)
+
+Addressed in [@!I-D.ietf-dmarc-aggregate-reporting].
 
 ##  General Editing and Formatting
 
