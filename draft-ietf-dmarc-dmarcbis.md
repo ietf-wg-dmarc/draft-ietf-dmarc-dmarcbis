@@ -1808,7 +1808,11 @@ DKIM signatures to the domain's mail or transmit mail which will evaluate
 as SPF pass. If, nonetheless, a Domain Owner wishes to include a
 permissive source in a domain's SPF record, the source can be excluded
 from DMARC consideration by using the "?" qualifier on the SPF record
-mechanism associated with that source.
+mechanism associated with that source. The DMARC working group had a
+lively discussion about possibly eliminating SPF entirely as an underlying
+Authentication Mechanism for DMARC, but consensus was not reached, and
+the suggestion to use the "?" qualifier for permissive sources is presented
+here instead.
 
 ##  Attacks on Reporting URIs {#attacks-on-reporting-uris}
 
