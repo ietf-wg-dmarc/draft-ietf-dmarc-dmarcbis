@@ -1134,8 +1134,11 @@ publish a [DMARC Policy Record](#dmarc-policy-record) to cover each [Author Doma
 (#author-domain) and corresponding [Organizational Domain](#organizational-domain) 
 to which DMARC validation should apply, send email that produces at least one, and 
 preferably two, [Authenticated Identifiers](#authenticated-identifiers) that align 
-with the Author Domain, and will receive and monitor the content of DMARC aggregate
-reports. The following sections describe how to achieve this.
+with the Author Domain, will receive and monitor the content of DMARC aggregate
+reports, and will correct any authentication shortcomings in mail making authorized
+use of its domains. 
+
+The following sections describe how to achieve this.
 
 ### Publish an SPF Record for an Aligned Domain
 
@@ -1192,10 +1195,14 @@ successful deployment.
 ### Remediate Unaligned or Unauthenticated Mail Streams
 
 DMARC aggregate reports can reveal to the Domain Owner mail streams using the 
-Author Domain that should be passing DMARC validation checks but are not. If
-the reason for the streams not passing is due to Authenticated Identifiers being 
-unaligned or missing entirely, then the Domain Owner wishing to fully participate
-in DMARC **MUST** take necessary steps to address these shortcomings.
+Author Domain but not passing DMARC validation checks. These mail streams may
+be a combination of illegitimate uses of the domain, such as spoofing or other 
+attempted abuse, and legitimate uses, as in the case of a mail stream created
+by an agent of the Domain Owner but one with is not passing is due to Authenticated
+Identifiers being unaligned or missing entirely. For such legitimate uses, these
+shortcomings **MUST** be addressed prior to any attempt by the Domain Owner to
+publish a [Domain Owner Assessment Policy](#domain-owner-policy) of 
+[Enforcement](#enforcement) for the Author Domain.
 
 ### Decide Whether to Update Domain Owner Assessment Policy to Enforcement
 
@@ -1264,9 +1271,10 @@ with a value of "y" ("psd=y").
 [Mail Receivers](#mail-receiver) wishing to fully participate in DMARC 
 will apply the DMARC mechanism to inbound email messages when a [DMARC
 Policy Record](#dmarc-policy-record) exists that applies to the [Author
-Domain](#author-domain), and will send aggregate reports to Domain
+Domain](#author-domain), and will send aggregate feedback reports to Domain
 Owners that request them. Mail Receivers might also send failure reports
-to Domain Owners that request them.
+to Domain Owners that request them. The following sections describe how
+to achieve this.
 
 The steps for applying the DMARC mechanism to an email message can take 
 place during the SMTP transaction, and should do so if the Mail Receiver 
@@ -1279,9 +1287,6 @@ where no DMARC Policy Record exists for the Author Domain of a given message,
 or where the Mail Receiver is not participating in DMARC. Nothing in this 
 section is intended to imply that the underlying Authentication Mechanisms
 should only be performed by Mail Receivers participating in DMARC. 
-
-The next sections describe the steps for a Mail Receiver wishing to fully
-participate in DMARC.
 
 ###  Extract Author Domain {#extract-author-domain}
 
@@ -1350,10 +1355,11 @@ See (#rejecting-messages) for further discussion of topics regarding rejecting m
 
 ### Store Results of DMARC Processing {#store-results-of-dmarc-processing}
 
-If the Mail Receiver intends to fully participate in DMARC, then results obtained from 
-the application of the DMARC mechanism by the Mail Receiver **MUST** be stored for eventual
-presentation back to the Domain Owner in the form of aggregate feedback reports.  (#policy-record-format) and
-[@!I-D.ietf-dmarc-aggregate-reporting] discuss aggregate feedback.
+If the Mail Receiver intends to send aggregate feedback reports and/or failure reports,
+then results obtained from the application of the DMARC mechanism by the Mail Receiver
+**MUST** be preserved for eventual presentation back to the Domain Owner in the form
+of such reports. (#policy-record-format) and [@!I-D.ietf-dmarc-aggregate-reporting]
+discuss aggregate feedback reports.
 
 ### Send Aggregate Reports {#send-aggregate-reports}
 
