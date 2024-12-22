@@ -704,12 +704,12 @@ rua:
 :  Addresses to which aggregate feedback reports are to be sent (comma-separated plain-text
    list of DMARC Reporting URIs; **OPTIONAL**). If present, the Domain Owner is requesting
    Mail Receivers to send aggregate feedback reports as defined in [@!I-D.ietf-dmarc-aggregate-reporting]
-   to the URIs listed.  Any valid URI can be specified. A Mail Receiver **MUST** implement support 
-   for a "mailto:" URI, i.e., the ability to send a DMARC report via electronic mail. If the 
-   tag is not provided, Mail Receivers **MUST NOT** generate aggregate feedback reports for 
-   the domain.  URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
-   [@!I-D.ietf-dmarc-aggregate-reporting] also discusses considerations that apply when the
-   domain name of a URI differs from the domain publishing the DMARC Policy Record. See
+   to the URIs listed.  Any valid URI can be specified. A Mail Receiver that sends aggregate
+   feedback reports  **MUST** implement support for a "mailto:" URI, i.e., the ability to send a DMARC
+   report via electronic mail. If the tag is not provided, Mail Receivers **MUST NOT** generate
+   aggregate feedback reports for the domain.  URIs involving schemes not supported by Mail Receivers
+   **MUST** be ignored.  [@!I-D.ietf-dmarc-aggregate-reporting] also discusses considerations that
+   apply when the domain name of a URI differs from the domain publishing the DMARC Policy Record. See
    (#external-report-addresses) for additional considerations. 
 
 ruf:
@@ -719,13 +719,13 @@ ruf:
    messages that fail the DMARC evaluation in specific ways (see the "fo" tag above) to
    the URIs listed.  Depending on the value of the "fo" tag, the format for such reports
    is described in [@!I-D.ietf-dmarc-failure-reporting], [@!RFC6651], or [@!RFC6652]. Any 
-   valid URI can be specified. A Mail Receiver **MUST** implement support for a "mailto:" 
-   URI, i.e., the ability to send message-specific failure information via electronic mail.
-   If the tag is not provided, Mail Receivers **MUST NOT** generate failure reports for the
-   domain. URIs involving schemes not supported by Mail Receivers **MUST** be ignored. 
-   [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations that apply when
-   the domain name of a URI differs from that of the domain advertising the policy.
-   See (#external-report-addresses) for additional considerations. 
+   valid URI can be specified. A Mail Receiver sending failure reports **MUST** implement
+   support for a "mailto:" URI, i.e., the ability to send message-specific failure information
+   via electronic mail. If the tag is not provided, Mail Receivers **MUST NOT** generate
+   failure reports for the domain. URIs involving schemes not supported by Mail Receivers
+   **MUST** be ignored.  [@!I-D.ietf-dmarc-aggregate-reporting] discusses considerations
+   that apply when the domain name of a URI differs from that of the domain advertising the
+   policy.  See (#external-report-addresses) for additional considerations. 
 
 sp:
 :  Domain Owner Assessment Policy for all subdomains of the given Organizational Domain
