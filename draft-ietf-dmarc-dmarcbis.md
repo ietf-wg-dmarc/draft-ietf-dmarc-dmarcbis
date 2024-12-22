@@ -148,9 +148,8 @@ commonly referred to as "phishing".
 
 DMARC can only be used to combat specific forms of exact-domain spoofing directly. DMARC 
 does not attempt to solve all problems with spoofed or otherwise fraudulent emails. In 
-particular, it does not address the use of visually similar domain names ("cousin domains")
-or abuse of the RFC5322.From human-readable display-name, as defined in
-[@!RFC5322, section 3.4].
+particular, it does not address the use of visually similar domain names or abuse of the
+RFC5322.From human-readable display-name, as defined in [@!RFC5322, section 3.4].
 
 ##  Scalability {#scalability}
 
