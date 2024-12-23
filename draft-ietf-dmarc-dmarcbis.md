@@ -820,7 +820,9 @@ and [@!RFC7405], is as follows:
 
   dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d" / "0:d" / "0:s" / "0:s:d" / "0:d:s" / "1:d" / "1:s" / "1:s:d" / "1:d:s" 
+  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d"
+                / "0:d" / "0:s" / "0:d:s" / "0:s:d"
+                / "1:d" / "1:s" / "1:d:s" / "1:s:d"
 
 ~~~
 
