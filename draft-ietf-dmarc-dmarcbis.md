@@ -622,7 +622,6 @@ also specified. This tag can include one or more of the values shown here,
 with the exception that "0" and "1" are mutually exclusive. If more than one
 value is assigned to the tag, the list of values should be separated by colons 
 (e.g., fo=0:d), and the values may appear in the list in any order.
-
 The valid values and their meanings are:
 
     0:
