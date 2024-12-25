@@ -1764,7 +1764,7 @@ sending aggregate reports and failure reports are addressed in
 Aggregate reports may, particularly for small organizations, provide some
 limited insight into email sending patterns.  As an example, in a small
 organization, an aggregate report from a particular domain may be sufficient
-to make the report receiver aware of sensitive personal or business
+to make the Report Consumer aware of sensitive personal or business
 information.  If setting an "rua" tag in a DMARC Policy Record, the reporting
 address needs controls appropriate to the organizational requirements to
 mitigate any risk associated with receiving and handling reports.
