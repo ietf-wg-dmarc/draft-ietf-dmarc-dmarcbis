@@ -2835,7 +2835,7 @@ The DNS Tree Walk also incorporates PSD policy discovery, which was introduced i
 that the RFC was not implemented as written. Instead, this document redefines the 
 algorithm for PSD policy discovery, and thus obsoletes [@RFC9091]. Specifically, the 
 DNS Tree Walk defined in this document obviates the need for a PSD DMARC registry,
-and that PSD DMARC regisry is what made RFC 9091 and Experimental RFC.
+and that PSD DMARC registry is what made RFC 9091 an Experimental RFC.
 
 These algorithm changes introduce the possibility of interoperability issues where a
 Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
