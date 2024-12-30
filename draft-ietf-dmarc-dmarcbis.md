@@ -820,19 +820,12 @@ and [@!RFC7405], is as follows:
 
   dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
 
-  dmarc-fo      = "0" / "0:d" / "0:d:s"
-                      / "0:s" / "0:s:d"
-                / "1" / "1:d" / "1:d:s"
-                      / "1:s" / "1:s:d"
-                / "d" / "d:0" / "d:0:s"
-                      / "d:1" / "d:1:s"
-                      / "d:s" / "d:s:0"
-                              / "d:s:1"
-                / "s" / "s:0" / "s:0:d"
-                      / "s:1" / "s:1:d"
-                      / "s:d" / "s:d:0"
-                              / "s:d:1"
+  dmarc-fo      = ("0" / "1") *(":" dmarc-afrf)
+                / dmarc-afrf [":" ("0" / "1")] [":" dmarc-afrf]
+                / *(dmarc-afrf ":") ("0" / "1")
 
+  dmarc-afrf    = "d" / "s"
+                ; each may appear at most once in dmarc-fo
 ~~~
 
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
