@@ -615,6 +615,9 @@ aspf:
 
 fo:
 :   Failure reporting options (plain-text; **OPTIONAL**; default is "0")
+
+The valid values and their meanings are:
+
     Provides requested options for the generation of failure reports.
     Report generators may choose to adhere to the requested options.
     This tag's content **MUST** be ignored if a "ruf" tag (below) is not
@@ -795,6 +798,10 @@ and [@!RFC7405], is as follows:
                 ; points (ASCII 0x21) MUST be 
                 ; encoded
 
+  obs-dmarc-uri = dmarc-uri "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
+                ; Obsolete syntax, reporters should ignore the
+                ; size if it is found in a DMARC Policy Record.
+
   dmarc-sep     = *WSP ";" *WSP
 
   equals        = *WSP "=" *WSP
@@ -817,10 +824,15 @@ and [@!RFC7405], is as follows:
 
   dmarc-rors    = "r" / "s"
 
-  dmarc-urilist = dmarc-uri *(*WSP "," *WSP dmarc-uri)
+  dmarc-urilist = ( dmarc-uri *(*WSP "," *WSP dmarc-uri) )
+                / ( obs-dmarc-uri *(*WSP "," *WSP obs-dmarc-uri) )
 
-  dmarc-fo      = "0" / "1" / "d" / "s" / "d:s" / "s:d" / "0:d" / "0:s" / "0:s:d" / "0:d:s" / "1:d" / "1:s" / "1:s:d" / "1:d:s" 
+  dmarc-fo      = ("0" / "1") *(":" dmarc-afrf)
+                / dmarc-afrf [":" ("0" / "1")] [":" dmarc-afrf]
+                / *(dmarc-afrf ":") ("0" / "1")
 
+  dmarc-afrf    = "d" / "s"
+                ; each may appear at most once in dmarc-fo
 ~~~
 
 In each dmarc-tag, the dmarc-value has a syntax that depends on the tag name.
@@ -947,7 +959,7 @@ The generic steps for a DNS Tree Walk are as follows:
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
    returned, they are all discarded. If a single record remains and it 
-   contains a "psd=n" tag or "psd=y" tag, stop.
+   contains a "psd=n" or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
@@ -1755,7 +1767,7 @@ sending aggregate reports and failure reports are addressed in
 Aggregate reports may, particularly for small organizations, provide some
 limited insight into email sending patterns.  As an example, in a small
 organization, an aggregate report from a particular domain may be sufficient
-to make the report receiver aware of sensitive personal or business
+to make the Report Consumer aware of sensitive personal or business
 information.  If setting an "rua" tag in a DMARC Policy Record, the reporting
 address needs controls appropriate to the organizational requirements to
 mitigate any risk associated with receiving and handling reports.
@@ -2826,7 +2838,7 @@ The DNS Tree Walk also incorporates PSD policy discovery, which was introduced i
 that the RFC was not implemented as written. Instead, this document redefines the 
 algorithm for PSD policy discovery, and thus obsoletes [@RFC9091]. Specifically, the 
 DNS Tree Walk defined in this document obviates the need for a PSD DMARC registry,
-and that PSD DMARC regisry is what made RFC 9091 and Experimental RFC.
+and that PSD DMARC registry is what made RFC 9091 an Experimental RFC.
 
 These algorithm changes introduce the possibility of interoperability issues where a
 Domain Owner expects a DMARC Policy Record or an Organizational Domain to be identified by
