@@ -1608,6 +1608,40 @@ reflect that.</t>
 </section>
 </section>
 
+<section anchor="conformance-requirements"><name>Conformance Requirements for Full DMARC Participation</name>
+<t>This document describes the DMARC mechanism, and allows Domain Owners and Mail Receivers
+some leeway in deciding which parts of the mechanism to implement. This section summarizes
+the requirements for full participation in DMARC, either by Domain Owners or by Mail Receivers.</t>
+<t>In order to fully participate in DMARC, Domain Owners:</t>
+
+<ul spacing="compact">
+<li><bcp14>MUST</bcp14> send mail so it produces an SPF-Authenticated identifier that has Identifier
+Alignment with the Author Domain</li>
+<li><bcp14>MUST</bcp14> send mail that has a DKIM Signing Domain that will produce a DKIM-Authenticated
+Identifier that has Identifier Alignment with the Author Domain</li>
+<li><bcp14>MUST</bcp14> set up a mailbox to receive aggregate reports and collect and analyze those reports</li>
+<li><bcp14>MUST</bcp14> publish a DMARC Policy Record for the Author Domain and the Organizational Domain,
+if it differs from the Author Domain</li>
+<li><bcp14>MUST NOT</bcp14> rely solely on SPF for a DMARC pass if the DMARC policy for the Author Domain
+is &quot;p=reject&quot;</li>
+</ul>
+<t>In order to fully participate in DMARC, Mail Receivers</t>
+
+<ul spacing="compact">
+<li><bcp14>MUST</bcp14> check for the existence of a DMARC Policy Record for the Author Domain of an inbound
+mail message to determine if the DMARC mechanism applies to that message.</li>
+<li><bcp14>MUST</bcp14> determine if Authenticated Identifiers exist for the message and preserve the results of those
+checks for future use in reportging if the DMARC mechanism applies to the message</li>
+<li><bcp14>MUST</bcp14> conduct necessary Identifier Alignmeent checks if the DMARC mechanism applies for the message and
+Authenticated Identifiers exist</li>
+<li><bcp14>MUST</bcp14> use the information from the checks for Authenticated Identifiers to determine if the DMARC
+validation result is &quot;pass&quot; or &quot;fail&quot; for the message.</li>
+<li><bcp14>MUST</bcp14> support the &quot;mailto:&quot; URI for sending requested reports</li>
+<li><bcp14>SHOULD</bcp14> send aggregate reports on at least a daily basis</li>
+<li><bcp14>MUST NOT</bcp14> reject messages solely on the basis of a &quot;p=reject&quot; policy for the Author Domain</li>
+</ul>
+</section>
+
 <section anchor="iana-considerations"><name>IANA Considerations</name>
 <t>This section describes actions completed by IANA.</t>
 

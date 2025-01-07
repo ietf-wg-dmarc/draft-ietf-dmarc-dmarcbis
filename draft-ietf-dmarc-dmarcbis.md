@@ -1630,6 +1630,38 @@ publication, none of the methods have become widely used. Should such a technica
 method achieve widespread adoption in the future, this document can be updated to
 reflect that.
 
+# Conformance Requirements for Full DMARC Participation {#conformance-requirements}
+
+This document describes the DMARC mechanism, and allows Domain Owners and Mail Receivers
+some leeway in deciding which parts of the mechanism to implement. This section summarizes
+the requirements for full participation in DMARC, either by Domain Owners or by Mail Receivers.
+
+In order to fully participate in DMARC, Domain Owners:
+
+* **MUST** send mail so it produces an SPF-Authenticated identifier that has Identifier
+  Alignment with the Author Domain
+* **MUST** send mail that has a DKIM Signing Domain that will produce a DKIM-Authenticated
+  Identifier that has Identifier Alignment with the Author Domain
+* **MUST** set up a mailbox to receive aggregate reports and collect and analyze those reports
+* **MUST** publish a DMARC Policy Record for the Author Domain and the Organizational Domain,
+  if it differs from the Author Domain
+* **MUST NOT** rely solely on SPF for a DMARC pass if the DMARC policy for the Author Domain 
+  is "p=reject"
+
+In order to fully participate in DMARC, Mail Receivers
+
+* **MUST** check for the existence of a DMARC Policy Record for the Author Domain of an inbound
+  mail message to determine if the DMARC mechanism applies to that message.
+* **MUST** determine if Authenticated Identifiers exist for the message and preserve the results of those
+  checks for future use in reportging if the DMARC mechanism applies to the message
+* **MUST** conduct necessary Identifier Alignmeent checks if the DMARC mechanism applies for the message and
+  Authenticated Identifiers exist
+* **MUST** use the information from the checks for Authenticated Identifiers to determine if the DMARC
+  validation result is "pass" or "fail" for the message.
+* **MUST** support the "mailto:" URI for sending requested reports
+* **SHOULD** send aggregate reports on at least a daily basis
+* **MUST NOT** reject messages solely on the basis of a "p=reject" policy for the Author Domain
+
 # IANA Considerations {#iana-considerations}
 
 This section describes actions completed by IANA.
