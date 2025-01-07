@@ -1644,7 +1644,7 @@ registry:</t>
 <td align="left">[this document]</td>
 <td align="left">policy</td>
 <td align="left">dmarc</td>
-<td align="left">Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject.</td>
+<td align="left">Evaluated DMARC policy applied/to be applied after policy options have been processed. Must be none, quarantine, or reject.</td>
 <td align="left">active</td>
 <td align="left">1</td>
 </tr>

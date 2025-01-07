@@ -2424,10 +2424,8 @@ Internet-Draft                  DMARCbis                    January 2025
    |      |           |      |          | applied/to    |      |       |
    |      |           |      |          | be applied    |      |       |
    |      |           |      |          | after policy  |      |       |
-   |      |           |      |          | options       |      |       |
-   |      |           |      |          | including     |      |       |
-   |      |           |      |          | pct: and sp:  |      |       |
-   |      |           |      |          | have been     |      |       |
+   |      |           |      |          | options have  |      |       |
+   |      |           |      |          | been          |      |       |
    |      |           |      |          | processed.    |      |       |
    |      |           |      |          | Must be       |      |       |
    |      |           |      |          | none,         |      |       |
@@ -2457,6 +2455,8 @@ Internet-Draft                  DMARCbis                    January 2025
    +----------------+-----------+-----------------+--------+
 
     Table 4: "Authentication-Results Result Registry Update"
+
+
 
 
 

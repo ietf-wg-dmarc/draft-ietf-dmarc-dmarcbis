@@ -1643,7 +1643,7 @@ registry:
 | Method | Defined   | ptype  | Property  | Value                        | Status | Version |
 |:-------|:----------|:-------|:----------|:-----------------------------|:-------|:--------|
 | dmarc  |[this document]| header | from      | the domain portion of the RFC5322.From header field    | active |    1    |
-| dmarc  |[this document]| policy | dmarc     | Evaluated DMARC policy applied/to be applied after policy options including pct: and sp: have been processed. Must be none, quarantine, or reject. | active |    1    |
+| dmarc  |[this document]| policy | dmarc     | Evaluated DMARC policy applied/to be applied after policy options have been processed. Must be none, quarantine, or reject. | active |    1    |
 Table: "Authentication-Results Method Registry Update"
 
 ## Authentication-Results Result Registry Update {#authentication-results-result-registry-update}
