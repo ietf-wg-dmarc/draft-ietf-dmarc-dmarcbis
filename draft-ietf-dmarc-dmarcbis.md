@@ -615,14 +615,17 @@ aspf:
 
 fo:
 :   Failure reporting options (plain-text; **OPTIONAL**; default is "0")
-Provides requested options for the generation of failure reports.
-Report generators may choose to adhere to the requested options.
-This tag's content **MUST** be ignored if a "ruf" tag (below) is not
-also specified. This tag can include one or more of the values shown here,
-with the exception that "0" and "1" are mutually exclusive. If more than one
-value is assigned to the tag, the list of values should be separated by colons 
-(e.g., fo=0:d), and the values may appear in the list in any order.
+
 The valid values and their meanings are:
+
+    Provides requested options for the generation of failure reports.
+    Report generators may choose to adhere to the requested options.
+    This tag's content **MUST** be ignored if a "ruf" tag (below) is not
+    also specified. This tag can include one or more of the values shown here,
+    with the exception that "0" and "1" are mutually exclusive. If more than one
+    value is assigned to the tag, the list of values should be separated by colons 
+    (e.g., fo=0:d), and the values may appear in the list in any order.
+    The valid values and their meanings are:
 
     0:
     : Generate a DMARC failure report if all underlying authentication
