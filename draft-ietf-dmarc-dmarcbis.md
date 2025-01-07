@@ -820,7 +820,7 @@ and [@!RFC7405], is as follows:
 
   dmarc-rors    = "r" / "s"
 
-  dmarc-urilist = dmarc-uri / obs-dmarc-uri *(*WSP "," *WSP dmarc-uri / obs-dmarc-uri) 
+  dmarc-urilist = (dmarc-uri / obs-dmarc-uri) *(*WSP "," *WSP (dmarc-uri / obs-dmarc-uri))
 
   dmarc-fo      = ("0" / "1") *(":" dmarc-afrf)
                 / dmarc-afrf [":" ("0" / "1")] [":" dmarc-afrf]
