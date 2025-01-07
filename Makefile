@@ -1,7 +1,7 @@
 #
 # built using mmark 2.
 
-VERSION = 37
+VERSION = 38
 DOCNAME = draft-ietf-dmarc-dmarcbis
 #XMLFLAGS=-v
 

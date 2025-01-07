@@ -614,18 +614,14 @@ aspf:
     :  strict mode
 
 fo:
-:   Failure reporting options (plain-text; **OPTIONAL**; default is "0")
-
-The valid values and their meanings are:
-
-    Provides requested options for the generation of failure reports.
-    Report generators may choose to adhere to the requested options.
-    This tag's content **MUST** be ignored if a "ruf" tag (below) is not
-    also specified. This tag can include one or more of the values shown here,
-    with the exception that "0" and "1" are mutually exclusive. If more than one
-    value is assigned to the tag, the list of values should be separated by colons 
-    (e.g., fo=0:d), and the values may appear in the list in any order.
-    The valid values and their meanings are:
+:   Failure reporting options (plain-text; **OPTIONAL**; default is "0") Provides
+    requested options for the generation of failure reports.  Report generators
+    may choose to adhere to the requested options.  This tag's content **MUST**
+    be ignored if a "ruf" tag (below) is not also specified. This tag can include
+    one or more of the values shown here, with the exception that "0" and "1" are
+    mutually exclusive. If more than one value is assigned to the tag, the list of
+    values should be separated by colons (e.g., fo=0:d), and the values may appear
+    in the list in any order. Valid values and their meanings are:
 
     0:
     : Generate a DMARC failure report if all underlying authentication
@@ -824,8 +820,7 @@ and [@!RFC7405], is as follows:
 
   dmarc-rors    = "r" / "s"
 
-  dmarc-urilist = ( dmarc-uri *(*WSP "," *WSP dmarc-uri) )
-                / ( obs-dmarc-uri *(*WSP "," *WSP obs-dmarc-uri) )
+  dmarc-urilist = dmarc-uri / obs-dmarc-uri *(*WSP "," *WSP dmarc-uri / obs-dmarc-uri) 
 
   dmarc-fo      = ("0" / "1") *(":" dmarc-afrf)
                 / dmarc-afrf [":" ("0" / "1")] [":" dmarc-afrf]
@@ -958,8 +953,8 @@ The generic steps for a DNS Tree Walk are as follows:
 
 2. Records that do not start with a "v" tag that identifies the current
    version of DMARC are discarded. If multiple DMARC Policy Records are 
-   returned, they are all discarded. If a single record remains and it 
-   contains a "psd=n" or "psd=y" tag, stop.
+   returned for a single target, they are all discarded. If a single record
+   remains and it contains a "psd=n" or "psd=y" tag, stop.
 
 3. Break the subject DNS domain name into a set of ordered labels. Assign
    the count of labels to "x", and number the labels from right to left; e.g.,
