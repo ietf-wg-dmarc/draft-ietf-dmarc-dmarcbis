@@ -1703,34 +1703,6 @@ Names&quot; registry:</t>
 </tbody>
 </table></section>
 
-<section anchor="feedback-report-header-fields-registry-update"><name>Feedback Report Header Fields Registry Update</name>
-<t>The following has been added to the &quot;Feedback Report Header Fields&quot;
-registry:</t>
-<table><name>&quot;Feedback Report Header Fields&quot;
-</name>
-<thead>
-<tr>
-<th align="left">Field Name</th>
-<th align="left">Description</th>
-<th align="left">Multiple Appearances</th>
-<th align="left">Related &quot;Feedback-Type&quot;</th>
-<th align="left">Reference</th>
-<th align="left">Status</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left">Identity-Alignment</td>
-<td align="left">indicates whether the message about which a report is being generated had any identifiers in alignment</td>
-<td align="left">No</td>
-<td align="left">auth-failure</td>
-<td align="left">[this document]</td>
-<td align="left">current</td>
-</tr>
-</tbody>
-</table></section>
-
 <section anchor="dmarc-tag-registry"><name>DMARC Tag Registry</name>
 <t>A registry tree called &quot;Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) Parameters&quot; exists, and it

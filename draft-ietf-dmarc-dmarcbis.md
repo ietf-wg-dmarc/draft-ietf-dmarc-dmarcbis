@@ -1661,15 +1661,6 @@ Names" registry:
 | dmarc  | temperror | [this document] | active |
 Table: "Authentication-Results Result Registry Update"
 
-##  Feedback Report Header Fields Registry Update {#feedback-report-header-fields-registry-update}
-
-The following has been added to the "Feedback Report Header Fields"
-registry:
-| Field Name          | Description   | Multiple Appearances  | Related "Feedback-Type"  | Reference | Status | 
-|:--------------------|:-------|:----------|:-----------------------------|:-------|:--------|
-| Identity-Alignment  | indicates whether the message about which a report is being generated had any identifiers in alignment | No | auth-failure | [this document] | current |
-Table: "Feedback Report Header Fields"
-
 ##  DMARC Tag Registry {#dmarc-tag-registry}
 
 A registry tree called "Domain-based Message Authentication,

@@ -1561,16 +1561,13 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-authentication-results-resu" class="internal xref">Authentication-Results Result Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-feedback-report-header-fiel" class="internal xref">Feedback Report Header Fields Registry Update</a></p>
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-dmarc-tag-registry" class="internal xref">DMARC Tag Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-dmarc-tag-registry" class="internal xref">DMARC Tag Registry</a></p>
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-dmarc-report-format-registr" class="internal xref">DMARC Report Format Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.5">
-                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-dmarc-report-format-registr" class="internal xref">DMARC Report Format Registry</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.6">
-                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-underscored-and-globally-sc" class="internal xref">Underscored and Globally Scoped DNS Node Names Registry</a></p>
+                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-underscored-and-globally-sc" class="internal xref">Underscored and Globally Scoped DNS Node Names Registry</a></p>
 </li>
             </ul>
 </li>
@@ -3903,52 +3900,17 @@ Names" registry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
         </table>
 </section>
 </div>
-<div id="feedback-report-header-fields-registry-update">
-<section id="section-8.3">
-        <h3 id="name-feedback-report-header-fiel">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-feedback-report-header-fiel" class="section-name selfRef">Feedback Report Header Fields Registry Update</a>
-        </h3>
-<p id="section-8.3-1">The following has been added to the "Feedback Report Header Fields"
-registry:<a href="#section-8.3-1" class="pilcrow">¶</a></p>
-<span id="name-feedback-report-header-field"></span><table class="center" id="table-5">
-          <caption>
-<a href="#table-5" class="selfRef">Table 5</a>:
-<a href="#name-feedback-report-header-field" class="selfRef">"Feedback Report Header Fields"</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Field Name</th>
-              <th class="text-left" rowspan="1" colspan="1">Description</th>
-              <th class="text-left" rowspan="1" colspan="1">Multiple Appearances</th>
-              <th class="text-left" rowspan="1" colspan="1">Related "Feedback-Type"</th>
-              <th class="text-left" rowspan="1" colspan="1">Reference</th>
-              <th class="text-left" rowspan="1" colspan="1">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">Identity-Alignment</td>
-              <td class="text-left" rowspan="1" colspan="1">indicates whether the message about which a report is being generated had any identifiers in alignment</td>
-              <td class="text-left" rowspan="1" colspan="1">No</td>
-              <td class="text-left" rowspan="1" colspan="1">auth-failure</td>
-              <td class="text-left" rowspan="1" colspan="1">[this document]</td>
-              <td class="text-left" rowspan="1" colspan="1">current</td>
-            </tr>
-          </tbody>
-        </table>
-</section>
-</div>
 <div id="dmarc-tag-registry">
-<section id="section-8.4">
+<section id="section-8.3">
         <h3 id="name-dmarc-tag-registry">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-dmarc-tag-registry" class="section-name selfRef">DMARC Tag Registry</a>
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-dmarc-tag-registry" class="section-name selfRef">DMARC Tag Registry</a>
         </h3>
-<p id="section-8.4-1">A registry tree called "Domain-based Message Authentication,
+<p id="section-8.3-1">A registry tree called "Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) Parameters" exists, and it
 and any sub-registries thereunder should be updated to reference
 this document.  Within it, a new sub-registry called the "DMARC
-Tag Registry" exists.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
-<p id="section-8.4-2">Names of DMARC tags are registered with IANA in this sub-registry. Entries
+Tag Registry" exists.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-2">Names of DMARC tags are registered with IANA in this sub-registry. Entries
 are assigned only for values that have been documented in a manner that
 satisfies the terms of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each
 registration includes the tag name; the specification that defines it;
@@ -3956,14 +3918,14 @@ a brief description; and its status, which is one of "current", "experimental",
 or "historic". The Designated Expert needs to confirm that the provided
 specification adequately describes the new tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
-<p id="section-8.4-3">To avoid version compatibility issues, tags added to the DMARC
+Mail Receivers.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+<p id="section-8.3-3">To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
-when processed by implementations conforming to prior specifications.<a href="#section-8.4-3" class="pilcrow">¶</a></p>
-<p id="section-8.4-4">The set of entries to be defined in this registry is as follows:<a href="#section-8.4-4" class="pilcrow">¶</a></p>
-<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-6">
+when processed by implementations conforming to prior specifications.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+<p id="section-8.3-4">The set of entries to be defined in this registry is as follows:<a href="#section-8.3-4" class="pilcrow">¶</a></p>
+<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-5">
           <caption>
-<a href="#table-6" class="selfRef">Table 6</a>:
+<a href="#table-5" class="selfRef">Table 5</a>:
 <a href="#name-dmarc-tag-registry-2" class="selfRef">"DMARC Tag Registry"</a>
           </caption>
 <thead>
@@ -4064,15 +4026,15 @@ when processed by implementations conforming to prior specifications.<a href="#s
 </section>
 </div>
 <div id="dmarc-report-format-registry">
-<section id="section-8.5">
+<section id="section-8.4">
         <h3 id="name-dmarc-report-format-registr">
-<a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-dmarc-report-format-registr" class="section-name selfRef">DMARC Report Format Registry</a>
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-dmarc-report-format-registr" class="section-name selfRef">DMARC Report Format Registry</a>
         </h3>
-<p id="section-8.5-1">Also, within "Domain-based Message Authentication, Reporting, and
+<p id="section-8.4-1">Also, within "Domain-based Message Authentication, Reporting, and
 Conformance (DMARC) Parameters", a new sub-registry called "DMARC
 Report Format Registry" exists and should be updated to reference
-this document.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
-<p id="section-8.5-2">Names of DMARC failure reporting formats are registered with IANA
+this document.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.4-2">Names of DMARC failure reporting formats are registered with IANA
 in this registry. New entries are assigned only for values that
 satisfy the definition of Specification Required, per
 <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.  In addition to a reference to a permanent
@@ -4081,11 +4043,11 @@ brief description, and its status, which must be one of "current",
 "experimental", or "historic". The Designated Expert needs to
 confirm that the provided specification adequately describes the
 report format and clearly presents how it would be used within the
-DMARC context by Domain Owners and Mail Receivers.<a href="#section-8.5-2" class="pilcrow">¶</a></p>
-<p id="section-8.5-3">The entry in this registry is as follows:<a href="#section-8.5-3" class="pilcrow">¶</a></p>
-<span id="name-dmarc-report-format-registry"></span><table class="left" id="table-7">
+DMARC context by Domain Owners and Mail Receivers.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
+<p id="section-8.4-3">The entry in this registry is as follows:<a href="#section-8.4-3" class="pilcrow">¶</a></p>
+<span id="name-dmarc-report-format-registry"></span><table class="left" id="table-6">
           <caption>
-<a href="#table-7" class="selfRef">Table 7</a>:
+<a href="#table-6" class="selfRef">Table 6</a>:
 <a href="#name-dmarc-report-format-registry" class="selfRef">"DMARC Report Format Registry"</a>
           </caption>
 <thead>
@@ -4108,14 +4070,14 @@ DMARC context by Domain Owners and Mail Receivers.<a href="#section-8.5-2" class
 </section>
 </div>
 <div id="underscored-and-globally-scoped-dns-node-names-registry">
-<section id="section-8.6">
+<section id="section-8.5">
         <h3 id="name-underscored-and-globally-sc">
-<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-underscored-and-globally-sc" class="section-name selfRef">Underscored and Globally Scoped DNS Node Names Registry</a>
+<a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-underscored-and-globally-sc" class="section-name selfRef">Underscored and Globally Scoped DNS Node Names Registry</a>
         </h3>
-<p id="section-8.6-1">Per <span>[<a href="#RFC8552" class="cite xref">RFC8552</a>]</span>, please update the following entry to the "Underscored and Globally Scoped DNS Node Names" registry:<a href="#section-8.6-1" class="pilcrow">¶</a></p>
-<span id="name-underscored-and-globally-sco"></span><table class="left" id="table-8">
+<p id="section-8.5-1">Per <span>[<a href="#RFC8552" class="cite xref">RFC8552</a>]</span>, please update the following entry to the "Underscored and Globally Scoped DNS Node Names" registry:<a href="#section-8.5-1" class="pilcrow">¶</a></p>
+<span id="name-underscored-and-globally-sco"></span><table class="left" id="table-7">
           <caption>
-<a href="#table-8" class="selfRef">Table 8</a>:
+<a href="#table-7" class="selfRef">Table 7</a>:
 <a href="#name-underscored-and-globally-sco" class="selfRef">"Underscored and Globally Scoped DNS Node Names" registry</a>
           </caption>
 <thead>
