@@ -39,12 +39,11 @@ fullname = "John Levine"
 This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol.
 
-DMARC permits the owner of an email's [Author Domain](#author-domain) to enable
-validation of the domain's use, to indicate the [Domain Owner's](#domain-owner)
-or [Public Suffix Operator's](#public-suffix-operator) message handling
-preference regarding failed validation, and to request reports about the
-use of the domain name.  Mail receiving organizations can use this information
-when evaluating handling choices for incoming mail.
+DMARC permits the owner of an email's Author Domain to enable validation of 
+the domain's use, to indicate the Domain Owner's or Public Suffix Operator's
+message handling preference regarding failed validation, and to request reports
+about the use of the domain name.  Mail receiving organizations can use this
+information when evaluating handling choices for incoming mail.
 
 This document obsoletes RFCs 7489 and 9091.
 
@@ -482,9 +481,9 @@ There is currently no generally accepted mechanism by which a Domain Owner may
 assert a list of third-party DKIM Signing Domains that are authorized to sign on 
 behalf of a given Author Domain. Therefore, DMARC requires that Identifier 
 Alignment is applied to the DKIM-Authenticated Identifier because a message can 
-bear a valid signature from any domain, even one used by a bad actor. A DKIM-Authenticated 
-Identifier that does not have Identifier Alignment with the Author Domain is not enough 
-to validate whether the use of the Author Domain has been authorized by its Domain Owner.
+bear a valid signature from any domain, even one used by a bad actor. Only a 
+DKIM-Authenticated Identifier that has Identifier Alignment with the Author Domain 
+is enough to validate the authorized use of the Author Domain.
 
 A single email can contain multiple DKIM signatures, and it is considered to
 produce a DMARC "pass" result if any DKIM-Authenticated Identifier aligns with
@@ -503,9 +502,8 @@ assert a list of third-party domains that are authorized for use as the MAIL FRO
 identity for mail using a given Author Domain. Therefore, DMARC requires that Identifier Alignment 
 is applied to the SPF-Authenticated Identifier because any Domain Owner, even a bad 
 actor, can publish an SPF record for its domain and send email that will obtain an 
-SPF pass result. An SPF-Authenticated Identifier that does not have Identifier 
-Alignment with the Author Domain is not enough to validate whether the use of the Author 
-Domain has been authorized by its Domain Owner.
+SPF pass result. Only an SPF-Authenticated Identifier that has Identifier Alignment 
+with the Author Domain is enough to validate the authorized use of the Author Domain.
 
 ###  Alignment and Extension Technologies {#alignment-and-extension-technologies}
 
@@ -560,8 +558,8 @@ Owner does not publish an SPF record that can produce Identifier Alignment
 between an SPF-Authenticated Identifier and the Author Domain. Alternatively, if 
 the Domain Owner wishes to rely solely on SPF, then it can send email messages that
 have no DKIM-Signature header field that would produce Identifier Alignment between
-a DKIM-Authenticated Identifier and the Author Domain. Neither approach is recommended,
-however.
+a DKIM-Authenticated Identifier and the Author Domain. However, it is **RECOMMENDED** 
+that Domain Owners use both DKIM and SPF as underlying authentication mechanisms for DMARC.
 
 A Mail Receiver implementing the DMARC mechanism gets the Domain Owner's or
 PSO's published Domain Owner Assessment Policy and can use it to inform its handling decisions 
@@ -765,24 +763,22 @@ t:
 
 v:
 :  Version (plain-text; **REQUIRED**).  Identifies the record retrieved
-   as a DMARC Policy Record. It **MUST** have the value of "DMARC1". The value
-   of this tag **MUST** match precisely; if it does not or it is absent,
-   the entire record **MUST** be ignored. It **MUST** be the first tag in the 
-   list.
+   as a DMARC Policy Record. This tag **MUST** be the first tag in the list.
+   The tag value is case sensitive, and the only possible value is "DMARC1". If the
+   tag is not the first in the list, or the tag is absent, or the value is not
+   "DMARC1", then the entire record **MUST** be ignored.
 
-A DMARC Policy Record **MUST** comply with the formal specification found
-in (#formal-definition) in that the "v" tag **MUST** be present and **MUST**
-appear first. Unknown tags **MUST** be ignored. Syntax errors
+##  Formal Definition {#formal-definition}
+
+A DMARC Policy Record **MUST** comply with the formal definition of same
+found in this section. Unknown tags **MUST** be ignored. Syntax errors
 in the remainder of the record **MUST** be discarded in favor of
 default values (if any) or ignored outright.
 
-Note that given the rules of the previous paragraph, the addition of a
-new tag into the registered list of tags does not itself require a
-new version of DMARC to be generated (with a corresponding change to
-the "v" tag's value), but a change to any existing tags does require
-a new version of DMARC.
-
-##  Formal Definition {#formal-definition}
+Because unknown tags **MUST** be ignored, the addition of a new tag into the
+registered list of tags does not itself require a new version of DMARC to be
+generated (with a corresponding change to the "v" tag's value), but a change
+to any existing tags does require a new version of DMARC.
 
 The formal definition of the DMARC Policy Record format, using [@!RFC5234]
 and [@!RFC7405], is as follows:
@@ -794,9 +790,11 @@ and [@!RFC7405], is as follows:
                 ; points (ASCII 0x21) MUST be 
                 ; encoded
 
-  obs-dmarc-uri = dmarc-uri "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
+  obs-dmarc-uri = dmarc-uri obs-dmarc-report-size
                 ; Obsolete syntax, reporters should ignore the
-                ; size if it is found in a DMARC Policy Record.
+                ; obs-dmarc-report-size if it is found in a DMARC Policy Record.
+
+  obs-dmarc-report-size = "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -1204,7 +1202,7 @@ DMARC aggregate reports can reveal to the Domain Owner mail streams using the
 Author Domain but not passing DMARC validation checks. These mail streams may
 be a combination of illegitimate uses of the domain, such as spoofing or other 
 attempted abuse, and legitimate uses, as in the case of a mail stream created
-by an agent of the Domain Owner but one with is not passing is due to Authenticated
+by an agent of the Domain Owner but one which is not passing is due to Authenticated
 Identifiers being unaligned or missing entirely. For such legitimate uses, these
 shortcomings **MUST** be addressed prior to any attempt by the Domain Owner to
 publish a [Domain Owner Assessment Policy](#domain-owner-policy) of 
@@ -1400,7 +1398,7 @@ Such authorization does not carry an explicit or implicit value assertion about
 that message or the Domain Owner, and Mail Receivers **MAY** choose to reject or
 quarantine a message even if it passes the DMARC validation check.  Mail Receivers 
 are encouraged to maintain anti-abuse technologies to combat the possibility of 
-DMARC-enabled criminal campaigns.
+DMARC-enabled abuse.
 
 Mail Receivers **MAY** choose to accept email that fails the DMARC
 validation check even if the published Domain Owner Assessment Policy
@@ -1678,19 +1676,30 @@ registry:
 | dmarc  |[this document]| policy | dmarc     | Evaluated DMARC policy applied/to be applied after policy options have been processed. Must be none, quarantine, or reject. | active |    1    |
 Table: "Authentication-Results Method Registry Update"
 
-## Authentication-Results Result Registry Update {#authentication-results-result-registry-update}
+## Authentication-Results Result Registry {#authentication-results-result-registry}
 
-IANA has added the following in the "Email Authentication Result
-Names" registry:
+A registry group called "Email Authentication Parameters" exists, and it and any
+registries within it should be updated to reference this document. Within it, a 
+registry called "Email Authentication Result Names" exists.
+
+Result codes for DMARC are registered with IANA in this registry. Entries are 
+assigned only for values that have been documented in a manner that satisfies the terms
+of Specification Required, per [@RFC8126]. Each registration includes the auth method; the
+code; the specification that defines it; and its status, which is one of "active" or "deprecateed". 
+The Designated Expert needs to confirm that the provided specification adequately describes the 
+tag and clearly presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.
+
+The set of entries to be defined in this registry is as follows:
 
 {align="left"}
-| Auth Method(s)   | Code | Specification  |  Status |
-|:-------|:------------------|:---------|:-------------|
-| dmarc  | fail | [this document] | active |
-| dmarc  | none | [this document] | active |
-| dmarc  | pass | [this document] | active |
-| dmarc  | permerror | [this document] | active |
-| dmarc  | temperror | [this document] | active |
+| Auth Method   | Code      | Status | Meaning                                                             |
+|:--------------|:----------|:-------|:--------------------------------------------------------------------|
+| dmarc         | fail      | active | A DMARC Policy Record exists for the Author Domain, but no Authenticated Identifier with Identifier Alignment exists |
+| dmarc         | none      | active | No DMARC policy record exists for the Author Domain                 |
+| dmarc         | pass      | active | A DMARC policy exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists |
+| dmarc         | permerror | active | An error occurred during DMARC evaluation that is unrecoverable, such as the retrieval of an improperly formatted DMARC Policy Record. A later attempt is unlikely to produce a final result |
+| dmarc         | temperror | active | An error occurred during DMARC evaluation that is likely transient in nature, such as a DNS server being temporarily unreachable. A later attempt might produce a final result |
 Table: "Authentication-Results Result Registry Update"
 
 ##  DMARC Tags Registry {#dmarc-tags-registry}
@@ -1705,7 +1714,7 @@ are assigned only for values that have been documented in a manner that
 satisfies the terms of Specification Required, per [@RFC8126]. Each
 registration includes the tag name; the specification that defines it; 
 a brief description; and its status, which is one of "current", "experimental", 
-or "historic". The Designated Expert needs to confirm that the provided
+or "historic".  The Designated Expert needs to confirm that the provided
 specification adequately describes the tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.
@@ -1747,10 +1756,10 @@ satisfy the definition of Specification Required, per
 [@RFC8126].  In addition to a reference to a permanent
 specification, each registration includes the format name, a
 brief description, and its status, which must be one of "current",
-"experimental", or "historic". The Designated Expert needs to
-confirm that the provided specification adequately describes the
-report format and clearly presents how it would be used within the
-DMARC context by Domain Owners and Mail Receivers.
+"experimental", or "historic".  The Designated Expert needs to confirm that
+the provided specification adequately describes the report format and clearly
+presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.
 
 The entry in this registry is as follows:
 
@@ -1886,7 +1895,7 @@ have an adverse impact on DNS traffic include:
 None of these threats are unique to DMARC, and they can be addressed using
 a variety of techniques, including, but not limited to:
 
-*  Signing DNS records with Domain Name System Security Extensions (DNSSEC) [@RFC4033], 
+*  Signing DNS records with Domain Name System Security Extensions (DNSSEC) [@RFC9364], 
    which enables recipients to validate the integrity of DNS data and detect and discard 
    forged responses.
 
@@ -1960,13 +1969,13 @@ The URIs identified there are thus more attractive targets for
 intrusion attempts than those found in the "rua" tag. Moreover,
 attacking the DNS of the subject domain to cause failure data to be
 routed fraudulently to an attacker's systems may be an attractive
-prospect. Deployment of DNSSEC [@RFC4033] is advisable if this is a concern.
+prospect. Deployment of DNSSEC [@RFC9364] is advisable if this is a concern.
 
 ##  Secure Protocols {#secure-protocols}
 
 This document encourages the use of secure transport mechanisms to
 prevent the loss of private data to third parties that may be able to
-monitor such transmissions. Unencrypted mechanisms should be
+monitor such transmissions. Unencrypted mechanisms **SHOULD** be
 avoided.
 
 In particular, a message that was originally encrypted or otherwise

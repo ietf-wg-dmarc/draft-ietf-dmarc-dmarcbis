@@ -15,12 +15,11 @@
 <abstract>
 <t>This document describes the Domain-based Message Authentication,
 Reporting, and Conformance (DMARC) protocol.</t>
-<t>DMARC permits the owner of an email's <eref target="#author-domain">Author Domain</eref> to enable
-validation of the domain's use, to indicate the <eref target="#domain-owner">Domain Owner's</eref>
-or <eref target="#public-suffix-operator">Public Suffix Operator's</eref> message handling
-preference regarding failed validation, and to request reports about the
-use of the domain name.  Mail receiving organizations can use this information
-when evaluating handling choices for incoming mail.</t>
+<t>DMARC permits the owner of an email's Author Domain to enable validation of
+the domain's use, to indicate the Domain Owner's or Public Suffix Operator's
+message handling preference regarding failed validation, and to request reports
+about the use of the domain name.  Mail receiving organizations can use this
+information when evaluating handling choices for incoming mail.</t>
 <t>This document obsoletes RFCs 7489 and 9091.</t>
 </abstract>
 
@@ -462,9 +461,9 @@ Domain is the DKIM-Authenticated Identifier.</t>
 assert a list of third-party DKIM Signing Domains that are authorized to sign on
 behalf of a given Author Domain. Therefore, DMARC requires that Identifier
 Alignment is applied to the DKIM-Authenticated Identifier because a message can
-bear a valid signature from any domain, even one used by a bad actor. A DKIM-Authenticated
-Identifier that does not have Identifier Alignment with the Author Domain is not enough
-to validate whether the use of the Author Domain has been authorized by its Domain Owner.</t>
+bear a valid signature from any domain, even one used by a bad actor. Only a
+DKIM-Authenticated Identifier that has Identifier Alignment with the Author Domain
+is enough to validate the authorized use of the Author Domain.</t>
 <t>A single email can contain multiple DKIM signatures, and it is considered to
 produce a DMARC &quot;pass&quot; result if any DKIM-Authenticated Identifier aligns with
 the Author Domain.</t>
@@ -481,9 +480,8 @@ assert a list of third-party domains that are authorized for use as the MAIL FRO
 identity for mail using a given Author Domain. Therefore, DMARC requires that Identifier Alignment
 is applied to the SPF-Authenticated Identifier because any Domain Owner, even a bad
 actor, can publish an SPF record for its domain and send email that will obtain an
-SPF pass result. An SPF-Authenticated Identifier that does not have Identifier
-Alignment with the Author Domain is not enough to validate whether the use of the Author
-Domain has been authorized by its Domain Owner.</t>
+SPF pass result. Only an SPF-Authenticated Identifier that has Identifier Alignment
+with the Author Domain is enough to validate the authorized use of the Author Domain.</t>
 </section>
 
 <section anchor="alignment-and-extension-technologies"><name>Alignment and Extension Technologies</name>
@@ -532,8 +530,8 @@ Owner does not publish an SPF record that can produce Identifier Alignment
 between an SPF-Authenticated Identifier and the Author Domain. Alternatively, if
 the Domain Owner wishes to rely solely on SPF, then it can send email messages that
 have no DKIM-Signature header field that would produce Identifier Alignment between
-a DKIM-Authenticated Identifier and the Author Domain. Neither approach is recommended,
-however.</t>
+a DKIM-Authenticated Identifier and the Author Domain. However, it is <bcp14>RECOMMENDED</bcp14>
+that Domain Owners use both DKIM and SPF as underlying authentication mechanisms for DMARC.</t>
 <t>A Mail Receiver implementing the DMARC mechanism gets the Domain Owner's or
 PSO's published Domain Owner Assessment Policy and can use it to inform its handling decisions
 for messages that undergo DMARC validation checks and do not produce a result of
@@ -730,25 +728,23 @@ to any message that produces a DMARC &quot;fail&quot; result.</dd>
 </dl></dd>
 <dt>v:</dt>
 <dd><t>Version (plain-text; <bcp14>REQUIRED</bcp14>).  Identifies the record retrieved
-as a DMARC Policy Record. It <bcp14>MUST</bcp14> have the value of &quot;DMARC1&quot;. The value
-of this tag <bcp14>MUST</bcp14> match precisely; if it does not or it is absent,
-the entire record <bcp14>MUST</bcp14> be ignored. It <bcp14>MUST</bcp14> be the first tag in the
-list.</t>
+as a DMARC Policy Record. This tag <bcp14>MUST</bcp14> be the first tag in the list.
+The tag value is case sensitive, and the only possible value is &quot;DMARC1&quot;. If the
+tag is not the first in the list, or the tag is absent, or the value is not
+&quot;DMARC1&quot;, then the entire record <bcp14>MUST</bcp14> be ignored.</t>
 </dd>
 </dl>
-<t>A DMARC Policy Record <bcp14>MUST</bcp14> comply with the formal specification found
-in <xref target="formal-definition"></xref> in that the &quot;v&quot; tag <bcp14>MUST</bcp14> be present and <bcp14>MUST</bcp14>
-appear first. Unknown tags <bcp14>MUST</bcp14> be ignored. Syntax errors
-in the remainder of the record <bcp14>MUST</bcp14> be discarded in favor of
-default values (if any) or ignored outright.</t>
-<t>Note that given the rules of the previous paragraph, the addition of a
-new tag into the registered list of tags does not itself require a
-new version of DMARC to be generated (with a corresponding change to
-the &quot;v&quot; tag's value), but a change to any existing tags does require
-a new version of DMARC.</t>
 </section>
 
 <section anchor="formal-definition"><name>Formal Definition</name>
+<t>A DMARC Policy Record <bcp14>MUST</bcp14> comply with the formal definition of same
+found in this section. Unknown tags <bcp14>MUST</bcp14> be ignored. Syntax errors
+in the remainder of the record <bcp14>MUST</bcp14> be discarded in favor of
+default values (if any) or ignored outright.</t>
+<t>Because unknown tags <bcp14>MUST</bcp14> be ignored, the addition of a new tag into the
+registered list of tags does not itself require a new version of DMARC to be
+generated (with a corresponding change to the &quot;v&quot; tag's value), but a change
+to any existing tags does require a new version of DMARC.</t>
 <t>The formal definition of the DMARC Policy Record format, using <xref target="RFC5234"></xref>
 and <xref target="RFC7405"></xref>, is as follows:</t>
 
@@ -758,9 +754,11 @@ and <xref target="RFC7405"></xref>, is as follows:</t>
                 ; points (ASCII 0x21) MUST be 
                 ; encoded
 
-  obs-dmarc-uri = dmarc-uri "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
+  obs-dmarc-uri = dmarc-uri obs-dmarc-report-size
                 ; Obsolete syntax, reporters should ignore the
-                ; size if it is found in a DMARC Policy Record.
+                ; obs-dmarc-report-size if it is found in a DMARC Policy Record.
+
+  obs-dmarc-report-size = "!" 1*DIGIT [ "k" / "m" / "g" / "t" ]
 
   dmarc-sep     = *WSP ";" *WSP
 
@@ -1207,7 +1205,7 @@ successful deployment.</t>
 Author Domain but not passing DMARC validation checks. These mail streams may
 be a combination of illegitimate uses of the domain, such as spoofing or other
 attempted abuse, and legitimate uses, as in the case of a mail stream created
-by an agent of the Domain Owner but one with is not passing is due to Authenticated
+by an agent of the Domain Owner but one which is not passing is due to Authenticated
 Identifiers being unaligned or missing entirely. For such legitimate uses, these
 shortcomings <bcp14>MUST</bcp14> be addressed prior to any attempt by the Domain Owner to
 publish a <eref target="#domain-owner-policy">Domain Owner Assessment Policy</eref> of
@@ -1398,7 +1396,7 @@ Such authorization does not carry an explicit or implicit value assertion about
 that message or the Domain Owner, and Mail Receivers <bcp14>MAY</bcp14> choose to reject or
 quarantine a message even if it passes the DMARC validation check.  Mail Receivers
 are encouraged to maintain anti-abuse technologies to combat the possibility of
-DMARC-enabled criminal campaigns.</t>
+DMARC-enabled abuse.</t>
 <t>Mail Receivers <bcp14>MAY</bcp14> choose to accept email that fails the DMARC
 validation check even if the published Domain Owner Assessment Policy
 is &quot;reject&quot;. In particular, because of the considerations discussed
@@ -1685,17 +1683,26 @@ registry:</t>
 </tbody>
 </table></section>
 
-<section anchor="authentication-results-result-registry-update"><name>Authentication-Results Result Registry Update</name>
-<t>IANA has added the following in the &quot;Email Authentication Result
-Names&quot; registry:</t>
+<section anchor="authentication-results-result-registry"><name>Authentication-Results Result Registry</name>
+<t>A registry group called &quot;Email Authentication Parameters&quot; exists, and it and any
+registries within it should be updated to reference this document. Within it, a
+registry called &quot;Email Authentication Result Names&quot; exists.</t>
+<t>Result codes for DMARC are registered with IANA in this registry. Entries are
+assigned only for values that have been documented in a manner that satisfies the terms
+of Specification Required, per <xref target="RFC8126"></xref>. Each registration includes the auth method; the
+code; the specification that defines it; and its status, which is one of &quot;active&quot; or &quot;deprecateed&quot;.
+The Designated Expert needs to confirm that the provided specification adequately describes the
+tag and clearly presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.</t>
+<t>The set of entries to be defined in this registry is as follows:</t>
 <table align="left"><name>&quot;Authentication-Results Result Registry Update&quot;
 </name>
 <thead>
 <tr>
-<th align="left">Auth Method(s)</th>
+<th align="left">Auth Method</th>
 <th align="left">Code</th>
-<th align="left">Specification</th>
 <th align="left">Status</th>
+<th align="left">Meaning</th>
 </tr>
 </thead>
 
@@ -1703,36 +1710,36 @@ Names&quot; registry:</t>
 <tr>
 <td align="left">dmarc</td>
 <td align="left">fail</td>
-<td align="left">[this document]</td>
 <td align="left">active</td>
+<td align="left">A DMARC Policy Record exists for the Author Domain, but no Authenticated Identifier with Identifier Alignment exists</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">none</td>
-<td align="left">[this document]</td>
 <td align="left">active</td>
+<td align="left">No DMARC policy record exists for the Author Domain</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">pass</td>
-<td align="left">[this document]</td>
 <td align="left">active</td>
+<td align="left">A DMARC policy exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">permerror</td>
-<td align="left">[this document]</td>
 <td align="left">active</td>
+<td align="left">An error occurred during DMARC evaluation that is unrecoverable, such as the retrieval of an improperly formatted DMARC Policy Record. A later attempt is unlikely to produce a final result</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">temperror</td>
-<td align="left">[this document]</td>
 <td align="left">active</td>
+<td align="left">An error occurred during DMARC evaluation that is likely transient in nature, such as a DNS server being temporarily unreachable. A later attempt might produce a final result</td>
 </tr>
 </tbody>
 </table></section>
@@ -1747,7 +1754,7 @@ are assigned only for values that have been documented in a manner that
 satisfies the terms of Specification Required, per <xref target="RFC8126"></xref>. Each
 registration includes the tag name; the specification that defines it;
 a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;,
-or &quot;historic&quot;. The Designated Expert needs to confirm that the provided
+or &quot;historic&quot;.  The Designated Expert needs to confirm that the provided
 specification adequately describes the tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.</t>
@@ -1877,10 +1884,10 @@ satisfy the definition of Specification Required, per
 <xref target="RFC8126"></xref>.  In addition to a reference to a permanent
 specification, each registration includes the format name, a
 brief description, and its status, which must be one of &quot;current&quot;,
-&quot;experimental&quot;, or &quot;historic&quot;. The Designated Expert needs to
-confirm that the provided specification adequately describes the
-report format and clearly presents how it would be used within the
-DMARC context by Domain Owners and Mail Receivers.</t>
+&quot;experimental&quot;, or &quot;historic&quot;.  The Designated Expert needs to confirm that
+the provided specification adequately describes the report format and clearly
+presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.</t>
 <t>The entry in this registry is as follows:</t>
 <table align="left"><name>&quot;DMARC Report Format Registry&quot;
 </name>
@@ -2039,7 +2046,7 @@ appear unaligned or vice-versa.</t>
 a variety of techniques, including, but not limited to:</t>
 
 <ul>
-<li><t>Signing DNS records with Domain Name System Security Extensions (DNSSEC) <xref target="RFC4033"></xref>,
+<li><t>Signing DNS records with Domain Name System Security Extensions (DNSSEC) <xref target="RFC9364"></xref>,
 which enables recipients to validate the integrity of DNS data and detect and discard
 forged responses.</t>
 </li>
@@ -2109,13 +2116,13 @@ The URIs identified there are thus more attractive targets for
 intrusion attempts than those found in the &quot;rua&quot; tag. Moreover,
 attacking the DNS of the subject domain to cause failure data to be
 routed fraudulently to an attacker's systems may be an attractive
-prospect. Deployment of DNSSEC <xref target="RFC4033"></xref> is advisable if this is a concern.</t>
+prospect. Deployment of DNSSEC <xref target="RFC9364"></xref> is advisable if this is a concern.</t>
 </section>
 
 <section anchor="secure-protocols"><name>Secure Protocols</name>
 <t>This document encourages the use of secure transport mechanisms to
 prevent the loss of private data to third parties that may be able to
-monitor such transmissions. Unencrypted mechanisms should be
+monitor such transmissions. Unencrypted mechanisms <bcp14>SHOULD</bcp14> be
 avoided.</t>
 <t>In particular, a message that was originally encrypted or otherwise
 secured might appear in a report that is not sent securely, which
@@ -2152,7 +2159,7 @@ the organizational domain, the latter described in <xref target="identifier-alig
 <li>There is no DMARC Policy Record published at &quot;_dmarc.a.mail.example.com&quot;</li>
 <li>There is one published at &quot;_dmarc.mail.example.com&quot; and this is intended to be the Organizational Domain for this message</li>
 <li>There is also a DMARC Policy Record published at &quot;_dmarc.example.com&quot;, with default alignment (relaxed)</li>
-<li>An is able to send mail with the Author Domain of &quot;evil.example.com&quot; and an Authenticated Identifier of &quot;mail.example.com&quot;</li>
+<li>An attacker is able to send mail with the Author Domain of &quot;evil.example.com&quot; and an Authenticated Identifier of &quot;mail.example.com&quot;</li>
 </ul>
 <t>In this scenario, if a Mail Receiver incorrectly determines the Organizational Domain to be &quot;example.com&quot;,
 then the attacker's mail will pass DMARC validation checks.</t>
@@ -2212,7 +2219,6 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2142.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2308.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3464.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4033.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4870.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
@@ -2223,6 +2229,7 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8551.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8617.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9091.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9364.xml"/>
 </references>
 </references>
 
