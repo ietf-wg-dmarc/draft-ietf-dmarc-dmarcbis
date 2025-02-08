@@ -2007,7 +2007,7 @@ The following example illustrates this possibility:
 * There is no DMARC Policy Record published at "\_dmarc.a.mail.example.com"
 * There is one published at "\_dmarc.mail.example.com" and this is intended to be the Organizational Domain for this message
 * There is also a DMARC Policy Record published at "\_dmarc.example.com", with default alignment (relaxed)
-* An is able to send mail with the Author Domain of "evil.example.com" and an Authenticated Identifier of "mail.example.com"
+* An attacker is able to send mail with the Author Domain of "evil.example.com" and an Authenticated Identifier of "mail.example.com"
 
 In this scenario, if a Mail Receiver incorrectly determines the Organizational Domain to be "example.com",
 then the attacker's mail will pass DMARC validation checks.
