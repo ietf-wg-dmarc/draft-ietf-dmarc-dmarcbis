@@ -6,7 +6,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489, 9091 (if approved)                       J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 11 July 2025                                     7 January 2025
+Expires: 12 August 2025                                  8 February 2025
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 July 2025.
+   This Internet-Draft will expire on 12 August 2025.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 1]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 1]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 2]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 2]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
      4.7.  DMARC Policy Record Format  . . . . . . . . . . . . . . .  18
@@ -157,17 +157,17 @@ Internet-Draft                  DMARCbis                    January 2025
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  44
      9.1.  Authentication-Results Method Registry Update . . . . . .  44
      9.2.  Authentication-Results Result Registry Update . . . . . .  45
-     9.3.  DMARC Tag Registry  . . . . . . . . . . . . . . . . . . .  46
-     9.4.  DMARC Report Format Registry  . . . . . . . . . . . . . .  47
+     9.3.  DMARC Tags Registry . . . . . . . . . . . . . . . . . . .  46
+     9.4.  DMARC Report Formats Registry . . . . . . . . . . . . . .  47
      9.5.  Underscored and Globally Scoped DNS Node Names
            Registry  . . . . . . . . . . . . . . . . . . . . . . . .  48
    10. Privacy Considerations  . . . . . . . . . . . . . . . . . . .  48
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 3]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 3]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
      10.1.  Aggregate Report Considerations  . . . . . . . . . . . .  48
@@ -221,9 +221,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 4]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 4]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
      C.4.  Reporting . . . . . . . . . . . . . . . . . . . . . . . .  76
@@ -277,9 +277,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 5]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 5]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    provide domain-level authentication but are not directly associated
@@ -333,9 +333,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 6]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 6]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    DMARC, in the associated [I-D.ietf-dmarc-aggregate-reporting] and
@@ -389,9 +389,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 7]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 7]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 2.2.  Anti-Phishing
@@ -445,9 +445,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 8]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 8]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  Reporting or otherwise evaluating other than the last-hop IP
@@ -501,9 +501,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                  [Page 9]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                 [Page 9]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 3.2.3.  DKIM Signing Domain
@@ -557,9 +557,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 10]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 10]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 3.2.8.  Domain Owner Assessment Policy
@@ -613,9 +613,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 11]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 11]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 3.2.11.  Mail Receiver
@@ -669,9 +669,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 12]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 12]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 3.2.16.  Public Suffix Operator (PSO)
@@ -725,9 +725,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 13]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 13]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Authenticated Identifier (#authenticated-identifiers) from that
@@ -781,9 +781,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 14]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 14]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  DKIM, [RFC6376].  The DKIM Signing Domain (#dkim-signing-domain)
@@ -837,9 +837,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 15]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 15]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    DMARC operation is predicated on the input being a valid RFC5322
@@ -893,9 +893,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 16]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 16]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 4.4.3.  Alignment and Extension Technologies
@@ -949,9 +949,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 17]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 17]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Per [RFC1035], a TXT record can comprise multiple "character-string"
@@ -1005,9 +1005,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 18]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 18]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
       the Domain Owner (#domain-owner) or PSO (#public-suffix-
@@ -1061,9 +1061,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 19]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 19]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
       existent subdomains of the Organizational Domain queried and not
@@ -1117,9 +1117,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 20]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 20]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
       (comma-separated plain-text list of DMARC Reporting URIs;
@@ -1173,9 +1173,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 21]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 21]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    t:  DMARC policy test mode (plain-text; OPTIONAL; default is "n").
@@ -1229,9 +1229,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 22]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 22]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 4.8.  Formal Definition
@@ -1285,9 +1285,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 23]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 23]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    In each dmarc-tag, the dmarc-value has a syntax that depends on the
@@ -1341,9 +1341,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 24]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 24]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
     +---------------+                             +--------------------+
@@ -1397,9 +1397,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 25]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 25]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 4.10.  DNS Tree Walk
@@ -1453,9 +1453,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 26]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 26]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    result in more than eight DNS queries.  Observed data at the time of
@@ -1509,9 +1509,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 27]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 27]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    To illustrate, for a message with the arbitrary Author Domain of
@@ -1565,9 +1565,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 28]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 28]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    If the DMARC Policy Record to be applied is that of either the
@@ -1621,9 +1621,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 29]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 29]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  The SPF-Authenticated Identifier if there is an SPF pass result
@@ -1677,9 +1677,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 30]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 30]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    3.  Otherwise, select the DMARC Policy Record found at the name with
@@ -1733,9 +1733,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 31]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 31]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 5.1.1.  Publish an SPF Record for an Aligned Domain
@@ -1789,9 +1789,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 32]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 32]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    creation of that mailbox.  Many third-party services exist that will
@@ -1845,9 +1845,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 33]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 33]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Domains include a desire to have different policy settings or
@@ -1879,11 +1879,11 @@ Internet-Draft                  DMARCbis                    January 2025
    *  _dmarc.com
 
    To avoid this circumstance, Domain Owners wishing to have a specific
-   DMARC Policy Record applied to a given [Author Domain]{#author-
-   domain) longer than eight labels MUST publish a DMARC Policy Record
-   at that domain's location in the DNS namespace, as such records are
-   always queried by Mail Receivers that participate in DMARC before the
-   Tree Walk begins.  In the above example, this would mean publishing a
+   DMARC Policy Record applied to a given Author Domain (#author-domain)
+   longer than eight labels MUST publish a DMARC Policy Record at that
+   domain's location in the DNS namespace, as such records are always
+   queried by Mail Receivers that participate in DMARC before the Tree
+   Walk begins.  In the above example, this would mean publishing a
    DMARC Policy Record at the name
    "_dmarc.mail.a.b.c.d.e.f.g.example.com.".
 
@@ -1901,9 +1901,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 34]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 34]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 5.3.  Mail Receiver Actions
@@ -1957,9 +1957,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 35]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 35]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 5.3.3.  Determine If Authenticated Identifiers Exist
@@ -2013,9 +2013,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 36]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 36]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    See Section 7.2 for further discussion of topics regarding rejecting
@@ -2069,9 +2069,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 37]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 37]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    A DMARC pass for a message indicates only that the use of the Author
@@ -2125,9 +2125,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 38]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 38]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 7.  Other Topics
@@ -2181,9 +2181,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 39]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 39]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  Full rejection, wherein the SMTP server issues a 5xy reply code to
@@ -2237,9 +2237,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 40]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 40]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Mail that is sent by authorized, independent third parties might not
@@ -2293,9 +2293,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 41]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 41]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    |  It is therefore critical that domains that host users who might
@@ -2349,9 +2349,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 42]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 42]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    In practice, despite this advice, few Mail Receivers apply any
@@ -2405,9 +2405,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 43]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 43]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    In order to fully participate in DMARC, Mail Receivers
@@ -2461,9 +2461,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 44]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 44]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    +======+===========+======+==========+===============+======+=======+
@@ -2517,27 +2517,26 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 45]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 45]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
-9.3.  DMARC Tag Registry
+9.3.  DMARC Tags Registry
 
-   A registry tree called "Domain-based Message Authentication,
-   Reporting, and Conformance (DMARC) Parameters" exists, and it and any
-   sub-registries thereunder should be updated to reference this
-   document.  Within it, a new sub-registry called the "DMARC Tag
-   Registry" exists.
+   A registry group called "Domain-based Message Authentication,
+   Reporting, and Conformance (DMARC)" exists, and it and any registries
+   within it should be updated to reference this document.  Within it, a
+   registry called "DMARC Tags" exists.
 
-   Names of DMARC tags are registered with IANA in this sub-registry.
+   Names of DMARC tags are registered with IANA in this registry.
    Entries are assigned only for values that have been documented in a
    manner that satisfies the terms of Specification Required, per
    [RFC8126].  Each registration includes the tag name; the
    specification that defines it; a brief description; and its status,
    which is one of "current", "experimental", or "historic".  The
    Designated Expert needs to confirm that the provided specification
-   adequately describes the new tag and clearly presents how it would be
+   adequately describes the tag and clearly presents how it would be
    used within the DMARC context by Domain Owners and Mail Receivers.
 
    To avoid version compatibility issues, tags added to the DMARC
@@ -2570,15 +2569,15 @@ Internet-Draft                  DMARCbis                    January 2025
    +-------+-----------+----------+-----------------------------+
    | psd   | [this     | current  | Indicates whether policy    |
    |       | document] |          | record is published by a    |
-
-
-
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 46]
-
-Internet-Draft                  DMARCbis                    January 2025
-
-
    |       |           |          | Public Suffix Domain        |
+
+
+
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 46]
+
+Internet-Draft                  DMARCbis                   February 2025
+
+
    +-------+-----------+----------+-----------------------------+
    | rf    | [this     | historic | Failure reporting format(s) |
    |       | document] |          |                             |
@@ -2602,25 +2601,23 @@ Internet-Draft                  DMARCbis                    January 2025
    |       | document] |          |                             |
    +-------+-----------+----------+-----------------------------+
 
-                   Table 5: "DMARC Tag Registry"
+                   Table 5: "DMARC Tags Registry"
 
-9.4.  DMARC Report Format Registry
+9.4.  DMARC Report Formats Registry
 
    Also, within "Domain-based Message Authentication, Reporting, and
-   Conformance (DMARC) Parameters", a new sub-registry called "DMARC
-   Report Format Registry" exists and should be updated to reference
-   this document.
+   Conformance (DMARC)", a registry called "DMARC Report Formats" exists
+   and should be updated to reference this document.
 
    Names of DMARC failure reporting formats are registered with IANA in
-   this registry.  New entries are assigned only for values that satisfy
-   the definition of Specification Required, per [RFC8126].  In addition
-   to a reference to a permanent specification, each registration
-   includes the format name, a brief description, and its status, which
-   must be one of "current", "experimental", or "historic".  The
-   Designated Expert needs to confirm that the provided specification
-   adequately describes the report format and clearly presents how it
-   would be used within the DMARC context by Domain Owners and Mail
-   Receivers.
+   this registry.  Entries are assigned only for values that satisfy the
+   definition of Specification Required, per [RFC8126].  In addition to
+   a reference to a permanent specification, each registration includes
+   the format name, a brief description, and its status, which must be
+   one of "current", "experimental", or "historic".  The Designated
+   Expert needs to confirm that the provided specification adequately
+   describes the report format and clearly presents how it would be used
+   within the DMARC context by Domain Owners and Mail Receivers.
 
    The entry in this registry is as follows:
 
@@ -2629,9 +2626,12 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 47]
+
+
+
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 47]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    +========+===========+=========+==================================+
@@ -2685,9 +2685,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 48]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 48]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 10.2.  Failure Report Considerations
@@ -2741,9 +2741,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 49]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 49]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    To avoid this risk one must ensure that no unauthorized source can
@@ -2797,9 +2797,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 50]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 50]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    None of these threats are unique to DMARC, and they can be addressed
@@ -2853,9 +2853,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 51]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 51]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    per [RFC7489] is to apply the DMARC mechanism to each domain found in
@@ -2909,9 +2909,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 52]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 52]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 11.8.  Relaxed Alignment Considerations
@@ -2965,9 +2965,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 53]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 53]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  There is also a DMARC Policy Record published at
@@ -3004,26 +3004,26 @@ Internet-Draft                  DMARCbis                    January 2025
               Brotman, A., "Domain-based Message Authentication,
               Reporting, and Conformance (DMARC) Aggregate Reporting",
               Work in Progress, Internet-Draft, draft-ietf-dmarc-
-              aggregate-reporting-24, 16 December 2024,
+              aggregate-reporting-27, 31 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-
-              aggregate-reporting-24>.
+              aggregate-reporting-27>.
 
    [I-D.ietf-dmarc-failure-reporting]
               Jones, S. M. and A. Vesely, "Domain-based Message
               Authentication, Reporting, and Conformance (DMARC) Failure
               Reporting", Work in Progress, Internet-Draft, draft-ietf-
-              dmarc-failure-reporting-11, 10 September 2024,
+              dmarc-failure-reporting-12, 9 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-
-              failure-reporting-11>.
+              failure-reporting-12>.
 
 
 
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 54]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 54]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    [RFC1035]  Mockapetris, P., "Domain names - implementation and
@@ -3077,9 +3077,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 55]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 55]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    [RFC6591]  Fontana, H., "Authentication Failure Reporting Using the
@@ -3133,9 +3133,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 56]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 56]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    [M3AUTH]   "M3AAWG Email Authentication Recommended Best Practices",
@@ -3189,9 +3189,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 57]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 57]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -3245,9 +3245,9 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 58]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 58]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    S/MIME also suffers from the heavyweight problem of Public Key
@@ -3301,9 +3301,9 @@ A.2.  Method Exclusion
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 59]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 59]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 A.3.  Sender Header Field
@@ -3357,9 +3357,9 @@ A.4.  Domain Existence Test
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 60]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 60]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    The DMARC mechanism makes no such requirement for the existence of
@@ -3413,9 +3413,9 @@ A.6.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 61]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 61]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Operational experience showed that the pct tag was usually not
@@ -3469,9 +3469,9 @@ Appendix B.  Examples
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 62]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 62]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 B.1.  Identifier Alignment Examples
@@ -3525,9 +3525,9 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 63]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 63]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    In this case, the RFC5321.MailFrom domain that is neither the same
@@ -3581,9 +3581,9 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 64]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 64]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 B.2.  Domain Owner Example
@@ -3637,9 +3637,9 @@ B.2.1.  Entire Domain, Monitoring Mode
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 65]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 65]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 B.2.2.  Entire Domain, Monitoring Mode, Per-Message Failure Reports
@@ -3693,9 +3693,9 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 66]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 66]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    To publish such a record, the DNS administrator for the Domain Owner
@@ -3749,9 +3749,9 @@ B.2.4.  Overriding destination addresses
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 67]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 67]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  The override address for failure reports is "failure-
@@ -3805,9 +3805,9 @@ B.2.5.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 68]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 68]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    *  Mail Receivers are advised that the Domain Owner considers
@@ -3861,9 +3861,9 @@ Internet-Draft                  DMARCbis                    January 2025
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 69]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 69]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 B.3.  Mail Receiver Example
@@ -3917,9 +3917,9 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 70]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 70]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    If no Authenticated Identifiers align with the Author Domain, then
@@ -3973,9 +3973,9 @@ B.4.1.  Simple Organizational and Policy Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 71]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 71]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    In this example, "_dmarc.example.com" and
@@ -4029,9 +4029,9 @@ B.4.2.  Deep Tree Walk Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 72]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 72]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    then query "_dmarc.h.i.j.k.example.com", "_dmarc.i.j.k.example.com",
@@ -4085,9 +4085,9 @@ B.4.3.  Example with a PSD DMARC Policy Record
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 73]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 73]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    Since the three domains are all different, tree walks find their
@@ -4141,9 +4141,9 @@ B.5.  Utilization of Aggregate Feedback: Example
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 74]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 74]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
    with enough information to either directly correct the problem or
@@ -4197,9 +4197,9 @@ C.2.1.  Terms Added
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 75]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 75]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 C.2.2.  Definitions Updated
@@ -4253,9 +4253,9 @@ C.5.  Tags
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 76]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 76]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 C.5.1.  Tags Added
@@ -4309,9 +4309,9 @@ C.7.  Report Generator Recommendations
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 77]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 77]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 C.8.  Removal of RFC 7489 Appendix A.5
@@ -4365,9 +4365,9 @@ C.9.4.  RFC Errata, Erratum ID 6439, RFC 7489, Section 7.1
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 78]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 78]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 C.9.5.  RFC Errata, Erratum ID 5221, RFC 7489, Appendix C
@@ -4421,9 +4421,9 @@ C.9.11.  RFC Errata, Erratum ID 7100, RFC 7489, Section 7.2.1.1
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 79]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 79]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 C.9.12.  RFC Errata, Erratum ID 7835, RFC 7489, Section 6.6.3
@@ -4477,9 +4477,9 @@ Acknowledgements
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 80]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 80]
 
-Internet-Draft                  DMARCbis                    January 2025
+Internet-Draft                  DMARCbis                   February 2025
 
 
 Acknowledgements - RFC 7489
@@ -4533,4 +4533,4 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed)   Expires 11 July 2025                 [Page 81]
+Herr (ed) & Levine (ed)  Expires 12 August 2025                [Page 81]

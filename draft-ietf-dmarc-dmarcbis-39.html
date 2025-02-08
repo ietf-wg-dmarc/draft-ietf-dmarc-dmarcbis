@@ -1218,11 +1218,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DMARCbis</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 11 July 2025</td>
+<td class="center">Expires 12 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1238,12 +1238,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-07" class="published">7 January 2025</time>
+<time datetime="2025-02-08" class="published">8 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-11">11 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-12">12 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1289,7 +1289,7 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1564,10 +1564,10 @@ when evaluating handling choices for incoming mail.<a href="#section-abstract-2"
                 <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-authentication-results-resu" class="internal xref">Authentication-Results Result Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-dmarc-tag-registry" class="internal xref">DMARC Tag Registry</a></p>
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-dmarc-tags-registry" class="internal xref">DMARC Tags Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-dmarc-report-format-registr" class="internal xref">DMARC Report Format Registry</a></p>
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-dmarc-report-formats-regist" class="internal xref">DMARC Report Formats Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.5">
                 <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-underscored-and-globally-sc" class="internal xref">Underscored and Globally Scoped DNS Node Names Registry</a></p>
@@ -3368,7 +3368,7 @@ performing a Tree Walk would only perform queries for these names:<a href="#sect
 </li>
           </ul>
 <p id="section-5.1.8-6">To avoid this circumstance, Domain Owners wishing to have a specific DMARC Policy
-Record applied to a given [Author Domain]{#author-domain) longer than eight labels
+Record applied to a given <a href="#author-domain">Author Domain</a> longer than eight labels
 <span class="bcp14">MUST</span> publish a DMARC Policy Record at that domain's location in the DNS namespace,
 as such records are always queried by Mail Receivers that participate in DMARC before
 the Tree Walk begins.  In the above example, this would mean publishing a DMARC Policy
@@ -3963,33 +3963,32 @@ Names" registry:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
         </table>
 </section>
 </div>
-<div id="dmarc-tag-registry">
+<div id="dmarc-tags-registry">
 <section id="section-9.3">
-        <h3 id="name-dmarc-tag-registry">
-<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-dmarc-tag-registry" class="section-name selfRef">DMARC Tag Registry</a>
+        <h3 id="name-dmarc-tags-registry">
+<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-dmarc-tags-registry" class="section-name selfRef">DMARC Tags Registry</a>
         </h3>
-<p id="section-9.3-1">A registry tree called "Domain-based Message Authentication,
-Reporting, and Conformance (DMARC) Parameters" exists, and it
-and any sub-registries thereunder should be updated to reference
-this document.  Within it, a new sub-registry called the "DMARC
-Tag Registry" exists.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
-<p id="section-9.3-2">Names of DMARC tags are registered with IANA in this sub-registry. Entries
+<p id="section-9.3-1">A registry group called "Domain-based Message Authentication,
+Reporting, and Conformance (DMARC)" exists, and it and any registries
+within it should be updated to reference this document.  Within it, a
+registry called "DMARC Tags" exists.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
+<p id="section-9.3-2">Names of DMARC tags are registered with IANA in this registry. Entries
 are assigned only for values that have been documented in a manner that
 satisfies the terms of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each
 registration includes the tag name; the specification that defines it;
 a brief description; and its status, which is one of "current", "experimental",
 or "historic". The Designated Expert needs to confirm that the provided
-specification adequately describes the new tag and clearly presents
+specification adequately describes the tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.<a href="#section-9.3-2" class="pilcrow">¶</a></p>
 <p id="section-9.3-3">To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
 <p id="section-9.3-4">The set of entries to be defined in this registry is as follows:<a href="#section-9.3-4" class="pilcrow">¶</a></p>
-<span id="name-dmarc-tag-registry-2"></span><table class="left" id="table-5">
+<span id="name-dmarc-tags-registry-2"></span><table class="left" id="table-5">
           <caption>
 <a href="#table-5" class="selfRef">Table 5</a>:
-<a href="#name-dmarc-tag-registry-2" class="selfRef">"DMARC Tag Registry"</a>
+<a href="#name-dmarc-tags-registry-2" class="selfRef">"DMARC Tags Registry"</a>
           </caption>
 <thead>
             <tr>
@@ -4088,17 +4087,16 @@ when processed by implementations conforming to prior specifications.<a href="#s
         </table>
 </section>
 </div>
-<div id="dmarc-report-format-registry">
+<div id="dmarc-report-formats-registry">
 <section id="section-9.4">
-        <h3 id="name-dmarc-report-format-registr">
-<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-dmarc-report-format-registr" class="section-name selfRef">DMARC Report Format Registry</a>
+        <h3 id="name-dmarc-report-formats-regist">
+<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-dmarc-report-formats-regist" class="section-name selfRef">DMARC Report Formats Registry</a>
         </h3>
 <p id="section-9.4-1">Also, within "Domain-based Message Authentication, Reporting, and
-Conformance (DMARC) Parameters", a new sub-registry called "DMARC
-Report Format Registry" exists and should be updated to reference
-this document.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
+Conformance (DMARC)", a registry called "DMARC Report Formats" exists
+and should be updated to reference this document.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
 <p id="section-9.4-2">Names of DMARC failure reporting formats are registered with IANA
-in this registry. New entries are assigned only for values that
+in this registry. Entries are assigned only for values that
 satisfy the definition of Specification Required, per
 <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.  In addition to a reference to a permanent
 specification, each registration includes the format name, a
@@ -4108,10 +4106,10 @@ confirm that the provided specification adequately describes the
 report format and clearly presents how it would be used within the
 DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
 <p id="section-9.4-3">The entry in this registry is as follows:<a href="#section-9.4-3" class="pilcrow">¶</a></p>
-<span id="name-dmarc-report-format-registry"></span><table class="left" id="table-6">
+<span id="name-dmarc-report-format-registr"></span><table class="left" id="table-6">
           <caption>
 <a href="#table-6" class="selfRef">Table 6</a>:
-<a href="#name-dmarc-report-format-registry" class="selfRef">"DMARC Report Format Registry"</a>
+<a href="#name-dmarc-report-format-registr" class="selfRef">"DMARC Report Format Registry"</a>
           </caption>
 <thead>
             <tr>
@@ -4374,7 +4372,7 @@ processed, then the DMARC evaluation is incomplete.<a href="#section-11.5-3" cla
 <p id="section-11.6-1">To avoid abuse by bad actors, reporting addresses generally have to
 be inside the domains about which reports are requested.  To
 accommodate special cases such as a need to get reports about domains
-that cannot actually receive mail, <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-24#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span> describes
+that cannot actually receive mail, <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-27#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span> describes
 a DNS-based mechanism for validating approved external reporting.<a href="#section-11.6-1" class="pilcrow">¶</a></p>
 <p id="section-11.6-2">The obvious consideration here is an increased DNS load against
 domains that are claimed as external recipients. Negative caching
@@ -4476,11 +4474,11 @@ interpreted to indicate that the PSD is the Organizational Domain.<a href="#sect
 <dl class="references">
 <dt id="I-D.ietf-dmarc-aggregate-reporting">[I-D.ietf-dmarc-aggregate-reporting]</dt>
         <dd>
-<span class="refAuthor">Brotman, A.</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Aggregate Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-aggregate-reporting-24</span>, <time datetime="2024-12-16" class="refDate">16 December 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-24">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-24</a>&gt;</span>. </dd>
+<span class="refAuthor">Brotman, A.</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Aggregate Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-aggregate-reporting-27</span>, <time datetime="2025-01-31" class="refDate">31 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-27">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-27</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-dmarc-failure-reporting">[I-D.ietf-dmarc-failure-reporting]</dt>
         <dd>
-<span class="refAuthor">Jones, S. M.</span> and <span class="refAuthor">A. Vesely</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Failure Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-failure-reporting-11</span>, <time datetime="2024-09-10" class="refDate">10 September 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-11">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-11</a>&gt;</span>. </dd>
+<span class="refAuthor">Jones, S. M.</span> and <span class="refAuthor">A. Vesely</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC) Failure Reporting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dmarc-failure-reporting-12</span>, <time datetime="2025-01-09" class="refDate">9 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-12">https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-failure-reporting-12</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC1035">[RFC1035]</dt>
         <dd>
@@ -5073,7 +5071,7 @@ might create an entry like the following in the appropriate zone file
 </div>
 <p id="appendix-B.2.3-6">Because the address used in the "ruf" tag is outside the Organizational Domain
 in which this record is published, conforming Mail Receivers <span class="bcp14">MUST</span> implement
-additional checks as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-24#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>.
+additional checks as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-27#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>.
 To pass these additional checks, the Report Consumer's Domain Owner will need to
 publish an additional DMARC Policy Record as follows:<a href="#appendix-B.2.3-6" class="pilcrow">¶</a></p>
 <ul class="compact">
@@ -5105,7 +5103,7 @@ to override the specific address published by example.com with a different
 address in the same third party domain. This may be necessary if the third
 party Report Consumer has changed its email address, or want to guard against
 typos in the DMARC Policy Record of the Author Domain. Intermediaries and other
-third parties should refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-24#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>
+third parties should refer to <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-dmarc-aggregate-reporting-27#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-dmarc-aggregate-reporting" class="cite xref">I-D.ietf-dmarc-aggregate-reporting</a>]</span>
 for the full details of this mechanism.<a href="#appendix-B.2.4-1" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.4-2">The third party Report Consumer accomplishes this by adding the following to its
 DMARC Policy Record from <a href="#per-message-failure-reports-directed-to-third-party" class="auto internal xref">Appendix B.2.3</a>:<a href="#appendix-B.2.4-2" class="pilcrow">¶</a></p>

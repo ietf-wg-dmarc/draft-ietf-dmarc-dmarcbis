@@ -1263,7 +1263,7 @@ performing a Tree Walk would only perform queries for these names:</t>
 <li>_dmarc.com</li>
 </ul>
 <t>To avoid this circumstance, Domain Owners wishing to have a specific DMARC Policy
-Record applied to a given [Author Domain]{#author-domain) longer than eight labels
+Record applied to a given <eref target="#author-domain">Author Domain</eref> longer than eight labels
 <bcp14>MUST</bcp14> publish a DMARC Policy Record at that domain's location in the DNS namespace,
 as such records are always queried by Mail Receivers that participate in DMARC before
 the Tree Walk begins.  In the above example, this would mean publishing a DMARC Policy
@@ -1737,26 +1737,25 @@ Names&quot; registry:</t>
 </tbody>
 </table></section>
 
-<section anchor="dmarc-tag-registry"><name>DMARC Tag Registry</name>
-<t>A registry tree called &quot;Domain-based Message Authentication,
-Reporting, and Conformance (DMARC) Parameters&quot; exists, and it
-and any sub-registries thereunder should be updated to reference
-this document.  Within it, a new sub-registry called the &quot;DMARC
-Tag Registry&quot; exists.</t>
-<t>Names of DMARC tags are registered with IANA in this sub-registry. Entries
+<section anchor="dmarc-tags-registry"><name>DMARC Tags Registry</name>
+<t>A registry group called &quot;Domain-based Message Authentication,
+Reporting, and Conformance (DMARC)&quot; exists, and it and any registries
+within it should be updated to reference this document.  Within it, a
+registry called &quot;DMARC Tags&quot; exists.</t>
+<t>Names of DMARC tags are registered with IANA in this registry. Entries
 are assigned only for values that have been documented in a manner that
 satisfies the terms of Specification Required, per <xref target="RFC8126"></xref>. Each
 registration includes the tag name; the specification that defines it;
 a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;,
 or &quot;historic&quot;. The Designated Expert needs to confirm that the provided
-specification adequately describes the new tag and clearly presents
+specification adequately describes the tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.</t>
 <t>To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.</t>
 <t>The set of entries to be defined in this registry is as follows:</t>
-<table align="left"><name>&quot;DMARC Tag Registry&quot;
+<table align="left"><name>&quot;DMARC Tags Registry&quot;
 </name>
 <thead>
 <tr>
@@ -1868,13 +1867,12 @@ when processed by implementations conforming to prior specifications.</t>
 </tbody>
 </table></section>
 
-<section anchor="dmarc-report-format-registry"><name>DMARC Report Format Registry</name>
+<section anchor="dmarc-report-formats-registry"><name>DMARC Report Formats Registry</name>
 <t>Also, within &quot;Domain-based Message Authentication, Reporting, and
-Conformance (DMARC) Parameters&quot;, a new sub-registry called &quot;DMARC
-Report Format Registry&quot; exists and should be updated to reference
-this document.</t>
+Conformance (DMARC)&quot;, a registry called &quot;DMARC Report Formats&quot; exists
+and should be updated to reference this document.</t>
 <t>Names of DMARC failure reporting formats are registered with IANA
-in this registry. New entries are assigned only for values that
+in this registry. Entries are assigned only for values that
 satisfy the definition of Specification Required, per
 <xref target="RFC8126"></xref>.  In addition to a reference to a permanent
 specification, each registration includes the format name, a

@@ -1260,7 +1260,7 @@ performing a Tree Walk would only perform queries for these names:
 * _dmarc.com
 
 To avoid this circumstance, Domain Owners wishing to have a specific DMARC Policy
-Record applied to a given [Author Domain]{#author-domain) longer than eight labels 
+Record applied to a given [Author Domain](#author-domain) longer than eight labels 
 **MUST** publish a DMARC Policy Record at that domain's location in the DNS namespace, 
 as such records are always queried by Mail Receivers that participate in DMARC before
 the Tree Walk begins.  In the above example, this would mean publishing a DMARC Policy 
@@ -1693,21 +1693,20 @@ Names" registry:
 | dmarc  | temperror | [this document] | active |
 Table: "Authentication-Results Result Registry Update"
 
-##  DMARC Tag Registry {#dmarc-tag-registry}
+##  DMARC Tags Registry {#dmarc-tags-registry}
 
-A registry tree called "Domain-based Message Authentication,
-Reporting, and Conformance (DMARC) Parameters" exists, and it
-and any sub-registries thereunder should be updated to reference 
-this document.  Within it, a new sub-registry called the "DMARC 
-Tag Registry" exists.
+A registry group called "Domain-based Message Authentication,
+Reporting, and Conformance (DMARC)" exists, and it and any registries
+within it should be updated to reference this document.  Within it, a
+registry called "DMARC Tags" exists.
 
-Names of DMARC tags are registered with IANA in this sub-registry. Entries 
+Names of DMARC tags are registered with IANA in this registry. Entries 
 are assigned only for values that have been documented in a manner that 
 satisfies the terms of Specification Required, per [@RFC8126]. Each
 registration includes the tag name; the specification that defines it; 
 a brief description; and its status, which is one of "current", "experimental", 
 or "historic". The Designated Expert needs to confirm that the provided
-specification adequately describes the new tag and clearly presents
+specification adequately describes the tag and clearly presents
 how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.
 
@@ -1734,17 +1733,16 @@ The set of entries to be defined in this registry is as follows:
 | sp       | [this document]  | current  | Requested handling policy for subdomains                               |
 | t        | [this document]  | current  | Test mode for the specified policy                                     |
 | v        | [this document]  | current  | Specification version                                                  |
-Table: "DMARC Tag Registry"
+Table: "DMARC Tags Registry"
 
-##  DMARC Report Format Registry {#dmarc-report-format-registry}
+##  DMARC Report Formats Registry {#dmarc-report-formats-registry}
 
 Also, within "Domain-based Message Authentication, Reporting, and
-Conformance (DMARC) Parameters", a new sub-registry called "DMARC
-Report Format Registry" exists and should be updated to reference
-this document.
+Conformance (DMARC)", a registry called "DMARC Report Formats" exists 
+and should be updated to reference this document.
 
 Names of DMARC failure reporting formats are registered with IANA
-in this registry. New entries are assigned only for values that
+in this registry. Entries are assigned only for values that
 satisfy the definition of Specification Required, per
 [@RFC8126].  In addition to a reference to a permanent
 specification, each registration includes the format name, a
