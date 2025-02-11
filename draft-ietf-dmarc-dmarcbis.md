@@ -1675,9 +1675,10 @@ with IANA in this registry.  Entries are assigned only for values that have been
 satisfies the terms of Specification Required, per [@RFC8126]. Each registration includes the authentication method; 
 the specification that defines the authentication method; the property type (ptype), which is one of the ptype
 values from the entries in the "Email Authentication Property Types" registry in this same registry group; the
-property; the value for that property; its status, which is one of "active" or "deprecated"; and its version.  The Designated Expert 
-needs to confirm that the provided specification adequately describes the property and the method for its evaluation
-and clearly presents how they would be used within the DMARC context by Domain Owners and Mail Receivers.
+property; the value for that property; the status of the property, which is one of "active" or "deprecated"; and its 
+version.  The Designated Expert needs to confirm that the provided specification adequately describes the property 
+and the method for its evaluation and clearly presents how they would be used within the DMARC context by Domain
+Owners and Mail Receivers.
 
 The set of entries to be updated in this registry is as follows:
 
@@ -1696,8 +1697,8 @@ Result Names" exists and should be updated to reference this section of this doc
 Result codes for DMARC are registered with IANA in this registry. Entries are 
 assigned only for values that have been documented in a manner that satisfies the terms
 of Specification Required, per [@RFC8126]. Each registration includes the auth method; the
-code; the specification that defines it; and its status, which is one of "active" or "deprecated". 
-The Designated Expert needs to confirm that the provided specification adequately describes the 
+code; the specification that defines the code; and the code's status, which is one of "active" or
+"deprecated". The Designated Expert needs to confirm that the provided specification adequately describes the 
 result code and clearly presents how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.
 
@@ -1720,14 +1721,13 @@ Reporting, and Conformance (DMARC)" exists, and within it, a
 registry called "DMARC Tags" exists. That registry should be updated
 as described in this section.
 
-Names of DMARC tags used in DMARC Policy Records are registered with IANA 
-in this registry. Entries are assigned only for values that have been documented 
-in a manner that satisfies the terms of Specification Required, per [@RFC8126]. Each
-registration includes the tag name; the specification that defines it; 
-its status, which is one of "current", "experimental", or "historic"; and a brief 
-description of the tag. The Designated Expert needs to confirm that the provided
-specification adequately describes the tag and clearly presents how it would be
-used within the DMARC context by Domain Owners and Mail Receivers.
+Names of tags used in DMARC Policy Records as part of "tag-value" pairs are registered with IANA
+in this registry. Entries are assigned only for values that have been documented in a manner that
+satisfies the terms of Specification Required, per [@RFC8126]. Each registration includes the tag
+name; the specification that defines the tag; the status of the tag, which is one of "current",
+"experimental", or "historic"; and a brief description of the tag. The Designated Expert needs to
+confirm that the provided specification adequately describes the tag and clearly presents how it
+would be used within the DMARC context by Domain Owners and Mail Receivers.
 
 To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
@@ -1762,11 +1762,11 @@ to reference this document.
 
 Names of DMARC failure reporting formats are registered with IANA in this registry. Entries
 are assigned only for values that satisfy the definition of Specification Required, per
-[@RFC8126].  In addition to a reference to a permanent specification, each registration
-includes the format name; its status, which must be one of "current", "experimental", or "historic";
-and a brief description. The Designated Expert needs to confirm that the provided specification
-adequately describes the report format and clearly presents how it would be used within the
-DMARC context by Domain Owners and Mail Receivers.
+[@RFC8126]. In addition to a reference to a permanent specification, each registration
+includes the format name; the format's status, which must be one of "current", "experimental", 
+or "historic"; and a brief description of the format. The Designated Expert needs to confirm that
+the provided specification adequately describes the report format and clearly presents how it would
+be used within the DMARC context by Domain Owners and Mail Receivers.
 
 The entry to be updated in this registry is as follows:
 
