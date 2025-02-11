@@ -1641,12 +1641,22 @@ validation result is &quot;pass&quot; or &quot;fail&quot; for the message.</li>
 </section>
 
 <section anchor="iana-considerations"><name>IANA Considerations</name>
-<t>This section describes actions completed by IANA.</t>
+<t>This section describes actions to be completed by IANA.</t>
 
-<section anchor="authentication-results-method-registry-update"><name>Authentication-Results Method Registry Update</name>
-<t>IANA has added the following to the &quot;Email Authentication Methods&quot;
-registry:</t>
-<table align="left"><name>&quot;Authentication-Results Method Registry Update&quot;
+<section anchor="email-authentication-methods-registry-update"><name>Email Authentication Methods Registry Update</name>
+<t>A registry group called &quot;Email Authentication Parameters&quot; exists, and within it a registry group
+called &quot;Email Authentication Methods&quot; exists and needs to be updated in the manner specified in
+this section.</t>
+<t>The properties of an email message to be evaluated by an email authentication method are registered
+with IANA in this registry.  Entries are assigned only for values that have been documented in a manner that
+satisfies the terms of Specification Required, per <xref target="RFC8126"></xref>. Each registration includes the authentication method;
+the specification that defines the authentication method; the property type (ptype), which is one of the ptype
+values from the entries in the &quot;Email Authentication Property Types&quot; registry in this same registry group; the
+property; the value for that property; its status, which is one of &quot;active&quot; or &quot;deprecated&quot;; and its version.  The Designated Expert
+needs to confirm that the provided specification adequately describes the property and the method for its evaluation
+and clearly presents how they would be used within the DMARC context by Domain Owners and Mail Receivers.</t>
+<t>The set of entries to be updated in this registry is as follows:</t>
+<table align="left"><name>&quot;Email Authentication Methods Registry Update&quot;
 </name>
 <thead>
 <tr>
@@ -1666,7 +1676,7 @@ registry:</t>
 <td align="left">[this document]</td>
 <td align="left">header</td>
 <td align="left">from</td>
-<td align="left">the domain portion of the RFC5322.From header field</td>
+<td align="left">The domain portion of the RFC5322.From header field</td>
 <td align="left">active</td>
 <td align="left">1</td>
 </tr>
@@ -1676,26 +1686,25 @@ registry:</t>
 <td align="left">[this document]</td>
 <td align="left">policy</td>
 <td align="left">dmarc</td>
-<td align="left">Evaluated DMARC policy applied/to be applied after policy options have been processed. Must be none, quarantine, or reject.</td>
+<td align="left">The evaluated DMARC policy applied/to be applied after policy options have been processed. Must be &quot;none&quot;, &quot;quarantine&quot;, or &quot;reject&quot;.</td>
 <td align="left">active</td>
 <td align="left">1</td>
 </tr>
 </tbody>
 </table></section>
 
-<section anchor="authentication-results-result-registry"><name>Authentication-Results Result Registry</name>
-<t>A registry group called &quot;Email Authentication Parameters&quot; exists, and it and any
-registries within it should be updated to reference this document. Within it, a
-registry called &quot;Email Authentication Result Names&quot; exists.</t>
+<section anchor="authentication-results-result-registry"><name>Email Authentication Result Names Registry Update</name>
+<t>Also within the registry group &quot;Email Authentication Parameters&quot; a registry called &quot;Email Authentication
+Result Names&quot; exists and should be updated to reference this section of this document.</t>
 <t>Result codes for DMARC are registered with IANA in this registry. Entries are
 assigned only for values that have been documented in a manner that satisfies the terms
 of Specification Required, per <xref target="RFC8126"></xref>. Each registration includes the auth method; the
-code; the specification that defines it; and its status, which is one of &quot;active&quot; or &quot;deprecateed&quot;.
+code; the specification that defines it; and its status, which is one of &quot;active&quot; or &quot;deprecated&quot;.
 The Designated Expert needs to confirm that the provided specification adequately describes the
-tag and clearly presents how it would be used within the DMARC context by Domain Owners and
+result code and clearly presents how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.</t>
-<t>The set of entries to be defined in this registry is as follows:</t>
-<table align="left"><name>&quot;Authentication-Results Result Registry Update&quot;
+<t>The set of entries to be updated in this registry is as follows:</t>
+<table align="left"><name>&quot;Email Authentication Result Names Registry Update&quot;
 </name>
 <thead>
 <tr>
@@ -1718,14 +1727,14 @@ Mail Receivers.</t>
 <td align="left">dmarc</td>
 <td align="left">none</td>
 <td align="left">active</td>
-<td align="left">No DMARC policy record exists for the Author Domain</td>
+<td align="left">No DMARC Policy Record exists for the Author Domain</td>
 </tr>
 
 <tr>
 <td align="left">dmarc</td>
 <td align="left">pass</td>
 <td align="left">active</td>
-<td align="left">A DMARC policy exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists</td>
+<td align="left">A DMARC Policy Record exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists</td>
 </tr>
 
 <tr>
@@ -1744,25 +1753,24 @@ Mail Receivers.</t>
 </tbody>
 </table></section>
 
-<section anchor="dmarc-tags-registry"><name>DMARC Tags Registry</name>
+<section anchor="dmarc-tag-registry-update"><name>DMARC Tags Registry Update</name>
 <t>A registry group called &quot;Domain-based Message Authentication,
-Reporting, and Conformance (DMARC)&quot; exists, and it and any registries
-within it should be updated to reference this document.  Within it, a
-registry called &quot;DMARC Tags&quot; exists.</t>
-<t>Names of DMARC tags are registered with IANA in this registry. Entries
-are assigned only for values that have been documented in a manner that
-satisfies the terms of Specification Required, per <xref target="RFC8126"></xref>. Each
+Reporting, and Conformance (DMARC)&quot; exists, and within it, a
+registry called &quot;DMARC Tags&quot; exists. That registry should be updated
+as described in this section.</t>
+<t>Names of DMARC tags used in DMARC Policy Records are registered with IANA
+in this registry. Entries are assigned only for values that have been documented
+in a manner that satisfies the terms of Specification Required, per <xref target="RFC8126"></xref>. Each
 registration includes the tag name; the specification that defines it;
-a brief description; and its status, which is one of &quot;current&quot;, &quot;experimental&quot;,
-or &quot;historic&quot;.  The Designated Expert needs to confirm that the provided
-specification adequately describes the tag and clearly presents
-how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.</t>
+its status, which is one of &quot;current&quot;, &quot;experimental&quot;, or &quot;historic&quot;; and a brief
+description of the tag. The Designated Expert needs to confirm that the provided
+specification adequately describes the tag and clearly presents how it would be
+used within the DMARC context by Domain Owners and Mail Receivers.</t>
 <t>To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.</t>
-<t>The set of entries to be defined in this registry is as follows:</t>
-<table align="left"><name>&quot;DMARC Tags Registry&quot;
+<t>The set of entries to be updated in this registry is as follows:</t>
+<table align="left"><name>&quot;DMARC Tags Registry Updatee&quot;
 </name>
 <thead>
 <tr>
@@ -1778,14 +1786,14 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">adkim</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">DKIM alignment mode</td>
+<td align="left">DKIM Identifier Alignment mode</td>
 </tr>
 
 <tr>
 <td align="left">aspf</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">SPF alignment mode</td>
+<td align="left">SPF Identifier Alignment mode</td>
 </tr>
 
 <tr>
@@ -1799,19 +1807,19 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">np</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Requested handling policy for non-existent subdomains</td>
+<td align="left">Requested Domain Owner Assessment Policy for non-existent subdomains</td>
 </tr>
 
 <tr>
 <td align="left">p</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Requested handling policy</td>
+<td align="left">Requested Domain Owner Assessment Policy</td>
 </tr>
 
 <tr>
 <td align="left">pct</td>
-<td align="left">[this document]</td>
+<td align="left"><xref target="RFC7489"></xref></td>
 <td align="left">historic</td>
 <td align="left">Sampling rate</td>
 </tr>
@@ -1820,19 +1828,19 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">psd</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Indicates whether policy record is published by a Public Suffix Domain</td>
+<td align="left">Indicates whether the DMARC Policy Record is published by a Public Suffix Domain</td>
 </tr>
 
 <tr>
 <td align="left">rf</td>
-<td align="left">[this document]</td>
+<td align="left"><xref target="RFC7489"></xref></td>
 <td align="left">historic</td>
 <td align="left">Failure reporting format(s)</td>
 </tr>
 
 <tr>
 <td align="left">ri</td>
-<td align="left">[this document]</td>
+<td align="left"><xref target="RFC7489"></xref></td>
 <td align="left">historic</td>
 <td align="left">Aggregate Reporting interval</td>
 </tr>
@@ -1841,55 +1849,52 @@ when processed by implementations conforming to prior specifications.</t>
 <td align="left">rua</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Reporting URI(s) for aggregate data</td>
+<td align="left">Reporting URI(s) for DMARC aggregate feedback reports</td>
 </tr>
 
 <tr>
 <td align="left">ruf</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Reporting URI(s) for failure data</td>
+<td align="left">Reporting URI(s) for message-specific DMARC failure reports</td>
 </tr>
 
 <tr>
 <td align="left">sp</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Requested handling policy for subdomains</td>
+<td align="left">Requested Domain Owner Assessment Policy for subdomains</td>
 </tr>
 
 <tr>
 <td align="left">t</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Test mode for the specified policy</td>
+<td align="left">DMARC policy test mode</td>
 </tr>
 
 <tr>
 <td align="left">v</td>
 <td align="left">[this document]</td>
 <td align="left">current</td>
-<td align="left">Specification version</td>
+<td align="left">DMARC specification version</td>
 </tr>
 </tbody>
 </table></section>
 
-<section anchor="dmarc-report-formats-registry"><name>DMARC Report Formats Registry</name>
-<t>Also, within &quot;Domain-based Message Authentication, Reporting, and
-Conformance (DMARC)&quot;, a registry called &quot;DMARC Report Formats&quot; exists
-and should be updated to reference this document.</t>
-<t>Names of DMARC failure reporting formats are registered with IANA
-in this registry. Entries are assigned only for values that
-satisfy the definition of Specification Required, per
-<xref target="RFC8126"></xref>.  In addition to a reference to a permanent
-specification, each registration includes the format name, a
-brief description, and its status, which must be one of &quot;current&quot;,
-&quot;experimental&quot;, or &quot;historic&quot;.  The Designated Expert needs to confirm that
-the provided specification adequately describes the report format and clearly
-presents how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.</t>
-<t>The entry in this registry is as follows:</t>
-<table align="left"><name>&quot;DMARC Report Format Registry&quot;
+<section anchor="dmarc-report-formats-registry"><name>DMARC Report Formats Registry Update</name>
+<t>Also within the registry group &quot;Domain-based Message Authentication, Reporting, and
+Conformance (DMARC)&quot; a registry called &quot;DMARC Report Formats&quot; exists and should be updated
+to reference this document.</t>
+<t>Names of DMARC failure reporting formats are registered with IANA in this registry. Entries
+are assigned only for values that satisfy the definition of Specification Required, per
+<xref target="RFC8126"></xref>.  In addition to a reference to a permanent specification, each registration
+includes the format name; its status, which must be one of &quot;current&quot;, &quot;experimental&quot;, or &quot;historic&quot;;
+and a brief description. The Designated Expert needs to confirm that the provided specification
+adequately describes the report format and clearly presents how it would be used within the
+DMARC context by Domain Owners and Mail Receivers.</t>
+<t>The entry to be updated in this registry is as follows:</t>
+<table align="left"><name>&quot;DMARC Report Formats Registry Update&quot;
 </name>
 <thead>
 <tr>
@@ -1910,9 +1915,18 @@ Mail Receivers.</t>
 </tbody>
 </table></section>
 
-<section anchor="underscored-and-globally-scoped-dns-node-names-registry"><name>Underscored and Globally Scoped DNS Node Names Registry</name>
-<t>Per <xref target="RFC8552"></xref>, please update the following entry to the &quot;Underscored and Globally Scoped DNS Node Names&quot; registry:</t>
-<table align="left"><name>&quot;Underscored and Globally Scoped DNS Node Names&quot; registry
+<section anchor="underscored-and-globally-scoped-dns-node-names-registry-update"><name>Underscored and Globally Scoped DNS Node Names Registry Update</name>
+<t>A registry group called &quot;Domain Name System (DNS) Parameters&quot; exists, and within it, a registry called
+&quot;Underscored and Globally Scoped DNS Node Names&quot; exists, and that registry should be updated to reference
+this document.</t>
+<t>The names of DNS Resource Records beginning with an underscore character that are globally
+scoped (as per <xref target="RFC8552"></xref>) are registered with IANA in this registry. In addition to a reference to
+a permanent specification, each registration contains the DNS Resource Record (RR) type and Node Name.
+The Designated Expert needs to confirm that the provided specification adequately describes the Node
+Name and clearly presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.</t>
+<t>The entry to be updated in this registry is as follows:</t>
+<table align="left"><name>&quot;Underscored and Globally Scoped DNS Node Names Registry Update&quot;
 </name>
 <thead>
 <tr>
@@ -2200,7 +2214,6 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7960.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8552.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 </references>
 <references><name>Informative References</name>
@@ -2227,6 +2240,7 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8484.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8551.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8552.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8617.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9091.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9364.xml"/>
@@ -2689,7 +2703,7 @@ addresses &quot;dmarc-feedback@example.com&quot; and
 validation check apply any special handling rules it might have
 in place, such as rewriting the RFC53322.From header field; the Domain
 Owner is testing its setup at this point and so does not want
-the handling policy to be applied. (&quot;t=y&quot;)</t>
+the Domain Owner Assessment Policy to be applied. (&quot;t=y&quot;)</t>
 </li>
 </ul>
 <t>To publish such a record, the DNS administrator for the Domain Owner

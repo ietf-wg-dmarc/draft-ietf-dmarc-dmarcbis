@@ -1221,7 +1221,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Herr (ed) &amp; Levine (ed)</td>
-<td class="center">Expires 12 August 2025</td>
+<td class="center">Expires 15 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1237,12 +1237,12 @@ li > p:last-of-type:only-child {
 <a href="https://www.rfc-editor.org/rfc/rfc7489" class="eref">7489</a>, <a href="https://www.rfc-editor.org/rfc/rfc9091" class="eref">9091</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-08" class="published">8 February 2025</time>
+<time datetime="2025-02-11" class="published">11 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-12">12 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-15">15 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1287,7 +1287,7 @@ information when evaluating handling choices for incoming mail.<a href="#section
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 15 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1556,19 +1556,19 @@ information when evaluating handling choices for incoming mail.<a href="#section
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-authentication-results-meth" class="internal xref">Authentication-Results Method Registry Update</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-email-authentication-method" class="internal xref">Email Authentication Methods Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-authentication-results-resu" class="internal xref">Authentication-Results Result Registry</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-email-authentication-result" class="internal xref">Email Authentication Result Names Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-dmarc-tags-registry" class="internal xref">DMARC Tags Registry</a></p>
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="auto internal xref">9.3</a>.  <a href="#name-dmarc-tags-registry-update" class="internal xref">DMARC Tags Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-dmarc-report-formats-regist" class="internal xref">DMARC Report Formats Registry</a></p>
+                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="auto internal xref">9.4</a>.  <a href="#name-dmarc-report-formats-regist" class="internal xref">DMARC Report Formats Registry Update</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.5">
-                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-underscored-and-globally-sc" class="internal xref">Underscored and Globally Scoped DNS Node Names Registry</a></p>
+                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="auto internal xref">9.5</a>.  <a href="#name-underscored-and-globally-sc" class="internal xref">Underscored and Globally Scoped DNS Node Names Registry Update</a></p>
 </li>
             </ul>
 </li>
@@ -3858,18 +3858,28 @@ validation result is "pass" or "fail" for the message.<a href="#section-8-5.4" c
       <h2 id="name-iana-considerations">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-9-1">This section describes actions completed by IANA.<a href="#section-9-1" class="pilcrow">¶</a></p>
-<div id="authentication-results-method-registry-update">
+<p id="section-9-1">This section describes actions to be completed by IANA.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<div id="email-authentication-methods-registry-update">
 <section id="section-9.1">
-        <h3 id="name-authentication-results-meth">
-<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-authentication-results-meth" class="section-name selfRef">Authentication-Results Method Registry Update</a>
+        <h3 id="name-email-authentication-method">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-email-authentication-method" class="section-name selfRef">Email Authentication Methods Registry Update</a>
         </h3>
-<p id="section-9.1-1">IANA has added the following to the "Email Authentication Methods"
-registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
-<span id="name-authentication-results-metho"></span><table class="left" id="table-3">
+<p id="section-9.1-1">A registry group called "Email Authentication Parameters" exists, and within it a registry group
+called "Email Authentication Methods" exists and needs to be updated in the manner specified in
+this section.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.1-2">The properties of an email message to be evaluated by an email authentication method are registered
+with IANA in this registry.  Entries are assigned only for values that have been documented in a manner that
+satisfies the terms of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each registration includes the authentication method;
+the specification that defines the authentication method; the property type (ptype), which is one of the ptype
+values from the entries in the "Email Authentication Property Types" registry in this same registry group; the
+property; the value for that property; its status, which is one of "active" or "deprecated"; and its version.  The Designated Expert
+needs to confirm that the provided specification adequately describes the property and the method for its evaluation
+and clearly presents how they would be used within the DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">The set of entries to be updated in this registry is as follows:<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<span id="name-email-authentication-methods"></span><table class="left" id="table-3">
           <caption>
 <a href="#table-3" class="selfRef">Table 3</a>:
-<a href="#name-authentication-results-metho" class="selfRef">"Authentication-Results Method Registry Update"</a>
+<a href="#name-email-authentication-methods" class="selfRef">"Email Authentication Methods Registry Update"</a>
           </caption>
 <thead>
             <tr>
@@ -3888,7 +3898,7 @@ registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">header</td>
               <td class="text-left" rowspan="1" colspan="1">from</td>
-              <td class="text-left" rowspan="1" colspan="1">the domain portion of the RFC5322.From header field</td>
+              <td class="text-left" rowspan="1" colspan="1">The domain portion of the RFC5322.From header field</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
               <td class="text-left" rowspan="1" colspan="1">1</td>
             </tr>
@@ -3897,7 +3907,7 @@ registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">policy</td>
               <td class="text-left" rowspan="1" colspan="1">dmarc</td>
-              <td class="text-left" rowspan="1" colspan="1">Evaluated DMARC policy applied/to be applied after policy options have been processed. Must be none, quarantine, or reject.</td>
+              <td class="text-left" rowspan="1" colspan="1">The evaluated DMARC policy applied/to be applied after policy options have been processed. Must be "none", "quarantine", or "reject".</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
               <td class="text-left" rowspan="1" colspan="1">1</td>
             </tr>
@@ -3907,24 +3917,23 @@ registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 </div>
 <div id="authentication-results-result-registry">
 <section id="section-9.2">
-        <h3 id="name-authentication-results-resu">
-<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-authentication-results-resu" class="section-name selfRef">Authentication-Results Result Registry</a>
+        <h3 id="name-email-authentication-result">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-email-authentication-result" class="section-name selfRef">Email Authentication Result Names Registry Update</a>
         </h3>
-<p id="section-9.2-1">A registry group called "Email Authentication Parameters" exists, and it and any
-registries within it should be updated to reference this document. Within it, a
-registry called "Email Authentication Result Names" exists.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
+<p id="section-9.2-1">Also within the registry group "Email Authentication Parameters" a registry called "Email Authentication
+Result Names" exists and should be updated to reference this section of this document.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2-2">Result codes for DMARC are registered with IANA in this registry. Entries are
 assigned only for values that have been documented in a manner that satisfies the terms
 of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each registration includes the auth method; the
-code; the specification that defines it; and its status, which is one of "active" or "deprecateed".
+code; the specification that defines it; and its status, which is one of "active" or "deprecated".
 The Designated Expert needs to confirm that the provided specification adequately describes the
-tag and clearly presents how it would be used within the DMARC context by Domain Owners and
+result code and clearly presents how it would be used within the DMARC context by Domain Owners and
 Mail Receivers.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
-<p id="section-9.2-3">The set of entries to be defined in this registry is as follows:<a href="#section-9.2-3" class="pilcrow">¶</a></p>
-<span id="name-authentication-results-resul"></span><table class="left" id="table-4">
+<p id="section-9.2-3">The set of entries to be updated in this registry is as follows:<a href="#section-9.2-3" class="pilcrow">¶</a></p>
+<span id="name-email-authentication-result-"></span><table class="left" id="table-4">
           <caption>
 <a href="#table-4" class="selfRef">Table 4</a>:
-<a href="#name-authentication-results-resul" class="selfRef">"Authentication-Results Result Registry Update"</a>
+<a href="#name-email-authentication-result-" class="selfRef">"Email Authentication Result Names Registry Update"</a>
           </caption>
 <thead>
             <tr>
@@ -3945,13 +3954,13 @@ Mail Receivers.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
               <td class="text-left" rowspan="1" colspan="1">dmarc</td>
               <td class="text-left" rowspan="1" colspan="1">none</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
-              <td class="text-left" rowspan="1" colspan="1">No DMARC policy record exists for the Author Domain</td>
+              <td class="text-left" rowspan="1" colspan="1">No DMARC Policy Record exists for the Author Domain</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">dmarc</td>
               <td class="text-left" rowspan="1" colspan="1">pass</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
-              <td class="text-left" rowspan="1" colspan="1">A DMARC policy exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists</td>
+              <td class="text-left" rowspan="1" colspan="1">A DMARC Policy Record exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">dmarc</td>
@@ -3969,32 +3978,31 @@ Mail Receivers.<a href="#section-9.2-2" class="pilcrow">¶</a></p>
         </table>
 </section>
 </div>
-<div id="dmarc-tags-registry">
+<div id="dmarc-tag-registry-update">
 <section id="section-9.3">
-        <h3 id="name-dmarc-tags-registry">
-<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-dmarc-tags-registry" class="section-name selfRef">DMARC Tags Registry</a>
+        <h3 id="name-dmarc-tags-registry-update">
+<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-dmarc-tags-registry-update" class="section-name selfRef">DMARC Tags Registry Update</a>
         </h3>
 <p id="section-9.3-1">A registry group called "Domain-based Message Authentication,
-Reporting, and Conformance (DMARC)" exists, and it and any registries
-within it should be updated to reference this document.  Within it, a
-registry called "DMARC Tags" exists.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
-<p id="section-9.3-2">Names of DMARC tags are registered with IANA in this registry. Entries
-are assigned only for values that have been documented in a manner that
-satisfies the terms of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each
+Reporting, and Conformance (DMARC)" exists, and within it, a
+registry called "DMARC Tags" exists. That registry should be updated
+as described in this section.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
+<p id="section-9.3-2">Names of DMARC tags used in DMARC Policy Records are registered with IANA
+in this registry. Entries are assigned only for values that have been documented
+in a manner that satisfies the terms of Specification Required, per <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>. Each
 registration includes the tag name; the specification that defines it;
-a brief description; and its status, which is one of "current", "experimental",
-or "historic".  The Designated Expert needs to confirm that the provided
-specification adequately describes the tag and clearly presents
-how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.<a href="#section-9.3-2" class="pilcrow">¶</a></p>
+its status, which is one of "current", "experimental", or "historic"; and a brief
+description of the tag. The Designated Expert needs to confirm that the provided
+specification adequately describes the tag and clearly presents how it would be
+used within the DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.3-2" class="pilcrow">¶</a></p>
 <p id="section-9.3-3">To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
 when processed by implementations conforming to prior specifications.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
-<p id="section-9.3-4">The set of entries to be defined in this registry is as follows:<a href="#section-9.3-4" class="pilcrow">¶</a></p>
-<span id="name-dmarc-tags-registry-2"></span><table class="left" id="table-5">
+<p id="section-9.3-4">The set of entries to be updated in this registry is as follows:<a href="#section-9.3-4" class="pilcrow">¶</a></p>
+<span id="name-dmarc-tags-registry-updatee"></span><table class="left" id="table-5">
           <caption>
 <a href="#table-5" class="selfRef">Table 5</a>:
-<a href="#name-dmarc-tags-registry-2" class="selfRef">"DMARC Tags Registry"</a>
+<a href="#name-dmarc-tags-registry-updatee" class="selfRef">"DMARC Tags Registry Updatee"</a>
           </caption>
 <thead>
             <tr>
@@ -4009,13 +4017,13 @@ when processed by implementations conforming to prior specifications.<a href="#s
               <td class="text-left" rowspan="1" colspan="1">adkim</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">DKIM alignment mode</td>
+              <td class="text-left" rowspan="1" colspan="1">DKIM Identifier Alignment mode</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">aspf</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">SPF alignment mode</td>
+              <td class="text-left" rowspan="1" colspan="1">SPF Identifier Alignment mode</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">fo</td>
@@ -4027,17 +4035,19 @@ when processed by implementations conforming to prior specifications.<a href="#s
               <td class="text-left" rowspan="1" colspan="1">np</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Requested handling policy for non-existent subdomains</td>
+              <td class="text-left" rowspan="1" colspan="1">Requested Domain Owner Assessment Policy for non-existent subdomains</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">p</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Requested handling policy</td>
+              <td class="text-left" rowspan="1" colspan="1">Requested Domain Owner Assessment Policy</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">pct</td>
-              <td class="text-left" rowspan="1" colspan="1">[this document]</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
+</td>
               <td class="text-left" rowspan="1" colspan="1">historic</td>
               <td class="text-left" rowspan="1" colspan="1">Sampling rate</td>
             </tr>
@@ -4045,17 +4055,21 @@ when processed by implementations conforming to prior specifications.<a href="#s
               <td class="text-left" rowspan="1" colspan="1">psd</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Indicates whether policy record is published by a Public Suffix Domain</td>
+              <td class="text-left" rowspan="1" colspan="1">Indicates whether the DMARC Policy Record is published by a Public Suffix Domain</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">rf</td>
-              <td class="text-left" rowspan="1" colspan="1">[this document]</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
+</td>
               <td class="text-left" rowspan="1" colspan="1">historic</td>
               <td class="text-left" rowspan="1" colspan="1">Failure reporting format(s)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ri</td>
-              <td class="text-left" rowspan="1" colspan="1">[this document]</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7489" class="cite xref">RFC7489</a>]</span>
+</td>
               <td class="text-left" rowspan="1" colspan="1">historic</td>
               <td class="text-left" rowspan="1" colspan="1">Aggregate Reporting interval</td>
             </tr>
@@ -4063,31 +4077,31 @@ when processed by implementations conforming to prior specifications.<a href="#s
               <td class="text-left" rowspan="1" colspan="1">rua</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for aggregate data</td>
+              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for DMARC aggregate feedback reports</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ruf</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for failure data</td>
+              <td class="text-left" rowspan="1" colspan="1">Reporting URI(s) for message-specific DMARC failure reports</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">sp</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Requested handling policy for subdomains</td>
+              <td class="text-left" rowspan="1" colspan="1">Requested Domain Owner Assessment Policy for subdomains</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">t</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Test mode for the specified policy</td>
+              <td class="text-left" rowspan="1" colspan="1">DMARC policy test mode</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">v</td>
               <td class="text-left" rowspan="1" colspan="1">[this document]</td>
               <td class="text-left" rowspan="1" colspan="1">current</td>
-              <td class="text-left" rowspan="1" colspan="1">Specification version</td>
+              <td class="text-left" rowspan="1" colspan="1">DMARC specification version</td>
             </tr>
           </tbody>
         </table>
@@ -4096,26 +4110,23 @@ when processed by implementations conforming to prior specifications.<a href="#s
 <div id="dmarc-report-formats-registry">
 <section id="section-9.4">
         <h3 id="name-dmarc-report-formats-regist">
-<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-dmarc-report-formats-regist" class="section-name selfRef">DMARC Report Formats Registry</a>
+<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-dmarc-report-formats-regist" class="section-name selfRef">DMARC Report Formats Registry Update</a>
         </h3>
-<p id="section-9.4-1">Also, within "Domain-based Message Authentication, Reporting, and
-Conformance (DMARC)", a registry called "DMARC Report Formats" exists
-and should be updated to reference this document.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
-<p id="section-9.4-2">Names of DMARC failure reporting formats are registered with IANA
-in this registry. Entries are assigned only for values that
-satisfy the definition of Specification Required, per
-<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.  In addition to a reference to a permanent
-specification, each registration includes the format name, a
-brief description, and its status, which must be one of "current",
-"experimental", or "historic".  The Designated Expert needs to confirm that
-the provided specification adequately describes the report format and clearly
-presents how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
-<p id="section-9.4-3">The entry in this registry is as follows:<a href="#section-9.4-3" class="pilcrow">¶</a></p>
-<span id="name-dmarc-report-format-registr"></span><table class="left" id="table-6">
+<p id="section-9.4-1">Also within the registry group "Domain-based Message Authentication, Reporting, and
+Conformance (DMARC)" a registry called "DMARC Report Formats" exists and should be updated
+to reference this document.<a href="#section-9.4-1" class="pilcrow">¶</a></p>
+<p id="section-9.4-2">Names of DMARC failure reporting formats are registered with IANA in this registry. Entries
+are assigned only for values that satisfy the definition of Specification Required, per
+<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.  In addition to a reference to a permanent specification, each registration
+includes the format name; its status, which must be one of "current", "experimental", or "historic";
+and a brief description. The Designated Expert needs to confirm that the provided specification
+adequately describes the report format and clearly presents how it would be used within the
+DMARC context by Domain Owners and Mail Receivers.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
+<p id="section-9.4-3">The entry to be updated in this registry is as follows:<a href="#section-9.4-3" class="pilcrow">¶</a></p>
+<span id="name-dmarc-report-formats-registr"></span><table class="left" id="table-6">
           <caption>
 <a href="#table-6" class="selfRef">Table 6</a>:
-<a href="#name-dmarc-report-format-registr" class="selfRef">"DMARC Report Format Registry"</a>
+<a href="#name-dmarc-report-formats-registr" class="selfRef">"DMARC Report Formats Registry Update"</a>
           </caption>
 <thead>
             <tr>
@@ -4136,16 +4147,25 @@ Mail Receivers.<a href="#section-9.4-2" class="pilcrow">¶</a></p>
         </table>
 </section>
 </div>
-<div id="underscored-and-globally-scoped-dns-node-names-registry">
+<div id="underscored-and-globally-scoped-dns-node-names-registry-update">
 <section id="section-9.5">
         <h3 id="name-underscored-and-globally-sc">
-<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-underscored-and-globally-sc" class="section-name selfRef">Underscored and Globally Scoped DNS Node Names Registry</a>
+<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-underscored-and-globally-sc" class="section-name selfRef">Underscored and Globally Scoped DNS Node Names Registry Update</a>
         </h3>
-<p id="section-9.5-1">Per <span>[<a href="#RFC8552" class="cite xref">RFC8552</a>]</span>, please update the following entry to the "Underscored and Globally Scoped DNS Node Names" registry:<a href="#section-9.5-1" class="pilcrow">¶</a></p>
+<p id="section-9.5-1">A registry group called "Domain Name System (DNS) Parameters" exists, and within it, a registry called
+"Underscored and Globally Scoped DNS Node Names" exists, and that registry should be updated to reference
+this document.<a href="#section-9.5-1" class="pilcrow">¶</a></p>
+<p id="section-9.5-2">The names of DNS Resource Records beginning with an underscore character that are globally
+scoped (as per <span>[<a href="#RFC8552" class="cite xref">RFC8552</a>]</span>) are registered with IANA in this registry. In addition to a reference to
+a permanent specification, each registration contains the DNS Resource Record (RR) type and Node Name.
+The Designated Expert needs to confirm that the provided specification adequately describes the Node
+Name and clearly presents how it would be used within the DMARC context by Domain Owners and
+Mail Receivers.<a href="#section-9.5-2" class="pilcrow">¶</a></p>
+<p id="section-9.5-3">The entry to be updated in this registry is as follows:<a href="#section-9.5-3" class="pilcrow">¶</a></p>
 <span id="name-underscored-and-globally-sco"></span><table class="left" id="table-7">
           <caption>
 <a href="#table-7" class="selfRef">Table 7</a>:
-<a href="#name-underscored-and-globally-sco" class="selfRef">"Underscored and Globally Scoped DNS Node Names" registry</a>
+<a href="#name-underscored-and-globally-sco" class="selfRef">"Underscored and Globally Scoped DNS Node Names Registry Update"</a>
           </caption>
 <thead>
             <tr>
@@ -4554,10 +4574,6 @@ interpreted to indicate that the PSD is the Organizational Domain.<a href="#sect
         <dd>
 <span class="refAuthor">Martin, F., Ed.</span>, <span class="refAuthor">Lear, E., Ed.</span>, <span class="refAuthor">Draegen, T., Ed.</span>, <span class="refAuthor">Zwicky, E., Ed.</span>, and <span class="refAuthor">K. Andersen, Ed.</span>, <span class="refTitle">"Interoperability Issues between Domain-based Message Authentication, Reporting, and Conformance (DMARC) and Indirect Email Flows"</span>, <span class="seriesInfo">RFC 7960</span>, <span class="seriesInfo">DOI 10.17487/RFC7960</span>, <time datetime="2016-09" class="refDate">September 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7960">https://www.rfc-editor.org/info/rfc7960</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8552">[RFC8552]</dt>
-        <dd>
-<span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8552">https://www.rfc-editor.org/info/rfc8552</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8601">[RFC8601]</dt>
       <dd>
 <span class="refAuthor">Kucherawy, M.</span>, <span class="refTitle">"Message Header Field for Indicating Message Authentication Status"</span>, <span class="seriesInfo">RFC 8601</span>, <span class="seriesInfo">DOI 10.17487/RFC8601</span>, <time datetime="2019-05" class="refDate">May 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8601">https://www.rfc-editor.org/info/rfc8601</a>&gt;</span>. </dd>
@@ -4620,6 +4636,10 @@ interpreted to indicate that the PSD is the Organizational Domain.<a href="#sect
 <dt id="RFC8551">[RFC8551]</dt>
         <dd>
 <span class="refAuthor">Schaad, J.</span>, <span class="refAuthor">Ramsdell, B.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification"</span>, <span class="seriesInfo">RFC 8551</span>, <span class="seriesInfo">DOI 10.17487/RFC8551</span>, <time datetime="2019-04" class="refDate">April 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8551">https://www.rfc-editor.org/info/rfc8551</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8552">[RFC8552]</dt>
+        <dd>
+<span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Scoped Interpretation of DNS Resource Records through "Underscored" Naming of Attribute Leaves"</span>, <span class="seriesInfo">BCP 222</span>, <span class="seriesInfo">RFC 8552</span>, <span class="seriesInfo">DOI 10.17487/RFC8552</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8552">https://www.rfc-editor.org/info/rfc8552</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8617">[RFC8617]</dt>
         <dd>
@@ -5183,7 +5203,7 @@ addresses "dmarc-feedback@example.com" and
 validation check apply any special handling rules it might have
 in place, such as rewriting the RFC53322.From header field; the Domain
 Owner is testing its setup at this point and so does not want
-the handling policy to be applied. ("t=y")<a href="#appendix-B.2.5-4.5.1" class="pilcrow">¶</a></p>
+the Domain Owner Assessment Policy to be applied. ("t=y")<a href="#appendix-B.2.5-4.5.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="appendix-B.2.5-5">To publish such a record, the DNS administrator for the Domain Owner
