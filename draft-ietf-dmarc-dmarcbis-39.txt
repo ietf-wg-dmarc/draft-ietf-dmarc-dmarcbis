@@ -3175,11 +3175,6 @@ Internet-Draft                  DMARCbis                   February 2025
               RFC 7405, DOI 10.17487/RFC7405, December 2014,
               <https://www.rfc-editor.org/info/rfc7405>.
 
-   [RFC7489]  Kucherawy, M., Ed. and E. Zwicky, Ed., "Domain-based
-              Message Authentication, Reporting, and Conformance
-              (DMARC)", RFC 7489, DOI 10.17487/RFC7489, March 2015,
-              <https://www.rfc-editor.org/info/rfc7489>.
-
    [RFC7960]  Martin, F., Ed., Lear, E., Ed., Draegen, T., Ed., Zwicky,
               E., Ed., and K. Andersen, Ed., "Interoperability Issues
               between Domain-based Message Authentication, Reporting,
@@ -3187,17 +3182,17 @@ Internet-Draft                  DMARCbis                   February 2025
               RFC 7960, DOI 10.17487/RFC7960, September 2016,
               <https://www.rfc-editor.org/info/rfc7960>.
 
+   [RFC8601]  Kucherawy, M., "Message Header Field for Indicating
+              Message Authentication Status", RFC 8601,
+              DOI 10.17487/RFC8601, May 2019,
+              <https://www.rfc-editor.org/info/rfc8601>.
+
 
 
 Herr (ed) & Levine (ed)  Expires 15 August 2025                [Page 57]
 
 Internet-Draft                  DMARCbis                   February 2025
 
-
-   [RFC8601]  Kucherawy, M., "Message Header Field for Indicating
-              Message Authentication Status", RFC 8601,
-              DOI 10.17487/RFC8601, May 2019,
-              <https://www.rfc-editor.org/info/rfc8601>.
 
 12.2.  Informative References
 
@@ -3229,6 +3224,11 @@ Internet-Draft                  DMARCbis                   February 2025
    [RFC5598]  Crocker, D., "Internet Mail Architecture", RFC 5598,
               DOI 10.17487/RFC5598, July 2009,
               <https://www.rfc-editor.org/info/rfc5598>.
+
+   [RFC7489]  Kucherawy, M., Ed. and E. Zwicky, Ed., "Domain-based
+              Message Authentication, Reporting, and Conformance
+              (DMARC)", RFC 7489, DOI 10.17487/RFC7489, March 2015,
+              <https://www.rfc-editor.org/info/rfc7489>.
 
    [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
               and P. Hoffman, "Specification for DNS over Transport

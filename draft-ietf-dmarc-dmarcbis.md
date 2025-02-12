@@ -910,7 +910,7 @@ depending on the context:
   and the Author Domain are used in determining Identifier Alignment between the two. (see 
   (#identifier-alignment-evaluation)).
 
-[@!RFC7489] defined an Organizational Domain as "The domain that was registered with a domain
+[@RFC7489] defined an Organizational Domain as "The domain that was registered with a domain
 name registrar." RFC 7489 discussed using a "public suffix" list (PSL) as the authoritative
 list of the parent domains for Organizational Domains, and further described a method for
 determining the Organizational Domain of an Author Domain or an Authenticated Identifier.
@@ -1743,10 +1743,10 @@ The set of entries to be updated in this registry is as follows:
 | fo       | [this document]  | current  | Failure reporting options                                              |
 | np       | [this document]  | current  | Requested Domain Owner Assessment Policy for non-existent subdomains   |
 | p        | [this document]  | current  | Requested Domain Owner Assessment Policy                               |
-| pct      | [@!RFC7489]      | historic | Sampling rate                                                          |
+| pct      | [@RFC7489]      | historic | Sampling rate                                                          |
 | psd      | [this document]  | current  | Indicates whether the DMARC Policy Record is published by a Public Suffix Domain |
-| rf       | [@!RFC7489]      | historic | Failure reporting format(s)                                            |
-| ri       | [@!RFC7489]      | historic | Aggregate Reporting interval                                           |
+| rf       | [@RFC7489]      | historic | Failure reporting format(s)                                            |
+| ri       | [@RFC7489]      | historic | Aggregate Reporting interval                                           |
 | rua      | [this document]  | current  | Reporting URI(s) for DMARC aggregate feedback reports                  |
 | ruf      | [this document]  | current  | Reporting URI(s) for message-specific DMARC failure reports            |
 | sp       | [this document]  | current  | Requested Domain Owner Assessment Policy for subdomains                |
@@ -1954,7 +1954,7 @@ and/or unwanted by their recipients, and given this fact, a Mail Receiver may ma
 negative disposition decision for the message prior to and instead of its being
 subjected to DMARC processing. However, in a case where a Mail Receiver requires
 that the message be subject to DMARC validation, a recommended approach as per
-[@!RFC7489] is to apply the DMARC mechanism to each domain found in the RFC5322.From
+[@RFC7489] is to apply the DMARC mechanism to each domain found in the RFC5322.From
 field as the Author Domain and apply the most strict policy selected among the
 checks that fail. Such an approach might prove useful for a small number of
 Author Domains, but it is possible that applying such logic to messages with
@@ -2025,7 +2025,7 @@ determining the Organizational Domain if the Author Domain does not have a publi
 [DMARC Policy Record](#dmarc-policy-record). If an incorrectly selected Organizational 
 Domain is a parent of the correct Organizational Domain, then relaxed alignment could 
 potentially allow a malicious sender to send mail that achieves a DMARC pass verdict. 
-This potential exists for both the legacy [@!RFC7489] and current methods for determining 
+This potential exists for both the legacy [@RFC7489] and current methods for determining 
 the organizational domain, the latter described in (#identifier-alignment-evaluation).
 
 The following example illustrates this possibility:
@@ -2045,7 +2045,7 @@ DMARC Policy Records for all Author Domains used in an organization's email.
 For cases where Strict Alignment is not appropriate, this issue can be mitigated by the Domain 
 Owner periodically (perhaps weekly, or whatever frequency might be appropriate for a given organization's 
 operational needs) checking the DMARC Policy Records, if any, of [PSDs](#public-suffix-domain)
-above the Organizational Domain in the DNS tree and (for legacy [@!RFC7489] checking that
+above the Organizational Domain in the DNS tree and (for legacy [@RFC7489] checking that
 appropriate PSL entries remain present). If a PSD publishes a DMARC Policy Record without
 the appropriate "psd=y" tag, Organizational Domain owners can add "psd=n" to their Organizational
 Domain's DMARC Policy Record so that the PSD's DMARC Policy Record will not be incorrectly
@@ -2187,7 +2187,7 @@ also does not exist.
 
 ##  Organizational Domain Discovery Issues {#organizational-domain-discovery-issues}
 
-An earlier informational version of the DMARC mechanism [@!RFC7489]
+An earlier informational version of the DMARC mechanism [@RFC7489]
 noted that the DNS does not provide a method by which the "domain of record",
 or the domain that was actually registered with a domain registrar, can
 be determined given an arbitrary domain name. That version further mentioned
@@ -2206,11 +2206,11 @@ the number of DNS queries to execute regardless of the number of labels in the d
 name.
 
 Readers curious about the previous method for Organizational Domain Discovery are 
-directed to [@!RFC7489, section 3.2].
+directed to [@RFC7489, section 3.2].
 
 ## Removal of the "pct" Tag {#removal-of-the-pct-tag}
 
-An earlier informational version of the DMARC mechanism [@!RFC7489]
+An earlier informational version of the DMARC mechanism [@RFC7489]
 included a "pct" tag and specified all integers from 0 to 100 inclusive
 as valid values for the tag. The intent of the tag was to provide domain
 owners with a method to gradually change their preferred Domain Owner Assessment
@@ -2834,7 +2834,7 @@ come to an understanding of how its domain is being misused.
 
 #   Changes from RFC 7489 {#rfc7849-changes}
 
-This document is intended to render [@!RFC7489] obsolete. As one might guess,
+This document is intended to render [@RFC7489] obsolete. As one might guess,
 that means there are significant differences between RFC 7489 and this 
 document. This section will summarize those changes.
 
@@ -2949,7 +2949,7 @@ This document in (#dmarc-uris) says:
 
 ##  Removal of RFC 7489 Appendix A.5
 
-One of the appendices in RFC 7489, specifically [@!RFC7489, Appendix A.5],
+One of the appendices in RFC 7489, specifically [@RFC7489, Appendix A.5],
 has been removed from the text with this update. The appendix was titled 
 "Issues with ADSP in Operation" and it contained a list of issues associated
 with ADSP that influenced the direction of DMARC. The ADSP protocol was moved
@@ -2960,7 +2960,7 @@ discussion of ADSP's influence on DMARC was no longer relevant.
 
 This document and its companion documents ([@!I-D.ietf-dmarc-aggregate-reporting]
 and [@!I-D.ietf-dmarc-failure-reporting]) address the following errata
-filed against [@!RFC7489] since that document's publication in March,
+filed against [@RFC7489] since that document's publication in March,
 2015.  More details on each of these can be found at 
 <https://www.rfc-editor.org/errata_search.php?rfc=7489>
 
@@ -3047,7 +3047,7 @@ of it was subject to either minor editing, re-ordering of sections, and/or both.
 {numbered="false"}
 # Acknowledgements {#acknowledgements}
 
-This reworking of the DMARC mechanism specified in [@!RFC7489] is the
+This reworking of the DMARC mechanism specified in [@RFC7489] is the
 result of contributions from many participants in the IETF Working Group
 dedicated to this effort. Although the contributors are too numerous to 
 mention, significant contributions were made by Kurt Andersen, Laura Atkins,
@@ -3057,7 +3057,7 @@ Barry Leiba, Alessandro Vesely, and Tim Wicinski.
 
 The authors and contributors also recognize that this document would not 
 have been possible without the work done by those who had a hand in producing
-[@!RFC7489]. The Acknowledgements section from that document is preserved
+[@RFC7489]. The Acknowledgements section from that document is preserved
 in full below.
 
 {numbered="false"}
