@@ -1723,11 +1723,18 @@ as described in this section.
 
 Names of tags used in DMARC Policy Records as part of "tag-value" pairs are registered with IANA
 in this registry. Entries are assigned only for values that have been documented in a manner that
-satisfies the terms of Specification Required, per [@RFC8126]. Each registration includes the tag
-name; the specification that defines the tag; the status of the tag, which is one of "current",
-"experimental", or "historic"; and a brief description of the tag. The Designated Expert needs to
-confirm that the provided specification adequately describes the tag and clearly presents how it
-would be used within the DMARC context by Domain Owners and Mail Receivers.
+satisfies the terms of Specification Required, per [RFC8126]. Each registration includes the tag
+name, the specification that defines the tag, the status of the tag, and a brief description of
+the tag. The Designated Expert needs to confirm that the provided specification adequately describes
+the tag and clearly presents how it would be used within the DMARC context by Domain Owners and Mail
+Receivers.  The "status" column is one of the following:
+
+* "active", meaning the tag is in use in current implementations, and its specifications is expected
+  to be stable
+* "experimental", meaning the tag is relatively new and may be in use in some current implementations
+  but not in others, and its specification is not expected to be stable
+* "historic", meaning the tag is considered deprecated and is not expected to be in use in any current
+  implementation
 
 To avoid version compatibility issues, tags added to the DMARC
 specification are to avoid changing the semantics of existing records
@@ -1738,20 +1745,20 @@ The set of entries to be updated in this registry is as follows:
 {align="left"}
 | Tag Name | Reference | Status   | Description                                                            |
 |:---------|:----------|:---------|:-----------------------------------------------------------------------|
-| adkim    | [this document]  | current  | DKIM Identifier Alignment mode                                         |
-| aspf     | [this document]  | current  | SPF Identifier Alignment mode                                          |
-| fo       | [this document]  | current  | Failure reporting options                                              |
-| np       | [this document]  | current  | Requested Domain Owner Assessment Policy for non-existent subdomains   |
-| p        | [this document]  | current  | Requested Domain Owner Assessment Policy                               |
+| adkim    | [this document]  | active  | DKIM Identifier Alignment mode                                         |
+| aspf     | [this document]  | active  | SPF Identifier Alignment mode                                          |
+| fo       | [this document]  | active  | Failure reporting options                                              |
+| np       | [this document]  | active  | Requested Domain Owner Assessment Policy for non-existent subdomains   |
+| p        | [this document]  | active  | Requested Domain Owner Assessment Policy                               |
 | pct      | [@RFC7489]      | historic | Sampling rate                                                          |
-| psd      | [this document]  | current  | Indicates whether the DMARC Policy Record is published by a Public Suffix Domain |
+| psd      | [this document]  | active  | Indicates whether the DMARC Policy Record is published by a Public Suffix Domain |
 | rf       | [@RFC7489]      | historic | Failure reporting format(s)                                            |
 | ri       | [@RFC7489]      | historic | Aggregate Reporting interval                                           |
-| rua      | [this document]  | current  | Reporting URI(s) for DMARC aggregate feedback reports                  |
-| ruf      | [this document]  | current  | Reporting URI(s) for message-specific DMARC failure reports            |
-| sp       | [this document]  | current  | Requested Domain Owner Assessment Policy for subdomains                |
-| t        | [this document]  | current  | DMARC policy test mode                                                 |
-| v        | [this document]  | current  | DMARC specification version                                            |
+| rua      | [this document]  | active  | Reporting URI(s) for DMARC aggregate feedback reports                  |
+| ruf      | [this document]  | active  | Reporting URI(s) for message-specific DMARC failure reports            |
+| sp       | [this document]  | active  | Requested Domain Owner Assessment Policy for subdomains                |
+| t        | [this document]  | active  | DMARC policy test mode                                                 |
+| v        | [this document]  | active  | DMARC specification version                                            |
 Table: "DMARC Tags Registry Updatee"
 
 ##  DMARC Report Formats Registry Update {#dmarc-report-formats-registry}
@@ -1761,19 +1768,26 @@ Conformance (DMARC)" a registry called "DMARC Report Formats" exists and should 
 to reference this document.
 
 Names of DMARC failure reporting formats are registered with IANA in this registry. Entries
-are assigned only for values that satisfy the definition of Specification Required, per
-[@RFC8126]. In addition to a reference to a permanent specification, each registration
-includes the format name; the format's status, which must be one of "current", "experimental", 
-or "historic"; and a brief description of the format. The Designated Expert needs to confirm that
-the provided specification adequately describes the report format and clearly presents how it would
-be used within the DMARC context by Domain Owners and Mail Receivers.
+are assigned only for values that have been documented in a manner that satisfies the terms of
+Specification Required, per [RFC8126]. In addition to a reference to a permanent specification, each
+registration includes the format name, the format's status, and a brief description of the format.
+The Designated Expert needs to confirm that the provided specification adequately describes the
+report format and clearly presents how it would be used within the DMARC context by Domain Owners
+and Mail Receivers.  The "status" column is one of the following:
+
+* "active", meaning the format is in use in current implementations, and its specifications is expected
+  to be stable
+* "experimental", meaning the format is relatively new and may be in use in some current implementations
+  but not in others, and its specification is not expected to be stable
+* "historic", meaning the format is considered deprecated and is not expected to be in use in any current
+  implementation
 
 The entry to be updated in this registry is as follows:
 
 {align="left"}
 | Format Name | Reference | Status  | Description                                               |
 |-------------|-----------|---------|-----------------------------------------------------------|
-| afrf        | [this document]  | current | Authentication Failure Reporting Format (see [@!RFC6591]) |
+| afrf        | [this document]  | active | Authentication Failure Reporting Format (see [@!RFC6591]) |
 Table: "DMARC Report Formats Registry Update"
 
 ## Underscored and Globally Scoped DNS Node Names Registry Update
