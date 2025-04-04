@@ -1698,20 +1698,21 @@ Result codes for DMARC are registered with IANA in this registry. Entries are
 assigned only for values that have been documented in a manner that satisfies the terms
 of Specification Required, per [@RFC8126]. Each registration includes the auth method; the
 code; the specification that defines the code; and the code's status, which is one of "active" or
-"deprecated". The Designated Expert needs to confirm that the provided specification adequately describes the 
-result code and clearly presents how it would be used within the DMARC context by Domain Owners and
-Mail Receivers.
+"deprecated". The "Description" field is included here solely for the reader's reference, and 
+does not appear in the IANA registry. The Designated Expert needs to confirm that the provided
+specification adequately describes the result code and clearly presents how it would be used
+within the DMARC context by Domain Owners and Mail Receivers.
 
 The set of entries to be updated in this registry is as follows:
 
 {align="left"}
-| Auth Method   | Code      | Status | Meaning                                                             |
-|:--------------|:----------|:-------|:--------------------------------------------------------------------|
-| dmarc         | fail      | active | A DMARC Policy Record exists for the Author Domain, but no Authenticated Identifier with Identifier Alignment exists |
-| dmarc         | none      | active | No DMARC Policy Record exists for the Author Domain                 |
-| dmarc         | pass      | active | A DMARC Policy Record exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists |
-| dmarc         | permerror | active | An error occurred during DMARC evaluation that is unrecoverable, such as the retrieval of an improperly formatted DMARC Policy Record. A later attempt is unlikely to produce a final result |
-| dmarc         | temperror | active | An error occurred during DMARC evaluation that is likely transient in nature, such as a DNS server being temporarily unreachable. A later attempt might produce a final result |
+| Auth Method   | Code      | Specification | Status | Description                                                             |
+|:--------------|:----------|:--------------|:-------|:--------------------------------------------------------------------|
+| dmarc         | fail      | [this document]|active | A DMARC Policy Record exists for the Author Domain, but no Authenticated Identifier with Identifier Alignment exists |
+| dmarc         | none      | [this document]|active | No DMARC Policy Record exists for the Author Domain                 |
+| dmarc         | pass      | [this document]|active | A DMARC Policy Record exists for the Author Domain, and an Authenticated Identifier with Identifier Alignment exists |
+| dmarc         | permerror | [this document]|active | An error occurred during DMARC evaluation that is unrecoverable, such as the retrieval of an improperly formatted DMARC Policy Record. A later attempt is unlikely to produce a final result |
+| dmarc         | temperror | [this document]|active | An error occurred during DMARC evaluation that is likely transient in nature, such as a DNS server being temporarily unreachable. A later attempt might produce a final result |
 Table: "Email Authentication Result Names Registry Update"
 
 ##  DMARC Tags Registry Update {#dmarc-tag-registry-update}
