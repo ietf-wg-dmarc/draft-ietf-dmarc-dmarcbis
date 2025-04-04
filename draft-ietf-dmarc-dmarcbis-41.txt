@@ -6,7 +6,7 @@ DMARC                                                       T. Herr (ed)
 Internet-Draft                                                  Valimail
 Obsoletes: 7489, 9091 (if approved)                       J. Levine (ed)
 Intended status: Standards Track                           Standcore LLC
-Expires: 4 October 2025                                     2 April 2025
+Expires: 6 October 2025                                     4 April 2025
 
 
 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 October 2025.
+   This Internet-Draft will expire on 6 October 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 1]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 1]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 2]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 2]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -165,7 +165,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 3]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 3]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -221,7 +221,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 4]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 4]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -277,7 +277,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 5]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 5]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -333,7 +333,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 6]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 6]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -389,7 +389,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 7]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 7]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -445,7 +445,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 8]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 8]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -501,7 +501,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                 [Page 9]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                 [Page 9]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -557,7 +557,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 10]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 10]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -613,7 +613,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 11]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 11]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -669,7 +669,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 12]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 12]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -725,7 +725,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 13]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 13]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -781,7 +781,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 14]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 14]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -837,7 +837,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 15]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 15]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -893,7 +893,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 16]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 16]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -949,7 +949,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 17]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 17]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 18]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 18]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 19]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 19]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 20]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 20]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 21]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 21]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 22]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 22]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 23]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 23]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 24]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 24]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 25]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 25]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 26]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 26]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 27]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 27]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 28]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 28]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1621,7 +1621,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 29]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 29]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1677,7 +1677,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 30]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 30]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1733,7 +1733,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 31]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 31]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1789,7 +1789,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 32]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 32]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1845,7 +1845,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 33]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 33]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1901,7 +1901,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 34]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 34]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -1957,7 +1957,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 35]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 35]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2013,7 +2013,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 36]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 36]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2069,7 +2069,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 37]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 37]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2125,7 +2125,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 38]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 38]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2181,7 +2181,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 39]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 39]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2237,7 +2237,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 40]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 40]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2293,7 +2293,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 41]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 41]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2349,7 +2349,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 42]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 42]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2405,7 +2405,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 43]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 43]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2461,7 +2461,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 44]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 44]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2517,7 +2517,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 45]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 45]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2573,7 +2573,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 46]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 46]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2629,7 +2629,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 47]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 47]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2685,7 +2685,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 48]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 48]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2741,7 +2741,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 49]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 49]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2797,7 +2797,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 50]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 50]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2853,7 +2853,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 51]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 51]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2909,7 +2909,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 52]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 52]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -2965,7 +2965,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 53]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 53]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3021,7 +3021,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 54]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 54]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3077,7 +3077,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 55]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 55]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3133,7 +3133,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 56]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 56]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3189,7 +3189,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 57]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 57]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3207,13 +3207,6 @@ Internet-Draft                  DMARCbis                      April 2025
    [RFC7405]  Kyzivat, P., "Case-Sensitive String Support in ABNF",
               RFC 7405, DOI 10.17487/RFC7405, December 2014,
               <https://www.rfc-editor.org/info/rfc7405>.
-
-   [RFC7960]  Martin, F., Ed., Lear, E., Ed., Draegen, T., Ed., Zwicky,
-              E., Ed., and K. Andersen, Ed., "Interoperability Issues
-              between Domain-based Message Authentication, Reporting,
-              and Conformance (DMARC) and Indirect Email Flows",
-              RFC 7960, DOI 10.17487/RFC7960, September 2016,
-              <https://www.rfc-editor.org/info/rfc7960>.
 
    [RFC8601]  Kucherawy, M., "Message Header Field for Indicating
               Message Authentication Status", RFC 8601,
@@ -3242,18 +3235,20 @@ Internet-Draft                  DMARCbis                      April 2025
               DOI 10.17487/RFC3464, January 2003,
               <https://www.rfc-editor.org/info/rfc3464>.
 
-
-
-
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 58]
-
-Internet-Draft                  DMARCbis                      April 2025
-
-
    [RFC4870]  Delany, M., "Domain-Based Email Authentication Using
               Public Keys Advertised in the DNS (DomainKeys)", RFC 4870,
               DOI 10.17487/RFC4870, May 2007,
               <https://www.rfc-editor.org/info/rfc4870>.
+
+
+
+
+
+
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 58]
+
+Internet-Draft                  DMARCbis                      April 2025
+
 
    [RFC5598]  Crocker, D., "Internet Mail Architecture", RFC 5598,
               DOI 10.17487/RFC5598, July 2009,
@@ -3268,6 +3263,13 @@ Internet-Draft                  DMARCbis                      April 2025
               and P. Hoffman, "Specification for DNS over Transport
               Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
               2016, <https://www.rfc-editor.org/info/rfc7858>.
+
+   [RFC7960]  Martin, F., Ed., Lear, E., Ed., Draegen, T., Ed., Zwicky,
+              E., Ed., and K. Andersen, Ed., "Interoperability Issues
+              between Domain-based Message Authentication, Reporting,
+              and Conformance (DMARC) and Indirect Email Flows",
+              RFC 7960, DOI 10.17487/RFC7960, September 2016,
+              <https://www.rfc-editor.org/info/rfc7960>.
 
    [RFC8020]  Bortzmeyer, S. and S. Huque, "NXDOMAIN: There Really Is
               Nothing Underneath", RFC 8020, DOI 10.17487/RFC8020,
@@ -3299,9 +3301,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-
-
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 59]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 59]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3357,7 +3357,7 @@ A.1.  S/MIME
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 60]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 60]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3413,7 +3413,7 @@ A.3.  Sender Header Field
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 61]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 61]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3469,7 +3469,7 @@ A.5.  Organizational Domain Discovery Issues
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 62]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 62]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3525,7 +3525,7 @@ A.6.  Removal of the "pct" Tag
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 63]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 63]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3581,7 +3581,7 @@ B.1.1.  SPF
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 64]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 64]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3637,7 +3637,7 @@ B.1.2.  DKIM
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 65]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 65]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3693,7 +3693,7 @@ B.2.1.  Entire Domain, Monitoring Mode
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 66]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 66]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3749,7 +3749,7 @@ B.2.2.  Entire Domain, Monitoring Mode, Per-Message Failure Reports
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 67]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 67]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3805,7 +3805,7 @@ B.2.3.  Per-Message Failure Reports Directed to Third Party
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 68]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 68]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3861,7 +3861,7 @@ B.2.5.  Subdomain, Testing, and Multiple Aggregate Report URIs
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 69]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 69]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3917,7 +3917,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 70]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 70]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -3973,7 +3973,7 @@ B.3.1.  SMTP Session Example
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 71]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 71]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4029,7 +4029,7 @@ Internet-Draft                  DMARCbis                      April 2025
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 72]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 72]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4085,7 +4085,7 @@ B.4.1.  Simple Organizational and Policy Example
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 73]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 73]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4141,7 +4141,7 @@ B.4.2.  Deep Tree Walk Example
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 74]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 74]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4197,7 +4197,7 @@ B.4.3.  Example with a PSD DMARC Policy Record
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 75]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 75]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4253,7 +4253,7 @@ C.1.  Informational vs. Standards Track
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 76]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 76]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4309,7 +4309,7 @@ C.3.  Policy Discovery and Organizational Domain Determination
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 77]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 77]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4365,7 +4365,7 @@ C.6.  Expansion of Domain Owner Actions Section
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 78]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 78]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4421,7 +4421,7 @@ C.9.  RFC 7489 Errata Summary
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 79]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 79]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4477,7 +4477,7 @@ C.9.7.  RFC Errata, Erratum 5495, RFC 7489, Section 6.6.3
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 80]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 80]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4533,7 +4533,7 @@ C.9.14.  RFC Errata, Erratum ID 5151, RFC 7489, Section 1
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 81]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 81]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4589,7 +4589,7 @@ Acknowledgements - RFC 7489
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 82]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 82]
 
 Internet-Draft                  DMARCbis                      April 2025
 
@@ -4645,4 +4645,4 @@ Authors' Addresses
 
 
 
-Herr (ed) & Levine (ed)  Expires 4 October 2025                [Page 83]
+Herr (ed) & Levine (ed)  Expires 6 October 2025                [Page 83]

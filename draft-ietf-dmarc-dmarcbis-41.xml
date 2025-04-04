@@ -2237,7 +2237,6 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6652.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7208.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7405.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7960.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8601.xml"/>
 </references>
 <references><name>Informative References</name>
@@ -2260,6 +2259,7 @@ interpreted to indicate that the PSD is the Organizational Domain.</t>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7858.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7960.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8020.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>

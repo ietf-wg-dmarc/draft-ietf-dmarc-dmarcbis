@@ -93,7 +93,7 @@ On the other hand, a message that fails this validation is not necessarily assoc
 with the Author Domain and so should not affect the Author Domain's reputation. The phrase 
 "not necessarily associated" was purposely chosen here, as it is importatnt to understand
 that some messages making authorized use of the Author Domain can still fail DMARC validation
-checks.  [@!RFC7960] and (#other-topics) of this document both discuss reasons
+checks.  [@RFC7960] and (#other-topics) of this document both discuss reasons
 why such failures may happen.  Because of this, a mail-receiving organization that performs 
 DMARC validation can choose to honor the Domain Owner's requested message handling for validation 
 failures, but it is not required to do so. DMARC is commonly used as one input to more complex
@@ -1403,7 +1403,7 @@ DMARC-enabled abuse.
 Mail Receivers **MAY** choose to accept email that fails the DMARC
 validation check even if the published Domain Owner Assessment Policy
 is "reject". In particular, because of the considerations discussed
-in [@!RFC7960] and in (#interoperability-considerations) of this document, it is important that Mail 
+in [@RFC7960] and in (#interoperability-considerations) of this document, it is important that Mail 
 Receivers **SHOULD NOT** reject messages solely because of a published policy of "reject", 
 but that they apply other knowledge and analysis to avoid situations such as rejection 
 of legitimate messages sent in ways that DMARC cannot describe, harm to the operation of
@@ -1535,7 +1535,7 @@ to address authentication shortcomings.
 ##  Interoperability Considerations {#interoperability-considerations}
 
 As discussed in "Interoperability Issues between DMARC and Indirect
-Email Flows" [@!RFC7960], use of "p=reject" can be incompatible with and
+Email Flows" [@RFC7960], use of "p=reject" can be incompatible with and
 cause interoperability problems to indirect message flows such as
 "alumni forwarders", role-based email aliases, and mailing lists
 across the Internet.
@@ -1563,7 +1563,7 @@ of "p=reject" are likely to create significant interoperability
 issues. In particular, if users in such domains post messages to mailing
 lists on the Internet, those messages can cause significant operational problems
 for the mailing lists and for the subscribers to those lists, as explained below and
-in [@!RFC7960].
+in [@RFC7960].
 
 > It is therefore critical that domains that host users who might
 > post messages to mailing lists **SHOULD NOT** publish Domain Owner Assessment Policies
